@@ -55,9 +55,11 @@ Use these values:
 
 - `decouverte`: introduces one simple idea.
 - `application-directe`: direct use of a known definition, formula, or method.
-- `application-guidee`: usual application, but the method is not named explicitly.
-- `examen-standard`: close to common national-exam style.
-- `synthese`: requires combining several ideas or making a non-obvious choice.
+- `application-guidee`: guided technical practice, or usual application where the method is not named explicitly.
+- `probleme-type`: close to a common multi-step exam-style pattern.
+- `approfondissement`: requires combining several ideas or making a non-obvious choice.
+
+Use "technique" only as a descriptive theme in the objective, type, notes, or set title. It is not a frontmatter `difficulty` value.
 
 ## Exercise type labels
 

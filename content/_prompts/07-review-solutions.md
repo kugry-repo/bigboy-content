@@ -12,8 +12,9 @@ Read first:
 - content/_guides/solution-style.md
 - content/_guides/verification-checklist.md
 - content/_guides/math-notation.md
+- content/_guides/source-policy.md
 - CHAPTER_INDEX_PATH
-- relevant exercise files
+- target exercise files
 
 Task:
 Review the selected exercise solutions.
@@ -26,6 +27,7 @@ Check:
 - consistency with mini-lessons;
 - useful common mistakes;
 - verification where useful.
+- source-safety notes if a solution or statement depends on an exam or third-party source.
 
 Do not create new exercises.
 Do not create exercise sets.

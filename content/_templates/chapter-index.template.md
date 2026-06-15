@@ -125,6 +125,7 @@ TODO.
 | Exercise sets | planned | TODO |
 | Skill coverage | planned | TODO |
 | Diagram/interactivity plan | planned | TODO |
+| Source safety | planned | Official/exam claims and third-party usage to check |
 | Full chapter review | planned | TODO |
 
 ## Notes auteur

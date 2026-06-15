@@ -81,9 +81,11 @@ Exercises should progress from:
 
 1. découverte;
 2. application-directe;
-3. technique;
-4. examen-standard;
-5. synthese.
+3. application-guidee;
+4. probleme-type;
+5. approfondissement.
+
+Use "technique" only as a descriptive theme when needed, not as a frontmatter `difficulty` value.
 
 Every exercise should include:
 
@@ -130,6 +132,7 @@ A chapter `_index.md` should include a tracker like:
 | Exercise sets | planned | TODO |
 | Skill coverage | planned | TODO |
 | Diagram/interactivity plan | planned | TODO |
+| Source safety | planned | Official/exam claims and third-party usage to check |
 | Full chapter review | planned | TODO |
 ```
 

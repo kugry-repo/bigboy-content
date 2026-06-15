@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/_examples/golden-lesson-slice-limites.md",
+                "file": "content/_guides/lesson-voice.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "golden-lesson-slice-limites"
+              "title": "lesson-voice"
             }
           }
         ]
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "content/_examples/golden-lesson-slice-limites.md",
+                "file": "content/_guides/lesson-voice.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for golden-lesson-slice-limites"
+              "title": "Backlinks for lesson-voice"
             }
           },
           {
@@ -113,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "content/_examples/golden-lesson-slice-limites.md",
+                "file": "content/_guides/lesson-voice.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from golden-lesson-slice-limites"
+              "title": "Outgoing links from lesson-voice"
             }
           },
           {
@@ -156,13 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "content/_examples/golden-lesson-slice-limites.md",
+                "file": "content/_guides/lesson-voice.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of golden-lesson-slice-limites"
+              "title": "Outline of lesson-voice"
             }
           }
         ]
@@ -185,11 +185,16 @@
   },
   "active": "ca80d73c507ae018",
   "lastOpenFiles": [
+    "content/_prompts/10-publish-ready-cleanup.md",
+    "AGENTS.md",
+    "content.rar",
+    "content/_guides/lesson-voice.md",
+    "content/repomix-output.xml",
+    "content/_examples/motivation-examples.md",
+    "content/_examples/golden-lesson-slice-limites.md",
     "content/_guides/math-notation.md",
     "README.md",
-    "AGENTS.md",
     "content/README.md",
-    "content/_examples/golden-lesson-slice-limites.md",
     "content/2bac-pc-svt/02-derivabilite-etude-fonctions/_index.md",
     "content/2bac-pc-svt/01-limites-continuite/_index.md",
     "content/_guides/style-guide.md",
@@ -204,8 +209,6 @@
     "content/2bac-pc-svt/11-geometrie-espace/exercises",
     "content/2bac-pc-svt/11-geometrie-espace",
     "content/2bac-pc-svt/10-equations-differentielles/_index.md",
-    "content/2bac-pc-svt/10-equations-differentielles/sets",
-    "content/2bac-pc-svt/10-equations-differentielles/exercises",
     "content/2bac-pc-svt/09-calcul-integral/_index.md",
     "content/2bac-pc-svt/08-nombres-complexes-partie-2/_index.md",
     "content/2bac-pc-svt/07-fonction-exponentielle/_index.md",
@@ -217,9 +220,6 @@
     "content/_guides/content-validation.md",
     "content/_tracking/skill-coverage.md",
     "content/_guides/diagram-guidelines.md",
-    "content/_examples/README.md",
-    "content/_examples/motivation-examples.md",
-    "content/_references/notation-decisions.md",
-    "content/_references/concept-dependencies.md"
+    "content/_examples/README.md"
   ]
 }

@@ -98,6 +98,10 @@ Start with a reason, question, problem, intuition, or motivation.
 
 This section should explain why the concept matters mathematically, how it helps in exercises, and how it connects to later parts of the program.
 
+Every mini-lesson should briefly answer: why does this matter here?
+
+Later mini-lessons can keep this section short if the chapter motivation has already been established.
+
 If a real-world application would be fake or forced, say that the main interest is mathematical.
 
 ## Le problème de départ

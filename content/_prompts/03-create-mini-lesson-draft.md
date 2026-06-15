@@ -10,11 +10,14 @@ MINI_LESSON_FILE = content/2bac-pc-svt/01-limites-continuite/lessons/lc-lesson-0
 Read first:
 - content/AGENTS.md
 - content/_guides/chapter-workflow.md
+- content/_guides/frontmatter-schema.md
+- content/_guides/id-and-naming.md
 - content/_guides/lesson-structure.md
 - content/_guides/lesson-voice.md
 - content/_guides/lesson-quality-rubric.md
 - content/_guides/math-notation.md
 - content/_guides/obsidian-conventions.md
+- content/_guides/source-policy.md
 - content/_templates/mini-lesson.template.md
 - content/_examples/golden-lesson-slice-limites.md
 - CHAPTER_INDEX_PATH
@@ -33,7 +36,9 @@ Do NOT create exercise sets.
 The mini-lesson must:
 - use `tu`;
 - start with a problem, question, intuition, or motivation;
-- include `Pourquoi on étudie ça ?` if this is the first mini-lesson of the chapter, or a shorter motivation if not;
+- include `Pourquoi on étudie ça ?` in every mini-lesson;
+- answer briefly why this mini-lesson matters here, with a shorter motivation allowed after the chapter motivation is established;
+- avoid fake or forced real-world applications;
 - include `Le modèle mental`;
 - explain the idea in human language before formal math;
 - include an early concrete example;

@@ -10,7 +10,10 @@ CHAPTER_DIR = content/2bac-pc-svt/01-limites-continuite
 Read first:
 - content/AGENTS.md
 - content/_guides/chapter-workflow.md
+- content/_guides/frontmatter-schema.md
+- content/_guides/id-and-naming.md
 - content/_guides/exercise-structure.md
+- content/_guides/source-policy.md
 - content/_templates/exercise-set.template.md
 - CHAPTER_INDEX_PATH
 - exercise files under exercises/
@@ -25,7 +28,7 @@ Exercise sets should link to exercises instead of duplicating full content.
 Possible sets:
 - discovery;
 - application-directe;
-- techniques;
+- techniques, as a descriptive theme only;
 - examen-standard;
 - synthese.
 

@@ -4,6 +4,20 @@ Every content file should start with YAML frontmatter.
 
 The schema should be stable enough for future app rendering but simple enough for human editing.
 
+## Frontmatter enforcement scope
+
+Strict YAML frontmatter is required for generated content files and index files, including:
+
+- program and chapter indexes;
+- mini-lessons;
+- exercises;
+- exercise sets;
+- examples and templates where this schema defines frontmatter.
+
+Guides, prompts, references, and tracking documents may currently be metadata-free.
+
+For now, validator output for metadata-free guide, prompt, reference, or tracking files should be warnings at most, not errors, unless the project later decides to enforce frontmatter everywhere.
+
 ## Common fields
 
 Use these fields when applicable:
@@ -206,7 +220,7 @@ chapter_code: lc
 chapter_order: 1
 chapter_folder: 01-limites-continuite
 skills:
-  - lc-limite-infini
+  - lc-limite-en-infini
   - lc-factorisation-terme-dominant
 difficulty: application-directe
 exercise_type: [calcul]
@@ -221,6 +235,16 @@ created: YYYY-MM-DD
 updated: YYYY-MM-DD
 ---
 ```
+
+Use only these `difficulty` values for exercises:
+
+- `decouverte`
+- `application-directe`
+- `application-guidee`
+- `probleme-type`
+- `approfondissement`
+
+Do not use `technique` as a frontmatter `difficulty` value. Use it only as a descriptive theme in prose when needed.
 
 ## Exercise set frontmatter
 

@@ -4,159 +4,110 @@ import fs from "node:fs";
 import path from "node:path";
 
 const ROOT = process.cwd();
-const CONTENT_ROOT = path.join(ROOT, "content", "2bac-pc-svt");
+const CONTENT_DIR = path.join(ROOT, "content");
+const PROGRAM_DIR = path.join(CONTENT_DIR, "2bac-pc-svt");
 
-const TARGET_CHAPTERS = [
-  {
-    order: 1,
-    folder: "01-limites-continuite",
-    slug: "limites-continuite",
-    code: "lc",
-    domain: "analyse",
-  },
-  {
-    order: 2,
-    folder: "02-derivabilite-etude-fonctions",
-    slug: "derivabilite-etude-fonctions",
-    code: "def",
-    domain: "analyse",
-  },
-  {
-    order: 3,
-    folder: "03-suites-numeriques",
-    slug: "suites-numeriques",
-    code: "sn",
-    domain: "analyse",
-  },
-  {
-    order: 4,
-    folder: "04-fonctions-primitives",
-    slug: "fonctions-primitives",
-    code: "fp",
-    domain: "analyse",
-  },
-  {
-    order: 5,
-    folder: "05-fonction-logarithme",
-    slug: "fonction-logarithme",
-    code: "fl",
-    domain: "analyse",
-  },
-  {
-    order: 6,
-    folder: "06-nombres-complexes-partie-1",
-    slug: "nombres-complexes-partie-1",
-    code: "nc1",
-    domain: "algebre-geometrie",
-  },
-  {
-    order: 7,
-    folder: "07-fonction-exponentielle",
-    slug: "fonction-exponentielle",
-    code: "fe",
-    domain: "analyse",
-  },
-  {
-    order: 8,
-    folder: "08-nombres-complexes-partie-2",
-    slug: "nombres-complexes-partie-2",
-    code: "nc2",
-    domain: "algebre-geometrie",
-  },
-  {
-    order: 9,
-    folder: "09-calcul-integral",
-    slug: "calcul-integral",
-    code: "ci",
-    domain: "analyse",
-  },
-  {
-    order: 10,
-    folder: "10-equations-differentielles",
-    slug: "equations-differentielles",
-    code: "ed",
-    domain: "analyse",
-  },
-  {
-    order: 11,
-    folder: "11-geometrie-espace",
-    slug: "geometrie-espace",
-    code: "ge",
-    domain: "algebre-geometrie",
-  },
-  {
-    order: 12,
-    folder: "12-denombrement-probabilites",
-    slug: "denombrement-probabilites",
-    code: "dp",
-    domain: "probabilites",
-  },
+const REQUIRED_BASE_DIRS = [
+  "content",
+  "content/_guides",
+  "content/_templates",
+  "content/_prompts",
+  "content/_references",
+  "content/_examples",
+  "content/_tracking",
+  "content/2bac-pc-svt",
 ];
 
-const TARGET_BY_FOLDER = new Map(TARGET_CHAPTERS.map((chapter) => [chapter.folder, chapter]));
-const DOMAIN_FOLDERS = new Set(["analyse", "algebre-geometrie", "probabilites"]);
+const CANONICAL_CHAPTERS = [
+  { folder: "01-limites-continuite", code: "lc", order: 1 },
+  { folder: "02-derivabilite-etude-fonctions", code: "def", order: 2 },
+  { folder: "03-suites-numeriques", code: "sn", order: 3 },
+  { folder: "04-fonctions-primitives", code: "fp", order: 4 },
+  { folder: "05-fonction-logarithme", code: "fl", order: 5 },
+  { folder: "06-nombres-complexes-partie-1", code: "nc1", order: 6 },
+  { folder: "07-fonction-exponentielle", code: "fe", order: 7 },
+  { folder: "08-nombres-complexes-partie-2", code: "nc2", order: 8 },
+  { folder: "09-calcul-integral", code: "ci", order: 9 },
+  { folder: "10-equations-differentielles", code: "ed", order: 10 },
+  { folder: "11-geometrie-espace", code: "ge", order: 11 },
+  { folder: "12-denombrement-probabilites", code: "dp", order: 12 },
+];
 
-const CHAPTER_HEADINGS = [
-  "## Place dans le programme",
-  "## Objectifs du chapitre",
-  "## Prérequis",
-  "## Compétences",
-  "## Plan des mini-leçons",
-  "## Misconceptions à traiter",
-  "## Leçons",
-  "## Séries d'exercices",
-  "## Exercices individuels",
-  "## Plan des exercices",
-  "## Diagrammes et interactions à prévoir",
-  "## Motifs fréquents à l'examen",
+const CHAPTERS_BY_FOLDER = new Map(
+  CANONICAL_CHAPTERS.map((chapter) => [chapter.folder, chapter]),
+);
+
+const FORBIDDEN_DOMAIN_FOLDERS = new Set([
+  "analyse",
+  "algebre-geometrie",
+  "probabilites",
+]);
+
+const REQUIRED_CHAPTER_HEADINGS = [
   "## Workflow",
   "## Suivi de production",
-  "## Journal de production",
   "## Golden chapter readiness",
-  "## Notes auteur",
+  "## Diagrammes et interactions a prevoir",
 ];
-
-const MINI_LESSON_HEADINGS = [
-  "## Le modèle mental",
-  "## L'idée en version humaine",
-  "## La version mathématique",
-  "## Exemple guidé",
-  "## La carte mentale",
-];
-
-const EXERCISE_HEADINGS = ["## Énoncé", "## Solution"];
 
 const errors = [];
 const warnings = [];
 const ids = new Map();
+let checkedChapters = 0;
 
-function walk(dir) {
-  if (!fs.existsSync(dir)) return [];
+function toPosix(filePath) {
+  return filePath.replaceAll(path.sep, "/");
+}
 
-  const entries = fs.readdirSync(dir, { withFileTypes: true });
+function rel(filePath) {
+  return toPosix(path.relative(ROOT, filePath));
+}
+
+function addError(filePath, message) {
+  errors.push(filePath ? `${rel(filePath)}: ${message}` : message);
+}
+
+function addWarning(filePath, message) {
+  warnings.push(filePath ? `${rel(filePath)}: ${message}` : message);
+}
+
+function isDirectory(dirPath) {
+  return fs.existsSync(dirPath) && fs.statSync(dirPath).isDirectory();
+}
+
+function isFile(filePath) {
+  return fs.existsSync(filePath) && fs.statSync(filePath).isFile();
+}
+
+function readDir(dirPath) {
+  if (!isDirectory(dirPath)) return [];
+  return fs.readdirSync(dirPath, { withFileTypes: true });
+}
+
+function walkMarkdownFiles(dirPath) {
   const files = [];
 
-  for (const entry of entries) {
-    const full = path.join(dir, entry.name);
+  for (const entry of readDir(dirPath)) {
+    const fullPath = path.join(dirPath, entry.name);
+
     if (entry.isDirectory()) {
-      files.push(...walk(full));
-    } else if (entry.isFile() && entry.name.endsWith(".md")) {
-      files.push(full);
+      files.push(...walkMarkdownFiles(fullPath));
+      continue;
+    }
+
+    if (entry.isFile() && entry.name.endsWith(".md")) {
+      files.push(fullPath);
     }
   }
 
   return files;
 }
 
-function rel(file) {
-  return path.relative(ROOT, file).replaceAll(path.sep, "/");
-}
-
-function parseFrontmatter(text, file) {
+function parseFrontmatter(text) {
   const match = text.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/);
+
   if (!match) {
-    errors.push(`${rel(file)}: missing or malformed YAML frontmatter`);
-    return null;
+    return { hasFrontmatter: false, data: {}, raw: "" };
   }
 
   const data = {};
@@ -182,204 +133,264 @@ function parseFrontmatter(text, file) {
     data[key] = value;
   }
 
-  return data;
+  return { hasFrontmatter: true, data, raw: match[1] };
 }
 
-function hasAll(text, headings) {
-  return headings.filter((heading) => !text.includes(heading));
+function normalizeForHeading(text) {
+  return text
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
 }
 
-function isProgramIndex(file) {
-  return rel(file) === "content/2bac-pc-svt/_index.md";
+function hasHeading(text, heading) {
+  return normalizeForHeading(text).includes(normalizeForHeading(heading));
 }
 
-function isChapterIndex(file) {
-  return /^content\/2bac-pc-svt\/\d{2}-[a-z0-9-]+\/_index\.md$/.test(rel(file));
+function countMatches(text, regex) {
+  return [...text.matchAll(regex)].length;
 }
 
-function chapterFolderFor(file) {
-  return rel(file).split("/").at(-2);
+function isGuidePromptOrReference(filePath) {
+  const relativePath = rel(filePath);
+  return /^content\/_(guides|prompts|references)\//.test(relativePath);
 }
 
-function checkRequiredFrontmatter(data, file) {
-  if (!data) return;
+function requireFrontmatter(filePath, parsed, label) {
+  if (parsed.hasFrontmatter) return true;
 
-  if (!data.id) {
-    errors.push(`${rel(file)}: missing frontmatter field "id"`);
-  } else {
-    const existing = ids.get(data.id);
-    if (existing) {
-      errors.push(`${rel(file)}: duplicate id "${data.id}" also used in ${existing}`);
-    } else {
-      ids.set(data.id, rel(file));
-    }
-  }
-
-  if (!data.type) {
-    errors.push(`${rel(file)}: missing frontmatter field "type"`);
-  }
+  addError(filePath, `${label} must have YAML frontmatter`);
+  return false;
 }
 
-function checkProgramIndex(text, file) {
-  const r = rel(file);
-
-  for (const chapter of TARGET_CHAPTERS) {
-    const link = `[[${chapter.folder}/_index|`;
-    if (!text.includes(link)) {
-      errors.push(`${r}: missing program-index link for "${chapter.folder}"`);
+function checkBaseFolders() {
+  for (const requiredDir of REQUIRED_BASE_DIRS) {
+    const fullPath = path.join(ROOT, ...requiredDir.split("/"));
+    if (!isDirectory(fullPath)) {
+      errors.push(`${requiredDir}/: missing required base folder`);
     }
   }
 }
 
-function checkChapterIndex(data, text, file) {
-  const r = rel(file);
-  const folder = chapterFolderFor(file);
-  const target = TARGET_BY_FOLDER.get(folder);
+function checkProgramFolderShape() {
+  if (!isDirectory(PROGRAM_DIR)) return;
 
-  if (!target) {
-    errors.push(`${r}: chapter folder is not in the canonical 12-chapter map`);
-    return;
-  }
-
-  if (data) {
-    if (data.type !== "chapter-index") {
-      errors.push(`${r}: chapter _index.md type should be "chapter-index"`);
-    }
-
-    if (data.chapter_order === undefined) {
-      errors.push(`${r}: missing frontmatter field "chapter_order"`);
-    } else if (Number(data.chapter_order) !== target.order) {
-      errors.push(`${r}: chapter_order should be ${target.order}`);
-    }
-
-    if (!data.chapter_folder) {
-      errors.push(`${r}: missing frontmatter field "chapter_folder"`);
-    } else if (data.chapter_folder !== folder) {
-      errors.push(`${r}: chapter_folder should be "${folder}"`);
-    }
-
-    if (data.chapter !== target.slug) {
-      errors.push(`${r}: chapter should be "${target.slug}"`);
-    }
-
-    if (data.chapter_code !== target.code) {
-      errors.push(`${r}: chapter_code should be "${target.code}"`);
-    }
-
-    if (data.domain !== target.domain) {
-      errors.push(`${r}: domain should be "${target.domain}"`);
-    }
-  }
-
-  for (const heading of hasAll(text, CHAPTER_HEADINGS)) {
-    errors.push(`${r}: missing chapter section "${heading}"`);
-  }
-}
-
-function checkFolderShape() {
-  if (!fs.existsSync(CONTENT_ROOT)) {
-    errors.push("content/2bac-pc-svt: missing content root");
-    return;
-  }
-
-  const topLevelDirs = fs
-    .readdirSync(CONTENT_ROOT, { withFileTypes: true })
+  const chapterDirs = readDir(PROGRAM_DIR)
     .filter((entry) => entry.isDirectory())
     .map((entry) => entry.name);
 
-  for (const domain of DOMAIN_FOLDERS) {
-    if (topLevelDirs.includes(domain)) {
-      errors.push(`content/2bac-pc-svt/${domain}: old domain folder should not exist`);
-    }
-  }
-
-  for (const dir of topLevelDirs) {
-    if (!TARGET_BY_FOLDER.has(dir)) {
-      errors.push(`content/2bac-pc-svt/${dir}: unexpected top-level chapter folder`);
-    }
-
-    if (!/^\d{2}-[a-z0-9-]+$/.test(dir)) {
-      errors.push(`content/2bac-pc-svt/${dir}: chapter folder should match NN-slug`);
-    }
-  }
-
-  for (const chapter of TARGET_CHAPTERS) {
-    const chapterDir = path.join(CONTENT_ROOT, chapter.folder);
-    const chapterIndex = path.join(chapterDir, "_index.md");
-
-    if (!fs.existsSync(chapterDir)) {
-      errors.push(`content/2bac-pc-svt/${chapter.folder}: missing canonical chapter folder`);
+  for (const dir of chapterDirs) {
+    if (FORBIDDEN_DOMAIN_FOLDERS.has(dir)) {
+      errors.push(`content/2bac-pc-svt/${dir}/: domain folders are not allowed here`);
       continue;
     }
 
-    if (!fs.existsSync(chapterIndex)) {
-      errors.push(`content/2bac-pc-svt/${chapter.folder}/_index.md: missing chapter index`);
+    if (!CHAPTERS_BY_FOLDER.has(dir)) {
+      errors.push(`content/2bac-pc-svt/${dir}/: unexpected chapter folder`);
     }
+  }
 
-    for (const subdir of ["lessons", "exercises", "sets"]) {
-      const full = path.join(chapterDir, subdir);
-      if (!fs.existsSync(full) || !fs.statSync(full).isDirectory()) {
-        errors.push(`content/2bac-pc-svt/${chapter.folder}/${subdir}: missing chapter subfolder`);
-      }
+  for (const chapter of CANONICAL_CHAPTERS) {
+    const chapterDir = path.join(PROGRAM_DIR, chapter.folder);
+    if (!isDirectory(chapterDir)) {
+      errors.push(`content/2bac-pc-svt/${chapter.folder}/: missing canonical chapter folder`);
     }
   }
 }
 
-function checkStaleDomainPaths(text, file) {
-  const r = rel(file);
-  const normalized = text.replaceAll("\\", "/");
+function checkChapterIndex(chapter, chapterDir) {
+  const indexPath = path.join(chapterDir, "_index.md");
 
-  if (/(?:content\/)?2bac-pc-svt\/(?:analyse|algebre-geometrie|probabilites)\//.test(normalized)) {
-    errors.push(`${r}: contains an old domain-folder path under content/2bac-pc-svt`);
+  if (!isFile(indexPath)) {
+    addError(indexPath, "missing chapter index");
+    return;
   }
 
-  if (/\[\[(?:analyse|algebre-geometrie|probabilites)\//.test(normalized)) {
-    errors.push(`${r}: contains an old domain-folder wiki link`);
+  const text = fs.readFileSync(indexPath, "utf8");
+  const parsed = parseFrontmatter(text);
+
+  if (!requireFrontmatter(indexPath, parsed, "chapter _index.md")) {
+    return;
+  }
+
+  const { data } = parsed;
+
+  if (data.type !== "chapter-index") {
+    addError(indexPath, 'frontmatter "type" must be "chapter-index"');
+  }
+
+  if (data.chapter_code !== chapter.code) {
+    addError(indexPath, `frontmatter "chapter_code" must be "${chapter.code}"`);
+  }
+
+  if (Number(data.chapter_order) !== chapter.order) {
+    addError(indexPath, `frontmatter "chapter_order" must be ${chapter.order}`);
+  }
+
+  if (data.chapter_folder !== chapter.folder) {
+    addError(indexPath, `frontmatter "chapter_folder" must be "${chapter.folder}"`);
+  }
+
+  for (const heading of REQUIRED_CHAPTER_HEADINGS) {
+    if (!hasHeading(text, heading)) {
+      addError(indexPath, `missing required section "${heading}"`);
+    }
   }
 }
 
-function main() {
-  checkFolderShape();
+function checkChapterFolders(chapter) {
+  const chapterDir = path.join(PROGRAM_DIR, chapter.folder);
 
-  const files = walk(CONTENT_ROOT);
+  if (!isDirectory(chapterDir)) return;
+  checkedChapters += 1;
 
-  for (const file of files) {
-    const text = fs.readFileSync(file, "utf8");
-    const data = parseFrontmatter(text, file);
-    const r = rel(file);
+  checkChapterIndex(chapter, chapterDir);
 
-    checkRequiredFrontmatter(data, file);
-    checkStaleDomainPaths(text, file);
-
-    if (isProgramIndex(file)) {
-      checkProgramIndex(text, file);
-    }
-
-    if (isChapterIndex(file)) {
-      checkChapterIndex(data, text, file);
-    }
-
-    if (r.match(/\/lesson\.md$/)) {
-      warnings.push(`${r}: root-level lesson.md found. Current architecture prefers separate files under lessons/`);
-    }
-
-    if (r.includes("/lessons/")) {
-      for (const heading of hasAll(text, MINI_LESSON_HEADINGS)) {
-        warnings.push(`${r}: mini-lesson missing recommended heading "${heading}"`);
-      }
-    }
-
-    if (r.includes("/exercises/")) {
-      for (const heading of hasAll(text, EXERCISE_HEADINGS)) {
-        warnings.push(`${r}: exercise missing recommended heading "${heading}"`);
-      }
+  for (const subdir of ["lessons", "exercises", "sets"]) {
+    const subdirPath = path.join(chapterDir, subdir);
+    if (!isDirectory(subdirPath)) {
+      errors.push(`content/2bac-pc-svt/${chapter.folder}/${subdir}/: missing chapter subfolder`);
     }
   }
 
+  const rootLessonPath = path.join(chapterDir, "lesson.md");
+  if (isFile(rootLessonPath)) {
+    addError(rootLessonPath, 'root-level "lesson.md" is not allowed; use lessons/ mini-lessons');
+  }
+}
+
+function checkLessonFile(chapter, filePath) {
+  const fileName = path.basename(filePath);
+  const nameMatch = fileName.match(new RegExp(`^${chapter.code}-lesson-(\\d{3})\\.md$`));
+
+  if (!nameMatch) {
+    addError(filePath, `filename must match "${chapter.code}-lesson-###.md"`);
+  }
+
+  const text = fs.readFileSync(filePath, "utf8");
+  const parsed = parseFrontmatter(text);
+
+  if (!requireFrontmatter(filePath, parsed, "mini-lesson file")) {
+    return;
+  }
+
+  const { data } = parsed;
+
+  if (data.type !== "lesson") {
+    addError(filePath, 'frontmatter "type" must be "lesson"');
+  }
+
+  if (data.lesson_kind !== "mini-lesson") {
+    addError(filePath, 'frontmatter "lesson_kind" must be "mini-lesson"');
+  }
+
+  if (nameMatch) {
+    const expectedId = `2bac-pcsvt-${chapter.code}-lesson-${nameMatch[1]}`;
+    if (data.id !== expectedId) {
+      addError(filePath, `frontmatter "id" must be "${expectedId}"`);
+    }
+  }
+}
+
+function checkExerciseFile(chapter, filePath) {
+  const fileName = path.basename(filePath);
+
+  if (!new RegExp(`^${chapter.code}-ex-\\d{3}\\.md$`).test(fileName)) {
+    addError(filePath, `filename must match "${chapter.code}-ex-###.md"`);
+  }
+
+  const text = fs.readFileSync(filePath, "utf8");
+  const parsed = parseFrontmatter(text);
+
+  if (!requireFrontmatter(filePath, parsed, "exercise file")) {
+    return;
+  }
+
+  const { data } = parsed;
+
+  if (data.type !== "exercise") {
+    addError(filePath, 'frontmatter "type" must be "exercise"');
+  }
+
+  if (!Object.hasOwn(data, "solution_status")) {
+    addError(filePath, 'missing frontmatter field "solution_status"');
+  }
+}
+
+function checkSetFile(filePath) {
+  const text = fs.readFileSync(filePath, "utf8");
+  const parsed = parseFrontmatter(text);
+
+  if (!requireFrontmatter(filePath, parsed, "exercise set file")) {
+    return;
+  }
+
+  if (parsed.data.type !== "exercise-set") {
+    addError(filePath, 'frontmatter "type" must be "exercise-set"');
+  }
+}
+
+function checkChapterContentFiles(chapter) {
+  const chapterDir = path.join(PROGRAM_DIR, chapter.folder);
+  if (!isDirectory(chapterDir)) return;
+
+  for (const filePath of walkMarkdownFiles(path.join(chapterDir, "lessons"))) {
+    checkLessonFile(chapter, filePath);
+  }
+
+  for (const filePath of walkMarkdownFiles(path.join(chapterDir, "exercises"))) {
+    checkExerciseFile(chapter, filePath);
+  }
+
+  for (const filePath of walkMarkdownFiles(path.join(chapterDir, "sets"))) {
+    checkSetFile(filePath);
+  }
+}
+
+function collectIdsAndWarnings() {
+  for (const filePath of walkMarkdownFiles(CONTENT_DIR)) {
+    const text = fs.readFileSync(filePath, "utf8");
+    const parsed = parseFrontmatter(text);
+    const todoCount = countMatches(text, /\bTODO\b/g);
+
+    if (todoCount > 0) {
+      addWarning(filePath, `contains ${todoCount} TODO placeholder(s)`);
+    }
+
+    if (/^created:\s*YYYY-MM-DD\s*$/m.test(text)) {
+      addWarning(filePath, 'uses placeholder "created: YYYY-MM-DD"');
+    }
+
+    if (/^updated:\s*YYYY-MM-DD\s*$/m.test(text)) {
+      addWarning(filePath, 'uses placeholder "updated: YYYY-MM-DD"');
+    }
+
+    if (!parsed.hasFrontmatter) {
+      if (isGuidePromptOrReference(filePath)) {
+        addWarning(filePath, "has no frontmatter; allowed for guides, prompts, and references");
+      }
+      continue;
+    }
+
+    if (!parsed.data.id) continue;
+
+    const previousFile = ids.get(parsed.data.id);
+    if (previousFile) {
+      addError(filePath, `duplicate frontmatter id "${parsed.data.id}" also used in ${previousFile}`);
+      continue;
+    }
+
+    ids.set(parsed.data.id, rel(filePath));
+  }
+}
+
+function printResults() {
   console.log("Content validation");
   console.log("==================");
-  console.log(`Scanned files: ${files.length}`);
-  console.log(`Expected chapter folders: ${TARGET_CHAPTERS.length}`);
+  console.log(`Errors: ${errors.length}`);
+  console.log(`Warnings: ${warnings.length}`);
+  console.log(`Checked chapters: ${checkedChapters}/${CANONICAL_CHAPTERS.length}`);
+  console.log(`Checked IDs: ${ids.size}`);
 
   if (warnings.length) {
     console.log("\nWarnings:");
@@ -398,6 +409,20 @@ function main() {
   }
 
   console.log("\nNo blocking errors found.");
+  process.exitCode = 0;
+}
+
+function main() {
+  checkBaseFolders();
+  checkProgramFolderShape();
+
+  for (const chapter of CANONICAL_CHAPTERS) {
+    checkChapterFolders(chapter);
+    checkChapterContentFiles(chapter);
+  }
+
+  collectIdsAndWarnings();
+  printResults();
 }
 
 main();

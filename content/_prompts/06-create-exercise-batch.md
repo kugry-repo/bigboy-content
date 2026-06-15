@@ -10,9 +10,12 @@ EXERCISE_FILE = content/2bac-pc-svt/01-limites-continuite/exercises/lc-ex-001.md
 Read first:
 - content/AGENTS.md
 - content/_guides/chapter-workflow.md
+- content/_guides/frontmatter-schema.md
+- content/_guides/id-and-naming.md
 - content/_guides/exercise-structure.md
 - content/_guides/solution-style.md
 - content/_guides/math-notation.md
+- content/_guides/source-policy.md
 - content/_templates/exercise.template.md
 - CHAPTER_INDEX_PATH
 - relevant mini-lesson files under lessons/
@@ -36,6 +39,15 @@ Each exercise must include:
 - common mistakes;
 - verification;
 - author notes.
+
+Use only these `difficulty` values:
+- `decouverte`
+- `application-directe`
+- `application-guidee`
+- `probleme-type`
+- `approfondissement`
+
+Do NOT use `technique` as a frontmatter `difficulty` value.
 
 Use status `draft` and `solution_status: draft`.
 

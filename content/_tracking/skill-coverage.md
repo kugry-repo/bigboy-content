@@ -28,11 +28,16 @@ Use:
 
 ## Limites et continuité draft coverage
 
+Limit skill ID note:
+
+- `lc-limite-infinie`: infinite limit value, such as a limit equal to `+infty` or `-infty`.
+- `lc-limite-en-infini`: limit as the variable tends to `+infty` or `-infty`.
+
 | Skill ID | Chapter | Mini-lessons | Exercises | Sets | Status | Notes |
 |---|---|---|---:|---|---|---|
 | lc-limite-finie | limites-continuite | planned | 0 | planned | planned | TODO |
-| lc-limite-infinie | limites-continuite | planned | 0 | planned | planned | TODO |
-| lc-limite-infini | limites-continuite | planned | 0 | planned | planned | TODO |
+| lc-limite-infinie | limites-continuite | planned | 0 | planned | planned | Limit value is infinite |
+| lc-limite-en-infini | limites-continuite | planned | 0 | planned | planned | Variable tends to infinity |
 | lc-forme-indeterminee | limites-continuite | planned | 0 | planned | planned | TODO |
 | lc-factorisation | limites-continuite | planned | 0 | planned | planned | TODO |
 | lc-quantite-conjuguee | limites-continuite | planned | 0 | planned | planned | TODO |

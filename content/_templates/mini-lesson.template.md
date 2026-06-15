@@ -27,7 +27,7 @@ updated: YYYY-MM-DD
 
 ## Pourquoi on étudie ça ?
 
-TODO: Explain why this mini-lesson matters mathematically, in exercises, in exams, or in a real/scientific context when the connection is honest.
+TODO: Explain briefly why this mini-lesson matters here: mathematically, in exercises, in exams, or in a real/scientific context when the connection is honest. Later mini-lessons may keep this short if the chapter motivation is already clear.
 
 ## Le problème de départ
 

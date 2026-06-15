@@ -147,7 +147,8 @@ Examples:
 
 ```text
 lc-limite-finie
-lc-limite-infini
+lc-limite-infinie
+lc-limite-en-infini
 lc-forme-indeterminee
 lc-continuite-point
 lc-tvi-existence
