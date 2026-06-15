@@ -1,0 +1,5 @@
+# Obsidian/editor local state
+content/.obsidian/workspace*.json
+content/.obsidian/cache/
+content/.obsidian/plugins/*/data.json
+.DS_Store

@@ -1,0 +1,225 @@
+{
+  "main": {
+    "id": "a96a97ddbdb0de1e",
+    "type": "split",
+    "children": [
+      {
+        "id": "82b944f4027927ec",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ca80d73c507ae018",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "content/_examples/golden-lesson-slice-limites.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "golden-lesson-slice-limites"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "aaeebf62f8102a91",
+    "type": "split",
+    "children": [
+      {
+        "id": "727946021a372929",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "4020af103e676b7a",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "7eaa1ff7865e0e6b",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "af18eaaed4d02341",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "146a8d80c23b058d",
+    "type": "split",
+    "children": [
+      {
+        "id": "fcee1b19f26562a7",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "9399972e048496d5",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "content/_examples/golden-lesson-slice-limites.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for golden-lesson-slice-limites"
+            }
+          },
+          {
+            "id": "9f5a05015ec734ff",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "content/_examples/golden-lesson-slice-limites.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from golden-lesson-slice-limites"
+            }
+          },
+          {
+            "id": "799357ec4e7c94cc",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "edcba042e23c3392",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "645d2ea5c54f66c5",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "content/_examples/golden-lesson-slice-limites.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of golden-lesson-slice-limites"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "ca80d73c507ae018",
+  "lastOpenFiles": [
+    "content/_guides/math-notation.md",
+    "README.md",
+    "AGENTS.md",
+    "content/README.md",
+    "content/_examples/golden-lesson-slice-limites.md",
+    "content/2bac-pc-svt/02-derivabilite-etude-fonctions/_index.md",
+    "content/2bac-pc-svt/01-limites-continuite/_index.md",
+    "content/_guides/style-guide.md",
+    "content/2bac-pc-svt/12-denombrement-probabilites/sets",
+    "content/2bac-pc-svt/12-denombrement-probabilites/_index.md",
+    "content/2bac-pc-svt/12-denombrement-probabilites/exercises",
+    "content/2bac-pc-svt/12-denombrement-probabilites/lessons",
+    "content/2bac-pc-svt/12-denombrement-probabilites",
+    "content/2bac-pc-svt/11-geometrie-espace/sets",
+    "content/2bac-pc-svt/11-geometrie-espace/_index.md",
+    "content/2bac-pc-svt/11-geometrie-espace/lessons",
+    "content/2bac-pc-svt/11-geometrie-espace/exercises",
+    "content/2bac-pc-svt/11-geometrie-espace",
+    "content/2bac-pc-svt/10-equations-differentielles/_index.md",
+    "content/2bac-pc-svt/10-equations-differentielles/sets",
+    "content/2bac-pc-svt/10-equations-differentielles/exercises",
+    "content/2bac-pc-svt/09-calcul-integral/_index.md",
+    "content/2bac-pc-svt/08-nombres-complexes-partie-2/_index.md",
+    "content/2bac-pc-svt/07-fonction-exponentielle/_index.md",
+    "content/2bac-pc-svt/06-nombres-complexes-partie-1/_index.md",
+    "content/2bac-pc-svt/05-fonction-logarithme/_index.md",
+    "content/2bac-pc-svt/04-fonctions-primitives/_index.md",
+    "content/2bac-pc-svt/03-suites-numeriques/_index.md",
+    "content/_guides/lesson-quality-rubric.md",
+    "content/_guides/content-validation.md",
+    "content/_tracking/skill-coverage.md",
+    "content/_guides/diagram-guidelines.md",
+    "content/_examples/README.md",
+    "content/_examples/motivation-examples.md",
+    "content/_references/notation-decisions.md",
+    "content/_references/concept-dependencies.md"
+  ]
+}

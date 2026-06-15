@@ -1,0 +1,146 @@
+# Obsidian Conventions
+
+## Goal
+
+The content should be pleasant to preview and edit in Obsidian while remaining plain Markdown.
+
+Avoid plugin-specific syntax unless explicitly approved.
+
+## Callouts
+
+Use Obsidian callouts for semantic blocks.
+
+Recommended callouts:
+
+```md
+> [!definition] Title
+> Definition text.
+
+> [!theorem] Title
+> Theorem text.
+
+> [!property] Title
+> Property text.
+
+> [!method] Title
+> Method text.
+
+> [!example] Title
+> Example text.
+
+> [!warning] Erreur fréquente
+> Warning text.
+
+> [!hint]- Indice 1
+> Collapsible hint.
+
+> [!success] Résultat
+> Final answer.
+```
+
+Lessons may also use custom semantic callouts:
+
+```md
+> [!why] Pourquoi ça existe ?
+> ...
+
+> [!intuition] L'idée
+> ...
+
+> [!contrast] Contrast title
+> Used to compare concepts students often confuse.
+
+> [!exam] Réflexe d'examen
+> ...
+
+> [!shortcut] Raccourci utile
+> ...
+
+> [!checkpoint] Mini-check
+> ...
+
+> [!summary] La carte mentale
+> ...
+
+> [!diagram-note] Diagramme à ajouter
+> Used to plan a future diagram.
+
+> [!interactive-note] Interaction future
+> Used to plan a future interactive visual.
+```
+
+Use `[!contrast]` to compare concepts students often confuse.
+
+Custom callout names are acceptable even if Obsidian displays them with default styling.
+
+## Collapsible callouts
+
+Use collapsible callouts for hints and optional explanations:
+
+```md
+> [!hint]- Indice
+> Essaie de factoriser par le terme dominant.
+```
+
+Use expanded callouts for essential definitions and theorems.
+
+## Internal links
+
+Use standard Markdown links or Obsidian wikilinks.
+
+Preferred for content files:
+
+```md
+Voir aussi : [[lc-ex-001]]
+```
+
+Preferred for guide references:
+
+```md
+See `_guides/math-notation.md`.
+```
+
+## Headings
+
+Use one H1 per file.
+
+Use H2 for main sections.
+
+Use H3 for subsections.
+
+Do not skip heading levels unnecessarily.
+
+## Tags
+
+Prefer frontmatter fields over inline hashtags.
+
+Avoid many inline tags inside the body.
+
+## Tables
+
+Use Markdown tables for compact reference.
+
+Do not put long mathematical derivations in tables.
+
+## Images and diagrams
+
+Do not add images unless requested.
+
+When adding diagrams later:
+
+- Store them under a chapter-level `assets/` folder.
+- Use descriptive filenames.
+- Add alt text.
+- Keep source information.
+
+## Compatibility
+
+Avoid:
+
+- HTML unless necessary.
+- Non-standard admonition syntax.
+- Embedded scripts.
+- Raw app components.
+- MDX/Svelte components.
+
+This vault should remain readable as plain Markdown.
