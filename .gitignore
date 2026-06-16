@@ -1,5 +1,12 @@
+# Obsidian local workspace state
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+
 # Obsidian/editor local state
 content/.obsidian/workspace*.json
 content/.obsidian/cache/
 content/.obsidian/plugins/*/data.json
 .DS_Store
+
+# Local authoring workflow state
+_workflow/current-chapter.md
