@@ -7,8 +7,18 @@ import { execFileSync, spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const DEFAULT_OUTPUT = path.join(ROOT, "_exports", "bigboy-content-chatgpt-source.zip");
-const EXCLUDED_ROOTS = new Set([".git", ".obsidian", "node_modules", "_exports"]);
+const DEFAULT_OUTPUT = path.join(
+  ROOT,
+  "_exports",
+  "bigboy-content-chatgpt-source.zip",
+);
+const EXCLUDED_ROOTS = new Set([
+  ".git",
+  ".obsidian",
+  "node_modules",
+  "_exports",
+  ".fallow",
+]);
 const EXCLUDED_PATHS = new Set(["content/.obsidian"]);
 const EXCLUDED_FILES = new Set(["package-lock.json"]);
 
@@ -77,13 +87,21 @@ function shouldInclude(relativePath) {
   if (!normalized || normalized.endsWith("/")) return false;
   if (EXCLUDED_ROOTS.has(rootName)) return false;
   if (EXCLUDED_FILES.has(normalized)) return false;
-  if ([...EXCLUDED_PATHS].some((excluded) => normalized === excluded || normalized.startsWith(`${excluded}/`))) {
+  if (
+    [...EXCLUDED_PATHS].some(
+      (excluded) =>
+        normalized === excluded || normalized.startsWith(`${excluded}/`),
+    )
+  ) {
     return false;
   }
   if (normalized === toPosix(path.relative(ROOT, outputPath))) return false;
   if (normalized.endsWith(".zip")) return false;
 
-  return fs.existsSync(path.join(ROOT, normalized)) && fs.statSync(path.join(ROOT, normalized)).isFile();
+  return (
+    fs.existsSync(path.join(ROOT, normalized)) &&
+    fs.statSync(path.join(ROOT, normalized)).isFile()
+  );
 }
 
 function shouldDescend(relativePath) {
@@ -92,7 +110,12 @@ function shouldDescend(relativePath) {
 
   if (!normalized) return true;
   if (EXCLUDED_ROOTS.has(rootName)) return false;
-  if ([...EXCLUDED_PATHS].some((excluded) => normalized === excluded || normalized.startsWith(`${excluded}/`))) {
+  if (
+    [...EXCLUDED_PATHS].some(
+      (excluded) =>
+        normalized === excluded || normalized.startsWith(`${excluded}/`),
+    )
+  ) {
     return false;
   }
 
@@ -100,11 +123,15 @@ function shouldDescend(relativePath) {
 }
 
 function getGitFiles() {
-  const output = execFileSync("git", ["ls-files", "--cached", "--others", "--exclude-standard"], {
-    cwd: ROOT,
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "pipe"],
-  });
+  const output = execFileSync(
+    "git",
+    ["ls-files", "--cached", "--others", "--exclude-standard"],
+    {
+      cwd: ROOT,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "pipe"],
+    },
+  );
 
   return output
     .split(/\r?\n/)
@@ -198,7 +225,11 @@ function writeZip(files) {
     const dos = toDosDateTime(stats.mtime);
     const name = Buffer.from(relativePath, "utf8");
 
-    if (source.length > 0xffffffff || data.length > 0xffffffff || offset > 0xffffffff) {
+    if (
+      source.length > 0xffffffff ||
+      data.length > 0xffffffff ||
+      offset > 0xffffffff
+    ) {
       throw new Error("Archive is too large for this simple ZIP writer.");
     }
 
@@ -252,7 +283,10 @@ function writeZip(files) {
   endRecord.writeUInt16LE(0, 20);
 
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-  fs.writeFileSync(outputPath, Buffer.concat([...localParts, centralDirectory, endRecord]));
+  fs.writeFileSync(
+    outputPath,
+    Buffer.concat([...localParts, centralDirectory, endRecord]),
+  );
 }
 
 function formatBytes(bytes) {
@@ -262,7 +296,13 @@ function formatBytes(bytes) {
 }
 
 function localRepomixCommand() {
-  const scriptPath = path.join(ROOT, "node_modules", "repomix", "bin", "repomix.cjs");
+  const scriptPath = path.join(
+    ROOT,
+    "node_modules",
+    "repomix",
+    "bin",
+    "repomix.cjs",
+  );
   return {
     command: process.execPath,
     args: [scriptPath],
@@ -275,7 +315,8 @@ function stripAnsi(text) {
 }
 
 function cleanRepomixOutput(text) {
-  const spinnerPattern = /^[\u280b\u2819\u2839\u2838\u283c\u2834\u2826\u2827\u2807\u280f]\s/;
+  const spinnerPattern =
+    /^[\u280b\u2819\u2839\u2838\u283c\u2834\u2826\u2827\u2807\u280f]\s/;
   const progressPattern =
     /^(Initializing|Searching for files|Collecting files|Processing file|Processing files|Running security check|Generating output|Writing output file|Calculating metrics)\b/;
 
@@ -286,10 +327,15 @@ function cleanRepomixOutput(text) {
     .filter((line) => !spinnerPattern.test(line.trimStart()))
     .filter((line) => !progressPattern.test(line.trimStart()))
     .filter((line) => !line.includes("No custom config found at "))
-    .filter((line) => !line.includes("You can add a config file for additional settings."))
+    .filter(
+      (line) =>
+        !line.includes("You can add a config file for additional settings."),
+    )
     .filter((line) => !line.trimStart().startsWith("Output:"))
     .filter((line) => !line.includes("All Done!"))
-    .filter((line) => !line.includes("Your repository has been successfully packed."))
+    .filter(
+      (line) => !line.includes("Your repository has been successfully packed."),
+    )
     .filter((line) => !line.includes("Repomix is now available"))
     .join("\n")
     .replace(/[─━]/g, "-")
@@ -324,7 +370,9 @@ function writeTokenReport(files) {
   const includePatterns = files.join(",");
 
   if (!fs.existsSync(repomix.scriptPath)) {
-    throw new Error("Repomix is not installed. Run npm install before creating token reports.");
+    throw new Error(
+      "Repomix is not installed. Run npm install before creating token reports.",
+    );
   }
 
   fs.mkdirSync(path.dirname(reportPath), { recursive: true });
@@ -354,7 +402,9 @@ function writeTokenReport(files) {
     },
   );
 
-  const output = cleanRepomixOutput(`${result.stdout ?? ""}\n${result.stderr ?? ""}`);
+  const output = cleanRepomixOutput(
+    `${result.stdout ?? ""}\n${result.stderr ?? ""}`,
+  );
 
   if (fs.existsSync(tempOutputPath)) {
     fs.rmSync(tempOutputPath);
@@ -365,8 +415,13 @@ function writeTokenReport(files) {
   }
 
   if (result.status !== 0) {
-    fs.writeFileSync(reportPath, output ? `${output}\n` : "Repomix failed before writing a report.\n");
-    throw new Error(`Repomix token report failed. See ${toPosix(path.relative(ROOT, reportPath))}.`);
+    fs.writeFileSync(
+      reportPath,
+      output ? `${output}\n` : "Repomix failed before writing a report.\n",
+    );
+    throw new Error(
+      `Repomix token report failed. See ${toPosix(path.relative(ROOT, reportPath))}.`,
+    );
   }
 
   const totalTokens = extractTotalTokens(output);
@@ -380,7 +435,9 @@ function writeTokenReport(files) {
     `Files measured: ${files.length}`,
     "Counter: Repomix",
     "Encoding: o200k_base (Repomix default)",
-    totalTokens === null ? null : `Total tokens: ${totalTokens.toLocaleString("en-US")}`,
+    totalTokens === null
+      ? null
+      : `Total tokens: ${totalTokens.toLocaleString("en-US")}`,
     "",
     "Note: This is a Repomix estimate for the files included in the zip. ChatGPT Project Source may tokenize imported files slightly differently.",
     "",
@@ -421,9 +478,13 @@ function main() {
   console.log(`Files included: ${files.length}`);
   console.log(`Output: ${toPosix(path.relative(ROOT, outputPath))}`);
   console.log(`Size: ${formatBytes(stats.size)}`);
-  console.log(`Token report: ${toPosix(path.relative(ROOT, tokenReport.path))}`);
+  console.log(
+    `Token report: ${toPosix(path.relative(ROOT, tokenReport.path))}`,
+  );
   if (tokenReport.totalTokens !== null) {
-    console.log(`Repomix tokens: ${tokenReport.totalTokens.toLocaleString("en-US")}`);
+    console.log(
+      `Repomix tokens: ${tokenReport.totalTokens.toLocaleString("en-US")}`,
+    );
   }
 }
 
