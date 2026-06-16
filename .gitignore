@@ -7,6 +7,10 @@ content/.obsidian/workspace*.json
 content/.obsidian/cache/
 content/.obsidian/plugins/*/data.json
 .DS_Store
+node_modules/
 
 # Local authoring workflow state
 _workflow/current-chapter.md
+
+# Generated archives for sharing/import
+_exports/
