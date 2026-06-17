@@ -93,26 +93,40 @@ Humor should be rare and should never replace explanation.
 
 ## Lesson flow
 
-The preferred flow is:
+The visible flow is flexible.
+
+Use the editorial pipeline from `_guides/lesson-editorial-pipeline.md`:
 
 ```text
-problem or intuition
--> informal explanation
--> formal definition
--> examples
--> method
--> exam pattern
+source / target
+-> raw dump
+-> human curation / chop
+-> assembled lesson
+-> coherence pass
+-> compression / taste pass
+-> verification pass
+-> final student lesson
 ```
 
-This means lessons should usually not start with a cold formal definition.
+Common final shapes include:
 
-Start with a small question, problem, story, analogy, or reason the concept exists.
+- intuition-first;
+- method-first;
+- mistake-first;
+- exam-first;
+- comparison;
+- micro;
+- recap.
 
-Then move toward precision.
+This means a lesson may start with a question, method trigger, mistake, comparison, exam pattern, or compact reminder when that is the most natural spine.
 
-## Required "why" section
+Do not start with a cold formal definition unless there is a strong reason.
 
-Every lesson should include a section like:
+Move toward precision without forcing the same sequence every time.
+
+## Purpose / why block
+
+Use a visible "why" block when it helps the student:
 
 ```md
 ## Pourquoi on étudie ça ?
@@ -139,6 +153,26 @@ Avoid fake motivation:
 ```md
 Les limites sont utilisées tous les jours pour acheter du pain.
 ```
+
+## Success criteria
+
+A mini-lesson should have a clear learning contract. Sometimes that contract is a visible section; sometimes it is clear from a short opening and the chosen examples.
+
+Use this heading when explicit success criteria help:
+
+```md
+## À la fin, tu dois savoir faire
+```
+
+Prefer concrete actions:
+
+- reconnaître une forme;
+- choisir une méthode;
+- justifier une condition;
+- éviter un piège;
+- réussir un type d'exercice.
+
+Avoid vague goals like `comprendre le chapitre`.
 
 ## Analogy policy
 
@@ -198,6 +232,14 @@ Be friendly, but stay rigorous.
 Every theorem must include its conditions.
 
 Every method must explain when it applies.
+
+When a lesson teaches a method, include decision guidance with a section like:
+
+```md
+## Comment savoir quand l'utiliser ?
+```
+
+This section should help the student recognize signals in the exercise, expression shapes, keywords, and cases where the method should not be used.
 
 Every shortcut must be clearly labeled as a shortcut.
 
@@ -309,9 +351,23 @@ Avoid vague warnings:
 Attention aux erreurs.
 ```
 
+For important mistakes, go beyond "wrong vs right" and add recovery:
+
+- what the mistake looks like;
+- why it happens;
+- how to detect it;
+- how to fix it;
+- which reminder lesson to revisit when useful.
+
+Use a section like:
+
+```md
+## Si tu fais cette erreur, corrige comme ça
+```
+
 ## Exam strategy
 
-Every lesson should include exam-oriented guidance, but after the concept is understood.
+Include exam-oriented guidance when it genuinely helps this lesson.
 
 Use sections or callouts like:
 
@@ -333,7 +389,7 @@ Distinguish clearly between:
 - Shortcut.
 - Common trap.
 
-Full reasoning comes first.
+Full reasoning comes first unless the lesson is explicitly exam-pattern-first and the pattern itself is the teaching spine.
 
 Shortcuts come later and must be labeled.
 
@@ -352,17 +408,34 @@ Use memorable section names where appropriate.
 
 Preferred names:
 
+- `Où ça se place ?`
+- `Es-tu prêt ?`
+- `À la fin, tu dois savoir faire`
 - `Pourquoi on étudie ça ?`
+- `Pourquoi c'est important`
+- `Le problème qu'on veut résoudre`
+- `Intuition`
 - `L'idée en version humaine`
-- `La version mathématique`
-- `Le piège classique`
-- `Le réflexe d'examen`
-- `Le raccourci utile`
+- `Le modèle mental`
+- `Version formelle`
+- `Comment savoir quand l'utiliser ?`
+- `Cette méthode ou une autre ?`
+- `Échelle d'exemples`
+- `Erreurs fréquentes`
+- `Si tu fais cette erreur, corrige comme ça`
+- `Checkpoint`
+- `Parcours d'entraînement`
+- `Motif d'examen`
 - `À toi de prédire`
-- `Mini-check`
-- `La carte mentale`
+- `Retiens-le comme ça`
+- `Résumé`
+- `À revoir plus tard`
+- `Prochaine étape`
+- `Notes auteur`
 
-Keep the structure stable, but allow flexibility when a chapter needs a different order.
+Use these names consistently when they fit, but do not turn them into a mandatory table of contents.
+
+Existing names like `Le piège classique`, `Mini-check`, and `La carte mentale` are still acceptable when they fit the local lesson style.
 
 ## Recurring callouts
 
@@ -406,6 +479,12 @@ Use Obsidian callouts like:
 > ...
 
 > [!summary] La carte mentale
+> ...
+
+> [!tip] Retiens-le comme ça
+> ...
+
+> [!todo] À revoir plus tard
 > ...
 ```
 
@@ -459,19 +538,19 @@ Just leave a clear author note when it would help the future app.
 
 Use separate mini-lesson files under each chapter `lessons/` folder.
 
-Preferred structure:
+Choose a lesson shape after curation:
 
-```md
-# Mini-lesson title
-
-## Pourquoi on étudie ça ?
-
-## Comment ça tombe à l'examen ?
-
-## La carte mentale
-```
+- `intuition-first` for meaning-heavy concepts;
+- `method-first` for procedural skills;
+- `mistake-first` when a misconception is the main obstacle;
+- `exam-first` when an exam pattern is the natural spine;
+- `comparison` when two ideas are often confused;
+- `micro` for a small reminder;
+- `recap` for consolidation.
 
 This keeps each lesson unit focused, reviewable, and easier for the student to digest.
+
+Do not include every optional block by default. Add sections like `Es-tu prêt ?`, `Avant / Après`, `Cette méthode ou une autre ?`, `Retiens-le comme ça`, or `À revoir plus tard` only when they help the concept.
 
 ## Mini-lesson voice
 
@@ -491,7 +570,7 @@ Useful related files:
 
 ## Start quickly with an example
 
-Do not make students read too much before the first concrete example.
+Do not make students read too much before the first concrete example when the concept needs an example to become clear.
 
 Prefer:
 
@@ -502,19 +581,28 @@ small problem
 -> formalization
 ```
 
-The first example should appear early.
+The first example should appear early when an example is part of the selected lesson shape.
 
 ## Ending a lesson
 
-End every lesson with:
+End with a compact summary or next step when it helps the student leave with a clear action or memory anchor.
+
+Preferred new heading:
 
 ```md
-## La carte mentale
+## Résumé
 ```
 
-This is the final summary.
+You may keep the existing project style inside it:
 
-It should include:
+```md
+> [!summary] La carte mentale
+> ...
+```
+
+The older heading `## La carte mentale` remains acceptable for existing lessons and examples.
+
+The final summary may include:
 
 - Key ideas.
 - Main methods.
@@ -523,6 +611,8 @@ It should include:
 - Link to what comes next.
 
 The ending may include a short confidence-building sentence.
+
+Remove the summary when it adds ceremony without learning value.
 
 Example:
 
@@ -572,7 +662,9 @@ It shows the desired rhythm:
 11. Mini-check.
 12. Final summary.
 
-Future lessons should not copy its exact content, but they should learn from its voice and structure.
+Future lessons should not copy its exact content, order, or section set.
+
+New lessons should learn from its voice, clarity, and rhythm, then use the editorial pipeline from `_guides/lesson-editorial-pipeline.md` to choose only the blocks that serve the current concept.
 
 ## Before / after examples
 
@@ -825,40 +917,64 @@ Friendly writing does not mean skipping rigor.
 
 Do not begin with the most formal version unless there is a strong reason.
 
-Use this progression:
+Possible progression:
 
-1. Simple problem.
-2. Human explanation.
-3. Mental model.
-4. Formal statement.
-5. Example.
-6. Method.
-7. Exam reflex.
+1. Where this fits or readiness when needed.
+2. Concrete success criteria.
+3. Simple problem.
+4. Intuition.
+5. Mental model when useful.
+6. Formal statement.
+7. Example.
+8. Decision guide and method when relevant.
+9. Mistake recovery.
+10. Checkpoint.
+11. Practice path.
+12. Memory hook, summary, and next step.
 
-The formal version must exist, but it should feel earned.
+For concepts with definitions, properties, theorems, or methods, the formal version must exist and include conditions. It should feel earned, not pasted in by habit.
 
-This is the core lesson style.
+This is one useful shape, not the core lesson style for every mini-lesson.
 
 ## Section naming registry
 
 Use these names consistently when possible:
 
+- `Où ça se place ?`
+- `Es-tu prêt ?`
+- `À la fin, tu dois savoir faire`
 - `Pourquoi on étudie ça ?`
+- `Pourquoi c'est important`
 - `Carte du chapitre`
 - `Mini-leçon`
-- `Le problème de départ`
+- `Le problème qu'on veut résoudre`
+- `Intuition`
 - `Le modèle mental`
 - `L'idée en version humaine`
-- `La version mathématique`
+- `Version formelle`
+- `Avant / Après`
+- `Comment savoir quand l'utiliser ?`
 - `Exemple guidé`
+- `Échelle d'exemples`
 - `À toi de prédire`
 - `Méthode`
+- `Cette méthode ou une autre ?`
 - `Le piège classique`
+- `Erreurs fréquentes`
+- `Si tu fais cette erreur, corrige comme ça`
 - `Le réflexe d'examen`
 - `Le raccourci utile`
 - `Mini-check`
+- `Checkpoint`
+- `Parcours d'entraînement`
+- `Motif d'examen`
+- `Retiens-le comme ça`
+- `Résumé`
+- `À revoir plus tard`
+- `Prochaine étape`
 - `Diagrammes et interactions à prévoir`
 - `La carte mentale`
+- `Notes auteur`
 
 The names can vary when a chapter needs flexibility, but do not invent random section names without a reason.
 
@@ -899,13 +1015,19 @@ It must also be understandable, well-paced, and useful for students.
 
 Before considering a lesson good, ask:
 
-1. Does the lesson start with a reason, question, problem, or intuition?
-2. Does the student see a concrete example early?
-3. Are important concepts explained in human language before formal language?
-4. Are formal statements still precise?
-5. Are theorem conditions explicit?
-6. Are there checkpoints or prediction moments?
-7. Are common mistakes shown directly?
-8. Is exam strategy included without dominating the lesson?
-9. Are shortcuts clearly labeled?
-10. Does the lesson end with `La carte mentale`?
+1. Does the lesson have a clear purpose or learning contract?
+2. Does the chosen shape fit the concept?
+3. Does it handle prerequisites when they would block understanding?
+4. Does it use motivation, intuition, formalism, examples, mistakes, exam notes, checkpoints, or summaries only when they help?
+5. Does the lesson read like one unified piece?
+6. Are transitions, notation, and examples coherent?
+7. Are important concepts explained in human language before heavy formal language when needed?
+8. Are formal statements still precise?
+9. Are theorem conditions explicit?
+10. Does the student know when to use the method or idea when a method is taught?
+11. Are common mistakes and recovery included when they are central?
+12. Is there a checkpoint, practice direction, or next step when appropriate?
+13. Is exam strategy included only when useful and without fake official claims?
+14. Are shortcuts clearly labeled?
+15. Has the compression/taste pass removed ceremony, repetition, weak analogies, and bloat?
+16. Are math, curriculum, source claims, examples, and checkpoint answers verified?

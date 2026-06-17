@@ -56,6 +56,25 @@ The chapter `_index.md` is the map.
 
 The `lessons/` files are the actual student-facing lesson units.
 
+Each mini-lesson should be produced through the editorial pipeline:
+
+```text
+source / target
+-> raw dump
+-> human curation / chop
+-> assembled lesson
+-> coherence pass
+-> compression / taste pass
+-> verification pass
+-> final student lesson
+```
+
+The lesson still needs a stable learning contract: purpose, mathematical precision, student usability, active check or practice direction when appropriate, and verification notes. Its visible shape is flexible.
+
+Motivation, intuition, formal definition, method box, examples, mistakes, exam note, summary, diagrams, and checkpoints are optional reusable blocks, not mandatory sections.
+
+Use `_guides/lesson-editorial-pipeline.md` and `_guides/lesson-structure.md` together.
+
 Do not create all mini-lessons at once unless explicitly requested.
 
 Recommended workflow: create one mini-lesson first, review it, then use it as a local style sample for the rest of the chapter.
@@ -110,10 +129,15 @@ The chapter plan should include:
 - Prerequisites.
 - Skill map.
 - Mini-lesson sequence with planned files under `lessons/`.
+- Readiness needs and prerequisite blockers for mini-lessons.
+- Success criteria for important mini-lessons.
 - Definitions, properties, and theorems to include later.
 - Methods to teach later.
+- Decision guides for methods students must learn to recognize.
 - Planned examples.
+- Planned checkpoints and practice path.
 - Misconceptions to treat.
+- Mistake recovery notes for major traps.
 - Planned exercises.
 - Common mistakes.
 - Exam-style patterns.
@@ -138,7 +162,7 @@ Status:
 status: planned
 ```
 
-### Stage 2 — Mini-lesson blueprint
+### Stage 2 — Mini-lesson source, raw dump, and curation
 
 Main file:
 
@@ -148,24 +172,25 @@ _index.md
 
 Goal:
 
-Plan one mini-lesson before creating the file.
+Prepare one mini-lesson before creating the file.
 
-The blueprint should specify:
+The preparation should specify:
 
 - mini-lesson ID;
 - planned file path;
 - purpose;
-- prerequisites;
-- starting problem;
-- mental model;
-- human explanation;
-- formal statement;
-- early guided example;
-- prediction moment;
-- concept contrast if useful;
-- common trap;
-- exam reflex;
-- diagram or future interaction note.
+- source / target notes;
+- prerequisites and readiness blockers;
+- concrete learning outcome;
+- curriculum and official-source constraints;
+- raw dump of possible material;
+- human curation marks: keep, delete, merge, split, reorder, optional, future exercise, too much, useful but not student-facing;
+- possible lesson shape after curation, if useful;
+- unresolved verification questions.
+
+The raw dump may include many possible blocks: motivations, intuitions, explanations, formal statements, methods, examples, counterexamples, mistakes, recovery ideas, exam patterns, diagrams, analogies, checkpoints, mini-quiz ideas, possible splits, and notes about what may be unnecessary.
+
+The dump is not the final lesson.
 
 Output:
 
@@ -177,7 +202,7 @@ Do not create:
 - exercises
 - exercise sets
 
-### Stage 3 — Mini-lesson file creation
+### Stage 3 — Mini-lesson assembly
 
 Main folder:
 
@@ -187,7 +212,11 @@ content/2bac-pc-svt/01-limites-continuite/lessons/
 
 Goal:
 
-Create one focused mini-lesson from `_templates/mini-lesson.template.md` and the chapter blueprint.
+Create one focused mini-lesson from `_templates/mini-lesson.template.md` and the curated material.
+
+Use only the curated material. Do not blindly re-add all possible blocks from the raw dump.
+
+Choose the visible lesson shape that serves the concept. Small ideas can be short. Foundational ideas can use more ceremony when useful.
 
 Output:
 
@@ -205,7 +234,7 @@ Status:
 status: draft
 ```
 
-### Stage 4 — Mini-lesson review
+### Stage 4 — Mini-lesson passes
 
 Main file:
 
@@ -217,19 +246,36 @@ Goal:
 
 Review and improve the mini-lesson before creating exercises from it.
 
-Check:
+Run these passes:
 
-- Mathematical correctness.
-- Missing theorem conditions.
-- Domain restrictions.
-- Notation consistency.
-- Clarity for 2BAC PC/SVT students.
-- Lesson voice and rhythm.
-- No magic steps.
-- Useful examples.
-- Common mistakes.
-- Exam usefulness after understanding.
-- No unsupported official claims.
+1. Coherence pass:
+   - flow;
+   - transitions;
+   - repeated ideas;
+   - notation consistency;
+   - whether examples match the explanation;
+   - whether the lesson reads like one unified piece.
+2. Compression / taste pass:
+   - unnecessary ceremony;
+   - repetitive headings;
+   - AI-sounding structure;
+   - over-explanation;
+   - weak analogies;
+   - bloated exam notes;
+   - redundant summaries;
+   - anything that does not help learning.
+3. Verification pass:
+   - mathematical correctness;
+   - missing theorem conditions;
+   - domain restrictions;
+   - curriculum alignment for 2BAC PC/SVT Morocco;
+   - official-program consistency where applicable;
+   - no fake exam claims;
+   - correct notation;
+   - examples solved correctly;
+   - prerequisites respected;
+   - checkpoint answers clear;
+   - author notes separated from student-facing content.
 
 Output:
 
@@ -406,6 +452,7 @@ Check:
 
 - The chapter plan and created files match.
 - Mini-lessons progress logically.
+- Mini-lessons follow the editorial pipeline and end as coherent, lean student-facing pieces.
 - Lessons and exercises match.
 - All important skills are covered.
 - Difficulty progression is reasonable.
@@ -470,9 +517,9 @@ Every chapter `_index.md` should contain these sections near the end:
 ## Workflow
 
 - [ ] Stage 1 — Chapter plan
-- [ ] Stage 2 — Mini-lesson blueprint
-- [ ] Stage 3 — Mini-lesson file creation
-- [ ] Stage 4 — Mini-lesson review
+- [ ] Stage 2 — Mini-lesson source, raw dump, and curation
+- [ ] Stage 3 — Mini-lesson assembly
+- [ ] Stage 4 — Mini-lesson passes
 - [ ] Stage 5 — Exercise blueprint
 - [ ] Stage 6 — Exercise creation
 - [ ] Stage 7 — Solution review
@@ -515,7 +562,7 @@ Example:
 
 ```md
 - [x] Stage 1 — Chapter plan
-- [ ] Stage 2 — Mini-lesson blueprint
+- [ ] Stage 2 — Mini-lesson source, raw dump, and curation
 ```
 
 Do not mark a stage complete unless the expected output exists.

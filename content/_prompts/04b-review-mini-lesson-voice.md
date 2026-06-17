@@ -49,6 +49,7 @@ Before doing any work:
 
 - `AGENTS.md`
 - `content/AGENTS.md`
+- `content/_guides/lesson-editorial-pipeline.md`
 - `content/_guides/lesson-voice.md`
 - `content/_guides/lesson-quality-rubric.md`
 - `content/_examples/golden-lesson-slice-limites.md`
@@ -68,26 +69,33 @@ Do not create:
 - exercise sets;
 - frontend or app code.
 
-Do not focus only on math correctness. Focus on whether the lesson feels like a friendly mentor and not a dry handout.
+Do not focus only on math correctness. Focus on whether the lesson feels like a friendly mentor and not a dry handout or AI-generated template.
 
 Check:
 
-- Does it start with a reason, question, problem, or intuition?
-- Does it explain why the idea matters?
-- Does it include a useful mental model?
-- Does it introduce human meaning before formal math?
-- Does the first concrete example appear early?
+- Does the chosen lesson shape fit the concept?
+- Does it have a clear purpose or learning contract?
+- Does it handle prerequisites when needed?
+- Does it start with the most natural spine: intuition, method, mistake, exam pattern, comparison, micro-reminder, or recap?
+- Does it introduce human meaning before heavy formal math when needed?
+- Does a concrete example or active check appear when useful?
+- Does it help the student know when to use the idea or method when a method is taught?
 - Are analogies helpful and reconnected to math?
 - Are likely student confusions addressed?
 - Are contrast blocks used where helpful?
-- Are there prediction moments or checkpoints?
+- Are there prediction moments, checkpoints, practice directions, or next paths when appropriate?
 - Are mistakes shown directly?
-- Are exam reflexes included after understanding?
+- Does it explain how to recover from major mistakes?
+- Are memory hooks or spaced-review prompts included when useful?
+- Are exam reflexes included only when useful and honest?
 - Are shortcuts clearly labeled?
 - Are paragraphs short and readable?
-- Does it end with `La carte mentale`?
+- Are repetitive headings, ceremony, weak analogies, bloated exam notes, and redundant summaries removed?
+- Are author notes separate from student-facing content?
 
 Make targeted improvements only.
+
+Do not pad the lesson with optional advanced blocks that do not serve the concept.
 
 Finish with:
 

@@ -30,12 +30,25 @@ Each mini-lesson is its own Markdown file.
 
 Do not put the entire chapter lesson in one huge `lesson.md`.
 
+Golden-chapter lessons should model the editorial pipeline:
+
+```text
+source / target
+-> raw dump
+-> human curation / chop
+-> assembled lesson
+-> coherence pass
+-> compression / taste pass
+-> verification pass
+-> final student lesson
+```
+
 ## Minimum golden chapter contents
 
 A golden chapter should include:
 
 - a detailed `_index.md` chapter plan;
-- a complete mini-lesson blueprint;
+- complete source/target notes, raw dump, and curation decisions for key mini-lessons;
 - 4 to 9 mini-lesson files, depending on chapter size;
 - each mini-lesson written in the lesson voice;
 - clear skill IDs;
@@ -60,20 +73,20 @@ Use the workflow stages.
 
 ## Mini-lesson quality standard
 
-Each mini-lesson should normally include:
+Each mini-lesson should have:
 
-- motivation or problem;
-- mental model;
-- human explanation;
-- formal statement;
-- early concrete example;
-- prediction or checkpoint moment;
-- method when relevant;
-- concept contrast when useful;
-- common mistake;
-- exam reflex;
-- diagram or future interaction note when useful;
-- final `La carte mentale`.
+- a clear purpose or learning contract;
+- enough prerequisite context for the target student;
+- mathematical precision and theorem conditions when needed;
+- examples, checks, practice direction, or next action when appropriate;
+- direct treatment of misconceptions when they are the main obstacle;
+- exam awareness without unsupported official claims;
+- author notes separated from student-facing content;
+- verification notes for uncertain curriculum or official-source claims.
+
+Motivation, intuition, formal definitions, methods, examples, mistakes, exam notes, diagrams, checkpoints, and summaries are reusable blocks, not required headings.
+
+A golden mini-lesson should feel complete, coherent, and lean, not padded.
 
 ## Exercise quality standard
 
@@ -123,7 +136,7 @@ A chapter `_index.md` should include a tracker like:
 | Area | Status | Notes |
 |---|---|---|
 | Chapter plan | planned | TODO |
-| Mini-lesson blueprint | planned | TODO |
+| Mini-lesson source, dump, and curation | planned | TODO |
 | Mini-lessons | planned | TODO |
 | Lesson voice review | planned | TODO |
 | Exercise blueprint | planned | TODO |

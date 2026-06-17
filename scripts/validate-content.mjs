@@ -50,6 +50,95 @@ const REQUIRED_CHAPTER_HEADINGS = [
   "## Diagrammes et interactions a prevoir",
 ];
 
+const FINALIZED_STATUSES = new Set(["reviewed", "published"]);
+
+const ALLOWED_LESSON_SHAPES = new Set([
+  "intuition-first",
+  "method-first",
+  "mistake-first",
+  "exam-first",
+  "comparison",
+  "micro",
+  "recap",
+]);
+
+const LESSON_QUALITY_SIGNAL_CHECKS = [
+  {
+    label: "H1 title",
+    message: "missing H1 lesson title",
+    test: (text) => /^#\s+\S/m.test(text),
+  },
+  {
+    label: "purpose or learning goal",
+    message:
+      "missing a clear learning goal or purpose; add it visibly or in a concise opening",
+    test: (text) =>
+      hasAnyNormalizedText(text, [
+        "a la fin",
+        "objectif",
+        "but de la lecon",
+        "resultat attendu",
+        "tu dois savoir",
+        "le probleme",
+        "on veut",
+        "sert a",
+        "purpose",
+      ]),
+  },
+  {
+    label: "mathematical precision",
+    message:
+      "missing mathematical precision signals such as LaTeX notation, a definition/property/theorem/method, conditions, or domain notes",
+    test: (text) =>
+      /\$[^$\n]+\$/.test(text) ||
+      hasAnyNormalizedText(text, [
+        "[!definition]",
+        "[!property]",
+        "[!theorem]",
+        "[!method]",
+        "definition",
+        "propriete",
+        "theoreme",
+        "methode",
+        "condition",
+        "domaine",
+      ]),
+  },
+  {
+    label: "active check or practice direction",
+    message:
+      "missing active check, checkpoint, practice direction, or next action; OK for true micro-lessons if Notes auteur explains why",
+    test: (text) =>
+      hasAnyNormalizedText(text, [
+        "checkpoint",
+        "mini-check",
+        "a toi",
+        "essaie",
+        "exercice",
+        "entrainement",
+        "pratique",
+        "prochaine etape",
+        "question rapide",
+        "[!checkpoint]",
+      ]),
+  },
+  {
+    label: "verification notes",
+    message:
+      'missing verification/source notes; add them in "## Notes auteur" when math, curriculum, or exam claims need tracking',
+    test: (text) =>
+      hasAnyNormalizedText(text, [
+        "verification",
+        "verifications",
+        "a verifier",
+        "source",
+        "officiel",
+        "programme",
+        "notes auteur",
+      ]),
+  },
+];
+
 const errors = [];
 const warnings = [];
 const ids = new Map();
@@ -143,8 +232,17 @@ function normalizeForHeading(text) {
     .toLowerCase();
 }
 
+function hasAnyNormalizedText(text, snippets) {
+  const normalizedText = normalizeForHeading(text);
+  return snippets.some((snippet) => normalizedText.includes(normalizeForHeading(snippet)));
+}
+
 function hasHeading(text, heading) {
   return normalizeForHeading(text).includes(normalizeForHeading(heading));
+}
+
+function hasAnyHeading(text, headings) {
+  return headings.some((heading) => hasHeading(text, heading));
 }
 
 function countMatches(text, regex) {
@@ -259,6 +357,59 @@ function checkChapterFolders(chapter) {
   }
 }
 
+function checkMiniLessonQualitySignals(filePath, text) {
+  for (const check of LESSON_QUALITY_SIGNAL_CHECKS) {
+    const present = check.test(text);
+    if (!present) {
+      addWarning(filePath, check.message);
+    }
+  }
+
+  const hasMethodBlock = hasAnyNormalizedText(text, [
+    "[!method]",
+    "methode",
+  ]);
+  const hasDecisionSignal = hasAnyNormalizedText(text, [
+    "quand l'utiliser",
+    "quand l’utiliser",
+    "a utiliser lorsque",
+    "utilise cette methode quand",
+    "signaux",
+    "ne l'utilise pas",
+    "choisir cette methode",
+  ]);
+
+  if (hasMethodBlock && !hasDecisionSignal) {
+    addWarning(
+      filePath,
+      "has a method signal but no clear guidance for when to use it",
+    );
+  }
+
+  const hasMistakeSignal = hasAnyNormalizedText(text, [
+    "[!warning]",
+    "erreur frequente",
+    "piege",
+    "ne fais pas ca",
+    "mauvais reflexe",
+  ]);
+  const hasRecoverySignal = hasAnyNormalizedText(text, [
+    "corrige comme ca",
+    "fais plutot",
+    "pour corriger",
+    "comment corriger",
+    "a revoir",
+    "pour l'eviter",
+  ]);
+
+  if (hasMistakeSignal && !hasRecoverySignal) {
+    addWarning(
+      filePath,
+      "has mistake/warning signals but no recovery guidance; add it when the trap is important",
+    );
+  }
+}
+
 function checkLessonFile(chapter, filePath) {
   const fileName = path.basename(filePath);
   const nameMatch = fileName.match(new RegExp(`^${chapter.code}-lesson-(\\d{3})\\.md$`));
@@ -290,6 +441,44 @@ function checkLessonFile(chapter, filePath) {
       addError(filePath, `frontmatter "id" must be "${expectedId}"`);
     }
   }
+
+  if (!data.status) {
+    addWarning(filePath, 'missing frontmatter "status"');
+  }
+
+  if (data.lesson_shape && !ALLOWED_LESSON_SHAPES.has(data.lesson_shape)) {
+    addWarning(
+      filePath,
+      `frontmatter "lesson_shape" is optional diagnostic metadata; expected one of ${[
+        ...ALLOWED_LESSON_SHAPES,
+      ].join(", ")}`,
+    );
+  }
+
+  if (FINALIZED_STATUSES.has(data.status)) {
+    if (/\bTODO\b/.test(text)) {
+      addError(filePath, `finalized lesson with status "${data.status}" contains unresolved TODOs`);
+    }
+
+    if (
+      !hasAnyNormalizedText(text, [
+        "verification",
+        "verifications",
+        "verifie",
+        "a verifier",
+        "source",
+        "officiel",
+        "programme",
+      ])
+    ) {
+      addWarning(
+        filePath,
+        `lesson status is "${data.status}" but no verification/source note was found`,
+      );
+    }
+  }
+
+  checkMiniLessonQualitySignals(filePath, text);
 }
 
 function checkExerciseFile(chapter, filePath) {

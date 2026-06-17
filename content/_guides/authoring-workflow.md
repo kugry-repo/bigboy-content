@@ -8,6 +8,8 @@ Chapter directories are flat and numbered under `content/2bac-pc-svt/`, for exam
 
 For the detailed chapter production sequence, see `_guides/chapter-workflow.md`.
 
+For the mini-lesson editorial pipeline, see `_guides/lesson-editorial-pipeline.md`.
+
 For the golden chapter target, see `_guides/golden-chapter-standard.md`.
 
 ## Core idea
@@ -40,48 +42,64 @@ Define:
 
 Do not write full mini-lesson content yet.
 
-### 2. Mini-lesson blueprint
+### 2. Mini-lesson editorial preparation
 
-Plan one mini-lesson inside the chapter `_index.md`.
+Prepare one mini-lesson inside the chapter `_index.md` or a clearly marked author note.
 
-Do not create the mini-lesson file yet.
+Use the editorial pipeline from `_guides/lesson-editorial-pipeline.md`:
 
-### 3. Mini-lesson draft
+```text
+source / target
+-> raw dump
+-> human curation / chop
+-> assembled lesson
+-> coherence pass
+-> compression / taste pass
+-> verification pass
+-> final student lesson
+```
+
+First define the source and target: concept, lesson ID, prerequisites, learning outcome, source constraints, and any curriculum or exam claims that need verification.
+
+Then generate a raw dump of possible material. The dump is not the final lesson.
+
+### 3. Human curation
+
+The human author chops the dump before assembly.
+
+Mark material as:
+
+- keep;
+- delete;
+- merge;
+- split;
+- reorder;
+- optional;
+- future exercise;
+- too much;
+- useful but not student-facing.
+
+Do not silently re-add deleted material during assembly.
+
+### 4. Mini-lesson assembly
 
 Create one file under `lessons/` using `_templates/mini-lesson.template.md`.
 
-The first draft should focus on:
+Assemble only the curated material into a coherent mini-lesson.
 
-- Correct definitions.
-- Conditions of theorems.
-- Key methods.
-- Simple examples.
-- Common mistakes.
+The visible lesson shape is flexible. Motivation, intuition, formal statements, examples, method boxes, mistakes, exam notes, summaries, diagrams, and checkpoints are reusable blocks, not mandatory sections.
 
 Mark status as `draft`.
 
-### 4. Mathematical review
+### 5. Coherence, taste, and verification passes
 
-Review the mini-lesson for:
+Run the review passes in this order:
 
-- Incorrect statements.
-- Missing conditions.
-- Ambiguous notation.
-- False generalizations.
-- Domain restrictions.
+1. Coherence pass: flow, transitions, repeated ideas, notation consistency, and example fit.
+2. Compression / taste pass: remove ceremony, repetitive headings, weak analogies, bloated exam notes, redundant summaries, and AI-sounding structure.
+3. Verification pass: math correctness, curriculum alignment, official-source safety, notation, solved examples, prerequisites, and checkpoint answers.
 
 If uncertain, mark the file as `needs-review`.
-
-### 5. Pedagogical and voice review
-
-Improve:
-
-- Sentence clarity.
-- Explanation order.
-- Transitions between ideas.
-- Worked example readability.
-- Common mistakes.
-- Lesson rhythm and voice.
 
 ### 6. Exercise creation
 

@@ -41,25 +41,36 @@ Use this checklist before marking a file as `reviewed` or `published`.
 
 For full lesson review, use `_guides/lesson-quality-rubric.md`.
 
-- [ ] The lesson starts with a problem, question, intuition, or motivation.
-- [ ] The lesson explains why the concept matters.
-- [ ] The first concrete example appears early.
-- [ ] The lesson includes a useful mental model for each major idea.
-- [ ] Important concepts have a human explanation before the formal statement.
+- [ ] The lesson was assembled from curated material, not blindly from the raw dump.
+- [ ] The lesson shape fits the concept and does not feel like a rigid template.
+- [ ] The lesson has a clear purpose or learning contract.
+- [ ] The lesson says where the idea fits or what prerequisites matter when needed.
+- [ ] Readiness questions are included only when missing prerequisites could block understanding.
+- [ ] The lesson uses a problem, question, intuition, method, mistake, comparison, or exam pattern as the opening only when that is the natural spine.
+- [ ] A concrete example or active check appears when it helps learning.
+- [ ] The lesson includes a useful mental model when helpful.
+- [ ] Important concepts have a human explanation before heavy formal language when needed.
 - [ ] Theorems and properties include conditions.
 - [ ] The lesson uses `tu`.
-- [ ] There are checkpoint or prediction moments.
+- [ ] Decision guidance is included when a method or recognition pattern is taught.
+- [ ] Checkpoint, prediction, practice, or next-step guidance appears when appropriate.
+- [ ] Checkpoints include a useful next path for correct and incorrect answers when possible.
 - [ ] The lesson avoids long uninterrupted explanations.
 - [ ] Analogies are useful, not forced, and reconnected to the math.
 - [ ] Fake real-world applications are avoided.
 - [ ] Likely student confusions are addressed.
 - [ ] Concept contrasts are included where useful.
 - [ ] Common mistakes are shown directly.
+- [ ] Mistake recovery is included for major traps when useful.
+- [ ] A practice path or next step is included.
+- [ ] Memory hooks or spaced review prompts are included when useful.
 - [ ] Exam reflexes are included but do not dominate.
 - [ ] Shortcuts are clearly labeled.
 - [ ] No important mathematical transformation is a "magic step".
 - [ ] Diagram or interaction notes are included when useful.
-- [ ] The lesson ends with `La carte mentale`.
+- [ ] Redundant summaries, bloated exam notes, weak analogies, and repetitive headings have been removed.
+- [ ] Math, curriculum alignment, examples, notation, and checkpoint answers are verified.
+- [ ] Author-only notes are separated in `Notes auteur`.
 - [ ] The lesson can be reviewed using `_guides/lesson-quality-rubric.md`.
 
 ## Mini-lesson checklist
@@ -68,18 +79,26 @@ For full lesson review, use `_guides/lesson-quality-rubric.md`.
 - [ ] The mini-lesson uses `type: lesson`.
 - [ ] The mini-lesson uses `lesson_kind: mini-lesson`.
 - [ ] The file is under the chapter `lessons/` folder.
-- [ ] The mini-lesson starts with a problem, question, intuition, or motivation.
-- [ ] The mini-lesson includes a useful mental model.
-- [ ] The mini-lesson explains the idea in human language before formal math.
-- [ ] The first concrete example appears early.
+- [ ] The mini-lesson has a clear purpose or learning contract.
+- [ ] The mini-lesson has a natural shape chosen after curation.
+- [ ] The mini-lesson says where this idea fits or gives prerequisite context when needed.
+- [ ] The mini-lesson includes a useful mental model when helpful.
+- [ ] The mini-lesson explains the idea in human language before heavy formal math when needed.
+- [ ] A concrete example or active check appears when useful.
 - [ ] Theorems/properties include conditions.
+- [ ] A decision guide is included when the lesson teaches a method.
 - [ ] No important mathematical transformation is a magic step.
 - [ ] Likely student confusion is addressed.
 - [ ] Concept contrast is included where useful.
 - [ ] Common mistakes are shown directly.
+- [ ] Mistake recovery is included when the trap is important.
+- [ ] A checkpoint, practice path, or next step is included when appropriate.
 - [ ] Exam reflexes are included but do not dominate.
 - [ ] Diagram or interaction notes are included when useful.
-- [ ] The mini-lesson ends with `La carte mentale`.
+- [ ] Optional advanced blocks are omitted when they would bloat the lesson.
+- [ ] Repetitive headings, ceremony, weak analogies, and redundant summaries are removed.
+- [ ] Math and curriculum verification notes are recorded when needed.
+- [ ] Author notes are separated from student-facing content.
 - [ ] The mini-lesson can be reviewed using `_guides/lesson-quality-rubric.md`.
 
 ## Chapter coverage checklist

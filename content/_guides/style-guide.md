@@ -30,7 +30,7 @@ Lessons should use `tu`.
 
 Lessons should prioritize understanding and curiosity while remaining useful for exam preparation.
 
-Do not turn the lesson into pure motivation or pure exam tricks. The intuition comes first, then the formal statement, then the method and exam reflex.
+Do not turn the lesson into pure motivation or pure exam tricks. Choose the spine that teaches best: intuition-first, method-first, mistake-first, comparison-first, exam-pattern-first, micro, or recap can all work when the concept calls for it.
 
 For detailed lesson voice rules, see `_guides/lesson-voice.md`.
 

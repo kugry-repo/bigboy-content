@@ -62,6 +62,12 @@ Lessons may also use custom semantic callouts:
 > [!summary] La carte mentale
 > ...
 
+> [!tip] Retiens-le comme ça
+> Used for a short memory hook.
+
+> [!todo] À revoir plus tard
+> Used for spaced-review prompts or planned review links.
+
 > [!diagram-note] Diagramme à ajouter
 > Used to plan a future diagram.
 
@@ -109,6 +115,16 @@ Use H2 for main sections.
 Use H3 for subsections.
 
 Do not skip heading levels unnecessarily.
+
+## Author-only notes
+
+Use `## Notes auteur` as the consistent author-only section.
+
+Keep it at the end of the file.
+
+This section is not student-facing and should be hidden or removed in future learner exports.
+
+Do not mix author planning notes into learner-facing sections.
 
 ## Tags
 

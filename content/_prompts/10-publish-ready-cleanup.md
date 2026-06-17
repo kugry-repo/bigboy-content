@@ -88,6 +88,8 @@ Check:
 - Obsidian-friendly Markdown headings, callouts, links, and tables;
 - obvious broken internal links;
 - TODOs and author notes, making sure unresolved items are intentional;
+- author-only notes are separated in `Notes auteur` and not mixed into learner-facing sections;
+- lesson blocks are useful, not padding, and final lessons do not feel like rigid templates;
 - source-safety notes for official claims, exam claims, and third-party usage;
 - diagram and interactivity notes;
 - no root-level `lesson.md`;

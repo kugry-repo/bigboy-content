@@ -36,7 +36,7 @@ Automated checks can catch:
 - duplicate IDs;
 - missing required fields;
 - missing chapter workflow sections;
-- mini-lesson files missing important headings;
+- mini-lesson files missing useful quality signals;
 - exercise files missing statement or solution sections;
 - old `lesson.md` files used accidentally;
 - broken project conventions.
@@ -61,3 +61,23 @@ Checks should be helpful, not annoying.
 During early drafting, warnings are acceptable.
 
 Serious structural problems should be errors.
+
+For mini-lessons, validation should encourage the editorial pipeline:
+
+```text
+source / target -> raw dump -> curation -> assembly -> coherence -> compression / taste -> verification -> final lesson
+```
+
+Validation should not require rigid visible sections.
+
+Instead, it should look for useful signals:
+
+- a clear learning goal or purpose;
+- enough mathematical precision;
+- active check, practice direction, or next action when appropriate;
+- no unresolved TODOs in finalized student-facing files;
+- verification status or notes where the system expects them.
+
+Optional blocks, such as motivation, intuition, formal definition, method box, examples, mistakes, exam note, summary, diagrams, or checkpoints, should not be required just because they exist in the template.
+
+A lesson should not fail validation only because it chose a small or unusual shape.

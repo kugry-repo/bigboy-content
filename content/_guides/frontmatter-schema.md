@@ -128,6 +128,22 @@ Do not create one huge `lesson.md` unless explicitly requested for export or com
 
 Mini-lesson files use `type: lesson` with `lesson_kind: mini-lesson`.
 
+Optional `lesson_shape` may be added after the lesson exists as a diagnostic label only.
+
+Allowed examples:
+
+- `intuition-first`
+- `method-first`
+- `mistake-first`
+- `exam-first`
+- `comparison`
+- `micro`
+- `recap`
+
+Do not use `lesson_shape` as a template selector, and do not make it required.
+
+Author-only planning notes belong in the body section `## Notes auteur`, not in a competing frontmatter field. Keep that section at the end of the file and hide or remove it in future learner-facing exports.
+
 Example path:
 
 ```text

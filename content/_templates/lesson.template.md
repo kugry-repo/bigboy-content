@@ -28,6 +28,12 @@ This project now uses one mini-lesson per Markdown file under a chapter `lessons
 
 Use `_templates/mini-lesson.template.md` for new lesson content.
 
+New mini-lessons should follow the editorial pipeline defined in `_guides/lesson-editorial-pipeline.md`:
+
+```text
+source / target -> raw dump -> human curation -> assembly -> coherence -> compression / taste -> verification -> final lesson
+```
+
 Do not create one huge `lesson.md` unless explicitly requested for export or compatibility.
 
 ## Notes auteur

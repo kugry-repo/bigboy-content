@@ -21,6 +21,7 @@ Before chapter planning or chapter-level edits:
 Before creating or editing mini-lessons:
 - Read `_guides/style-guide.md`.
 - Read `_guides/lesson-voice.md`.
+- Read `_guides/lesson-editorial-pipeline.md`.
 - Read `_guides/lesson-quality-rubric.md`.
 - Read `_guides/math-notation.md`.
 - Read `_guides/frontmatter-schema.md`.

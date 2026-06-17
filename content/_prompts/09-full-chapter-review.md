@@ -53,6 +53,7 @@ Before doing any work:
 - `content/_guides/golden-chapter-standard.md`
 - `content/_guides/frontmatter-schema.md`
 - `content/_guides/id-and-naming.md`
+- `content/_guides/lesson-editorial-pipeline.md`
 - `content/_guides/lesson-structure.md`
 - `content/_guides/exercise-structure.md`
 - `content/_guides/verification-checklist.md`
@@ -84,6 +85,8 @@ Check:
 - chapter plan matches created files;
 - mini-lesson architecture is respected: no root-level `lesson.md`, and mini-lessons live under `lessons/`;
 - mini-lessons have good progression;
+- mini-lessons follow the editorial pipeline and do not feel like rigid templates;
+- lessons have clear purpose, coherence, precision, useful checks or practice direction when appropriate, and no unnecessary ceremony;
 - frontmatter fields and IDs are consistent;
 - all major skills are covered or clearly planned;
 - exercises match mini-lessons;

@@ -54,6 +54,7 @@ Before doing any work:
 - `content/_guides/curriculum-map-2bac-pc-svt.md`
 - `content/_guides/frontmatter-schema.md`
 - `content/_guides/id-and-naming.md`
+- `content/_guides/lesson-editorial-pipeline.md`
 - `content/_guides/lesson-structure.md`
 - `content/_guides/lesson-voice.md`
 - `content/_references/misconception-map.md`
@@ -82,22 +83,26 @@ The chapter plan must include:
 3. Prerequisites.
 4. Skill map using stable skill IDs.
 5. Mini-lesson plan, where each future mini-lesson has its own planned file under `lessons/`.
-6. Definitions, properties, and theorems to include later.
-7. Methods to teach later.
-8. Planned examples.
-9. Misconceptions to treat.
-10. Planned exercise progression.
-11. Planned diagrams and future interactions.
-12. Exam-style patterns, with unsupported official claims marked for verification.
-13. Production tracker.
-14. Author notes and uncertainty markers.
+6. Readiness blockers and reminder links where a missing idea would block a lesson.
+7. Concrete success criteria for important mini-lessons.
+8. Definitions, properties, and theorems to include later.
+9. Methods to teach later, with decision guidance for when to use them.
+10. Possible raw-dump sources and curation notes for important mini-lessons.
+11. Planned examples, counterexamples, or exercise candidates.
+12. Misconceptions to treat, including recovery plans for major traps.
+13. Planned checkpoints and practice progression.
+14. Planned exercise progression.
+15. Planned diagrams and future interactions.
+16. Exam-style patterns, with unsupported official claims marked for verification.
+17. Production tracker.
+18. Author notes and uncertainty markers.
 
 Use the current chapter metadata and naming rules from `TARGET_CHAPTER_INDEX`. Do not hardcode a chapter code, title, or folder.
 
 Use this mini-lesson planning table:
 
-| ID prevu | Fichier prevu | Titre | Concept | Pourquoi ca existe ? | Modele mental | Exemple principal | Piege classique | Reflexe d'examen | Diagramme / interaction |
-|---|---|---|---|---|---|---|---|---|---|
+| ID prevu | Fichier prevu | Titre | Source / cible | Resultat attendu | Dump brut | Curation humaine | Forme possible | A garder | A supprimer / trop lourd | Verifications |
+|---|---|---|---|---|---|---|---|---|---|---|
 
 Use this misconception table:
 

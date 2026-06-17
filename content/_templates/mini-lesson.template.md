@@ -23,98 +23,75 @@ created: YYYY-MM-DD
 updated: YYYY-MM-DD
 ---
 
+<!--
+Mini-lesson editorial pipeline:
+
+source / target
+-> raw dump
+-> human curation / chop
+-> assembled lesson
+-> coherence pass
+-> compression / taste pass
+-> verification pass
+-> final student lesson
+
+This template is not a visible section checklist.
+
+Use only curated material. Do not re-add raw-dump material marked delete, too much, future exercise, or useful but not student-facing.
+
+Optional diagnostic metadata after the lesson exists:
+lesson_shape: intuition-first | method-first | mistake-first | exam-first | comparison | micro | recap
+
+Do not make lesson_shape required and do not use it as a template selector.
+-->
+
 # MINI_LESSON_TITLE
 
-## Pourquoi on étudie ça ?
+TODO: Assemble the selected material into a natural student-facing mini-lesson.
 
-TODO: Explain briefly why this mini-lesson matters here: mathematically, in exercises, in exams, or in a real/scientific context when the connection is honest. Later mini-lessons may keep this short if the chapter motivation is already clear.
+Choose only the blocks that serve this concept. Delete this TODO before review.
 
-## Le problème de départ
+<!--
+Flexible block menu:
 
-TODO: Start with a small question, situation, or example.
+- Orientation / prerequisite context
+- Learning goal / success criteria
+- Motivation / problem
+- Intuition / human explanation
+- Mental model
+- Formal definition / property / theorem
+- Method / decision guide
+- Comparison / contrast
+- Worked example
+- Counterexample
+- Common mistake
+- Mistake recovery
+- Checkpoint / mini-quiz
+- Practice path / next step
+- Exam pattern
+- Diagram / interaction note
+- Memory hook / recap
 
-## Le modèle mental
+Decision rules:
 
-TODO: Give the student a simple way to think about the concept.
-
-## L'idée en version humaine
-
-> [!intuition] L'idée
-> TODO.
-
-## La version mathématique
-
-> [!definition] TODO
-> TODO.
-
-> [!property] TODO
-> TODO.
-
-## Exemple guidé
-
-TODO: Give a concrete example early.
-
-## À toi de prédire
-
-TODO: Ask the student to predict something before calculating.
-
-## Concept contrast
-
-> [!contrast] TODO
-> TODO: Compare this idea with a nearby idea students often confuse.
-
-## Méthode
-
-> [!method] TODO
-> À utiliser lorsque TODO.
->
-> 1. TODO.
-> 2. TODO.
-> 3. TODO.
->
-> Attention : TODO.
-
-## Le piège classique
-
-> [!warning] Le piège classique
-> Ne fais pas ça : TODO.
->
-> Fais plutôt ça : TODO.
-
-## Comment ça tombe à l'examen ?
-
-> [!exam] Réflexe d'examen
-> TODO.
-
-> [!shortcut] Raccourci utile
-> TODO.
->
-> Attention : le raccourci ne remplace pas la rédaction complète quand elle est demandée.
-
-## Diagrammes et interactions à prévoir
-
-> [!diagram-note] Diagramme à ajouter
-> TODO.
-
-> [!interactive-note] Interaction future
-> TODO.
-
-## Mini-check
-
-> [!checkpoint] Mini-check
-> 1. TODO.
-> 2. TODO.
-> 3. TODO.
-
-## La carte mentale
-
-> [!summary] La carte mentale
-> À retenir :
->
-> - TODO.
-> - TODO.
-> - TODO.
+- If the idea is small, keep the lesson small.
+- If the idea is foundational, allow deeper treatment.
+- If students mainly fail because of a misconception, start with the mistake.
+- If the concept is mostly procedural, start with when and how to use the method.
+- If the concept is often confused with another, use comparison.
+- If the lesson is exam-driven, make the exam pattern the spine without unsupported official claims.
+- Do not include a block just because it appears in this menu.
+-->
 
 ## Notes auteur
 
-TODO.
+TODO: Author-only notes. Not student-facing.
+
+- Source / cible : TODO.
+- Résultat attendu : TODO.
+- Forme diagnostique possible : TODO.
+- Matériel gardé : TODO.
+- Matériel supprimé ou repoussé : TODO.
+- Vérifications mathématiques : TODO.
+- Vérifications programme / sources officielles : TODO.
+- Claims d'examen à vérifier : TODO.

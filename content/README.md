@@ -36,9 +36,9 @@ The numeric prefix controls chapter order. The `domain` frontmatter field remain
 
 1. Start with one chapter.
 2. Create a chapter plan.
-3. Create a mini-lesson blueprint.
-4. Draft one mini-lesson under `lessons/`.
-5. Review mathematical correctness and lesson voice.
+3. Prepare mini-lesson source/target notes, raw dump, and human curation.
+4. Assemble one mini-lesson under `lessons/` from curated material.
+5. Run coherence, compression/taste, and verification passes.
 6. Add exercise blueprints.
 7. Add exercises.
 8. Add solutions and hints.
@@ -59,9 +59,9 @@ Before continuing a chapter, read:
 The usual sequence is:
 
 1. Chapter plan.
-2. Mini-lesson blueprint.
-3. Mini-lesson file creation.
-4. Mini-lesson review.
+2. Mini-lesson source, raw dump, and curation.
+3. Mini-lesson assembly.
+4. Mini-lesson passes.
 5. Exercise blueprint.
 6. Exercise creation.
 7. Solution review.
@@ -79,7 +79,15 @@ They should use the voice defined in:
 - `_guides/lesson-quality-rubric.md`
 - `_examples/golden-lesson-slice-limites.md`
 
-The repo uses a friendly mentor style: motivation first, intuition before formalism, examples early, direct warnings about mistakes, and exam usefulness after understanding.
+The repo uses a friendly mentor style: clear purpose, concrete explanations, useful intuition, rigorous math, direct warnings about mistakes when relevant, and exam usefulness without fake official claims.
+
+Mini-lessons now use an editorial pipeline:
+
+```text
+source / target -> raw dump -> human curation -> assembly -> coherence -> compression / taste -> verification -> final lesson
+```
+
+The learning contract is stable, but the visible structure is flexible. Motivation, intuition, formal statements, examples, methods, mistakes, exam notes, checkpoints, and summaries are reusable blocks, not mandatory sections.
 
 ## Mini-lesson architecture
 
@@ -102,6 +110,8 @@ Example:
 The chapter `_index.md` is the planning dashboard.
 
 The `lessons/` files are the student-facing lesson units.
+
+For the mini-lesson editorial pipeline and flexible block menu, see `_guides/lesson-editorial-pipeline.md` and `_guides/lesson-structure.md`.
 
 ## Base system before golden chapter
 

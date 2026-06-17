@@ -1,4 +1,4 @@
-# Prompt - Create Mini-Lesson Blueprint
+# Prompt - Prepare Mini-Lesson Source, Dump, And Curation
 
 Use this prompt before writing a mini-lesson file.
 
@@ -51,6 +51,7 @@ Before doing any work:
 - `content/AGENTS.md`
 - `content/_guides/chapter-workflow.md`
 - `content/_guides/golden-chapter-standard.md`
+- `content/_guides/lesson-editorial-pipeline.md`
 - `content/_guides/lesson-structure.md`
 - `content/_guides/lesson-voice.md`
 - `content/_guides/lesson-quality-rubric.md`
@@ -61,11 +62,11 @@ Before doing any work:
 
 ## Task
 
-Create or update a detailed blueprint for one mini-lesson inside `TARGET_CHAPTER_INDEX`.
+Create or update the source/target notes, raw dump, and curation area for one mini-lesson inside `TARGET_CHAPTER_INDEX`.
 
 This is Stage 2 only.
 
-If the user named a specific mini-lesson ID, title, or planned file, use that item. Otherwise, choose the first missing or least-developed mini-lesson blueprint in the chapter dashboard. If more than one item is equally plausible, stop and ask.
+If the user named a specific mini-lesson ID, title, or planned file, use that item. Otherwise, choose the first missing or least-developed mini-lesson preparation entry in the chapter dashboard. If more than one item is equally plausible, stop and ask.
 
 Update the chapter `_index.md` only.
 
@@ -76,29 +77,33 @@ Do not create:
 - exercise sets;
 - frontend or app code.
 
-The blueprint must specify:
+The preparation must specify:
 
 - mini-lesson ID using `TARGET_CHAPTER_CODE`;
 - planned file path under `TARGET_CHAPTER_FOLDER/lessons/`;
 - purpose of the mini-lesson;
-- prerequisite ideas;
-- starting problem;
-- mental model;
-- human explanation;
-- formal statement needed;
-- early guided example;
-- prediction moment;
-- concept contrast if useful;
-- common trap;
-- exam reflex;
-- diagram or future interaction note;
-- link to future exercises.
+- source / target notes;
+- prerequisite ideas and blockers;
+- concrete learning outcome;
+- curriculum and official-source constraints;
+- raw dump of possible material;
+- curation area for human decisions;
+- possible lesson shape after curation, if useful;
+- verification questions and official claims needing confirmation.
+
+The raw dump may include possible motivations, intuitions, explanations, formal statements, method boxes, examples, counterexamples, mistakes, recovery ideas, exam patterns, diagram ideas, analogies, checkpoints, mini-quiz ideas, possible splits, and notes about what may be unnecessary or too heavy.
+
+Clearly state that the dump is not the final lesson.
+
+The curation area must support human marks: keep, delete, merge, split, reorder, optional, future exercise, too much, useful but not student-facing.
+
+Do not plan every optional block automatically. Blocks are options for curation, not required sections.
 
 Use the completed golden chapter as a reference if one exists, but do not require it and do not copy from it.
 
 Finish by summarizing:
 
-- blueprint updated;
+- preparation updated;
 - exact section changed in `TARGET_CHAPTER_INDEX`;
 - assumptions or unresolved choices;
-- next recommended workflow stage.
+- next recommended prompt: `02a-generate-mini-lesson-raw-dump.md` or `02b-curate-mini-lesson-material.md`, depending on what remains.

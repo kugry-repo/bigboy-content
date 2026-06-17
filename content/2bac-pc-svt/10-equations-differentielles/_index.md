@@ -40,9 +40,9 @@ TODO.
 
 ## Plan des mini-leçons
 
-| ID prévu | Fichier prévu | Titre | Concept | Pourquoi ça existe ? | Modèle mental | Exemple principal | Piège classique | Réflexe d'examen | Diagramme / interaction |
-|---|---|---|---|---|---|---|---|---|---|
-| 2bac-pcsvt-ed-lesson-001 | `lessons/ed-lesson-001.md` | TODO | TODO | TODO | TODO | TODO | TODO | TODO | TODO |
+| ID prévu | Fichier prévu | Titre | Source / cible | Résultat attendu | Dump brut | Curation humaine | Forme possible | À garder | À supprimer / trop lourd | Vérifications |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 2bac-pcsvt-ed-lesson-001 | `lessons/ed-lesson-001.md` | TODO | TODO | TODO | TODO | TODO | TODO | TODO | TODO | TODO |
 
 ## Misconceptions à traiter
 
@@ -81,9 +81,9 @@ TODO.
 ## Workflow
 
 - [ ] Stage 1 — Chapter plan
-- [ ] Stage 2 — Mini-lesson blueprint
-- [ ] Stage 3 — Mini-lesson file creation
-- [ ] Stage 4 — Mini-lesson review
+- [ ] Stage 2 — Mini-lesson source, raw dump, and curation
+- [ ] Stage 3 — Mini-lesson assembly
+- [ ] Stage 4 — Mini-lesson passes
 - [ ] Stage 5 — Exercise blueprint
 - [ ] Stage 6 — Exercise creation
 - [ ] Stage 7 — Solution review
@@ -116,7 +116,7 @@ TODO.
 | Area | Status | Notes |
 |---|---|---|
 | Chapter plan | planned | TODO |
-| Mini-lesson blueprint | planned | TODO |
+| Mini-lesson source, dump, and curation | planned | TODO |
 | Mini-lessons | planned | TODO |
 | Lesson voice review | planned | TODO |
 | Exercise blueprint | planned | TODO |

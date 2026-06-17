@@ -50,6 +50,7 @@ Before doing any work:
 - `AGENTS.md`
 - `content/AGENTS.md`
 - `content/_guides/chapter-workflow.md`
+- `content/_guides/lesson-editorial-pipeline.md`
 - `content/_guides/frontmatter-schema.md`
 - `content/_guides/id-and-naming.md`
 - `content/_guides/lesson-structure.md`
@@ -77,23 +78,29 @@ Do not create:
 - exercise sets;
 - frontend or app code.
 
-Use the blueprint from `TARGET_CHAPTER_INDEX` and the mini-lesson template.
+Use the curated material from `TARGET_CHAPTER_INDEX` and the mini-lesson template.
 
-The mini-lesson must:
+Do not blindly re-add all possible raw-dump blocks. If the human curation marked material as delete, too much, future exercise, or useful but not student-facing, keep it out of the student-facing lesson.
+
+The assembled mini-lesson should:
 
 - use `tu`;
-- start with a problem, question, intuition, or motivation;
-- include `Pourquoi on etudie ca ?` in every mini-lesson;
-- answer briefly why this mini-lesson matters here, with a shorter motivation allowed after the chapter motivation is established;
+- have a clear purpose or learning contract;
+- use a visible shape that fits the concept: intuition-first, method-first, mistake-first, exam-first, comparison, micro, recap, or another natural shape;
+- avoid textbook dumps and long uninterrupted exposition;
+- show where the idea fits or give prerequisite context when needed;
 - avoid fake or forced real-world applications;
-- include `Le modele mental`;
-- explain the idea in human language before formal math;
-- include an early concrete example;
-- include a prediction/checkpoint moment;
-- include common mistakes directly;
-- include exam usefulness after understanding;
+- explain meaning before heavy formalism when needed;
+- include a formal definition, property, theorem, or method when needed, with conditions;
+- include decision guidance when a method or recognition pattern is taught;
+- include concrete examples, checkpoints, practice directions, or next steps when they help;
+- include common mistakes and mistake recovery when useful;
+- include exam usefulness only when useful and without unsupported official claims;
 - include diagram or future interaction notes when useful;
-- end with `La carte mentale`.
+- keep author notes and verification notes separate in `Notes auteur`;
+- stay lean.
+
+Do not force motivation, intuition, formal section, method box, example ladder, mistakes, exam note, summary, or checkpoint into the draft. Use only the blocks selected by curation or clearly required by the concept.
 
 Use frontmatter values derived from `TARGET_CHAPTER_INDEX`, including the resolved chapter code, title, program, chapter folder, order, domain, tracks, and language. Do not hardcode prototype values.
 
@@ -102,6 +109,6 @@ Use `status: draft`.
 Finish by summarizing:
 
 - file created;
-- main ideas included;
+- selected shape and main ideas included;
 - uncertainty or verification needs;
-- suggested review prompt.
+- suggested next prompt: `04a-coherence-pass-mini-lesson.md`.

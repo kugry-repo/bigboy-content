@@ -50,6 +50,7 @@ Before doing any work:
 - `AGENTS.md`
 - `content/AGENTS.md`
 - `content/_guides/chapter-workflow.md`
+- `content/_guides/lesson-editorial-pipeline.md`
 - `content/_guides/lesson-structure.md`
 - `content/_guides/lesson-voice.md`
 - `content/_guides/lesson-quality-rubric.md`
@@ -73,19 +74,40 @@ Do not create:
 - exercise sets;
 - frontend or app code.
 
-Focus on:
+Run the review as three passes:
 
-- mathematical correctness;
-- theorem/property conditions;
-- domain restrictions;
-- notation consistency;
-- clarity for 2BAC PC/SVT students;
-- no unexplained magic steps;
-- examples and methods;
-- common mistakes;
-- exam usefulness.
+1. Coherence:
+   - flow;
+   - transitions;
+   - repeated ideas;
+   - notation consistency;
+   - whether examples match the explanation;
+   - whether the lesson reads like one unified piece.
+2. Compression / taste:
+   - unnecessary ceremony;
+   - repetitive headings;
+   - AI-sounding structure;
+   - over-explanation;
+   - weak analogies;
+   - bloated exam notes;
+   - redundant summaries;
+   - anything that does not help learning.
+3. Verification:
+   - mathematical correctness;
+   - theorem/property conditions;
+   - domain restrictions;
+   - curriculum alignment for 2BAC PC/SVT Morocco;
+   - official-program consistency where applicable;
+   - no fake exam claims;
+   - correct notation;
+   - examples solved correctly;
+   - prerequisites respected;
+   - checkpoint answers clear;
+   - author notes separated from student-facing content.
 
 Make targeted edits. Do not rewrite the whole file if smaller improvements are enough.
+
+Do not add optional blocks just to satisfy a checklist. Add a block only if the curated material or the concept clearly requires it.
 
 After editing, update status if appropriate:
 
