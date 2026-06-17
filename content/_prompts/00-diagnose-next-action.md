@@ -1,6 +1,6 @@
 # Prompt - Diagnose Next Action
 
-Use this prompt when you are unsure where a chapter is in the workflow or what to do next.
+Use this prompt when you are unsure where a chapter is in the workflow, whether existing files are stale, or what to do next.
 
 This prompt is read-only.
 
@@ -76,6 +76,21 @@ Do not:
 
 Use the chapter `_index.md` workflow checklist as the main source of truth. Compare it with actual files on disk and note mismatches.
 
+Distinguish:
+
+- creation progress through the Stage 1-10 workflow;
+- existing-content revision needs;
+- stale or inconsistent files;
+- whether Maintenance Mode is more appropriate than continuing the next creation stage.
+
+If the user is asking to revise existing content, or if the current state shows mismatches/stale downstream files, the recommended next action may be:
+
+```text
+content/_prompts/00-maintenance-mode.md
+```
+
+Do not always recommend the next unchecked creation stage when a targeted maintenance pass is safer.
+
 ## Report
 
 Use exactly this output format:
@@ -112,7 +127,7 @@ List files expected by the chapter dashboard that are missing, plus files that e
 
 ## Recommended next action
 
-Give one exact next action, staying within the workflow sequence unless the user explicitly asked to revise an earlier stage.
+Give one exact next action. If this is ordinary creation progress, stay within the workflow sequence. If the user asked to revise existing content or you found stale/inconsistent downstream files, recommend Maintenance Mode instead of forcing the next unchecked creation stage.
 
 ## Prompt to run next
 

@@ -18,6 +18,8 @@ exam_relevance: medium
 calculator: not-needed
 solution_status: draft
 status: draft
+sync_status: current
+sync_reason: null
 version: 0.1.0
 source_type: original
 source_ref: null

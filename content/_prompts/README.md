@@ -38,7 +38,19 @@ When unsure where you are, run:
 content/_prompts/00-diagnose-next-action.md
 ```
 
-Run stages in order unless you are intentionally revising earlier work. Revise plans before creating files. Create lessons and exercises in small batches. Do not generate whole chapters at once.
+There are now two workflow modes:
+
+Creation mode:
+Use the Stage 1-10 prompts to create new content for the first time. Run stages in order unless you are intentionally revising earlier work. Revise plans before creating files. Create lessons and exercises in small batches. Do not generate whole chapters at once.
+
+Maintenance mode:
+Use `00-maintenance-mode.md` when modifying existing content after work has already been created. Stages are not permanent once upstream content changes. The user should not have to know the blast radius. Maintenance mode discovers affected files, then either patches safely or produces an impact plan for larger changes.
+
+Normal command:
+
+```text
+Use maintenance mode. I want to change <thing>.
+```
 
 Mini-lessons use the editorial pipeline:
 
@@ -58,6 +70,7 @@ Raw dumps are not final lessons. Human curation decides what is kept, deleted, m
 Helper prompts:
 
 - `00-diagnose-next-action.md`
+- `00-maintenance-mode.md`
 - `00-set-current-chapter.md`
 
 Stage prompts:

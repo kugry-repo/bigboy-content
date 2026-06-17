@@ -13,6 +13,8 @@ chapter_order: CHAPTER_ORDER
 chapter_folder: CHAPTER_FOLDER
 skills: []
 status: planned
+sync_status: current
+sync_reason: null
 version: 0.1.0
 source_type: original
 source_ref: null

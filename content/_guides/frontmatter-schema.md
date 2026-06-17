@@ -37,6 +37,8 @@ chapter_order: 1
 chapter_folder: 01-limites-continuite
 skills: []
 status: planned
+sync_status: current
+sync_reason: null
 version: 0.1.0
 source_type: original
 source_ref: null
@@ -69,6 +71,8 @@ Allowed values for `type`:
 
 ## Status values
 
+`status` means production maturity.
+
 Allowed values for `status`:
 
 - `planned`
@@ -76,6 +80,35 @@ Allowed values for `status`:
 - `needs-review`
 - `reviewed`
 - `published`
+
+## Sync and freshness values
+
+`sync_status` and `sync_reason` are optional for now. Do not require them on all existing files.
+
+Use this distinction:
+
+```yaml
+status: draft
+sync_status: current
+sync_reason: null
+```
+
+`status` means production maturity:
+
+- `planned`
+- `draft`
+- `needs-review`
+- `reviewed`
+- `published`
+
+`sync_status` means whether the file is still aligned with upstream plans, templates, and guides:
+
+- `current`: aligned with the current upstream plan/guides.
+- `needs-sync`: probably affected by an upstream change and needs patching.
+- `needs-review`: patched or changed but needs targeted review.
+- `stale`: known to conflict with the current upstream plan/guides.
+
+`sync_reason` is a short human-readable note explaining why the sync status changed.
 
 ## Source type values
 
@@ -112,6 +145,8 @@ chapter_order: 1
 chapter_folder: 01-limites-continuite
 skills: []
 status: planned
+sync_status: current
+sync_reason: null
 version: 0.1.0
 source_type: original
 source_ref: null
@@ -178,6 +213,8 @@ skills:
   - lc-limite-finie
 difficulty: decouverte
 status: draft
+sync_status: current
+sync_reason: null
 version: 0.1.0
 source_type: original
 source_ref: null
@@ -209,6 +246,8 @@ skills:
   - lc-continuite-point
 difficulty: null
 status: draft
+sync_status: current
+sync_reason: null
 version: 0.1.0
 source_type: original
 source_ref: null
@@ -244,6 +283,8 @@ exam_relevance: medium
 calculator: not-needed
 solution_status: draft
 status: draft
+sync_status: current
+sync_reason: null
 version: 0.1.0
 source_type: original
 source_ref: null
@@ -284,6 +325,8 @@ difficulty_range: [decouverte, application-directe]
 exercise_ids:
   - 2bac-pcsvt-lc-ex-001
 status: draft
+sync_status: current
+sync_reason: null
 version: 0.1.0
 source_type: original
 source_ref: null

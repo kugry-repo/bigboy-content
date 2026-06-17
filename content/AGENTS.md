@@ -50,7 +50,7 @@ Before adapting material from exams or other sources:
 
 ## Chapter workflow rule
 
-When working on a chapter:
+When doing staged creation work on a chapter:
 
 1. Read `_guides/chapter-workflow.md`.
 2. Read the chapter `_index.md`.
@@ -59,6 +59,8 @@ When working on a chapter:
 5. Do not skip stages unless explicitly requested.
 6. Update the chapter tracker after making chapter changes.
 7. Do not create lessons, exercises, or sets unless the current task asks for them.
+
+When revising existing content, syncing stale files, or responding to an upstream plan/template/guide change, use Maintenance Mode from `_prompts/00-maintenance-mode.md`. Do not restart the full Stage 1-10 pipeline just because earlier work changed; discover the blast radius and patch only affected files or produce an impact plan.
 
 ## Numbered chapter folder rule
 

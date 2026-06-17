@@ -52,6 +52,13 @@ const REQUIRED_CHAPTER_HEADINGS = [
 
 const FINALIZED_STATUSES = new Set(["reviewed", "published"]);
 
+const ALLOWED_SYNC_STATUSES = new Set([
+  "current",
+  "needs-sync",
+  "needs-review",
+  "stale",
+]);
+
 const ALLOWED_LESSON_SHAPES = new Set([
   "intuition-first",
   "method-first",
@@ -559,6 +566,18 @@ function collectIdsAndWarnings() {
         addWarning(filePath, "has no frontmatter; allowed for guides, prompts, and references");
       }
       continue;
+    }
+
+    if (
+      Object.hasOwn(parsed.data, "sync_status") &&
+      !ALLOWED_SYNC_STATUSES.has(parsed.data.sync_status)
+    ) {
+      addWarning(
+        filePath,
+        `frontmatter "sync_status" is optional; expected one of ${[
+          ...ALLOWED_SYNC_STATUSES,
+        ].join(", ")}`,
+      );
     }
 
     if (!parsed.data.id) continue;

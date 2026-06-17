@@ -24,6 +24,14 @@ Every lesson, exercise, and solution should be:
 - Easy to improve.
 - Safe to render later in an app.
 
+## Maintenance mode
+
+Treat content like source code after it exists.
+
+You can change earlier plans after downstream lesson, exercise, or set files already exist. The system should not restart from zero or rerun every later stage automatically.
+
+When a user asks for a revision, Codex should inspect dependencies, discover affected files, classify the risk, and patch only the files that need to change. For big structural revisions, Codex should produce an impact report and patch plan before mass editing.
+
 ## Recommended chapter workflow
 
 ### 1. Chapter planning

@@ -16,6 +16,8 @@ lesson_number: 1
 skills: []
 difficulty: decouverte
 status: draft
+sync_status: current
+sync_reason: null
 version: 0.1.0
 source_type: original
 source_ref: null

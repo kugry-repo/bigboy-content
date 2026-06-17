@@ -20,7 +20,7 @@ Chapter paths use the flat numbered folder structure:
 content/2bac-pc-svt/01-limites-continuite/_index.md
 ```
 
-Before creating or editing chapter content:
+Before doing staged chapter work in creation mode:
 
 1. Read this workflow guide.
 2. Read `_guides/golden-chapter-standard.md`.
@@ -29,6 +29,29 @@ Before creating or editing chapter content:
 5. Work only on the requested stage.
 6. Do not skip stages unless the user explicitly asks.
 7. Update the chapter tracker after the work is done.
+
+For changes to existing content that do not fit the current creation stage, or that respond to upstream plan/template/guide edits, use Maintenance Mode instead of forcing a stage rerun.
+
+## Creation mode vs maintenance mode
+
+The Stage 1-10 workflow is for first creation: planning, drafting mini-lessons, creating exercises, reviewing, and preparing for publish-ready cleanup.
+
+Existing content can be revised at any time. Revising an earlier stage does not mean rerunning all later stages from zero.
+
+When an upstream artifact changes, use Maintenance Mode to discover what downstream files are stale. The chapter `_index.md` is still the dashboard, but it should not force a waterfall.
+
+The correct maintenance flow is:
+
+```text
+describe change
+-> discover blast radius
+-> classify risk
+-> patch affected files only or produce impact plan
+-> targeted review
+-> update tracker/status notes
+```
+
+Maintenance Mode should inspect the chapter plan, mini-lessons, exercises, sets, frontmatter, links, trackers, neighboring lessons, linked exercises, and relevant guides/templates as needed. The user should not have to know which files are affected.
 
 ## Mini-lesson architecture
 
@@ -492,7 +515,7 @@ Do not mark files as `published` unless explicitly requested.
 
 ## How to determine the next stage
 
-When the user gives a broad request like:
+When the user gives a broad creation request like:
 
 > Continue the chapter.
 
@@ -502,6 +525,8 @@ Do this:
 2. Find the first unchecked item in `## Workflow`.
 3. Work on that item only.
 4. If the next step is ambiguous, state the ambiguity and make the safest minimal update.
+
+If the user asks to revise existing content, sync stale files, or fix mismatches created by upstream changes, do not treat the first unchecked creation stage as the only possible next action. Use `content/_prompts/00-maintenance-mode.md` to resolve scope, discover the blast radius, classify risk, and patch affected files only or produce an impact plan.
 
 If the user gives a specific request like:
 
