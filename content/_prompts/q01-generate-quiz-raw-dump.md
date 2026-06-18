@@ -1,6 +1,6 @@
 # Prompt - Generate Raw Quiz Dump
 
-Use this prompt to generate raw quiz material for ONE quiz series, quiz cluster, or target skill area in one target chapter.
+Use this prompt to generate raw quiz material for ONE quiz series, quiz cluster, or target skill area in one target unit.
 
 Quiz Q1 does not create final quiz files, final polished questions, or final answer keys.
 
@@ -10,7 +10,13 @@ Do not build frontend or app code.
 
 ## Target
 
-You may provide an explicit target:
+Preferred input:
+
+```text
+TARGET_UNIT: <unit-folder-or-path-or-code>
+```
+
+Legacy alias still accepted:
 
 ```text
 TARGET_CHAPTER: <chapter-folder-or-path-or-code>
@@ -23,40 +29,44 @@ TARGET_QUIZ_SERIES: <series-id-or-title>
 TARGET_QUIZ_CLUSTER: <cluster-id-or-skill-area>
 ```
 
-If no explicit `TARGET_CHAPTER` is provided, read:
+If both `TARGET_UNIT` and `TARGET_CHAPTER` are provided, prefer `TARGET_UNIT`.
+
+If no explicit target is provided, read `_workflow/current-unit.md` first. If it does not exist, fall back to `_workflow/current-chapter.md`.
+
+Expected local file formats:
 
 ```text
-_workflow/current-chapter.md
-```
-
-Expected local file format:
-
-```text
+TARGET_UNIT: <unit-folder-or-path-or-code>
 TARGET_CHAPTER: <chapter-folder-or-path-or-code>
 ```
 
-If neither an explicit target nor `_workflow/current-chapter.md` exists, stop and ask the user to set a current chapter by running:
+If neither an explicit target nor local workflow state exists, stop and ask the user to set a current unit by running:
 
 ```text
-content/_prompts/00-set-current-chapter.md
+content/_prompts/00-set-current-unit.md
 ```
 
 ## Target resolution
 
 Before doing any work:
 
-1. Look for explicit `TARGET_CHAPTER` in the user message.
-2. If it is missing, read `_workflow/current-chapter.md`.
-3. Resolve the target to a real chapter folder.
-   - If it starts with `content/`, use it as the chapter folder candidate.
-   - If it looks like a numbered chapter folder name, resolve it as `content/2bac-pc-svt/<TARGET_CHAPTER>`.
-   - Otherwise, treat it as a chapter code and scan `content/2bac-pc-svt/*/_index.md` for matching frontmatter `chapter_code`.
-4. Derive `TARGET_CHAPTER_FOLDER` as the resolved folder.
-5. Derive `TARGET_CHAPTER_INDEX` as `<resolved-folder>/_index.md`.
-6. Read `TARGET_CHAPTER_INDEX`.
-7. Derive `TARGET_CHAPTER_CODE`, `TARGET_CHAPTER_TITLE`, and other metadata from the chapter index frontmatter. Derive `TARGET_PROGRAM` from frontmatter or, if missing, from the resolved path.
-8. Use this prompt file as the source of truth for Quiz Q1 behavior. Do not ask for or fill `TARGET_STAGE`.
-9. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
+1. Look for explicit `TARGET_UNIT` in the user message. If it is missing, look for legacy `TARGET_CHAPTER`.
+2. If no explicit target exists, read `_workflow/current-unit.md` first. If it does not exist, fall back to `_workflow/current-chapter.md`.
+3. Resolve the target to a real content unit folder.
+   - If it starts with `content/`, use it as the unit folder candidate.
+   - If it starts with `topics/`, resolve it as `content/2bac-pc-svt/<target>`.
+   - If it looks like a numbered chapter folder name, resolve it as `content/2bac-pc-svt/<target>`.
+   - If it starts with `topic:`, strip `topic:` and search topic indexes first.
+   - Otherwise, scan official chapter indexes under `content/2bac-pc-svt/*/_index.md` and unofficial topic indexes under `content/2bac-pc-svt/topics/*/_index.md`.
+   - Match against `unit_code`, `topic_code`, `chapter_code`, `unit_slug`, `topic`, `chapter`, `unit_folder`, `topic_folder`, and `chapter_folder`.
+4. Derive `TARGET_UNIT_FOLDER` as the resolved folder.
+5. Derive `TARGET_UNIT_INDEX` as `<resolved-folder>/_index.md`.
+6. Read `TARGET_UNIT_INDEX`.
+7. Derive `TARGET_UNIT_KIND` from frontmatter: use `unit_kind` when present, otherwise `official-chapter` for `type: chapter-index` and `unofficial-topic` for `type: topic-index`.
+8. Derive `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and other metadata from the unit index frontmatter. Prefer `unit_code`; fall back to `topic_code`; then fall back to `chapter_code`. Derive `TARGET_PROGRAM` from frontmatter or, if missing, from the resolved path.
+9. For older instructions/templates, also expose `TARGET_CHAPTER_FOLDER`, `TARGET_CHAPTER_INDEX`, `TARGET_CHAPTER_CODE`, and `TARGET_CHAPTER_TITLE` as compatibility aliases with the same resolved values.
+10. Use this prompt file as the source of truth for this stage or review behavior. Do not ask for or fill `TARGET_STAGE`.
+11. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
 ## Read first
 
@@ -72,9 +82,9 @@ Before doing any work:
 - `content/_references/misconception-map.md`
 - `content/_references/concept-dependencies.md`
 - `content/_references/notation-decisions.md`
-- `TARGET_CHAPTER_INDEX`
-- relevant mini-lesson files under `TARGET_CHAPTER_FOLDER/lessons/`
-- relevant exercise files under `TARGET_CHAPTER_FOLDER/exercises/`
+- `TARGET_UNIT_INDEX`
+- relevant mini-lesson files under `TARGET_UNIT_FOLDER/lessons/`
+- relevant exercise files under `TARGET_UNIT_FOLDER/exercises/`
 
 ## Series or cluster selection
 
@@ -83,12 +93,12 @@ Quiz Q1 works on one quiz series, quiz cluster, or target skill area by default.
 If `TARGET_QUIZ_SERIES` or `TARGET_QUIZ_CLUSTER` is provided:
 
 - generate or update the raw quiz dump only for that series or cluster;
-- do not generate raw dumps for every chapter quiz.
+- do not generate raw dumps for every unit quiz.
 
 If no target series or cluster is provided:
 
-1. Look for an existing quiz series map in `TARGET_CHAPTER_INDEX` or an author-designated planning note.
-2. If no quiz series map exists, propose one from the chapter plan, mini-lessons, skills, exercises, misconception map, and exam patterns.
+1. Look for an existing quiz series map in `TARGET_UNIT_INDEX` or an author-designated planning note.
+2. If no quiz series map exists, propose one from the unit plan, mini-lessons, skills, exercises, misconception map, and exam patterns.
 3. Select only the first missing or incomplete quiz series or cluster.
 4. Generate raw material only for that selected series or cluster.
 
@@ -96,7 +106,7 @@ Do not generate all quiz series at once unless the user explicitly asks for more
 
 ## Task
 
-Create or update raw quiz material for the selected quiz series or cluster in `TARGET_CHAPTER_INDEX` or an author-designated planning note.
+Create or update raw quiz material for the selected quiz series or cluster in `TARGET_UNIT_INDEX` or an author-designated planning note.
 
 Default output:
 

@@ -6,20 +6,26 @@ This step is explicitly human-driven.
 
 ## Target
 
-You may provide:
+Preferred input:
 
 ```text
-TARGET_CHAPTER: <chapter-folder-or-path-or-code>
+TARGET_UNIT: <unit-folder-or-path-or-code>
 TARGET_MINI_LESSON: <planned lesson id, title, or file>
 ```
 
-If no explicit `TARGET_CHAPTER` is provided, read:
+Legacy alias still accepted:
 
 ```text
-_workflow/current-chapter.md
+TARGET_CHAPTER: <chapter-folder-or-path-or-code>
 ```
 
-If the chapter, mini-lesson target, or raw dump is missing, stop and ask. Do not invent curation decisions.
+If both `TARGET_UNIT` and `TARGET_CHAPTER` are provided, prefer `TARGET_UNIT`.
+
+If no explicit target is provided, read `_workflow/current-unit.md` first. If it does not exist, fall back to `_workflow/current-chapter.md`.
+
+Use the same target resolution rules as `content/_prompts/00-diagnose-next-action.md`: resolve official chapter indexes and unofficial topic indexes, derive `TARGET_UNIT_FOLDER`, `TARGET_UNIT_INDEX`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_UNIT_KIND`, then expose the matching `TARGET_CHAPTER_*` compatibility aliases for older templates.
+
+If the unit, mini-lesson target, or raw dump is missing, stop and ask. Do not invent curation decisions.
 
 ## Read first
 
@@ -30,7 +36,7 @@ If the chapter, mini-lesson target, or raw dump is missing, stop and ask. Do not
 - `content/_guides/lesson-structure.md`
 - `content/_guides/lesson-voice.md`
 - `content/_guides/lesson-quality-rubric.md`
-- `TARGET_CHAPTER_INDEX`
+- `TARGET_UNIT_INDEX`
 - the selected raw dump
 
 ## Task

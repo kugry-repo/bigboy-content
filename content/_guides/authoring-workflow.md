@@ -2,9 +2,25 @@
 
 This guide defines how to create content without losing consistency.
 
-This project now uses separate mini-lesson files under each chapter `lessons/` folder.
+This project now uses separate mini-lesson files under each content unit `lessons/` folder.
 
-Chapter directories are flat and numbered under `content/2bac-pc-svt/`, for example `content/2bac-pc-svt/01-limites-continuite/`.
+The old chapter workflow now applies to a broader content-unit workflow.
+
+A content unit can be:
+
+- `official-chapter`: a numbered official chapter folder under `content/2bac-pc-svt/`;
+- `unofficial-topic`: a curated learning path, revision unit, synthesis unit, or method unit under `content/2bac-pc-svt/topics/`.
+
+Official chapters remain the canonical curriculum spine. Unofficial topics must not pretend to be official curriculum chapters.
+
+Both unit types reuse the same subfolders:
+
+- `lessons/`
+- `exercises/`
+- `quizzes/`
+- `sets/`
+
+Unofficial topics may contain topic-native lessons, linked official lessons, topic-native exercises, linked official exercises, topic-native quizzes, and synthesis sets. Avoid duplicating official chapter content unnecessarily.
 
 For the detailed chapter production sequence, see `_guides/chapter-workflow.md`.
 
@@ -32,16 +48,17 @@ You can change earlier plans after downstream lesson, exercise, or set files alr
 
 When a user asks for a revision, Codex should inspect dependencies, discover affected files, classify the risk, and patch only the files that need to change. For big structural revisions, Codex should produce an impact report and patch plan before mass editing.
 
-## Recommended chapter workflow
+## Recommended content-unit workflow
 
-### 1. Chapter planning
+### 1. Unit planning
 
-Create or update the chapter `_index.md`.
+Create or update the unit `_index.md`.
 
 Define:
 
-- Chapter title.
-- Official domain.
+- Unit title.
+- Unit kind.
+- Official domain for official chapters, or transversal/non-official scope for topics.
 - Skills covered.
 - Prerequisites.
 - Expected exam patterns.
@@ -52,7 +69,7 @@ Do not write full mini-lesson content yet.
 
 ### 2. Mini-lesson editorial preparation
 
-Prepare one mini-lesson inside the chapter `_index.md` or a clearly marked author note.
+Prepare one mini-lesson inside the unit `_index.md` or a clearly marked author note.
 
 Use the editorial pipeline from `_guides/lesson-editorial-pipeline.md`:
 
@@ -113,19 +130,19 @@ If uncertain, mark the file as `needs-review`.
 
 Generate raw exercise seeds one cluster at a time, then curate that cluster into rich exercise design cards.
 
-For substantial chapters, do not make one huge chapter-wide exercise dump by default. Derive clusters from the chapter plan, mini-lessons, skill families, official program notes, and exam patterns.
+For substantial units, do not make one huge unit-wide exercise dump by default. Derive clusters from the unit plan, mini-lessons, skill families, official program notes, and exam patterns.
 
 Each raw seed should record the rough exercise shape, expected method, main trap, parameter constraints, feasibility sketch, hint or MCQ opportunities, and verification or mismath risks.
 
 Each exercise design card should be detailed enough for Stage 6 to create a final exercise without inventing the target skill, method, traps, or verification concerns from scratch.
 
-After cluster curation, use `MODE: CHAPTER_BALANCE` to check duplicates, missing skills, difficulty balance, mini-lesson coverage, progression, and verification risks across the chapter.
+After cluster curation, use `MODE: CHAPTER_BALANCE` to check duplicates, missing skills, difficulty balance, mini-lesson coverage, progression, and verification risks across the unit. The mode name is kept for compatibility.
 
 ## Parallel standalone quiz workflow
 
 Standalone quizzes are first-class content, but they do not replace lessons or exercises and they do not renumber the Stage 1-10 workflow.
 
-Use this quiz workflow when a chapter needs diagnostic or mastery checkpoints:
+Use this quiz workflow when a unit needs diagnostic or mastery checkpoints:
 
 ```text
 Quiz Q1 - Raw quiz dump
@@ -138,7 +155,7 @@ Quiz planning should happen one quiz series, quiz cluster, or target skill area 
 
 Final quiz creation should usually create one quiz file at a time, with a maximum of two unless explicitly requested.
 
-Standalone quiz files live under the chapter `quizzes/` folder. Each quiz contains multiple questions and should include answer-specific feedback, especially for multiple-choice and multiple-response items.
+Standalone quiz files live under the unit `quizzes/` folder. Each quiz contains multiple questions and should include answer-specific feedback, especially for multiple-choice and multiple-response items.
 
 `sequence` and `hotspot` are allowed advanced item types for quiz planning. Frontend or UI implementation is out of scope.
 
@@ -148,7 +165,7 @@ Each exercise lives in its own Markdown file.
 
 Exercise files are usually created in small batches of 3 to 5 unless explicitly requested otherwise.
 
-A full chapter may eventually target 20 to 35 individual exercises, but those are accumulated over multiple batches. Do not generate the whole chapter exercise library at once unless explicitly requested.
+A full official chapter may eventually target 20 to 35 individual exercises, but those are accumulated over multiple batches. Do not generate a whole unit exercise library at once unless explicitly requested.
 
 Each exercise should target a small set of skills.
 
@@ -168,14 +185,14 @@ Solutions created during exercise batch creation are drafts. Review them after c
 
 ### 9. Exam alignment review
 
-Check whether the chapter has a balance of:
+Check whether the unit has a balance of:
 
 - Direct applications.
 - Guided applications.
 - Exam-style exercises.
 - Synthesis problems.
 
-Use the official weighting only as a planning guide, not as a strict rule for every chapter.
+Use the official weighting only as a planning guide for official chapters. For unofficial topics, mark official-curriculum claims as needing verification unless already documented.
 
 ### 10. Publish readiness
 

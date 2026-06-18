@@ -4,11 +4,17 @@ Use this prompt after raw exercise seeds exist for at least one exercise cluster
 
 Stage 5b curates raw seeds into rich exercise design cards. It does not create final exercise files.
 
-For substantial chapters, curate one exercise cluster at a time by default. Use `MODE: CHAPTER_BALANCE` only after cluster cards exist and the chapter needs a whole-plan balance pass.
+For substantial units, curate one exercise cluster at a time by default. Use `MODE: CHAPTER_BALANCE` only after cluster cards exist and the unit needs a whole-plan balance pass.
 
 ## Target
 
-You may provide an explicit target:
+Preferred input:
+
+```text
+TARGET_UNIT: <unit-folder-or-path-or-code>
+```
+
+Legacy alias still accepted:
 
 ```text
 TARGET_CHAPTER: <chapter-folder-or-path-or-code>
@@ -26,40 +32,44 @@ Optional mode:
 MODE: CHAPTER_BALANCE
 ```
 
-If no explicit `TARGET_CHAPTER` is provided, read:
+If both `TARGET_UNIT` and `TARGET_CHAPTER` are provided, prefer `TARGET_UNIT`.
+
+If no explicit target is provided, read `_workflow/current-unit.md` first. If it does not exist, fall back to `_workflow/current-chapter.md`.
+
+Expected local file formats:
 
 ```text
-_workflow/current-chapter.md
-```
-
-Expected local file format:
-
-```text
+TARGET_UNIT: <unit-folder-or-path-or-code>
 TARGET_CHAPTER: <chapter-folder-or-path-or-code>
 ```
 
-If neither an explicit target nor `_workflow/current-chapter.md` exists, stop and ask the user to set a current chapter by running:
+If neither an explicit target nor local workflow state exists, stop and ask the user to set a current unit by running:
 
 ```text
-content/_prompts/00-set-current-chapter.md
+content/_prompts/00-set-current-unit.md
 ```
 
 ## Target resolution
 
 Before doing any work:
 
-1. Look for explicit `TARGET_CHAPTER` in the user message.
-2. If it is missing, read `_workflow/current-chapter.md`.
-3. Resolve the target to a real chapter folder.
-   - If it starts with `content/`, use it as the chapter folder candidate.
-   - If it looks like a numbered chapter folder name, resolve it as `content/2bac-pc-svt/<TARGET_CHAPTER>`.
-   - Otherwise, treat it as a chapter code and scan `content/2bac-pc-svt/*/_index.md` for matching frontmatter `chapter_code`.
-4. Derive `TARGET_CHAPTER_FOLDER` as the resolved folder.
-5. Derive `TARGET_CHAPTER_INDEX` as `<resolved-folder>/_index.md`.
-6. Read `TARGET_CHAPTER_INDEX`.
-7. Derive `TARGET_CHAPTER_CODE`, `TARGET_CHAPTER_TITLE`, and other metadata from the chapter index frontmatter. Derive `TARGET_PROGRAM` from frontmatter or, if missing, from the resolved path.
-8. Use this prompt file as the source of truth for the stage number and stage behavior. Do not ask for or fill `TARGET_STAGE`.
-9. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
+1. Look for explicit `TARGET_UNIT` in the user message. If it is missing, look for legacy `TARGET_CHAPTER`.
+2. If no explicit target exists, read `_workflow/current-unit.md` first. If it does not exist, fall back to `_workflow/current-chapter.md`.
+3. Resolve the target to a real content unit folder.
+   - If it starts with `content/`, use it as the unit folder candidate.
+   - If it starts with `topics/`, resolve it as `content/2bac-pc-svt/<target>`.
+   - If it looks like a numbered chapter folder name, resolve it as `content/2bac-pc-svt/<target>`.
+   - If it starts with `topic:`, strip `topic:` and search topic indexes first.
+   - Otherwise, scan official chapter indexes under `content/2bac-pc-svt/*/_index.md` and unofficial topic indexes under `content/2bac-pc-svt/topics/*/_index.md`.
+   - Match against `unit_code`, `topic_code`, `chapter_code`, `unit_slug`, `topic`, `chapter`, `unit_folder`, `topic_folder`, and `chapter_folder`.
+4. Derive `TARGET_UNIT_FOLDER` as the resolved folder.
+5. Derive `TARGET_UNIT_INDEX` as `<resolved-folder>/_index.md`.
+6. Read `TARGET_UNIT_INDEX`.
+7. Derive `TARGET_UNIT_KIND` from frontmatter: use `unit_kind` when present, otherwise `official-chapter` for `type: chapter-index` and `unofficial-topic` for `type: topic-index`.
+8. Derive `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and other metadata from the unit index frontmatter. Prefer `unit_code`; fall back to `topic_code`; then fall back to `chapter_code`. Derive `TARGET_PROGRAM` from frontmatter or, if missing, from the resolved path.
+9. For older instructions/templates, also expose `TARGET_CHAPTER_FOLDER`, `TARGET_CHAPTER_INDEX`, `TARGET_CHAPTER_CODE`, and `TARGET_CHAPTER_TITLE` as compatibility aliases with the same resolved values.
+10. Use this prompt file as the source of truth for this stage or review behavior. Do not ask for or fill `TARGET_STAGE`.
+11. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
 ## Read first
 
@@ -76,10 +86,10 @@ Before doing any work:
 - `content/_references/misconception-map.md`
 - `content/_references/concept-dependencies.md`
 - `content/_references/notation-decisions.md`
-- `TARGET_CHAPTER_INDEX`
+- `TARGET_UNIT_INDEX`
 - selected cluster raw seeds, or all cluster raw seeds when using `MODE: CHAPTER_BALANCE`
 - existing curated design cards, if any
-- relevant mini-lesson files under `TARGET_CHAPTER_FOLDER/lessons/`
+- relevant mini-lesson files under `TARGET_UNIT_FOLDER/lessons/`
 
 ## Cluster selection
 
@@ -88,7 +98,7 @@ Without `MODE: CHAPTER_BALANCE`, Stage 5b works on one cluster by default.
 If `TARGET_EXERCISE_CLUSTER` is provided:
 
 - curate only raw seeds for that cluster;
-- do not curate every chapter cluster in one pass.
+- do not curate every unit cluster in one pass.
 
 If no `TARGET_EXERCISE_CLUSTER` is provided:
 
@@ -99,7 +109,7 @@ If no raw seed dump exists for the selected cluster, stop and recommend `05a-gen
 
 ## Task
 
-Curate the selected cluster's raw exercise seeds into rich exercise design cards in `TARGET_CHAPTER_INDEX` or an author-designated planning note.
+Curate the selected cluster's raw exercise seeds into rich exercise design cards in `TARGET_UNIT_INDEX` or an author-designated planning note.
 
 This is Stage 5b only.
 
@@ -152,7 +162,7 @@ Use this table shape:
 |---|---|---|---|---|---|---|---|
 ```
 
-Use planned IDs and file paths derived from `TARGET_CHAPTER_CODE` and `TARGET_CHAPTER_FOLDER`.
+Use planned IDs and file paths derived from `TARGET_UNIT_CODE` and `TARGET_UNIT_FOLDER`.
 
 ## Exercise design card format
 
@@ -173,7 +183,7 @@ Target skill:
 - <the exact skill this exercise is meant to build/test>
 
 Exercise role in progression:
-- <why this exercise exists at this point in the chapter>
+- <why this exercise exists at this point in the unit>
 
 Student-facing exercise shape:
 - <rough statement shape; not final polished wording unless very short>
@@ -219,7 +229,7 @@ If a design card is not ready for Stage 6, set or update its status to one of:
 - `rejected`
 - `needs-verification`
 
-After a chapter-balance pass, cards that are ready can be marked:
+After a unit-balance pass, cards that are ready can be marked:
 
 - `ready-for-stage-6`
 
@@ -230,7 +240,7 @@ When `MODE: CHAPTER_BALANCE` is used:
 - do not create final exercise files;
 - read all existing cluster raw seed dumps and curated design cards;
 - do not expand all cards into full exercises;
-- review the chapter-level plan for balance.
+- review the unit-level plan for balance.
 
 Check:
 
@@ -247,7 +257,7 @@ Check:
 
 Then update:
 
-- the chapter-level planned exercise table;
+- the unit-level planned exercise table;
 - balance notes;
 - card statuses: `ready-for-stage-6`, `deferred`, `rejected`, or `needs-verification`.
 

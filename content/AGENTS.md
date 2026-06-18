@@ -18,7 +18,7 @@ The Markdown content system is not a frozen production format yet. For guides, p
 
 ## Must-read guides before content work
 
-Before chapter planning or chapter-level edits:
+Before content-unit planning or unit-level edits:
 - Read `_guides/authoring-workflow.md`.
 - Read `_guides/chapter-workflow.md`.
 - Read `_guides/golden-chapter-standard.md`.
@@ -67,23 +67,32 @@ Before creating or editing standalone quizzes:
 Before adapting material from exams or other sources:
 - Read `_guides/source-policy.md`.
 
-## Chapter workflow rule
+## Content unit workflow rule
 
-When doing staged creation work on a chapter:
+The staged workflow applies to a content unit.
+
+A content unit can be:
+
+- an official chapter;
+- an unofficial topic.
+
+Official chapters remain the canonical curriculum spine. Unofficial topics are curated learning paths, revision units, synthesis units, or method units. They must not pretend to be official curriculum chapters.
+
+When doing staged creation work on a content unit:
 
 1. Read `_guides/chapter-workflow.md`.
-2. Read the chapter `_index.md`.
+2. Read the unit `_index.md`.
 3. Determine the current workflow stage from the `## Workflow` checklist.
 4. Work only on the requested stage or the first unchecked stage.
 5. Do not skip stages unless explicitly requested.
-6. Update the chapter tracker after making chapter changes.
+6. Update the unit tracker after making unit changes.
 7. Do not create lessons, exercises, or sets unless the current task asks for them.
 
 When revising existing content, syncing stale files, or responding to an upstream plan/template/guide change, use Maintenance Mode from `_prompts/00-maintenance-mode.md`. Do not restart the full Stage 1-10 pipeline just because earlier work changed; discover the blast radius and patch only affected files or produce an impact plan.
 
-## Numbered chapter folder rule
+## Unit folder rule
 
-Use flat numbered chapter folders directly under `content/2bac-pc-svt/`.
+Use flat numbered official chapter folders directly under `content/2bac-pc-svt/`.
 
 Example:
 
@@ -91,6 +100,16 @@ Example:
 content/2bac-pc-svt/01-limites-continuite/_index.md
 content/2bac-pc-svt/01-limites-continuite/lessons/lc-lesson-001.md
 content/2bac-pc-svt/01-limites-continuite/exercises/lc-ex-001.md
+```
+
+Unofficial topics live under `content/2bac-pc-svt/topics/`.
+
+Example:
+
+```text
+content/2bac-pc-svt/topics/etudier-une-fonction/_index.md
+content/2bac-pc-svt/topics/etudier-une-fonction/lessons/ef-lesson-001.md
+content/2bac-pc-svt/topics/etudier-une-fonction/exercises/ef-ex-001.md
 ```
 
 Do not create domain folders under `content/2bac-pc-svt/`. Keep `domain` as frontmatter metadata only. For the canonical chapter order, use `_guides/curriculum-map-2bac-pc-svt.md`.
@@ -103,11 +122,11 @@ When creating or reviewing lessons, use `content/_examples/golden-lesson-slice-l
 
 ## Mini-lesson architecture rule
 
-Do not create one huge `lesson.md` for a chapter unless explicitly requested.
+Do not create one huge `lesson.md` for a content unit unless explicitly requested.
 
-Student-facing lesson content should be split into focused mini-lesson files under the chapter `lessons/` folder.
+Student-facing lesson content should be split into focused mini-lesson files under the unit `lessons/` folder.
 
-The chapter `_index.md` is the planning dashboard.
+The unit `_index.md` is the planning dashboard.
 
 Mini-lesson files are the actual lesson units.
 
@@ -167,7 +186,7 @@ New generated content should normally start as `draft`, not `published`.
 - Do not move content files without updating links.
 - Do not mix multiple unrelated exercises in one exercise file.
 - Each exercise lives in its own file, but exercise files are usually created in small batches of 3 to 5 unless explicitly requested otherwise.
-- Do not generate a full 20 to 35 exercise chapter library in one pass unless explicitly requested.
+- Do not generate a full 20 to 35 exercise unit library in one pass unless explicitly requested.
 - Standalone quizzes live under `quizzes/`.
 - Each standalone quiz is one Markdown file with multiple questions.
 - Do not confuse standalone quizzes with mini-lesson checkpoints.

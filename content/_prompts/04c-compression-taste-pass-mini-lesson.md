@@ -4,18 +4,24 @@ Use this prompt after the coherence pass.
 
 ## Target
 
-You may provide:
+Preferred input:
 
 ```text
-TARGET_CHAPTER: <chapter-folder-or-path-or-code>
+TARGET_UNIT: <unit-folder-or-path-or-code>
 TARGET_MINI_LESSON_FILE: <lesson file under lessons/>
 ```
 
-If no explicit `TARGET_CHAPTER` is provided, read:
+Legacy alias still accepted:
 
 ```text
-_workflow/current-chapter.md
+TARGET_CHAPTER: <chapter-folder-or-path-or-code>
 ```
+
+If both `TARGET_UNIT` and `TARGET_CHAPTER` are provided, prefer `TARGET_UNIT`.
+
+If no explicit target is provided, read `_workflow/current-unit.md` first. If it does not exist, fall back to `_workflow/current-chapter.md`.
+
+Use the same target resolution rules as `content/_prompts/00-diagnose-next-action.md`: resolve official chapter indexes and unofficial topic indexes, derive `TARGET_UNIT_FOLDER`, `TARGET_UNIT_INDEX`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_UNIT_KIND`, then expose the matching `TARGET_CHAPTER_*` compatibility aliases for older templates.
 
 If the target lesson file is missing or ambiguous, stop and ask.
 

@@ -11,33 +11,39 @@ Use maintenance mode. I want to make the first part of the limits chapter less f
 ```
 
 ```text
-Use maintenance mode. I manually changed the chapter plan. Sync whatever is now stale.
+Use maintenance mode. I manually changed the unit plan. Sync whatever is now stale.
 ```
 
 ```text
-Use maintenance mode. This mini-lesson feels too ceremonial. Make it leaner without breaking the chapter flow.
+Use maintenance mode. This mini-lesson feels too ceremonial. Make it leaner without breaking the unit flow.
 ```
 
 Optional fields:
 
 ```text
+TARGET_UNIT: <unit-folder-or-path-or-code>
 TARGET_CHAPTER: <chapter-folder-or-path-or-code>
 CHANGE_REQUEST: <natural language description>
 ```
 
 Do not require these fields. The user is not responsible for knowing the dependency graph or listing affected files.
 
-## Current chapter fallback
+If both `TARGET_UNIT` and `TARGET_CHAPTER` are provided, prefer `TARGET_UNIT`.
 
-If `TARGET_CHAPTER` is missing and the request does not name a specific file, chapter, or global workflow area, read:
+## Current unit fallback
+
+If `TARGET_UNIT` and `TARGET_CHAPTER` are missing and the request does not name a specific file, unit, or global workflow area, read `_workflow/current-unit.md` first.
+
+If it does not exist, fall back to:
 
 ```text
 _workflow/current-chapter.md
 ```
 
-Expected local file format:
+Expected local file formats:
 
 ```text
+TARGET_UNIT: <unit-folder-or-path-or-code>
 TARGET_CHAPTER: <chapter-folder-or-path-or-code>
 ```
 
@@ -47,26 +53,30 @@ Use the same target resolution rules as `content/_prompts/00-diagnose-next-actio
 
 Before editing, resolve the scope.
 
-1. Read the user request and identify any explicit file path, chapter folder, chapter code, chapter title, guide, template, prompt, or script.
-2. If the user names a file, inspect that file first. If it belongs to a chapter, derive the chapter folder and chapter index from the path.
-3. If the user names a chapter, resolve it to a chapter folder.
-4. If no file or chapter is named, read `_workflow/current-chapter.md`.
-5. If the request is global, inspect the relevant global files instead of forcing a chapter target.
+1. Read the user request and identify any explicit file path, unit folder, unit code, unit title, guide, template, prompt, or script.
+2. If the user names a file, inspect that file first. If it belongs to a content unit, derive the unit folder and unit index from the path.
+3. If the user names a content unit, resolve it to a unit folder.
+4. If no file or unit is named, read `_workflow/current-unit.md`, then fall back to `_workflow/current-chapter.md`.
+5. If the request is global, inspect the relevant global files instead of forcing a unit target.
 6. If the scope is truly impossible to infer, ask for the missing target. Do not guess across the whole repo.
 
-Chapter target resolution:
+Unit target resolution:
 
-1. Look for explicit `TARGET_CHAPTER` in the user message.
-2. If it is missing, use the chapter inferred from the request or `_workflow/current-chapter.md`.
-3. Resolve the target to a real chapter folder.
-   - If it starts with `content/`, use it as the chapter folder candidate.
-   - If it looks like a numbered chapter folder name, resolve it as `content/2bac-pc-svt/<TARGET_CHAPTER>`.
-   - Otherwise, treat it as a chapter code and scan `content/2bac-pc-svt/*/_index.md` for matching frontmatter `chapter_code`.
-4. Derive `TARGET_CHAPTER_FOLDER` as the resolved folder.
-5. Derive `TARGET_CHAPTER_INDEX` as `<resolved-folder>/_index.md`.
-6. Read `TARGET_CHAPTER_INDEX`.
-7. Derive `TARGET_CHAPTER_CODE`, `TARGET_CHAPTER_TITLE`, and other metadata from the chapter index frontmatter. Derive `TARGET_PROGRAM` from frontmatter or, if missing, from the resolved path.
-8. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
+1. Look for explicit `TARGET_UNIT` in the user message. If it is missing, look for legacy `TARGET_CHAPTER`.
+2. If no explicit target exists, use the unit inferred from the request, `_workflow/current-unit.md`, or `_workflow/current-chapter.md`.
+3. Resolve the target to a real content unit folder.
+   - If it starts with `content/`, use it as the unit folder candidate.
+   - If it starts with `topics/`, resolve it as `content/2bac-pc-svt/<target>`.
+   - If it looks like a numbered chapter folder name, resolve it as `content/2bac-pc-svt/<target>`.
+   - If it starts with `topic:`, strip `topic:` and search topic indexes first.
+   - Otherwise, scan official chapter indexes under `content/2bac-pc-svt/*/_index.md` and unofficial topic indexes under `content/2bac-pc-svt/topics/*/_index.md`.
+   - Match against `unit_code`, `topic_code`, `chapter_code`, `unit_slug`, `topic`, `chapter`, `unit_folder`, `topic_folder`, and `chapter_folder`.
+4. Derive `TARGET_UNIT_FOLDER` as the resolved folder.
+5. Derive `TARGET_UNIT_INDEX` as `<resolved-folder>/_index.md`.
+6. Read `TARGET_UNIT_INDEX`.
+7. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and other metadata from the unit index frontmatter. Derive `TARGET_PROGRAM` from frontmatter or, if missing, from the resolved path.
+8. For older instructions/templates, also expose `TARGET_CHAPTER_FOLDER`, `TARGET_CHAPTER_INDEX`, `TARGET_CHAPTER_CODE`, and `TARGET_CHAPTER_TITLE` as compatibility aliases with the same resolved values.
+9. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
 ## Required reading
 
@@ -106,17 +116,17 @@ For global workflow/template/schema/validation changes, inspect the relevant fil
 
 Before deciding what to patch, discover the affected files.
 
-For chapter-level or content-level changes, inspect as relevant:
+For unit-level or content-level changes, inspect as relevant:
 
-- `TARGET_CHAPTER_INDEX`
-- `TARGET_CHAPTER_FOLDER/lessons/`
-- `TARGET_CHAPTER_FOLDER/exercises/`
-- `TARGET_CHAPTER_FOLDER/quizzes/`
-- `TARGET_CHAPTER_FOLDER/sets/`
-- chapter workflow checklist
+- `TARGET_UNIT_INDEX`
+- `TARGET_UNIT_FOLDER/lessons/`
+- `TARGET_UNIT_FOLDER/exercises/`
+- `TARGET_UNIT_FOLDER/quizzes/`
+- `TARGET_UNIT_FOLDER/sets/`
+- unit workflow checklist
 - `## Suivi de production`
 - `## Journal de production`
-- `## Golden chapter readiness`
+- `## Golden chapter readiness` or `## Golden unit readiness`
 - lesson and exercise frontmatter
 - quiz frontmatter
 - lesson IDs
@@ -124,8 +134,8 @@ For chapter-level or content-level changes, inspect as relevant:
 - quiz IDs
 - `skills`
 - `lesson_number`
-- `chapter_code`
-- `chapter_folder`
+- `unit_code` or `chapter_code`
+- `unit_folder` or `chapter_folder`
 - internal Markdown links
 - mentions of moved or renamed concepts
 - previous and next mini-lessons around any changed lesson
@@ -155,7 +165,7 @@ Behavior:
 
 ### `medium-content-sync`
 
-A change that may affect a chapter plan, one or more mini-lessons, neighboring lessons, linked exercises, linked quizzes, trackers, or status notes.
+A change that may affect a unit plan, one or more mini-lessons, neighboring lessons, linked exercises, linked quizzes, trackers, or status notes.
 
 Behavior:
 
@@ -166,7 +176,7 @@ Behavior:
 
 ### `big-structural-revision`
 
-A change that reorganizes a chapter, changes many lesson plans, splits or merges major content, changes the chapter philosophy, or risks rewriting a lot of downstream content.
+A change that reorganizes a unit, changes many lesson plans, splits or merges major content, changes the unit philosophy, or risks rewriting a lot of downstream content.
 
 Behavior:
 
@@ -181,7 +191,7 @@ A change to prompts, guides, templates, schemas, validation rules, or the whole 
 Behavior:
 
 - Patch the workflow, guides, templates, prompts, schemas, or validation rules carefully.
-- Do not rewrite existing chapter content unless explicitly requested.
+- Do not rewrite existing unit content unless explicitly requested.
 
 ## Safety rules
 
@@ -233,7 +243,7 @@ Summarize the requested change.
 
 ## Resolved scope
 
-State the resolved chapter/file/global scope.
+State the resolved unit/file/global scope.
 
 ## Change classification
 
@@ -263,7 +273,7 @@ For big structural revisions:
 ## Targeted review
 
 Report checks performed:
-- chapter flow;
+- unit flow;
 - neighboring lessons;
 - linked exercises;
 - linked quizzes;
@@ -278,7 +288,7 @@ Report updates to:
 - file frontmatter if any;
 - `## Suivi de production`;
 - `## Journal de production`;
-- `## Golden chapter readiness` if relevant.
+- `## Golden chapter readiness` or `## Golden unit readiness` if relevant.
 
 ## Remaining risks
 

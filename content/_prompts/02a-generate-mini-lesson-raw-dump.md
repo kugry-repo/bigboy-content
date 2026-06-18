@@ -6,20 +6,26 @@ The dump is not the final lesson.
 
 ## Target
 
-You may provide:
+Preferred input:
 
 ```text
-TARGET_CHAPTER: <chapter-folder-or-path-or-code>
+TARGET_UNIT: <unit-folder-or-path-or-code>
 TARGET_MINI_LESSON: <planned lesson id, title, or file>
 ```
 
-If no explicit `TARGET_CHAPTER` is provided, read:
+Legacy alias still accepted:
 
 ```text
-_workflow/current-chapter.md
+TARGET_CHAPTER: <chapter-folder-or-path-or-code>
 ```
 
-If the chapter or mini-lesson target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
+If both `TARGET_UNIT` and `TARGET_CHAPTER` are provided, prefer `TARGET_UNIT`.
+
+If no explicit target is provided, read `_workflow/current-unit.md` first. If it does not exist, fall back to `_workflow/current-chapter.md`.
+
+Use the same target resolution rules as `content/_prompts/00-diagnose-next-action.md`: resolve official chapter indexes and unofficial topic indexes, derive `TARGET_UNIT_FOLDER`, `TARGET_UNIT_INDEX`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_UNIT_KIND`, then expose the matching `TARGET_CHAPTER_*` compatibility aliases for older templates.
+
+If the unit or mini-lesson target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
 ## Read first
 
@@ -35,11 +41,11 @@ If the chapter or mini-lesson target is missing, ambiguous, or cannot be resolve
 - `content/_references/misconception-map.md`
 - `content/_references/concept-dependencies.md`
 - `content/_references/notation-decisions.md`
-- `TARGET_CHAPTER_INDEX`
+- `TARGET_UNIT_INDEX`
 
 ## Task
 
-Create or update the raw dump for the selected mini-lesson in `TARGET_CHAPTER_INDEX` or in the author-designated planning note.
+Create or update the raw dump for the selected mini-lesson in `TARGET_UNIT_INDEX` or in the author-designated planning note.
 
 This is Stage 2 raw-material work only.
 

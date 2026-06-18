@@ -2,9 +2,23 @@
 
 This folder contains reusable workflow prompts for Codex, ChatGPT, and the human author.
 
-The prompts are generic. Usually, set the current chapter once and then run stage prompts without repeating the target.
+The prompts are generic. Usually, set the current content unit once and then run stage prompts without repeating the target.
 
-To set the current chapter, run:
+A content unit can be an official chapter or an unofficial topic. Official chapters remain the canonical curriculum spine; unofficial topics are curated revision, synthesis, or method units under `content/2bac-pc-svt/topics/`.
+
+To set the current unit, run:
+
+```text
+content/_prompts/00-set-current-unit.md
+```
+
+That helper writes local state to:
+
+```text
+_workflow/current-unit.md
+```
+
+The older current-chapter helper is still available for compatibility:
 
 ```text
 content/_prompts/00-set-current-chapter.md
@@ -19,18 +33,23 @@ _workflow/current-chapter.md
 Stage prompts use an explicit target only as an override:
 
 ```text
-TARGET_CHAPTER: <chapter-folder-or-path-or-code>
+TARGET_UNIT: <unit-folder-or-path-or-code>
 ```
 
-If no explicit `TARGET_CHAPTER` is provided, prompts read `_workflow/current-chapter.md`.
+`TARGET_CHAPTER` remains a legacy alias. If both `TARGET_UNIT` and `TARGET_CHAPTER` are present, prompts prefer `TARGET_UNIT`.
 
-`TARGET_CHAPTER` and `SET_CURRENT_CHAPTER` may be:
+If no explicit target is provided, prompts read `_workflow/current-unit.md` first, then fall back to `_workflow/current-chapter.md`.
+
+`TARGET_UNIT` may be:
 
 - a numbered chapter folder;
+- a topic folder such as `topics/etudier-une-fonction`;
 - a full path under `content/`;
-- a chapter code from a chapter `_index.md` frontmatter.
+- an official chapter code from a chapter `_index.md` frontmatter;
+- an unofficial topic code from a topic `_index.md` frontmatter;
+- a prefixed topic code such as `topic:ef`.
 
-Each prompt resolves the chapter folder, reads the chapter index, and derives the chapter code, title, program, and other metadata from the repo.
+Each prompt resolves the unit folder, reads the unit index, and derives the unit kind, code, title, program, and other metadata from the repo. For compatibility, prompts also expose equivalent `TARGET_CHAPTER` values after resolution.
 
 When unsure where you are, run:
 
@@ -41,7 +60,7 @@ content/_prompts/00-diagnose-next-action.md
 There are now two workflow modes:
 
 Creation mode:
-Use the Stage 1-10 prompts to create new content for the first time. Run stages in order unless you are intentionally revising earlier work. Revise plans before creating files. Create lessons and exercises in small batches. Do not generate whole chapters at once.
+Use the Stage 1-10 prompts to create new content for the first time. Run stages in order unless you are intentionally revising earlier work. Revise plans before creating files. Create lessons and exercises in small batches. Do not generate whole units at once.
 
 Maintenance mode:
 Use `00-maintenance-mode.md` when modifying existing content after work has already been created. Stages are not permanent once upstream content changes. The user should not have to know the blast radius. Maintenance mode discovers affected files, then either patches safely or produces an impact plan for larger changes.
@@ -80,9 +99,9 @@ raw exercise seeds for one cluster
 
 Stage 5a output is a raw exercise seed. Stage 5b output is an exercise design card. Stage 6 output is a final exercise file.
 
-For substantial chapters, Stage 5a and Stage 5b work cluster by cluster by default. A cluster is derived from the chapter plan, mini-lessons, skills, official program notes, and exam patterns.
+For substantial units, Stage 5a and Stage 5b work cluster by cluster by default. A cluster is derived from the unit plan, mini-lessons, skills, official program notes, and exam patterns. `MODE: CHAPTER_BALANCE` keeps its name for compatibility but applies to the resolved unit.
 
-Each exercise lives in its own file, but exercise files are usually created in small batches of 3 to 5 unless explicitly requested otherwise. A full chapter may eventually target 20 to 35 exercises, accumulated over multiple batches.
+Each exercise lives in its own file, but exercise files are usually created in small batches of 3 to 5 unless explicitly requested otherwise. A full official chapter may eventually target 20 to 35 exercises, accumulated over multiple batches.
 
 Standalone quizzes use a parallel workflow and do not renumber the Stage 1-10 prompts:
 
@@ -90,7 +109,7 @@ Standalone quizzes use a parallel workflow and do not renumber the Stage 1-10 pr
 raw quiz dump
 -> human curation / chop
 -> quiz design cards with item design cards
--> quiz series / chapter quiz balance
+-> quiz series / unit quiz balance
 -> quiz file creation
 -> answer key and feedback review
 ```
@@ -101,11 +120,12 @@ Helper prompts:
 
 - `00-diagnose-next-action.md`
 - `00-maintenance-mode.md`
+- `00-set-current-unit.md`
 - `00-set-current-chapter.md`
 
 Stage prompts:
 
-Stage 5 is split into cluster-based `05a` and `05b`. Use `05-create-exercise-blueprint.md` only as a compatibility shortcut for very small/simple chapters or emergency direct planning.
+Stage 5 is split into cluster-based `05a` and `05b`. Use `05-create-exercise-blueprint.md` only as a compatibility shortcut for very small/simple units or emergency direct planning.
 
 - `01-create-chapter-plan.md`
 - `02-create-mini-lesson-blueprint.md`
@@ -119,7 +139,7 @@ Stage 5 is split into cluster-based `05a` and `05b`. Use `05-create-exercise-blu
 - `04d-verify-finalize-mini-lesson.md`
 - `05a-generate-exercise-raw-dump.md` creates raw exercise seeds for one cluster
 - `05b-curate-exercise-blueprint.md` curates exercise design cards for one cluster or runs `MODE: CHAPTER_BALANCE`
-- `05-create-exercise-blueprint.md` compatibility shortcut for quick/simple chapters
+- `05-create-exercise-blueprint.md` compatibility shortcut for quick/simple units
 - `06-create-exercise-batch.md`
 - `07-review-solutions.md`
 - `08-create-exercise-sets.md`

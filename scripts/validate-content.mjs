@@ -6,6 +6,7 @@ import path from "node:path";
 const ROOT = process.cwd();
 const CONTENT_DIR = path.join(ROOT, "content");
 const PROGRAM_DIR = path.join(CONTENT_DIR, "2bac-pc-svt");
+const TOPICS_DIR = path.join(PROGRAM_DIR, "topics");
 
 const REQUIRED_BASE_DIRS = [
   "content",
@@ -16,6 +17,7 @@ const REQUIRED_BASE_DIRS = [
   "content/_examples",
   "content/_tracking",
   "content/2bac-pc-svt",
+  "content/2bac-pc-svt/topics",
 ];
 
 const CANONICAL_CHAPTERS = [
@@ -36,6 +38,8 @@ const CANONICAL_CHAPTERS = [
 const CHAPTERS_BY_FOLDER = new Map(
   CANONICAL_CHAPTERS.map((chapter) => [chapter.folder, chapter]),
 );
+
+const ALLOWED_PROGRAM_EXTRA_FOLDERS = new Set(["topics"]);
 
 const FORBIDDEN_DOMAIN_FOLDERS = new Set([
   "analyse",
@@ -154,6 +158,7 @@ const errors = [];
 const warnings = [];
 const ids = new Map();
 let checkedChapters = 0;
+let checkedTopics = 0;
 
 function toPosix(filePath) {
   return filePath.replaceAll(path.sep, "/");
@@ -224,6 +229,10 @@ function parseFrontmatter(text) {
 
     if (value === "null") {
       value = null;
+    } else if (value === "true") {
+      value = true;
+    } else if (value === "false") {
+      value = false;
     } else if (/^\d+$/.test(value)) {
       value = Number(value);
     } else {
@@ -289,6 +298,10 @@ function checkProgramFolderShape() {
     .map((entry) => entry.name);
 
   for (const dir of chapterDirs) {
+    if (ALLOWED_PROGRAM_EXTRA_FOLDERS.has(dir)) {
+      continue;
+    }
+
     if (FORBIDDEN_DOMAIN_FOLDERS.has(dir)) {
       errors.push(`content/2bac-pc-svt/${dir}/: domain folders are not allowed here`);
       continue;
@@ -305,6 +318,10 @@ function checkProgramFolderShape() {
       errors.push(`content/2bac-pc-svt/${chapter.folder}/: missing canonical chapter folder`);
     }
   }
+}
+
+function isFalse(value) {
+  return value === false || value === "false";
 }
 
 function checkChapterIndex(chapter, chapterDir) {
@@ -494,8 +511,9 @@ function checkLessonFile(chapter, filePath) {
 
 function checkExerciseFile(chapter, filePath) {
   const fileName = path.basename(filePath);
+  const nameMatch = fileName.match(new RegExp(`^${chapter.code}-ex-(\\d{3})\\.md$`));
 
-  if (!new RegExp(`^${chapter.code}-ex-\\d{3}\\.md$`).test(fileName)) {
+  if (!nameMatch) {
     addError(filePath, `filename must match "${chapter.code}-ex-###.md"`);
   }
 
@@ -510,6 +528,13 @@ function checkExerciseFile(chapter, filePath) {
 
   if (data.type !== "exercise") {
     addError(filePath, 'frontmatter "type" must be "exercise"');
+  }
+
+  if (chapter.kind === "unofficial-topic" && nameMatch) {
+    const expectedId = `2bac-pcsvt-${chapter.code}-ex-${nameMatch[1]}`;
+    if (data.id !== expectedId) {
+      addError(filePath, `frontmatter "id" must be "${expectedId}"`);
+    }
   }
 
   if (!Object.hasOwn(data, "solution_status")) {
@@ -585,7 +610,20 @@ function checkQuizFile(chapter, filePath) {
   }
 }
 
-function checkSetFile(filePath) {
+function checkSetFile(filePath, unit = null) {
+  if (unit?.kind === "unofficial-topic") {
+    const fileName = path.basename(filePath);
+    const escapedCode = unit.code.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const topicSetName = new RegExp(`^${escapedCode}-(set-)?[a-z0-9][a-z0-9-]*\\.md$`);
+
+    if (!topicSetName.test(fileName)) {
+      addError(
+        filePath,
+        `filename must start with "${unit.code}-" and use a sensible set slug`,
+      );
+    }
+  }
+
   const text = fs.readFileSync(filePath, "utf8");
   const parsed = parseFrontmatter(text);
 
@@ -616,6 +654,149 @@ function checkChapterContentFiles(chapter) {
 
   for (const filePath of walkMarkdownFiles(path.join(chapterDir, "sets"))) {
     checkSetFile(filePath);
+  }
+}
+
+function checkTopicCatalog() {
+  const catalogPath = path.join(TOPICS_DIR, "_index.md");
+
+  if (!isFile(catalogPath)) {
+    addError(catalogPath, "missing topic catalog index");
+    return;
+  }
+
+  const text = fs.readFileSync(catalogPath, "utf8");
+  const parsed = parseFrontmatter(text);
+
+  if (!requireFrontmatter(catalogPath, parsed, "topic catalog _index.md")) {
+    return;
+  }
+
+  if (parsed.data.type !== "topic-catalog") {
+    addError(catalogPath, 'frontmatter "type" must be "topic-catalog"');
+  }
+
+  if (!isFalse(parsed.data.official)) {
+    addError(catalogPath, 'frontmatter "official" must be false');
+  }
+}
+
+function checkTopicIndex(topicDir) {
+  const indexPath = path.join(topicDir, "_index.md");
+  const topicFolder = path.basename(topicDir);
+  const expectedUnitFolder = `topics/${topicFolder}`;
+
+  if (!isFile(indexPath)) {
+    addError(indexPath, "missing topic index");
+    return null;
+  }
+
+  const text = fs.readFileSync(indexPath, "utf8");
+  const parsed = parseFrontmatter(text);
+
+  if (!requireFrontmatter(indexPath, parsed, "topic _index.md")) {
+    return null;
+  }
+
+  const { data } = parsed;
+
+  if (data.type !== "topic-index") {
+    addError(indexPath, 'frontmatter "type" must be "topic-index"');
+  }
+
+  if (data.unit_kind !== "unofficial-topic") {
+    addError(indexPath, 'frontmatter "unit_kind" must be "unofficial-topic"');
+  }
+
+  for (const field of [
+    "unit_code",
+    "unit_folder",
+    "topic_code",
+    "topic_folder",
+    "status",
+  ]) {
+    if (!Object.hasOwn(data, field) || data[field] === "") {
+      addError(indexPath, `missing frontmatter field "${field}"`);
+    }
+  }
+
+  if (!isFalse(data.official)) {
+    addError(indexPath, 'frontmatter "official" must be false');
+  }
+
+  if (data.unit_folder && data.unit_folder !== expectedUnitFolder) {
+    addError(indexPath, `frontmatter "unit_folder" must be "${expectedUnitFolder}"`);
+  }
+
+  if (data.topic_folder && data.topic_folder !== expectedUnitFolder) {
+    addError(indexPath, `frontmatter "topic_folder" must be "${expectedUnitFolder}"`);
+  }
+
+  if (data.unit_code && data.topic_code && data.topic_code !== data.unit_code) {
+    addError(indexPath, 'frontmatter "topic_code" must match "unit_code"');
+  }
+
+  if (data.unit_code) {
+    const expectedId = `2bac-pcsvt-${data.unit_code}-index`;
+    if (data.id !== expectedId) {
+      addError(indexPath, `frontmatter "id" must be "${expectedId}"`);
+    }
+  }
+
+  return {
+    code: data.unit_code || data.topic_code || data.chapter_code,
+    folder: expectedUnitFolder,
+    kind: "unofficial-topic",
+  };
+}
+
+function checkTopicFolder(topicDir) {
+  if (!isDirectory(topicDir)) return;
+
+  checkedTopics += 1;
+  const topicUnit = checkTopicIndex(topicDir);
+
+  for (const subdir of ["lessons", "exercises", "quizzes", "sets"]) {
+    const subdirPath = path.join(topicDir, subdir);
+    if (!isDirectory(subdirPath)) {
+      errors.push(`${rel(subdirPath)}/: missing topic subfolder`);
+    }
+  }
+
+  if (!topicUnit?.code) {
+    return;
+  }
+
+  for (const filePath of walkMarkdownFiles(path.join(topicDir, "lessons"))) {
+    checkLessonFile(topicUnit, filePath);
+  }
+
+  for (const filePath of walkMarkdownFiles(path.join(topicDir, "exercises"))) {
+    checkExerciseFile(topicUnit, filePath);
+  }
+
+  for (const filePath of walkMarkdownFiles(path.join(topicDir, "quizzes"))) {
+    checkQuizFile(topicUnit, filePath);
+  }
+
+  for (const filePath of walkMarkdownFiles(path.join(topicDir, "sets"))) {
+    checkSetFile(filePath, topicUnit);
+  }
+}
+
+function checkTopics() {
+  if (!isDirectory(TOPICS_DIR)) {
+    errors.push("content/2bac-pc-svt/topics/: missing topics folder");
+    return;
+  }
+
+  checkTopicCatalog();
+
+  for (const entry of readDir(TOPICS_DIR)) {
+    if (!entry.isDirectory()) continue;
+    if (entry.name.startsWith(".")) continue;
+
+    checkTopicFolder(path.join(TOPICS_DIR, entry.name));
   }
 }
 
@@ -674,6 +855,7 @@ function printResults() {
   console.log(`Errors: ${errors.length}`);
   console.log(`Warnings: ${warnings.length}`);
   console.log(`Checked chapters: ${checkedChapters}/${CANONICAL_CHAPTERS.length}`);
+  console.log(`Checked topics: ${checkedTopics}`);
   console.log(`Checked IDs: ${ids.size}`);
 
   if (warnings.length) {
@@ -705,6 +887,7 @@ function main() {
     checkChapterContentFiles(chapter);
   }
 
+  checkTopics();
   collectIdsAndWarnings();
   printResults();
 }

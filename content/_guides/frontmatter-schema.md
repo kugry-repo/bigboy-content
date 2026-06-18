@@ -9,6 +9,7 @@ The schema should be stable enough for future app rendering but simple enough fo
 Strict YAML frontmatter is required for generated content files and index files, including:
 
 - program and chapter indexes;
+- topic catalogs and topic indexes;
 - mini-lessons;
 - exercises;
 - standalone quizzes;
@@ -55,6 +56,44 @@ updated: YYYY-MM-DD
 
 `chapter_order` stores the curriculum/navigation order.
 
+## Content unit fields
+
+The preferred authoring target is now `TARGET_UNIT`.
+
+A content unit can be:
+
+- `official-chapter`;
+- `unofficial-topic`.
+
+Official chapter frontmatter may continue to use the existing `chapter`, `chapter_code`, `chapter_folder`, and `chapter_order` fields as its main navigation metadata.
+
+Unofficial topic indexes must use semantic unit fields:
+
+```yaml
+unit_kind: unofficial-topic
+unit_code: ef
+unit_slug: etudier-une-fonction
+unit_folder: topics/etudier-une-fonction
+unit_order: 3
+official: false
+content_scope: cross-chapter-method
+topic: etudier-une-fonction
+topic_code: ef
+topic_folder: topics/etudier-une-fonction
+```
+
+During the transition, unofficial topic indexes may also include chapter-compatible alias fields so older `TARGET_CHAPTER` prompts keep working:
+
+```yaml
+chapter: etudier-une-fonction
+chapter_code: ef
+chapter_folder: topics/etudier-une-fonction
+chapter_order: null
+domain: transversal
+```
+
+These alias fields do not make the topic an official curriculum chapter.
+
 ## File types
 
 Allowed values for `type`:
@@ -62,6 +101,8 @@ Allowed values for `type`:
 - `program-index`
 - `domain-index`
 - `chapter-index`
+- `topic-catalog`
+- `topic-index`
 - `lesson`
 - `exercise`
 - `quiz`
@@ -157,9 +198,76 @@ updated: YYYY-MM-DD
 ---
 ```
 
+## Topic catalog frontmatter
+
+Template:
+
+```yaml
+---
+type: topic-catalog
+id: 2bac-pcsvt-topics-index
+title: "Topics non officiels"
+program: 2bac-pc-svt
+level: 2bac
+tracks: [pc, svt]
+language: fr
+official: false
+status: planned
+sync_status: current
+sync_reason: null
+version: 0.1.0
+source_type: original
+source_ref: null
+created: YYYY-MM-DD
+updated: YYYY-MM-DD
+---
+```
+
+## Topic index frontmatter
+
+Template:
+
+```yaml
+---
+type: topic-index
+id: 2bac-pcsvt-ef-index
+title: "Étudier une fonction"
+program: 2bac-pc-svt
+level: 2bac
+tracks: [pc, svt]
+language: fr
+unit_kind: unofficial-topic
+unit_code: ef
+unit_slug: etudier-une-fonction
+unit_folder: topics/etudier-une-fonction
+unit_order: 3
+official: false
+content_scope: cross-chapter-method
+topic: etudier-une-fonction
+topic_code: ef
+topic_folder: topics/etudier-une-fonction
+chapter: etudier-une-fonction
+chapter_code: ef
+chapter_folder: topics/etudier-une-fonction
+chapter_order: null
+domain: transversal
+related_chapters:
+  - 01-limites-continuite
+skills: []
+status: planned
+sync_status: current
+sync_reason: null
+version: 0.1.0
+source_type: original
+source_ref: null
+created: YYYY-MM-DD
+updated: YYYY-MM-DD
+---
+```
+
 ## Mini-lesson frontmatter
 
-For chapter lesson content, prefer separate mini-lesson files under `lessons/`.
+For unit lesson content, prefer separate mini-lesson files under `lessons/`.
 
 Do not create one huge `lesson.md` unless explicitly requested for export or compatibility.
 
@@ -181,7 +289,7 @@ Do not use `lesson_shape` as a template selector, and do not make it required.
 
 Author-only planning notes belong in the body section `## Notes auteur`, not in a competing frontmatter field. Keep that section at the end of the file and hide or remove it in future learner-facing exports.
 
-Example path:
+Official chapter example path:
 
 ```text
 content/2bac-pc-svt/01-limites-continuite/lessons/lc-lesson-001.md
@@ -191,6 +299,13 @@ Example ID:
 
 ```text
 2bac-pcsvt-lc-lesson-001
+```
+
+Unofficial topic lesson files use the topic `unit_code`:
+
+```text
+content/2bac-pc-svt/topics/etudier-une-fonction/lessons/ef-lesson-001.md
+2bac-pcsvt-ef-lesson-001
 ```
 
 Template:
@@ -307,7 +422,7 @@ Do not use `technique` as a frontmatter `difficulty` value. Use it only as a des
 
 ## Quiz frontmatter
 
-Standalone quiz files use `type: quiz` and live under the chapter `quizzes/` folder.
+Standalone quiz files use `type: quiz` and live under the unit `quizzes/` folder.
 
 Example path:
 
@@ -445,7 +560,7 @@ IDs must be:
 Use the pattern:
 
 ```text
-2bac-pcsvt-{chapter_code}-{kind}-{number}
+2bac-pcsvt-{unit_or_chapter_code}-{kind}-{number}
 ```
 
 Examples:

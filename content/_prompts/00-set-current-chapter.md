@@ -2,6 +2,8 @@
 
 Use this prompt to set the local authoring current chapter.
 
+For new work, prefer `content/_prompts/00-set-current-unit.md`. This prompt remains for official-chapter compatibility and writes only `_workflow/current-chapter.md`.
+
 This helper may create or update only:
 
 ```text

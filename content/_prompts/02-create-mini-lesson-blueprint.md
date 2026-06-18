@@ -4,46 +4,56 @@ Use this prompt before writing a mini-lesson file.
 
 ## Target
 
-You may provide an explicit target:
+Preferred input:
+
+```text
+TARGET_UNIT: <unit-folder-or-path-or-code>
+```
+
+Legacy alias still accepted:
 
 ```text
 TARGET_CHAPTER: <chapter-folder-or-path-or-code>
 ```
 
-If no explicit `TARGET_CHAPTER` is provided, read:
+If both `TARGET_UNIT` and `TARGET_CHAPTER` are provided, prefer `TARGET_UNIT`.
+
+If no explicit target is provided, read `_workflow/current-unit.md` first. If it does not exist, fall back to `_workflow/current-chapter.md`.
+
+Expected local file formats:
 
 ```text
-_workflow/current-chapter.md
-```
-
-Expected local file format:
-
-```text
+TARGET_UNIT: <unit-folder-or-path-or-code>
 TARGET_CHAPTER: <chapter-folder-or-path-or-code>
 ```
 
-If neither an explicit target nor `_workflow/current-chapter.md` exists, stop and ask the user to set a current chapter by running:
+If neither an explicit target nor local workflow state exists, stop and ask the user to set a current unit by running:
 
 ```text
-content/_prompts/00-set-current-chapter.md
+content/_prompts/00-set-current-unit.md
 ```
 
 ## Target resolution
 
 Before doing any work:
 
-1. Look for explicit `TARGET_CHAPTER` in the user message.
-2. If it is missing, read `_workflow/current-chapter.md`.
-3. Resolve the target to a real chapter folder.
-   - If it starts with `content/`, use it as the chapter folder candidate.
-   - If it looks like a numbered chapter folder name, resolve it as `content/2bac-pc-svt/<TARGET_CHAPTER>`.
-   - Otherwise, treat it as a chapter code and scan `content/2bac-pc-svt/*/_index.md` for matching frontmatter `chapter_code`.
-4. Derive `TARGET_CHAPTER_FOLDER` as the resolved folder.
-5. Derive `TARGET_CHAPTER_INDEX` as `<resolved-folder>/_index.md`.
-6. Read `TARGET_CHAPTER_INDEX`.
-7. Derive `TARGET_CHAPTER_CODE`, `TARGET_CHAPTER_TITLE`, and other metadata from the chapter index frontmatter. Derive `TARGET_PROGRAM` from frontmatter or, if missing, from the resolved path.
-8. Use this prompt file as the source of truth for the stage number and stage behavior. Do not ask for or fill `TARGET_STAGE`.
-9. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
+1. Look for explicit `TARGET_UNIT` in the user message. If it is missing, look for legacy `TARGET_CHAPTER`.
+2. If no explicit target exists, read `_workflow/current-unit.md` first. If it does not exist, fall back to `_workflow/current-chapter.md`.
+3. Resolve the target to a real content unit folder.
+   - If it starts with `content/`, use it as the unit folder candidate.
+   - If it starts with `topics/`, resolve it as `content/2bac-pc-svt/<target>`.
+   - If it looks like a numbered chapter folder name, resolve it as `content/2bac-pc-svt/<target>`.
+   - If it starts with `topic:`, strip `topic:` and search topic indexes first.
+   - Otherwise, scan official chapter indexes under `content/2bac-pc-svt/*/_index.md` and unofficial topic indexes under `content/2bac-pc-svt/topics/*/_index.md`.
+   - Match against `unit_code`, `topic_code`, `chapter_code`, `unit_slug`, `topic`, `chapter`, `unit_folder`, `topic_folder`, and `chapter_folder`.
+4. Derive `TARGET_UNIT_FOLDER` as the resolved folder.
+5. Derive `TARGET_UNIT_INDEX` as `<resolved-folder>/_index.md`.
+6. Read `TARGET_UNIT_INDEX`.
+7. Derive `TARGET_UNIT_KIND` from frontmatter: use `unit_kind` when present, otherwise `official-chapter` for `type: chapter-index` and `unofficial-topic` for `type: topic-index`.
+8. Derive `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and other metadata from the unit index frontmatter. Prefer `unit_code`; fall back to `topic_code`; then fall back to `chapter_code`. Derive `TARGET_PROGRAM` from frontmatter or, if missing, from the resolved path.
+9. For older instructions/templates, also expose `TARGET_CHAPTER_FOLDER`, `TARGET_CHAPTER_INDEX`, `TARGET_CHAPTER_CODE`, and `TARGET_CHAPTER_TITLE` as compatibility aliases with the same resolved values.
+10. Use this prompt file as the source of truth for this stage or review behavior. Do not ask for or fill `TARGET_STAGE`.
+11. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
 ## Read first
 
@@ -58,17 +68,17 @@ Before doing any work:
 - `content/_guides/frontmatter-schema.md`
 - `content/_guides/id-and-naming.md`
 - `content/_templates/mini-lesson.template.md`
-- `TARGET_CHAPTER_INDEX`
+- `TARGET_UNIT_INDEX`
 
 ## Task
 
-Create or update the source/target notes, raw dump, and curation area for one mini-lesson inside `TARGET_CHAPTER_INDEX`.
+Create or update the source/target notes, raw dump, and curation area for one mini-lesson inside `TARGET_UNIT_INDEX`.
 
 This is Stage 2 only.
 
-If the user named a specific mini-lesson ID, title, or planned file, use that item. Otherwise, choose the first missing or least-developed mini-lesson preparation entry in the chapter dashboard. If more than one item is equally plausible, stop and ask.
+If the user named a specific mini-lesson ID, title, or planned file, use that item. Otherwise, choose the first missing or least-developed mini-lesson preparation entry in the unit dashboard. If more than one item is equally plausible, stop and ask.
 
-Update the chapter `_index.md` only.
+Update the unit `_index.md` only.
 
 Do not create:
 
@@ -79,8 +89,8 @@ Do not create:
 
 The preparation must specify:
 
-- mini-lesson ID using `TARGET_CHAPTER_CODE`;
-- planned file path under `TARGET_CHAPTER_FOLDER/lessons/`;
+- mini-lesson ID using `TARGET_UNIT_CODE`;
+- planned file path under `TARGET_UNIT_FOLDER/lessons/`;
 - purpose of the mini-lesson;
 - source / target notes;
 - prerequisite ideas and blockers;
@@ -104,6 +114,6 @@ Use the completed golden chapter as a reference if one exists, but do not requir
 Finish by summarizing:
 
 - preparation updated;
-- exact section changed in `TARGET_CHAPTER_INDEX`;
+- exact section changed in `TARGET_UNIT_INDEX`;
 - assumptions or unresolved choices;
 - next recommended prompt: `02a-generate-mini-lesson-raw-dump.md` or `02b-curate-mini-lesson-material.md`, depending on what remains.

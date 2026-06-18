@@ -36,6 +36,8 @@ Automated checks can catch:
 - duplicate IDs;
 - missing required fields;
 - missing chapter workflow sections;
+- missing topic catalog or topic unit structure;
+- topic lesson, exercise, quiz, and set names that do not use the topic unit code;
 - mini-lesson files missing useful quality signals;
 - exercise files missing statement or solution sections;
 - old `lesson.md` files used accidentally;

@@ -11,6 +11,7 @@ node_modules/
 
 # Local authoring workflow state
 _workflow/current-chapter.md
+_workflow/current-unit.md
 
 # Generated archives for sharing/import
 _exports/

@@ -1,34 +1,71 @@
-# Chapter Workflow Guide
+# Content Unit Workflow Guide
 
 ## Purpose
 
-This guide defines the production sequence for creating one complete math chapter.
+This guide defines the production sequence for creating one complete math content unit.
 
 It exists so ChatGPT, Codex, and the human author do not skip important stages.
 
-A chapter should move from planning to mini-lessons to exercises to review in a controlled order.
+A content unit should move from planning to mini-lessons to exercises to review in a controlled order.
+
+The file name stays `chapter-workflow.md` because older prompts still link to it.
+
+## Content unit model
+
+A content unit can be:
+
+- `official-chapter`: a numbered official curriculum chapter under `content/2bac-pc-svt/`;
+- `unofficial-topic`: a curated learning path, revision unit, synthesis unit, or method unit under `content/2bac-pc-svt/topics/`.
+
+Official chapters remain the canonical curriculum spine. Unofficial topics must not pretend to be official curriculum chapters.
+
+Both unit kinds use the same authoring pipeline:
+
+```text
+unit plan
+-> raw lesson dump
+-> curation/chop
+-> lesson drafting
+-> review/coherence
+-> exercise raw seeds
+-> exercise design cards
+-> exercise batches
+-> quizzes
+-> sets
+-> final review
+```
+
+Both unit kinds use the same subfolders: `lessons/`, `exercises/`, `quizzes/`, and `sets/`. Unofficial topics may contain topic-native content and links to official chapter content. Avoid duplicating official chapter content unnecessarily.
+
+Prefer `TARGET_UNIT` in new prompts and authoring notes. Keep `TARGET_CHAPTER` as a legacy alias for older prompts.
 
 ## Core rule
 
-When working on a chapter, always read the chapter `_index.md` first.
+When working on a content unit, always read the unit `_index.md` first.
 
-The chapter `_index.md` is the local dashboard for that chapter.
+The unit `_index.md` is the local dashboard for that unit.
 
-Chapter paths use the flat numbered folder structure:
+Official chapter paths use the flat numbered folder structure:
 
 ```text
 content/2bac-pc-svt/01-limites-continuite/_index.md
 ```
 
-Before doing staged chapter work in creation mode:
+Unofficial topic paths live under `topics/`:
+
+```text
+content/2bac-pc-svt/topics/etudier-une-fonction/_index.md
+```
+
+Before doing staged unit work in creation mode:
 
 1. Read this workflow guide.
 2. Read `_guides/golden-chapter-standard.md`.
-3. Read the chapter `_index.md`.
+3. Read the unit `_index.md`.
 4. Identify the current workflow stage.
 5. Work only on the requested stage.
 6. Do not skip stages unless the user explicitly asks.
-7. Update the chapter tracker after the work is done.
+7. Update the unit tracker after the work is done.
 
 For changes to existing content that do not fit the current creation stage, or that respond to upstream plan/template/guide edits, use Maintenance Mode instead of forcing a stage rerun.
 
@@ -38,7 +75,7 @@ The Stage 1-10 workflow is for first creation: planning, drafting mini-lessons, 
 
 Existing content can be revised at any time. Revising an earlier stage does not mean rerunning all later stages from zero.
 
-When an upstream artifact changes, use Maintenance Mode to discover what downstream files are stale. The chapter `_index.md` is still the dashboard, but it should not force a waterfall.
+When an upstream artifact changes, use Maintenance Mode to discover what downstream files are stale. The unit `_index.md` is still the dashboard, but it should not force a waterfall.
 
 The correct maintenance flow is:
 
@@ -51,11 +88,11 @@ describe change
 -> update tracker/status notes
 ```
 
-Maintenance Mode should inspect the chapter plan, mini-lessons, exercises, quizzes, sets, frontmatter, links, trackers, neighboring lessons, linked exercises or quizzes, and relevant guides/templates as needed. The user should not have to know which files are affected.
+Maintenance Mode should inspect the unit plan, mini-lessons, exercises, quizzes, sets, frontmatter, links, trackers, neighboring lessons, linked exercises or quizzes, and relevant guides/templates as needed. The user should not have to know which files are affected.
 
 ## Mini-lesson architecture
 
-Each chapter uses a `lessons/` folder.
+Each content unit uses a `lessons/` folder.
 
 Each mini-lesson is a separate Markdown file.
 
@@ -76,7 +113,7 @@ content/2bac-pc-svt/01-limites-continuite/
 
 Mini-lesson files should be small enough to review independently.
 
-The chapter `_index.md` is the map.
+The unit `_index.md` is the map.
 
 The `lessons/` files are the actual student-facing lesson units.
 
@@ -118,7 +155,7 @@ The exercise workflow is:
 5. Solution review: verify math, clarity, conditions, notation, and alignment with lessons.
 6. Exercise sets: organize existing exercises into useful learner paths.
 
-A cluster is usually derived from a mini-lesson group, skill family, recurring method, or exam-style pattern. Do not hardcode cluster names globally; derive them from the chapter plan, mini-lessons, skills, official program notes, and exam patterns.
+A cluster is usually derived from a mini-lesson group, skill family, recurring method, or exam-style pattern. Do not hardcode cluster names globally; derive them from the unit plan, mini-lessons, skills, official program notes, and exam patterns.
 
 Stage 5a output is a raw exercise seed. Stage 5b output is an exercise design card. Stage 6 output is a final exercise file.
 
@@ -147,7 +184,7 @@ The standalone quiz workflow is:
 raw quiz dump
 -> human curation / chop
 -> quiz design cards with item design cards
--> quiz series / chapter quiz balance
+-> quiz series / unit quiz balance
 -> quiz file creation
 -> answer key and feedback review
 ```
@@ -165,8 +202,8 @@ Use three layers of tracking:
 1. `chapter-workflow.md`
    - Defines the global process.
 
-2. Chapter `_index.md`
-   - Tracks chapter-specific progress.
+2. Unit `_index.md`
+   - Tracks unit-specific progress.
 
 3. File frontmatter
    - Tracks file-level status.
@@ -185,9 +222,9 @@ Allowed status values:
 - `reviewed`
 - `published`
 
-## Chapter production stages
+## Unit production stages
 
-### Stage 1 — Chapter plan
+### Stage 1 — Unit plan
 
 Main file:
 
@@ -197,11 +234,11 @@ content/2bac-pc-svt/01-limites-continuite/_index.md
 
 Goal:
 
-Create the chapter blueprint.
+Create the unit blueprint.
 
-The chapter plan should include:
+The unit plan should include:
 
-- Place in the program.
+- Place in the program or topic catalog.
 - Pedagogical role.
 - Prerequisites.
 - Skill map.
@@ -385,7 +422,7 @@ Goal:
 
 Generate raw exercise seeds for ONE exercise cluster at a time.
 
-If no cluster map exists yet, propose one from the chapter plan, mini-lessons, skills, official program notes, and exam patterns. Then generate only the first missing or incomplete cluster dump unless the user explicitly asks for all clusters.
+If no cluster map exists yet, propose one from the unit plan, mini-lessons, skills, official program notes, and exam patterns. Then generate only the first missing or incomplete cluster dump unless the user explicitly asks for all clusters.
 
 A raw exercise seed is a rough authoring card. It captures the idea before curation: cluster, linked mini-lessons, precise skill tested, rough exercise shape or statement idea, difficulty direction, pedagogical usefulness, expected method, main trap, parameter or domain constraints, short feasibility sketch, hint or MCQ opportunities, verification and mismath risks, and a curation note.
 
@@ -437,7 +474,7 @@ Table shape:
 | TODO | TODO | TODO | TODO | TODO | TODO | TODO | TODO |
 ```
 
-### Stage 5b balance mode - Chapter balance
+### Stage 5b balance mode - Unit balance
 
 Main file:
 
@@ -447,11 +484,11 @@ _index.md
 
 Goal:
 
-Use `MODE: CHAPTER_BALANCE` to review all cluster raw seed dumps and curated design cards before Stage 6 creates many files.
+Use `MODE: CHAPTER_BALANCE` to review all cluster raw seed dumps and curated design cards before Stage 6 creates many files. The mode name is kept for compatibility, but the pass applies to the resolved unit.
 
 Check duplicate ideas, over-covered skills, missing skills, difficulty balance, direct practice vs guided practice vs exam-style vs synthesis, mini-lesson coverage, progression, verification risks, repeated computation drills, and missing conceptual or synthesis work.
 
-Update the chapter-level planned exercise table, balance notes, and card statuses:
+Update the unit-level planned exercise table, balance notes, and card statuses:
 
 - `ready-for-stage-6`;
 - `deferred`;
@@ -591,7 +628,7 @@ Output:
 - New files in `sets/`.
 - Updated chapter `_index.md`.
 
-### Stage 9 — Full chapter review
+### Stage 9 — Full unit review
 
 Main files:
 
@@ -605,15 +642,15 @@ sets/*.md
 
 Goal:
 
-Review the full chapter as a learning sequence.
+Review the full unit as a learning sequence.
 
 Check:
 
-- The chapter plan and created files match.
+- The unit plan and created files match.
 - Mini-lessons progress logically.
 - Mini-lessons follow the editorial pipeline and end as coherent, lean student-facing pieces.
 - Lessons and exercises match.
-- Standalone quizzes match the chapter plan, mini-lessons, exercises, and quiz design cards.
+- Standalone quizzes match the unit plan, mini-lessons, exercises, and quiz design cards.
 - All important skills are covered.
 - Difficulty progression is reasonable.
 - Notation is consistent.
@@ -673,23 +710,23 @@ If the user gives a specific request like:
 
 Then follow that request, even if earlier stages are incomplete, but mention any missing prerequisites in the final summary.
 
-## Chapter tracker requirements
+## Unit tracker requirements
 
-Every chapter `_index.md` should contain these sections near the end:
+Every unit `_index.md` should contain these sections near the end:
 
 ```md
 ## Workflow
 
-- [ ] Stage 1 — Chapter plan
+- [ ] Stage 1 — Unit plan
 - [ ] Stage 2 — Mini-lesson source, raw dump, and curation
 - [ ] Stage 3 — Mini-lesson assembly
 - [ ] Stage 4 — Mini-lesson passes
 - [ ] Stage 5a - Raw exercise seed cluster
-- [ ] Stage 5b - Exercise design cards and chapter balance
+- [ ] Stage 5b - Exercise design cards and unit balance
 - [ ] Stage 6 - Exercise creation
 - [ ] Stage 7 — Solution review
 - [ ] Stage 8 — Exercise sets
-- [ ] Stage 9 — Full chapter review
+- [ ] Stage 9 — Full unit review
 - [ ] Stage 10 — Publish-ready cleanup
 - [ ] Quiz Q1 — Raw quiz dump
 - [ ] Quiz Q2 — Quiz design cards and quiz series balance
@@ -700,7 +737,7 @@ Every chapter `_index.md` should contain these sections near the end:
 
 | Élément | Fichier | Statut | Notes |
 |---|---|---|---|
-| Plan du chapitre | `_index.md` | planned | TODO |
+| Plan de l'unité | `_index.md` | planned | TODO |
 | Plan des mini-leçons | `_index.md` | planned | TODO |
 | Mini-leçons | `lessons/` | planned | TODO |
 | Seeds bruts des exercices | `_index.md` | planned | Cluster-based Stage 5a |
@@ -723,7 +760,7 @@ Every chapter `_index.md` should contain these sections near the end:
 | YYYY-MM-DD | Initialisation du suivi | TODO |
 ```
 
-The `## Workflow` checklist is the main chapter-stage tracker.
+The `## Workflow` checklist is the main unit-stage tracker.
 
 The `## Suivi de production` table is the human-readable dashboard.
 
@@ -736,7 +773,7 @@ When completing a stage, update the relevant checkbox.
 Example:
 
 ```md
-- [x] Stage 1 — Chapter plan
+- [x] Stage 1 — Unit plan
 - [ ] Stage 2 — Mini-lesson source, raw dump, and curation
 ```
 

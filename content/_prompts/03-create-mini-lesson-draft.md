@@ -1,49 +1,59 @@
 # Prompt - Create Mini-Lesson Draft
 
-Use this prompt to create one focused mini-lesson file from the chapter blueprint.
+Use this prompt to create one focused mini-lesson file from the unit blueprint.
 
 ## Target
 
-You may provide an explicit target:
+Preferred input:
+
+```text
+TARGET_UNIT: <unit-folder-or-path-or-code>
+```
+
+Legacy alias still accepted:
 
 ```text
 TARGET_CHAPTER: <chapter-folder-or-path-or-code>
 ```
 
-If no explicit `TARGET_CHAPTER` is provided, read:
+If both `TARGET_UNIT` and `TARGET_CHAPTER` are provided, prefer `TARGET_UNIT`.
+
+If no explicit target is provided, read `_workflow/current-unit.md` first. If it does not exist, fall back to `_workflow/current-chapter.md`.
+
+Expected local file formats:
 
 ```text
-_workflow/current-chapter.md
-```
-
-Expected local file format:
-
-```text
+TARGET_UNIT: <unit-folder-or-path-or-code>
 TARGET_CHAPTER: <chapter-folder-or-path-or-code>
 ```
 
-If neither an explicit target nor `_workflow/current-chapter.md` exists, stop and ask the user to set a current chapter by running:
+If neither an explicit target nor local workflow state exists, stop and ask the user to set a current unit by running:
 
 ```text
-content/_prompts/00-set-current-chapter.md
+content/_prompts/00-set-current-unit.md
 ```
 
 ## Target resolution
 
 Before doing any work:
 
-1. Look for explicit `TARGET_CHAPTER` in the user message.
-2. If it is missing, read `_workflow/current-chapter.md`.
-3. Resolve the target to a real chapter folder.
-   - If it starts with `content/`, use it as the chapter folder candidate.
-   - If it looks like a numbered chapter folder name, resolve it as `content/2bac-pc-svt/<TARGET_CHAPTER>`.
-   - Otherwise, treat it as a chapter code and scan `content/2bac-pc-svt/*/_index.md` for matching frontmatter `chapter_code`.
-4. Derive `TARGET_CHAPTER_FOLDER` as the resolved folder.
-5. Derive `TARGET_CHAPTER_INDEX` as `<resolved-folder>/_index.md`.
-6. Read `TARGET_CHAPTER_INDEX`.
-7. Derive `TARGET_CHAPTER_CODE`, `TARGET_CHAPTER_TITLE`, and other metadata from the chapter index frontmatter. Derive `TARGET_PROGRAM` from frontmatter or, if missing, from the resolved path.
-8. Use this prompt file as the source of truth for the stage number and stage behavior. Do not ask for or fill `TARGET_STAGE`.
-9. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
+1. Look for explicit `TARGET_UNIT` in the user message. If it is missing, look for legacy `TARGET_CHAPTER`.
+2. If no explicit target exists, read `_workflow/current-unit.md` first. If it does not exist, fall back to `_workflow/current-chapter.md`.
+3. Resolve the target to a real content unit folder.
+   - If it starts with `content/`, use it as the unit folder candidate.
+   - If it starts with `topics/`, resolve it as `content/2bac-pc-svt/<target>`.
+   - If it looks like a numbered chapter folder name, resolve it as `content/2bac-pc-svt/<target>`.
+   - If it starts with `topic:`, strip `topic:` and search topic indexes first.
+   - Otherwise, scan official chapter indexes under `content/2bac-pc-svt/*/_index.md` and unofficial topic indexes under `content/2bac-pc-svt/topics/*/_index.md`.
+   - Match against `unit_code`, `topic_code`, `chapter_code`, `unit_slug`, `topic`, `chapter`, `unit_folder`, `topic_folder`, and `chapter_folder`.
+4. Derive `TARGET_UNIT_FOLDER` as the resolved folder.
+5. Derive `TARGET_UNIT_INDEX` as `<resolved-folder>/_index.md`.
+6. Read `TARGET_UNIT_INDEX`.
+7. Derive `TARGET_UNIT_KIND` from frontmatter: use `unit_kind` when present, otherwise `official-chapter` for `type: chapter-index` and `unofficial-topic` for `type: topic-index`.
+8. Derive `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and other metadata from the unit index frontmatter. Prefer `unit_code`; fall back to `topic_code`; then fall back to `chapter_code`. Derive `TARGET_PROGRAM` from frontmatter or, if missing, from the resolved path.
+9. For older instructions/templates, also expose `TARGET_CHAPTER_FOLDER`, `TARGET_CHAPTER_INDEX`, `TARGET_CHAPTER_CODE`, and `TARGET_CHAPTER_TITLE` as compatibility aliases with the same resolved values.
+10. Use this prompt file as the source of truth for this stage or review behavior. Do not ask for or fill `TARGET_STAGE`.
+11. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
 ## Read first
 
@@ -61,15 +71,15 @@ Before doing any work:
 - `content/_guides/source-policy.md`
 - `content/_templates/mini-lesson.template.md`
 - `content/_examples/golden-lesson-slice-limites.md`
-- `TARGET_CHAPTER_INDEX`
+- `TARGET_UNIT_INDEX`
 
 ## Task
 
-Create the requested mini-lesson file under `TARGET_CHAPTER_FOLDER/lessons/`.
+Create the requested mini-lesson file under `TARGET_UNIT_FOLDER/lessons/`.
 
 This is Stage 3 only.
 
-If the user named a specific mini-lesson ID, title, or planned file, create only that file. Otherwise, create the first planned mini-lesson in `TARGET_CHAPTER_INDEX` whose file does not yet exist. If the target item is ambiguous, stop and ask.
+If the user named a specific mini-lesson ID, title, or planned file, create only that file. Otherwise, create the first planned mini-lesson in `TARGET_UNIT_INDEX` whose file does not yet exist. If the target item is ambiguous, stop and ask.
 
 Do not create:
 
@@ -78,7 +88,7 @@ Do not create:
 - exercise sets;
 - frontend or app code.
 
-Use the curated material from `TARGET_CHAPTER_INDEX` and the mini-lesson template.
+Use the curated material from `TARGET_UNIT_INDEX` and the mini-lesson template.
 
 Do not blindly re-add all possible raw-dump blocks. If the human curation marked material as delete, too much, future exercise, or useful but not student-facing, keep it out of the student-facing lesson.
 
@@ -102,7 +112,7 @@ The assembled mini-lesson should:
 
 Do not force motivation, intuition, formal section, method box, example ladder, mistakes, exam note, summary, or checkpoint into the draft. Use only the blocks selected by curation or clearly required by the concept.
 
-Use frontmatter values derived from `TARGET_CHAPTER_INDEX`, including the resolved chapter code, title, program, chapter folder, order, domain, tracks, and language. Do not hardcode prototype values.
+Use frontmatter values derived from `TARGET_UNIT_INDEX`, including the resolved unit code, title, program, unit folder, order, domain, tracks, and language. Do not hardcode prototype values.
 
 Use `status: draft`.
 

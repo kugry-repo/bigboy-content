@@ -33,15 +33,30 @@ updated: YYYY-MM-DD
 | 11 | [[11-geometrie-espace/_index|Géométrie dans l’espace]] | Algèbre et géométrie |
 | 12 | [[12-denombrement-probabilites/_index|Dénombrement et probabilités]] | Probabilités |
 
+## Topics non officiels
+
+These are curated learning paths and synthesis units. They are not official chapter folders.
+
+| Ordre | Topic | Code | Rôle |
+|---:|---|---|---|
+| 1 | [[topics/revision-globale/_index|Révision globale]] | rg | Révision transversale de tout le programme |
+| 2 | [[topics/exercices-de-synthese/_index|Exercices de synthèse]] | syn | Exercices mixtes et problèmes transversaux |
+| 3 | [[topics/etudier-une-fonction/_index|Étudier une fonction]] | ef | Parcours méthode pour l'étude complète d'une fonction |
+| 4 | [[topics/methodes-de-calcul/_index|Méthodes de calcul]] | mdc | Techniques de calcul utiles dans plusieurs chapitres |
+
 ## Objectif du vault
 
 Construire progressivement des mini-leçons, exercices, indices et solutions pour les élèves de 2BAC Sciences Physiques et SVT.
 
 ## Structure
 
-Les chapitres sont à plat sous `content/2bac-pc-svt/`.
+Les chapitres officiels sont les dossiers numérotés à plat sous `content/2bac-pc-svt/`.
 
 Le préfixe numérique sert à l'ordre d'affichage dans Obsidian.
+
+Les topics non officiels vivent sous `content/2bac-pc-svt/topics/`.
+
+Les dossiers de domaine ne sont pas autorisés directement sous `content/2bac-pc-svt/`; le domaine reste une métadonnée.
 
 Le champ `domain` reste une métadonnée pédagogique dans le frontmatter.
 

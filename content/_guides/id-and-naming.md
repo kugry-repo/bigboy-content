@@ -22,7 +22,7 @@ Nombres Complexes
 
 ## Numbered chapter folders
 
-Chapter folders under `content/2bac-pc-svt/` use numeric prefixes for Obsidian navigation.
+Official chapter folders under `content/2bac-pc-svt/` use numeric prefixes for Obsidian navigation.
 
 Example:
 
@@ -56,15 +56,32 @@ Bad:
 2bac-pcsvt-01-lc-lesson-001
 ```
 
+## Unofficial topic folders
+
+Unofficial topics live under `content/2bac-pc-svt/topics/`.
+
+They are content units, not official curriculum chapters.
+
+Examples:
+
+```text
+content/2bac-pc-svt/topics/revision-globale
+content/2bac-pc-svt/topics/exercices-de-synthese
+content/2bac-pc-svt/topics/etudier-une-fonction
+content/2bac-pc-svt/topics/methodes-de-calcul
+```
+
+Do not create topic folders directly under `content/2bac-pc-svt/`.
+
 ## File names
 
 Use predictable names:
 
 - `_index.md`
-- `lessons/{chapter_code}-lesson-001.md`
-- `exercises/{chapter_code}-ex-001.md`
-- `quizzes/{chapter_code}-quiz-001.md`
-- `sets/{chapter_code}-set-application-directe.md`
+- `lessons/{unit_or_chapter_code}-lesson-001.md`
+- `exercises/{unit_or_chapter_code}-ex-001.md`
+- `quizzes/{unit_or_chapter_code}-quiz-001.md`
+- `sets/{unit_or_chapter_code}-set-application-directe.md`
 
 Examples:
 
@@ -74,26 +91,27 @@ content/2bac-pc-svt/01-limites-continuite/exercises/lc-ex-001.md
 content/2bac-pc-svt/01-limites-continuite/quizzes/lc-quiz-001.md
 content/2bac-pc-svt/01-limites-continuite/sets/lc-set-application-directe.md
 content/2bac-pc-svt/06-nombres-complexes-partie-1/lessons/nc1-lesson-001.md
+content/2bac-pc-svt/topics/etudier-une-fonction/lessons/ef-lesson-001.md
 ```
 
 Do not create one huge chapter `lesson.md` unless explicitly requested for export or compatibility.
 
 ## Mini-lesson files
 
-Each mini-lesson lives in the chapter `lessons/` folder.
+Each mini-lesson lives in the unit `lessons/` folder.
 
 File pattern:
 
 ```text
-lessons/{chapter_code}-lesson-001.md
-lessons/{chapter_code}-lesson-002.md
+lessons/{unit_or_chapter_code}-lesson-001.md
+lessons/{unit_or_chapter_code}-lesson-002.md
 ```
 
 ID pattern:
 
 ```text
-2bac-pcsvt-{chapter_code}-lesson-001
-2bac-pcsvt-{chapter_code}-lesson-002
+2bac-pcsvt-{unit_or_chapter_code}-lesson-001
+2bac-pcsvt-{unit_or_chapter_code}-lesson-002
 ```
 
 Do not reuse mini-lesson IDs after deletion.
@@ -102,20 +120,20 @@ If a mini-lesson title changes, keep the ID.
 
 ## Standalone quiz files
 
-Each standalone quiz lives in the chapter `quizzes/` folder.
+Each standalone quiz lives in the unit `quizzes/` folder.
 
 File pattern:
 
 ```text
-quizzes/{chapter_code}-quiz-001.md
-quizzes/{chapter_code}-quiz-002.md
+quizzes/{unit_or_chapter_code}-quiz-001.md
+quizzes/{unit_or_chapter_code}-quiz-002.md
 ```
 
 ID pattern:
 
 ```text
-2bac-pcsvt-{chapter_code}-quiz-001
-2bac-pcsvt-{chapter_code}-quiz-002
+2bac-pcsvt-{unit_or_chapter_code}-quiz-001
+2bac-pcsvt-{unit_or_chapter_code}-quiz-002
 ```
 
 Do not confuse standalone quizzes with mini-lesson checkpoints. A standalone quiz is one Markdown file with multiple questions.
@@ -127,7 +145,7 @@ Do not reuse quiz IDs after deletion.
 Use:
 
 ```text
-2bac-pcsvt-{chapter_code}-{kind}-{number-or-slug}
+2bac-pcsvt-{unit_or_chapter_code}-{kind}-{number-or-slug}
 ```
 
 Examples:
@@ -144,6 +162,8 @@ Examples:
 Lesson/exercise IDs for complex chapters should use `nc1` and `nc2`.
 
 Shared complex-number skills may still use `nc-...` if they are conceptually shared, but file IDs should follow the chapter code.
+
+For new workflow prompts, prefer `TARGET_UNIT`. `TARGET_CHAPTER` remains a legacy alias when older prompts need it.
 
 ## Chapter codes
 
@@ -163,6 +183,17 @@ Use these chapter codes:
 | 10-equations-differentielles | equations-differentielles | ed |
 | 11-geometrie-espace | geometrie-espace | ge |
 | 12-denombrement-probabilites | denombrement-probabilites | dp |
+
+## Unofficial topic codes
+
+Use these topic/unit codes:
+
+| Topic folder | Topic slug | Code |
+|---|---|---|
+| topics/revision-globale | revision-globale | rg |
+| topics/exercices-de-synthese | exercices-de-synthese | syn |
+| topics/etudier-une-fonction | etudier-une-fonction | ef |
+| topics/methodes-de-calcul | methodes-de-calcul | mdc |
 
 ## Skill IDs
 
