@@ -16,7 +16,7 @@ Use this sequence:
 
 1. Raw exercise seeds: generate rough seed cards for one exercise cluster at a time.
 2. Exercise design cards: curate one cluster's seeds into rich planned exercise cards.
-3. Unit balance: review all cluster cards with `MODE: UNIT_BALANCE`.
+3. Unit balance: review all cluster cards with `content/_prompts/workflows/exercises/03-check-unit-balance.md`.
 4. Exercise batch creation: create 3 to 5 final exercise files at a time by default.
 5. Solution review: verify draft solutions after the exercise files exist.
 6. Exercise sets: organize existing exercises into learner paths.

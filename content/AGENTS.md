@@ -43,8 +43,11 @@ Before creating or editing mini-lessons:
 - Read `_guides/diagram-guidelines.md`.
 
 Before reviewing lessons:
-- Read `_prompts/04-review-mini-lesson.md`.
-- Read `_prompts/04b-review-mini-lesson-voice.md`.
+- Read `_prompts/workflows/lessons/05-coherence-pass.md`.
+- Read `_prompts/workflows/lessons/06-voice-pass.md`.
+- Read `_prompts/workflows/lessons/07-compression-pass.md`.
+- Read `_prompts/workflows/lessons/08-verify-finalize.md`.
+- For a single combined review of an existing mini-lesson, read `_prompts/workflows/lessons/09-review-existing.md`.
 - Read `_guides/lesson-quality-rubric.md`.
 
 Before creating or editing exercises:
@@ -88,7 +91,7 @@ When doing staged creation work on a content unit:
 6. Update the unit tracker after making unit changes.
 7. Do not create lessons, exercises, or sets unless the current task asks for them.
 
-When revising existing content, syncing stale files, or responding to an upstream plan/template/guide change, use Maintenance Mode from `_prompts/00-maintenance-mode.md`. Do not restart the full Stage 1-10 pipeline just because earlier work changed; discover the blast radius and patch only affected files or produce an impact plan.
+When revising existing content, syncing stale files, or responding to an upstream plan/template/guide change, use `_prompts/commands/change-existing-content.md`. Do not restart the full Stage 1-10 pipeline just because earlier work changed; discover the blast radius and patch only affected files or produce an impact plan.
 
 ## Unit folder rule
 

@@ -102,7 +102,7 @@ Exercise planning should be cluster-based for substantial units:
 ```text
 raw exercise seeds for one cluster
 -> exercise design cards for that cluster
--> MODE: UNIT_BALANCE across all clusters
+-> exercise unit balance across all clusters
 -> final exercise files in batches of 3 to 5
 ```
 
@@ -187,7 +187,7 @@ A unit `_index.md` should include a tracker like:
 | Exercises | planned | TODO |
 | Solution review | planned | TODO |
 | Exercise sets | planned | TODO |
-| Quiz series, design cards, and review | planned | Quiz Q1-Q4 when standalone checkpoints are needed |
+| Quiz series, design cards, and review | planned | Quiz workflow steps 01-04 when standalone checkpoints are needed |
 | Skill coverage | planned | TODO |
 | Diagram/interactivity plan | planned | TODO |
 | Source safety | planned | Official/exam claims and third-party usage to check |

@@ -82,7 +82,7 @@ A completer pendant Stage 5a.
 
 ## Carte des séries de quiz
 
-| Série | Base de dérivation | Mini-leçons liées | Compétences | Rôle | Statut Q1 | Statut Q2 | Notes |
+| Série | Base de dérivation | Mini-leçons liées | Compétences | Rôle | Statut 01 | Statut 02 | Notes |
 |---|---|---|---|---|---|---|---|
 | TODO | TODO | TODO | TODO | TODO | TODO | TODO | TODO |
 
@@ -90,7 +90,7 @@ A completer pendant Stage 5a.
 
 Raw quiz dumps — one quiz series/cluster at a time, not final quizzes.
 
-À compléter pendant Quiz Q1.
+À compléter pendant `workflows/quizzes/01-generate-raw-dump.md`.
 
 ## Plan des quiz
 
@@ -100,7 +100,7 @@ Raw quiz dumps — one quiz series/cluster at a time, not final quizzes.
 
 ## Design cards des quiz
 
-À compléter pendant Quiz Q2. Les quiz design cards sont la source principale pour Quiz Q3.
+À compléter pendant `workflows/quizzes/02-curate-design-cards.md`. Les quiz design cards sont la source principale pour `workflows/quizzes/03-create-batch.md`.
 
 ### 2bac-pcsvt-nc1-quiz-001 — TODO
 
@@ -175,10 +175,10 @@ TODO.
 - [ ] Stage 8 — Exercise sets
 - [ ] Stage 9 - Full unit review
 - [ ] Stage 10 — Publish-ready cleanup
-- [ ] Quiz Q1 — Raw quiz dump
-- [ ] Quiz Q2 — Quiz design cards and quiz series balance
-- [ ] Quiz Q3 — Quiz creation
-- [ ] Quiz Q4 — Quiz review
+- [ ] `workflows/quizzes/01-generate-raw-dump.md` — Raw quiz dump
+- [ ] `workflows/quizzes/02-curate-design-cards.md` — Quiz design cards and quiz series balance
+- [ ] `workflows/quizzes/03-create-batch.md` — Quiz creation
+- [ ] `workflows/quizzes/04-review-quizzes.md` — Quiz review
 
 ## Suivi de production
 
@@ -191,11 +191,11 @@ TODO.
 | Design cards des exercices | `_index.md` | planned | A completer Stage 5b |
 | Exercices individuels | `exercises/` | planned | TODO |
 | Séries d'exercices | `sets/` | planned | TODO |
-| Séries de quiz | `_index.md` | planned | Quiz Q1/Q2 planning |
-| Dumps bruts des quiz | `_index.md` | planned | Quiz Q1 |
-| Design cards des quiz | `_index.md` | planned | Quiz Q2 |
-| Quiz individuels | `quizzes/` | planned | Quiz Q3 |
-| Relecture des quiz | `quizzes/` | planned | Quiz Q4 |
+| Séries de quiz | `_index.md` | planned | quiz workflow planning |
+| Dumps bruts des quiz | `_index.md` | planned | `workflows/quizzes/01-generate-raw-dump.md` |
+| Design cards des quiz | `_index.md` | planned | `workflows/quizzes/02-curate-design-cards.md` |
+| Quiz individuels | `quizzes/` | planned | `workflows/quizzes/03-create-batch.md` |
+| Relecture des quiz | `quizzes/` | planned | `workflows/quizzes/04-review-quizzes.md` |
 | Relecture mathématique | — | planned | TODO |
 | Relecture pédagogique | — | planned | TODO |
 | Relecture voix de leçon | — | planned | TODO |
@@ -218,7 +218,7 @@ TODO.
 | Exercises | planned | TODO |
 | Solution review | planned | TODO |
 | Exercise sets | planned | TODO |
-| Quiz series, design cards, and review | planned | Quiz Q1-Q4 when standalone checkpoints are needed |
+| Quiz series, design cards, and review | planned | quiz workflow steps 01-04 when standalone checkpoints are needed |
 | Skill coverage | planned | TODO |
 | Diagram/interactivity plan | planned | TODO |
 | Source safety | planned | Official/exam claims and third-party usage to check |

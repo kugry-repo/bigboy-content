@@ -33,7 +33,7 @@ Every lesson, exercise, standalone quiz, and solution should be:
 - easy to improve;
 - safe to render later in an app.
 
-## Maintenance Mode
+## Targeted Revision
 
 Treat content like source code after it exists.
 
@@ -131,7 +131,7 @@ Each raw seed should record the rough exercise shape, expected method, main trap
 
 Each exercise design card should be detailed enough for Stage 6 to create a final exercise without inventing the target skill, method, traps, or verification concerns from scratch.
 
-After cluster curation, use `MODE: UNIT_BALANCE` to check duplicates, missing skills, difficulty balance, mini-lesson coverage, progression, and verification risks across the unit.
+After cluster curation, use `content/_prompts/workflows/exercises/03-check-unit-balance.md` to check duplicates, missing skills, difficulty balance, mini-lesson coverage, progression, and verification risks across the unit.
 
 ## Parallel Standalone Quiz Workflow
 
@@ -140,10 +140,10 @@ Standalone quizzes are first-class content, but they do not replace lessons or e
 Use this quiz workflow when a unit needs diagnostic or mastery checkpoints:
 
 ```text
-Quiz Q1 - Raw quiz dump
-Quiz Q2 - Quiz design cards and quiz series balance
-Quiz Q3 - Quiz creation
-Quiz Q4 - Quiz review
+workflows/quizzes/01-generate-raw-dump.md
+workflows/quizzes/02-curate-design-cards.md
+workflows/quizzes/03-create-batch.md
+workflows/quizzes/04-review-quizzes.md
 ```
 
 Quiz planning should happen one quiz series, quiz cluster, or target skill area at a time.

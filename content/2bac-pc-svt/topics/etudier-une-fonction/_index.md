@@ -49,10 +49,10 @@ Unité non officielle de méthode transversale pour organiser l'étude complète
 - [ ] Stage 8 — Exercise sets
 - [ ] Stage 9 — Full unit review
 - [ ] Stage 10 — Publish-ready cleanup
-- [ ] Quiz Q1 — Raw quiz dump
-- [ ] Quiz Q2 — Quiz design cards and quiz series balance
-- [ ] Quiz Q3 — Quiz creation
-- [ ] Quiz Q4 — Quiz review
+- [ ] `workflows/quizzes/01-generate-raw-dump.md` — Raw quiz dump
+- [ ] `workflows/quizzes/02-curate-design-cards.md` — Quiz design cards and quiz series balance
+- [ ] `workflows/quizzes/03-create-batch.md` — Quiz creation
+- [ ] `workflows/quizzes/04-review-quizzes.md` — Quiz review
 
 ## Suivi de production
 
@@ -65,11 +65,11 @@ Unité non officielle de méthode transversale pour organiser l'étude complète
 | Design cards des exercices | `_index.md` | planned | Stage 5b |
 | Exercices individuels | `exercises/` | planned | TODO |
 | Séries d'exercices | `sets/` | planned | TODO |
-| Séries de quiz | `_index.md` | planned | Quiz Q1/Q2 |
-| Dumps bruts des quiz | `_index.md` | planned | Quiz Q1 |
-| Design cards des quiz | `_index.md` | planned | Quiz Q2 |
-| Quiz individuels | `quizzes/` | planned | Quiz Q3 |
-| Relecture des quiz | `quizzes/` | planned | Quiz Q4 |
+| Séries de quiz | `_index.md` | planned | quiz workflow planning |
+| Dumps bruts des quiz | `_index.md` | planned | `workflows/quizzes/01-generate-raw-dump.md` |
+| Design cards des quiz | `_index.md` | planned | `workflows/quizzes/02-curate-design-cards.md` |
+| Quiz individuels | `quizzes/` | planned | `workflows/quizzes/03-create-batch.md` |
+| Relecture des quiz | `quizzes/` | planned | `workflows/quizzes/04-review-quizzes.md` |
 
 ## Golden unit readiness
 
@@ -150,7 +150,7 @@ TODO: compléter pendant Stage 5b.
 
 ## Carte des séries de quiz
 
-| Série | Base de dérivation | Mini-leçons liées | Compétences | Rôle | Statut Q1 | Statut Q2 | Notes |
+| Série | Base de dérivation | Mini-leçons liées | Compétences | Rôle | Statut 01 | Statut 02 | Notes |
 |---|---|---|---|---|---|---|---|
 | TODO | TODO | TODO | TODO | TODO | TODO | TODO | TODO |
 
@@ -166,7 +166,7 @@ TODO: ajouter des dumps bruts uniquement lorsqu'une série de quiz est demandée
 
 ## Design cards des quiz
 
-TODO: compléter pendant Quiz Q2.
+TODO: compléter pendant `workflows/quizzes/02-curate-design-cards.md`.
 
 ## Sets / parcours
 

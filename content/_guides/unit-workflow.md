@@ -39,7 +39,7 @@ Before doing staged unit work in creation mode:
 6. Do not skip stages unless the user explicitly asks.
 7. Update the unit tracker after the work is done.
 
-For changes to existing content that do not fit the current creation stage, or that respond to upstream plan/template/guide edits, use Maintenance Mode instead of forcing a stage rerun.
+For changes to existing content that do not fit the current creation stage, or that respond to upstream plan/template/guide edits, use `content/_prompts/commands/change-existing-content.md` instead of forcing a stage rerun.
 
 ## Target Resolution
 
@@ -67,15 +67,15 @@ Resolution order:
    - `TARGET_PROGRAM`.
 6. Stop if the target is missing or ambiguous.
 
-## Creation Mode And Maintenance Mode
+## Creation And Targeted Revision
 
 The Stage 1-10 workflow is for first creation: planning, drafting mini-lessons, creating exercises, reviewing, and preparing for publish-ready cleanup.
 
 Existing content can be revised at any time. Revising an earlier stage does not mean rerunning all later stages from zero.
 
-When an upstream artifact changes, use Maintenance Mode to discover what downstream files are stale. The unit `_index.md` is still the dashboard, but it should not force a waterfall.
+When an upstream artifact changes, use `content/_prompts/commands/change-existing-content.md` to discover what downstream files are stale. The unit `_index.md` is still the dashboard, but it should not force a waterfall.
 
-The correct maintenance flow is:
+The correct targeted revision flow is:
 
 ```text
 describe change
@@ -86,7 +86,7 @@ describe change
 -> update tracker/status notes
 ```
 
-Maintenance Mode should inspect the unit plan, mini-lessons, exercises, quizzes, sets, frontmatter, links, trackers, neighboring lessons, linked exercises or quizzes, and relevant guides/templates as needed.
+The change-existing-content command should inspect the unit plan, mini-lessons, exercises, quizzes, sets, frontmatter, links, trackers, neighboring lessons, linked exercises or quizzes, and relevant guides/templates as needed.
 
 ## Mini-Lesson Architecture
 
@@ -145,14 +145,14 @@ The exercise workflow is:
 
 1. Raw exercise seeds: generate 8 to 15 rough seeds for one exercise cluster at a time.
 2. Exercise design cards: curate one cluster's seeds into 3 to 6 rich planned exercise cards.
-3. Unit balance pass: review all cluster cards with `MODE: UNIT_BALANCE`.
+3. Unit balance pass: review all cluster cards with `content/_prompts/workflows/exercises/03-check-unit-balance.md`.
 4. Exercise batch creation: create 3 to 5 final exercise files at a time by default.
 5. Solution review: verify math, clarity, conditions, notation, and alignment with lessons.
 6. Exercise sets: organize existing exercises into useful learner paths.
 
 A cluster is usually derived from a mini-lesson group, skill family, recurring method, or exam-style pattern. Do not hardcode cluster names globally; derive them from the unit plan, mini-lessons, skills, official program notes, and exam patterns.
 
-Stage 5a output is a raw exercise seed. Stage 5b output is an exercise design card. Stage 6 output is a final exercise file.
+Raw-seed output is a raw exercise seed. Design-card output is an exercise design card. Batch-creation output is a final exercise file.
 
 Each exercise lives in its own Markdown file under `exercises/`. Exercise files are usually created in small batches of 3 to 5 unless explicitly requested otherwise.
 
@@ -167,10 +167,10 @@ Each standalone quiz lives under the unit `quizzes/` folder and contains multipl
 Use this parallel workflow without renumbering the Stage 1-10 workflow:
 
 ```text
-Quiz Q1 - Raw quiz dump
-Quiz Q2 - Quiz design cards and quiz series balance
-Quiz Q3 - Quiz creation
-Quiz Q4 - Quiz review
+workflows/quizzes/01-generate-raw-dump.md - raw quiz dump
+workflows/quizzes/02-curate-design-cards.md - quiz design cards and quiz series balance
+workflows/quizzes/03-create-batch.md - quiz creation
+workflows/quizzes/04-review-quizzes.md - quiz review
 ```
 
 The standalone quiz workflow is:
@@ -186,7 +186,7 @@ raw quiz dump
 
 Generate quiz material one quiz series, quiz cluster, or target skill area at a time. Final quiz creation should usually happen one quiz file at a time, with a maximum of two unless explicitly requested.
 
-Quiz Q1 output is exploratory raw material. Quiz Q2 design cards are the source of truth for Quiz Q3. Quiz Q4 verifies answer keys, feedback, item quality, source safety, and standalone usability.
+Quiz raw-dump output is exploratory material. Quiz design cards are the source of truth for quiz creation. Quiz review verifies answer keys, feedback, item quality, source safety, and standalone usability.
 
 Allowed advanced item types include `sequence` and `hotspot`; frontend/UI implementation is out of scope.
 
@@ -356,7 +356,7 @@ Goal: curate one cluster's raw exercise seeds into rich exercise design cards.
 
 Select the best seeds, merge duplicates, reject weak ideas, defer ideas that do not fit, and improve selected ideas until Stage 6 can create final exercises without inventing the pedagogical goal, method, traps, or verification concerns from scratch.
 
-Use `MODE: UNIT_BALANCE` to review all cluster raw seed dumps and curated design cards before Stage 6 creates many files.
+Use `content/_prompts/workflows/exercises/03-check-unit-balance.md` to review all cluster raw seed dumps and curated design cards before creating many files.
 
 Output:
 
@@ -444,7 +444,7 @@ Do this:
 3. Work on that item only.
 4. If the next step is ambiguous, state the ambiguity and make the safest minimal update.
 
-If the user asks to revise existing content, sync stale files, or fix mismatches created by upstream changes, use `content/_prompts/00-maintenance-mode.md` to resolve scope, discover the blast radius, classify risk, and patch affected files only or produce an impact plan.
+If the user asks to revise existing content, sync stale files, or fix mismatches created by upstream changes, use `content/_prompts/commands/change-existing-content.md` to resolve scope, discover the blast radius, classify risk, and patch affected files only or produce an impact plan.
 
 ## Unit Tracker Requirements
 
@@ -464,10 +464,10 @@ Every unit `_index.md` should contain these sections near the end:
 - [ ] Stage 8 - Exercise sets
 - [ ] Stage 9 - Full unit review
 - [ ] Stage 10 - Publish-ready cleanup
-- [ ] Quiz Q1 - Raw quiz dump
-- [ ] Quiz Q2 - Quiz design cards and quiz series balance
-- [ ] Quiz Q3 - Quiz creation
-- [ ] Quiz Q4 - Quiz review
+- [ ] Quiz workflow 01 - Raw quiz dump
+- [ ] Quiz workflow 02 - Quiz design cards and quiz series balance
+- [ ] Quiz workflow 03 - Quiz creation
+- [ ] Quiz workflow 04 - Quiz review
 
 ## Suivi de production
 
@@ -477,14 +477,14 @@ Every unit `_index.md` should contain these sections near the end:
 | Plan des mini-lecons | `_index.md` | planned | TODO |
 | Mini-lecons | `lessons/` | planned | TODO |
 | Seeds bruts des exercices | `_index.md` | planned | Stage 5a par cluster |
-| Design cards des exercices | `_index.md` | planned | Stage 5b; balance with MODE: UNIT_BALANCE |
+| Design cards des exercices | `_index.md` | planned | Design-card curation; balance with `workflows/exercises/03-check-unit-balance.md` |
 | Exercices individuels | `exercises/` | planned | TODO |
 | Series d'exercices | `sets/` | planned | TODO |
-| Series de quiz | `_index.md` | planned | Quiz Q1/Q2 planning |
-| Dumps bruts des quiz | `_index.md` | planned | Quiz Q1 |
-| Design cards des quiz | `_index.md` | planned | Quiz Q2 |
-| Quiz individuels | `quizzes/` | planned | Quiz Q3 |
-| Relecture des quiz | `quizzes/` | planned | Quiz Q4 |
+| Series de quiz | `_index.md` | planned | Quiz workflow planning |
+| Dumps bruts des quiz | `_index.md` | planned | `workflows/quizzes/01-generate-raw-dump.md` |
+| Design cards des quiz | `_index.md` | planned | `workflows/quizzes/02-curate-design-cards.md` |
+| Quiz individuels | `quizzes/` | planned | `workflows/quizzes/03-create-batch.md` |
+| Relecture des quiz | `quizzes/` | planned | `workflows/quizzes/04-review-quizzes.md` |
 
 ## Journal de production
 

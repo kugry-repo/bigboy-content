@@ -57,7 +57,7 @@ The numeric prefix controls official unit order. The `domain` frontmatter field 
 7. Curate that cluster into rich exercise design cards, then run unit balance when several clusters exist.
 8. Create exercise files in small batches of 3 to 5, with one exercise per file.
 9. Review draft solutions.
-10. Add standalone quizzes through Quiz Q1-Q4 when the unit needs diagnostic or mastery checkpoints.
+10. Add standalone quizzes through quiz workflow steps 01-04 when the unit needs diagnostic or mastery checkpoints.
 11. Create exercise sets and review against the checklist.
 12. Only then move to the next unit.
 
@@ -90,10 +90,10 @@ Each exercise lives in its own file, but exercise files are usually created in b
 
 Standalone quizzes use a parallel workflow, without renumbering the unit stages:
 
-- Quiz Q1: Raw quiz dump.
-- Quiz Q2: Quiz design cards and quiz series balance.
-- Quiz Q3: Quiz creation.
-- Quiz Q4: Quiz review.
+- `workflows/quizzes/01-generate-raw-dump.md`: Raw quiz dump.
+- `workflows/quizzes/02-curate-design-cards.md`: Quiz design cards and quiz series balance.
+- `workflows/quizzes/03-create-batch.md`: Quiz creation.
+- `workflows/quizzes/04-review-quizzes.md`: Quiz review.
 
 Each quiz lives under `quizzes/`, contains multiple questions, and should be created from design cards in very small batches, usually one quiz file at a time.
 
