@@ -1,5 +1,5 @@
 ---
-type: topic-index
+type: unit-index
 id: 2bac-pcsvt-rg-index
 title: "Révision globale"
 program: 2bac-pc-svt
@@ -13,15 +13,8 @@ unit_folder: topics/revision-globale
 unit_order: 1
 official: false
 content_scope: global-revision
-topic: revision-globale
-topic_code: rg
-topic_folder: topics/revision-globale
-chapter: revision-globale
-chapter_code: rg
-chapter_folder: topics/revision-globale
-chapter_order: null
 domain: transversal
-related_chapters:
+related_units:
   - 01-limites-continuite
   - 02-derivabilite-etude-fonctions
   - 03-suites-numeriques
@@ -47,11 +40,9 @@ updated: 2026-06-18
 
 # Révision globale
 
-## Nature du topic
+## Nature de l'unite
 
 Unité non officielle de révision transversale. Elle réutilise le workflow normal des unités de contenu, sans se présenter comme un chapitre officiel.
-
-Les champs `chapter`, `chapter_code`, `chapter_folder` et `chapter_order` existent seulement comme alias de compatibilité pour les anciens prompts orientés chapitre.
 
 ## Workflow
 
@@ -109,7 +100,7 @@ Les champs `chapter`, `chapter_code`, `chapter_folder` et `chapter_order` existe
 
 TODO: préciser comment ce topic aide à réviser les chapitres officiels sans les remplacer.
 
-## Objectifs du topic
+## Objectifs de l'unite
 
 TODO.
 

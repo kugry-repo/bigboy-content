@@ -1,18 +1,24 @@
 ---
-type: chapter-index
+type: unit-index
 id: 2bac-pcsvt-def-index
 title: "Dérivabilité et étude des fonctions"
 program: 2bac-pc-svt
 level: 2bac
 tracks: [pc, svt]
 language: fr
+unit_kind: official-curriculum-unit
+unit_code: def
+unit_slug: derivabilite-etude-fonctions
+unit_folder: 02-derivabilite-etude-fonctions
+unit_order: 2
+official: true
+content_scope: official-curriculum
 domain: analyse
-chapter: derivabilite-etude-fonctions
-chapter_code: def
-chapter_order: 2
-chapter_folder: 02-derivabilite-etude-fonctions
+related_units: []
 skills: []
 status: planned
+sync_status: current
+sync_reason: null
 version: 0.1.0
 source_type: original
 source_ref: null
@@ -26,7 +32,7 @@ updated: YYYY-MM-DD
 
 TODO.
 
-## Objectifs du chapitre
+## Objectifs de l'unite
 
 TODO.
 
@@ -62,7 +68,7 @@ TODO.
 
 - TODO.
 
-## Dump brut des exercices
+## Seeds bruts des exercices
 
 Raw dump - not final exercise blueprint.
 
@@ -158,16 +164,16 @@ TODO.
 
 ## Workflow
 
-- [ ] Stage 1 — Chapter plan
+- [ ] Stage 1 - Unit plan
 - [ ] Stage 2 — Mini-lesson source, raw dump, and curation
 - [ ] Stage 3 — Mini-lesson assembly
 - [ ] Stage 4 — Mini-lesson passes
-- [ ] Stage 5a — Exercise raw dump
-- [ ] Stage 5b — Curated exercise blueprint
+- [ ] Stage 5a - Raw exercise seed cluster
+- [ ] Stage 5b - Exercise design cards and unit balance
 - [ ] Stage 6 — Exercise creation
 - [ ] Stage 7 — Solution review
 - [ ] Stage 8 — Exercise sets
-- [ ] Stage 9 — Full chapter review
+- [ ] Stage 9 - Full unit review
 - [ ] Stage 10 — Publish-ready cleanup
 - [ ] Quiz Q1 — Raw quiz dump
 - [ ] Quiz Q2 — Quiz design cards and quiz series balance
@@ -178,11 +184,11 @@ TODO.
 
 | Élément | Fichier | Statut | Notes |
 |---|---|---|---|
-| Plan du chapitre | `_index.md` | planned | TODO |
+| Plan de l'unite | `_index.md` | planned | TODO |
 | Plan des mini-leçons | `_index.md` | planned | TODO |
 | Mini-leçons | `lessons/` | planned | TODO |
-| Dump brut des exercices | `_index.md` | planned | A completer Stage 5a |
-| Plan des exercices apres curation | `_index.md` | planned | A completer Stage 5b |
+| Seeds bruts des exercices | `_index.md` | planned | A completer Stage 5a |
+| Design cards des exercices | `_index.md` | planned | A completer Stage 5b |
 | Exercices individuels | `exercises/` | planned | TODO |
 | Séries d'exercices | `sets/` | planned | TODO |
 | Séries de quiz | `_index.md` | planned | Quiz Q1/Q2 planning |
@@ -200,15 +206,15 @@ TODO.
 |---|---|---|
 | YYYY-MM-DD | Initialisation du suivi | TODO |
 
-## Golden chapter readiness
+## Golden unit readiness
 
 | Area | Status | Notes |
 |---|---|---|
-| Chapter plan | planned | TODO |
+| Unit plan | planned | TODO |
 | Mini-lesson source, dump, and curation | planned | TODO |
 | Mini-lessons | planned | TODO |
 | Lesson voice review | planned | TODO |
-| Exercise raw dump and curated blueprint | planned | TODO |
+| Raw exercise seeds and design cards | planned | TODO |
 | Exercises | planned | TODO |
 | Solution review | planned | TODO |
 | Exercise sets | planned | TODO |
@@ -216,7 +222,7 @@ TODO.
 | Skill coverage | planned | TODO |
 | Diagram/interactivity plan | planned | TODO |
 | Source safety | planned | Official/exam claims and third-party usage to check |
-| Full chapter review | planned | TODO |
+| Full unit review | planned | TODO |
 
 ## Notes auteur
 

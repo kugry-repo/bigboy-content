@@ -1,7 +1,7 @@
 ---
 type: program-index
 id: 2bac-pcsvt-index
-title: "Mathématiques 2BAC PC/SVT"
+title: "Mathematiques 2BAC PC/SVT"
 program: 2bac-pc-svt
 level: 2bac
 tracks: [pc, svt]
@@ -14,56 +14,64 @@ created: YYYY-MM-DD
 updated: YYYY-MM-DD
 ---
 
-# Mathématiques 2BAC PC/SVT
+# Mathematiques 2BAC PC/SVT
 
-## Ordre des chapitres
+## Content Unit System
 
-| Ordre | Chapitre | Domaine |
-|---:|---|---|
-| 1 | [[01-limites-continuite/_index|Limites et continuité]] | Analyse |
-| 2 | [[02-derivabilite-etude-fonctions/_index|Dérivabilité et étude des fonctions]] | Analyse |
-| 3 | [[03-suites-numeriques/_index|Suites numériques]] | Analyse |
-| 4 | [[04-fonctions-primitives/_index|Fonctions primitives]] | Analyse |
-| 5 | [[05-fonction-logarithme/_index|La fonction logarithme]] | Analyse |
-| 6 | [[06-nombres-complexes-partie-1/_index|Les nombres complexes — Partie 1]] | Algèbre et géométrie |
-| 7 | [[07-fonction-exponentielle/_index|La fonction exponentielle]] | Analyse |
-| 8 | [[08-nombres-complexes-partie-2/_index|Les nombres complexes — Partie 2]] | Algèbre et géométrie |
-| 9 | [[09-calcul-integral/_index|Calcul intégral]] | Analyse |
-| 10 | [[10-equations-differentielles/_index|Équations différentielles]] | Analyse |
-| 11 | [[11-geometrie-espace/_index|Géométrie dans l’espace]] | Algèbre et géométrie |
-| 12 | [[12-denombrement-probabilites/_index|Dénombrement et probabilités]] | Probabilités |
+This program uses one generic content-unit system.
 
-## Topics non officiels
+Official curriculum units are the main curriculum spine. They live directly under `content/2bac-pc-svt/`, use `official: true`, and use `unit_kind: official-curriculum-unit`.
 
-These are curated learning paths and synthesis units. They are not official chapter folders.
+Unofficial topics are extra learning, revision, method, synthesis, or exam-prep units. They live under `content/2bac-pc-svt/topics/`, use `official: false`, and use `unit_kind: unofficial-topic`.
 
-| Ordre | Topic | Code | Rôle |
+Both unit groups use unit metadata, not hardcoded separate official/topic schemas.
+
+## Official Curriculum Units
+
+| Ordre | Unite officielle | Code | Domaine |
 |---:|---|---|---|
-| 1 | [[topics/revision-globale/_index|Révision globale]] | rg | Révision transversale de tout le programme |
-| 2 | [[topics/exercices-de-synthese/_index|Exercices de synthèse]] | syn | Exercices mixtes et problèmes transversaux |
-| 3 | [[topics/etudier-une-fonction/_index|Étudier une fonction]] | ef | Parcours méthode pour l'étude complète d'une fonction |
-| 4 | [[topics/methodes-de-calcul/_index|Méthodes de calcul]] | mdc | Techniques de calcul utiles dans plusieurs chapitres |
+| 1 | [[01-limites-continuite/_index|Limites et continuite]] | lc | Analyse |
+| 2 | [[02-derivabilite-etude-fonctions/_index|Derivabilite et etude des fonctions]] | def | Analyse |
+| 3 | [[03-suites-numeriques/_index|Suites numeriques]] | sn | Analyse |
+| 4 | [[04-fonctions-primitives/_index|Fonctions primitives]] | fp | Analyse |
+| 5 | [[05-fonction-logarithme/_index|La fonction logarithme]] | fl | Analyse |
+| 6 | [[06-nombres-complexes-partie-1/_index|Les nombres complexes - Partie 1]] | nc1 | Algebre et geometrie |
+| 7 | [[07-fonction-exponentielle/_index|La fonction exponentielle]] | fe | Analyse |
+| 8 | [[08-nombres-complexes-partie-2/_index|Les nombres complexes - Partie 2]] | nc2 | Algebre et geometrie |
+| 9 | [[09-calcul-integral/_index|Calcul integral]] | ci | Analyse |
+| 10 | [[10-equations-differentielles/_index|Equations differentielles]] | ed | Analyse |
+| 11 | [[11-geometrie-espace/_index|Geometrie dans l'espace]] | ge | Algebre et geometrie |
+| 12 | [[12-denombrement-probabilites/_index|Denombrement et probabilites]] | dp | Probabilites |
 
-## Objectif du vault
+## Unofficial Topic Units
 
-Construire progressivement des mini-leçons, exercices, indices et solutions pour les élèves de 2BAC Sciences Physiques et SVT.
+| Ordre | Unite topic | Code | Scope | Role |
+|---:|---|---|---|---|
+| 1 | [[topics/revision-globale/_index|Revision globale]] | rg | global-revision | Revision transversale de tout le programme |
+| 2 | [[topics/exercices-de-synthese/_index|Exercices de synthese]] | syn | synthesis | Exercices mixtes et problemes transversaux |
+| 3 | [[topics/etudier-une-fonction/_index|Etudier une fonction]] | ef | cross-chapter-method | Parcours methode pour l'etude complete d'une fonction |
+| 4 | [[topics/methodes-de-calcul/_index|Methodes de calcul]] | mdc | cross-chapter-method | Techniques de calcul utiles dans plusieurs unites |
+
+## Objectif Du Vault
+
+Construire progressivement des mini-lecons, exercices, quiz, indices et solutions pour les eleves de 2BAC Sciences Physiques et SVT.
 
 ## Structure
 
-Les chapitres officiels sont les dossiers numérotés à plat sous `content/2bac-pc-svt/`.
+Les unites officielles sont les dossiers numerotes a plat sous `content/2bac-pc-svt/`.
 
-Le préfixe numérique sert à l'ordre d'affichage dans Obsidian.
+Le prefixe numerique sert a l'ordre d'affichage dans Obsidian.
 
 Les topics non officiels vivent sous `content/2bac-pc-svt/topics/`.
 
-Les dossiers de domaine ne sont pas autorisés directement sous `content/2bac-pc-svt/`; le domaine reste une métadonnée.
+Les dossiers de domaine ne sont pas autorises directement sous `content/2bac-pc-svt/`; le domaine reste une metadonnee.
 
-Le champ `domain` reste une métadonnée pédagogique dans le frontmatter.
+Le champ `domain` reste une metadonnee pedagogique dans le frontmatter.
 
 ## Statut
 
 Ce programme est en phase de structuration.
 
-La prochaine étape recommandée est de créer le premier plan de chapitre de référence :
+La prochaine etape recommandee est de creer le premier plan d'unite de reference :
 
 - `01-limites-continuite/_index.md`

@@ -4,46 +4,42 @@
 
 This guide explains basic automated checks for the Markdown content vault.
 
-Automation should help catch structural mistakes.
+Automation should help catch structural mistakes. It does not replace mathematical or pedagogical review.
 
-It does not replace mathematical or pedagogical review.
+## Validation Script
 
-## Validation script
+Run validation from the repo root:
 
-The repository may include:
-
-```text
-scripts/validate-content.mjs
+```bash
+npm run validate
 ```
 
-Run it from the repo root:
+or:
 
 ```bash
 node scripts/validate-content.mjs
 ```
 
-If `package.json` has a script, you may also run:
-
-```bash
-npm run content:check
-```
-
-## What automated checks can catch
+## What Automated Checks Can Catch
 
 Automated checks can catch:
 
 - missing frontmatter;
 - duplicate IDs;
-- missing required fields;
-- missing chapter workflow sections;
-- missing topic catalog or topic unit structure;
-- topic lesson, exercise, quiz, and set names that do not use the topic unit code;
+- missing required unit fields;
+- missing unit `_index.md` files;
+- official curriculum units outside the expected direct folder shape;
+- unofficial topic units outside `content/2bac-pc-svt/topics/`;
+- forbidden domain folders directly under `content/2bac-pc-svt/`;
+- duplicate `unit_code`, `unit_folder`, frontmatter `id`, or repeated unit order inside a unit group;
+- missing unit subfolders: `lessons/`, `exercises/`, `quizzes/`, and `sets/`;
+- lesson, exercise, quiz, and set filenames that do not use the unit code;
+- lesson, exercise, and quiz IDs that do not use the unit code;
 - mini-lesson files missing useful quality signals;
-- exercise files missing statement or solution sections;
-- old `lesson.md` files used accidentally;
+- old root `lesson.md` files used accidentally;
 - broken project conventions.
 
-## What automated checks cannot catch
+## What Automated Checks Cannot Catch
 
 Automated checks cannot reliably catch:
 
@@ -56,7 +52,7 @@ Automated checks cannot reliably catch:
 
 Use human review and `_guides/lesson-quality-rubric.md`.
 
-## Validation philosophy
+## Validation Philosophy
 
 Checks should be helpful, not annoying.
 

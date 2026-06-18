@@ -1,16 +1,19 @@
 ---
 type: exercise
-id: 2bac-pcsvt-CHAPTER_CODE-ex-001
+id: 2bac-pcsvt-UNIT_CODE-ex-001
 title: "EXERCISE_TITLE"
 program: 2bac-pc-svt
 level: 2bac
 tracks: [pc, svt]
 language: fr
+unit_kind: UNIT_KIND
+unit_code: UNIT_CODE
+unit_slug: UNIT_SLUG
+unit_folder: UNIT_FOLDER
+unit_order: UNIT_ORDER
+official: OFFICIAL
+content_scope: CONTENT_SCOPE
 domain: DOMAIN_SLUG
-chapter: CHAPTER_SLUG
-chapter_code: CHAPTER_CODE
-chapter_order: CHAPTER_ORDER
-chapter_folder: CHAPTER_FOLDER
 skills: []
 difficulty: application-directe
 exercise_type: [calcul]

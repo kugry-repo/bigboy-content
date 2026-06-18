@@ -17,19 +17,21 @@ created: 2026-06-18
 updated: 2026-06-18
 ---
 
-# Topics non officiels
+# Topics Non Officiels
 
-Ces topics sont des parcours d'apprentissage, de révision, de synthèse ou de méthode. Ils réutilisent le workflow des unités de contenu, mais ils ne sont pas des chapitres officiels du programme.
+These are unofficial content units. They share the same unit schema, lifecycle workflow, staged prompts, subfolders, naming rules, and validator logic as official curriculum units.
 
-Les chapitres officiels restent la colonne vertébrale du programme. Les topics servent à organiser du travail transversal sans dupliquer inutilement le contenu officiel.
+Official curriculum units remain the main program spine. Topic units organize transversal learning, revision, synthesis, exam preparation, or methods without replacing the official progression.
 
-| Ordre | Topic | Code | Dossier | Rôle | Chapitres officiels liés | Statut |
-|---:|---|---|---|---|---|---|
-| 1 | [[topics/revision-globale/_index|Révision globale]] | rg | `topics/revision-globale` | Révision transversale de tout le programme | Tous les chapitres officiels | planned |
-| 2 | [[topics/exercices-de-synthese/_index|Exercices de synthèse]] | syn | `topics/exercices-de-synthese` | Exercices mixtes et problèmes transversaux | Tous les chapitres officiels | planned |
-| 3 | [[topics/etudier-une-fonction/_index|Étudier une fonction]] | ef | `topics/etudier-une-fonction` | Parcours méthode pour l'étude complète d'une fonction | Analyse liée aux fonctions | planned |
-| 4 | [[topics/methodes-de-calcul/_index|Méthodes de calcul]] | mdc | `topics/methodes-de-calcul` | Techniques de calcul utiles dans plusieurs chapitres | Liste à vérifier humainement | planned |
+The system uses unit metadata discovered from `_index.md` files, not hardcoded separate official/topic lists.
 
-## Notes auteur
+| Ordre | Unite topic | Code | Dossier | Scope | Role | Unites liees | Statut |
+|---:|---|---|---|---|---|---|---|
+| 1 | [[topics/revision-globale/_index|Revision globale]] | rg | `topics/revision-globale` | global-revision | Revision transversale de tout le programme | Toutes les unites officielles | planned |
+| 2 | [[topics/exercices-de-synthese/_index|Exercices de synthese]] | syn | `topics/exercices-de-synthese` | synthesis | Exercices mixtes et problemes transversaux | Toutes les unites officielles | planned |
+| 3 | [[topics/etudier-une-fonction/_index|Etudier une fonction]] | ef | `topics/etudier-une-fonction` | cross-chapter-method | Parcours methode pour l'etude complete d'une fonction | Analyse liee aux fonctions | planned |
+| 4 | [[topics/methodes-de-calcul/_index|Methodes de calcul]] | mdc | `topics/methodes-de-calcul` | cross-chapter-method | Techniques de calcul utiles dans plusieurs unites | Liste a verifier humainement | planned |
 
-TODO: vérifier périodiquement que chaque topic reste un parcours non officiel et ne remplace pas la progression officielle des chapitres.
+## Notes Auteur
+
+TODO: verifier periodiquement que chaque topic reste une unite non officielle et ne remplace pas la progression officielle.

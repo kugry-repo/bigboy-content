@@ -6,32 +6,57 @@ The dump is not the final lesson.
 
 ## Target
 
-Preferred input:
+Input:
 
 ```text
 TARGET_UNIT: <unit-folder-or-path-or-code>
+
+Optional selectors:
 TARGET_MINI_LESSON: <planned lesson id, title, or file>
 ```
 
-Legacy alias still accepted:
+If no explicit target is provided, read `_workflow/current-unit.md`.
+
+Expected local file format:
 
 ```text
-TARGET_CHAPTER: <chapter-folder-or-path-or-code>
+TARGET_UNIT: <unit-folder-or-path-or-code>
 ```
 
-If both `TARGET_UNIT` and `TARGET_CHAPTER` are provided, prefer `TARGET_UNIT`.
+If neither an explicit target nor local workflow state exists, stop and ask the user to set a current unit by running:
 
-If no explicit target is provided, read `_workflow/current-unit.md` first. If it does not exist, fall back to `_workflow/current-chapter.md`.
+```text
+content/_prompts/00-set-current-unit.md
+```
 
-Use the same target resolution rules as `content/_prompts/00-diagnose-next-action.md`: resolve official chapter indexes and unofficial topic indexes, derive `TARGET_UNIT_FOLDER`, `TARGET_UNIT_INDEX`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_UNIT_KIND`, then expose the matching `TARGET_CHAPTER_*` compatibility aliases for older templates.
+## Target Resolution
 
-If the unit or mini-lesson target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
+Before doing any work:
+
+1. Look for explicit `TARGET_UNIT`.
+2. If no explicit target exists, read `_workflow/current-unit.md`.
+3. Resolve the unit by scanning all unit indexes:
+   - official units under `content/2bac-pc-svt/*/_index.md`;
+   - unofficial units under `content/2bac-pc-svt/topics/*/_index.md`.
+4. Match only against:
+   - `unit_code`;
+   - `unit_slug`;
+   - `unit_folder`;
+   - `title`;
+   - resolved folder path.
+5. Derive `TARGET_UNIT_FOLDER` as the resolved folder.
+6. Derive `TARGET_UNIT_INDEX` as `<resolved-folder>/_index.md`.
+7. Read `TARGET_UNIT_INDEX`.
+8. Require `type: unit-index`.
+9. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM` from the unit index frontmatter.
+10. Use this prompt file as the source of truth for this stage or review behavior. Do not ask for or fill `TARGET_STAGE`.
+11. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
 ## Read first
 
 - `AGENTS.md`
 - `content/AGENTS.md`
-- `content/_guides/chapter-workflow.md`
+- `content/_guides/unit-workflow.md`
 - `content/_guides/lesson-editorial-pipeline.md`
 - `content/_guides/lesson-structure.md`
 - `content/_guides/lesson-voice.md`

@@ -1,6 +1,6 @@
-# ID and Naming Guide
+# ID And Naming Guide
 
-## Folder names
+## Unit Folders
 
 Use lowercase ASCII slugs.
 
@@ -9,37 +9,39 @@ Good:
 ```text
 01-limites-continuite
 02-derivabilite-etude-fonctions
-03-suites-numeriques
+topics/etudier-une-fonction
 ```
 
 Bad:
 
 ```text
-01 Limites et Continuité
-02-Dérivabilité
+01 Limites et Continuite
+02-Derivabilite
 Nombres Complexes
 ```
 
-## Numbered chapter folders
+## Official Curriculum Units
 
-Official chapter folders under `content/2bac-pc-svt/` use numeric prefixes for Obsidian navigation.
+Official curriculum units live directly under `content/2bac-pc-svt/` and normally use numeric prefixes for Obsidian navigation.
 
-Example:
+Examples:
 
 ```text
-01-limites-continuite
-02-derivabilite-etude-fonctions
-03-suites-numeriques
+content/2bac-pc-svt/01-limites-continuite
+content/2bac-pc-svt/02-derivabilite-etude-fonctions
+content/2bac-pc-svt/03-suites-numeriques
 ```
 
-The numeric prefix is part of the folder name only.
-
-The chapter slug in frontmatter remains unnumbered:
+The numeric prefix is part of `unit_folder` only.
 
 ```yaml
-chapter: limites-continuite
-chapter_folder: 01-limites-continuite
-chapter_order: 1
+unit_kind: official-curriculum-unit
+unit_code: lc
+unit_slug: limites-continuite
+unit_folder: 01-limites-continuite
+unit_order: 1
+official: true
+content_scope: official-curriculum
 ```
 
 IDs do not include the numeric prefix.
@@ -56,11 +58,9 @@ Bad:
 2bac-pcsvt-01-lc-lesson-001
 ```
 
-## Unofficial topic folders
+## Unofficial Topic Units
 
 Unofficial topics live under `content/2bac-pc-svt/topics/`.
-
-They are content units, not official curriculum chapters.
 
 Examples:
 
@@ -73,15 +73,25 @@ content/2bac-pc-svt/topics/methodes-de-calcul
 
 Do not create topic folders directly under `content/2bac-pc-svt/`.
 
-## File names
+```yaml
+unit_kind: unofficial-topic
+unit_code: ef
+unit_slug: etudier-une-fonction
+unit_folder: topics/etudier-une-fonction
+unit_order: 3
+official: false
+content_scope: cross-chapter-method
+```
 
-Use predictable names:
+## File Names
+
+Use predictable names based on `unit_code`:
 
 - `_index.md`
-- `lessons/{unit_or_chapter_code}-lesson-001.md`
-- `exercises/{unit_or_chapter_code}-ex-001.md`
-- `quizzes/{unit_or_chapter_code}-quiz-001.md`
-- `sets/{unit_or_chapter_code}-set-application-directe.md`
+- `lessons/{unit_code}-lesson-001.md`
+- `exercises/{unit_code}-ex-001.md`
+- `quizzes/{unit_code}-quiz-001.md`
+- `sets/{unit_code}-set-application-directe.md`
 
 Examples:
 
@@ -94,58 +104,92 @@ content/2bac-pc-svt/06-nombres-complexes-partie-1/lessons/nc1-lesson-001.md
 content/2bac-pc-svt/topics/etudier-une-fonction/lessons/ef-lesson-001.md
 ```
 
-Do not create one huge chapter `lesson.md` unless explicitly requested for export or compatibility.
+Do not create one huge unit `lesson.md` unless explicitly requested.
 
-## Mini-lesson files
+## Mini-Lesson Files
 
 Each mini-lesson lives in the unit `lessons/` folder.
 
 File pattern:
 
 ```text
-lessons/{unit_or_chapter_code}-lesson-001.md
-lessons/{unit_or_chapter_code}-lesson-002.md
+lessons/{unit_code}-lesson-001.md
+lessons/{unit_code}-lesson-002.md
 ```
 
 ID pattern:
 
 ```text
-2bac-pcsvt-{unit_or_chapter_code}-lesson-001
-2bac-pcsvt-{unit_or_chapter_code}-lesson-002
+2bac-pcsvt-{unit_code}-lesson-001
+2bac-pcsvt-{unit_code}-lesson-002
 ```
 
 Do not reuse mini-lesson IDs after deletion.
 
 If a mini-lesson title changes, keep the ID.
 
-## Standalone quiz files
+## Exercise Files
+
+Each exercise lives in the unit `exercises/` folder.
+
+File pattern:
+
+```text
+exercises/{unit_code}-ex-001.md
+exercises/{unit_code}-ex-002.md
+```
+
+ID pattern:
+
+```text
+2bac-pcsvt-{unit_code}-ex-001
+2bac-pcsvt-{unit_code}-ex-002
+```
+
+## Standalone Quiz Files
 
 Each standalone quiz lives in the unit `quizzes/` folder.
 
 File pattern:
 
 ```text
-quizzes/{unit_or_chapter_code}-quiz-001.md
-quizzes/{unit_or_chapter_code}-quiz-002.md
+quizzes/{unit_code}-quiz-001.md
+quizzes/{unit_code}-quiz-002.md
 ```
 
 ID pattern:
 
 ```text
-2bac-pcsvt-{unit_or_chapter_code}-quiz-001
-2bac-pcsvt-{unit_or_chapter_code}-quiz-002
+2bac-pcsvt-{unit_code}-quiz-001
+2bac-pcsvt-{unit_code}-quiz-002
 ```
 
 Do not confuse standalone quizzes with mini-lesson checkpoints. A standalone quiz is one Markdown file with multiple questions.
 
 Do not reuse quiz IDs after deletion.
 
-## Stable ID pattern
+## Exercise Set Files
+
+Each exercise set lives in the unit `sets/` folder.
+
+File pattern:
+
+```text
+sets/{unit_code}-set-{set_slug}.md
+```
+
+ID pattern:
+
+```text
+2bac-pcsvt-{unit_code}-set-{set_slug}
+```
+
+## Stable ID Pattern
 
 Use:
 
 ```text
-2bac-pcsvt-{unit_or_chapter_code}-{kind}-{number-or-slug}
+2bac-pcsvt-{unit_code}-{kind}-{number-or-slug}
 ```
 
 Examples:
@@ -159,17 +203,13 @@ Examples:
 2bac-pcsvt-nc2-ex-001
 ```
 
-Lesson/exercise IDs for complex chapters should use `nc1` and `nc2`.
+Shared complex-number skills may still use `nc-...` if they are conceptually shared, but file IDs should follow the unit code of the file's unit.
 
-Shared complex-number skills may still use `nc-...` if they are conceptually shared, but file IDs should follow the chapter code.
+## Official Unit Codes
 
-For new workflow prompts, prefer `TARGET_UNIT`. `TARGET_CHAPTER` remains a legacy alias when older prompts need it.
+Use these unit codes for the current official curriculum spine:
 
-## Chapter codes
-
-Use these chapter codes:
-
-| Chapter folder | Chapter slug | Code |
+| Unit folder | Unit slug | Code |
 |---|---|---|
 | 01-limites-continuite | limites-continuite | lc |
 | 02-derivabilite-etude-fonctions | derivabilite-etude-fonctions | def |
@@ -184,11 +224,11 @@ Use these chapter codes:
 | 11-geometrie-espace | geometrie-espace | ge |
 | 12-denombrement-probabilites | denombrement-probabilites | dp |
 
-## Unofficial topic codes
+## Unofficial Topic Unit Codes
 
-Use these topic/unit codes:
+Use these unit codes for the current topic units:
 
-| Topic folder | Topic slug | Code |
+| Unit folder | Unit slug | Code |
 |---|---|---|
 | topics/revision-globale | revision-globale | rg |
 | topics/exercices-de-synthese | exercices-de-synthese | syn |
@@ -228,7 +268,7 @@ dp-independance
 dp-loi-binomial
 ```
 
-## Renaming rule
+## Renaming Rule
 
 Do not rename IDs after publication.
 

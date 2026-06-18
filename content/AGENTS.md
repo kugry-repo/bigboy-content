@@ -20,8 +20,8 @@ The Markdown content system is not a frozen production format yet. For guides, p
 
 Before content-unit planning or unit-level edits:
 - Read `_guides/authoring-workflow.md`.
-- Read `_guides/chapter-workflow.md`.
-- Read `_guides/golden-chapter-standard.md`.
+- Read `_guides/unit-workflow.md`.
+- Read `_guides/golden-unit-standard.md`.
 - Read `_guides/frontmatter-schema.md`.
 - Read `_guides/id-and-naming.md`.
 - Read `_references/misconception-map.md`.
@@ -73,14 +73,14 @@ The staged workflow applies to a content unit.
 
 A content unit can be:
 
-- an official chapter;
+- an official curriculum unit;
 - an unofficial topic.
 
-Official chapters remain the canonical curriculum spine. Unofficial topics are curated learning paths, revision units, synthesis units, or method units. They must not pretend to be official curriculum chapters.
+Official curriculum units remain the canonical curriculum spine. Unofficial topics are curated learning paths, revision units, synthesis units, or method units. They must not pretend to be official curriculum units.
 
 When doing staged creation work on a content unit:
 
-1. Read `_guides/chapter-workflow.md`.
+1. Read `_guides/unit-workflow.md`.
 2. Read the unit `_index.md`.
 3. Determine the current workflow stage from the `## Workflow` checklist.
 4. Work only on the requested stage or the first unchecked stage.
@@ -92,7 +92,7 @@ When revising existing content, syncing stale files, or responding to an upstrea
 
 ## Unit folder rule
 
-Use flat numbered official chapter folders directly under `content/2bac-pc-svt/`.
+Use flat numbered official curriculum unit folders directly under `content/2bac-pc-svt/`.
 
 Example:
 
@@ -112,7 +112,7 @@ content/2bac-pc-svt/topics/etudier-une-fonction/lessons/ef-lesson-001.md
 content/2bac-pc-svt/topics/etudier-une-fonction/exercises/ef-ex-001.md
 ```
 
-Do not create domain folders under `content/2bac-pc-svt/`. Keep `domain` as frontmatter metadata only. For the canonical chapter order, use `_guides/curriculum-map-2bac-pc-svt.md`.
+Do not create domain folders under `content/2bac-pc-svt/`. Keep `domain` as frontmatter metadata only. For the canonical official unit order, use `_guides/curriculum-map-2bac-pc-svt.md`.
 
 ## Lesson voice rule
 
@@ -132,10 +132,10 @@ Mini-lesson files are the actual lesson units.
 
 ## Base-before-content rule
 
-Before generating the golden chapter, make sure the base system exists:
+Before generating the golden unit, make sure the base system exists:
 
 - prompt library;
-- golden chapter standard;
+- golden unit standard;
 - mini-lesson template;
 - misconception map;
 - concept dependency map;

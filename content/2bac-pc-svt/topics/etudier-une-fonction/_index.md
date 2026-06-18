@@ -1,5 +1,5 @@
 ---
-type: topic-index
+type: unit-index
 id: 2bac-pcsvt-ef-index
 title: "Étudier une fonction"
 program: 2bac-pc-svt
@@ -13,15 +13,8 @@ unit_folder: topics/etudier-une-fonction
 unit_order: 3
 official: false
 content_scope: cross-chapter-method
-topic: etudier-une-fonction
-topic_code: ef
-topic_folder: topics/etudier-une-fonction
-chapter: etudier-une-fonction
-chapter_code: ef
-chapter_folder: topics/etudier-une-fonction
-chapter_order: null
 domain: transversal
-related_chapters:
+related_units:
   - 01-limites-continuite
   - 02-derivabilite-etude-fonctions
   - 05-fonction-logarithme
@@ -39,11 +32,9 @@ updated: 2026-06-18
 
 # Étudier une fonction
 
-## Nature du topic
+## Nature de l'unite
 
 Unité non officielle de méthode transversale pour organiser l'étude complète d'une fonction. Elle réutilise le workflow normal des unités de contenu, sans se présenter comme un chapitre officiel.
-
-Les champs `chapter`, `chapter_code`, `chapter_folder` et `chapter_order` existent seulement comme alias de compatibilité pour les anciens prompts orientés chapitre.
 
 ## Workflow
 
@@ -101,7 +92,7 @@ Les champs `chapter`, `chapter_code`, `chapter_folder` et `chapter_order` existe
 
 TODO: préciser comment ce topic s'appuie sur les chapitres d'analyse sans les remplacer.
 
-## Objectifs du topic
+## Objectifs de l'unite
 
 TODO.
 

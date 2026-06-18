@@ -8,7 +8,7 @@ An exercise file should contain the statement, metadata, hints, solution, common
 
 Each exercise lives in its own file, but exercise files are usually created in small batches of 3 to 5 unless explicitly requested otherwise.
 
-A full chapter may eventually contain 20 to 35 individual exercises. Build that library over multiple batches instead of generating it all at once.
+A full official curriculum unit may eventually contain 20 to 35 individual exercises. Build that library over multiple batches instead of generating it all at once.
 
 ## Exercise authoring workflow
 
@@ -16,7 +16,7 @@ Use this sequence:
 
 1. Raw exercise seeds: generate rough seed cards for one exercise cluster at a time.
 2. Exercise design cards: curate one cluster's seeds into rich planned exercise cards.
-3. Chapter balance: review all cluster cards with `MODE: CHAPTER_BALANCE`.
+3. Unit balance: review all cluster cards with `MODE: UNIT_BALANCE`.
 4. Exercise batch creation: create 3 to 5 final exercise files at a time by default.
 5. Solution review: verify draft solutions after the exercise files exist.
 6. Exercise sets: organize existing exercises into learner paths.
@@ -75,7 +75,7 @@ It should capture:
 
 A final exercise file is Stage 6 output.
 
-It lives under the chapter `exercises/` folder, uses the exercise template, and contains the learner-facing statement, hints, solution, common mistakes, verification, variants, and author notes.
+It lives under the unit `exercises/` folder, uses the exercise template, and contains the learner-facing statement, hints, solution, common mistakes, verification, variants, and author notes.
 
 Stage 6 files start as:
 

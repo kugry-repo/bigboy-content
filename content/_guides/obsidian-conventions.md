@@ -144,7 +144,7 @@ Do not add images unless requested.
 
 When adding diagrams later:
 
-- Store them under a chapter-level `assets/` folder.
+- Store them under a unit-level `assets/` folder.
 - Use descriptive filenames.
 - Add alt text.
 - Keep source information.

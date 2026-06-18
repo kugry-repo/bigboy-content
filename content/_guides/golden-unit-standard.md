@@ -1,16 +1,16 @@
-# Golden Chapter Standard
+# Golden Unit Standard
 
 ## Purpose
 
-A golden chapter is the first complete chapter used as the model for all future chapters.
+A golden unit is the first complete content unit used as the model for future units.
 
 It defines the expected quality, structure, voice, and workflow for the rest of the project.
 
-Do not mass-generate other chapters until at least one golden chapter exists and has been reviewed.
+Do not mass-generate other units until at least one golden unit exists and has been reviewed.
 
 ## Architecture
 
-A golden chapter uses this structure:
+A golden unit uses this structure:
 
 ```text
 content/2bac-pc-svt/01-limites-continuite/
@@ -30,9 +30,9 @@ content/2bac-pc-svt/01-limites-continuite/
 
 Each mini-lesson is its own Markdown file.
 
-Do not put the entire chapter lesson in one huge `lesson.md`.
+Do not put the entire unit lesson in one huge `lesson.md`.
 
-Golden-chapter lessons should model the editorial pipeline:
+Golden-unit lessons should model the editorial pipeline:
 
 ```text
 source / target
@@ -45,13 +45,13 @@ source / target
 -> final student lesson
 ```
 
-## Minimum golden chapter contents
+## Minimum Golden Unit Contents
 
-A golden chapter should include:
+A golden unit should include:
 
-- a detailed `_index.md` chapter plan;
+- a detailed `_index.md` unit plan;
 - complete source/target notes, raw dump, and curation decisions for key mini-lessons;
-- 4 to 9 mini-lesson files, depending on chapter size;
+- 4 to 9 mini-lesson files, depending on unit size;
 - each mini-lesson written in the lesson voice;
 - clear skill IDs;
 - prerequisite map;
@@ -61,8 +61,8 @@ A golden chapter should include:
 - at least 5 guided examples across the mini-lessons;
 - cluster-based raw exercise seed dumps;
 - curated exercise design cards;
-- a chapter-balance pass across all exercise clusters;
-- 20 to 35 individual exercises for a full chapter, accumulated over multiple batches;
+- a unit-balance pass across all exercise clusters;
+- 20 to 35 individual exercises for a full official curriculum unit, accumulated over multiple batches;
 - detailed solutions for all exercises;
 - standalone quiz series planning;
 - raw quiz dumps and quiz design cards for important diagnostic or mastery checkpoints;
@@ -78,7 +78,7 @@ The first version does not need to reach all targets immediately.
 
 Use the workflow stages.
 
-## Mini-lesson quality standard
+## Mini-Lesson Quality Standard
 
 Each mini-lesson should have:
 
@@ -95,14 +95,14 @@ Motivation, intuition, formal definitions, methods, examples, mistakes, exam not
 
 A golden mini-lesson should feel complete, coherent, and lean, not padded.
 
-## Exercise quality standard
+## Exercise Quality Standard
 
-Exercise planning should be cluster-based for substantial chapters:
+Exercise planning should be cluster-based for substantial units:
 
 ```text
 raw exercise seeds for one cluster
 -> exercise design cards for that cluster
--> MODE: CHAPTER_BALANCE across all clusters
+-> MODE: UNIT_BALANCE across all clusters
 -> final exercise files in batches of 3 to 5
 ```
 
@@ -110,13 +110,13 @@ Raw seeds are exploratory. Exercise design cards are the source of truth for Sta
 
 Exercises should progress from:
 
-1. découverte;
+1. decouverte;
 2. application-directe;
 3. application-guidee;
 4. probleme-type;
 5. approfondissement.
 
-Use "technique" only as a descriptive theme when needed, not as a frontmatter `difficulty` value.
+Use `technique` only as a descriptive theme when needed, not as a frontmatter `difficulty` value.
 
 Every exercise should include:
 
@@ -133,7 +133,7 @@ Each exercise lives in its own Markdown file. Exercise files are usually created
 
 Solutions created during batch creation are drafts until they pass solution review.
 
-## Quiz quality standard
+## Quiz Quality Standard
 
 Standalone quiz planning should follow the same dump-and-chop strategy:
 
@@ -141,7 +141,7 @@ Standalone quiz planning should follow the same dump-and-chop strategy:
 raw quiz dump
 -> human curation / chop
 -> quiz design cards with item design cards
--> quiz series / chapter quiz balance
+-> quiz series / unit quiz balance
 -> quiz file creation
 -> answer key and feedback review
 ```
@@ -152,11 +152,11 @@ Each quiz belongs to a quiz series and lives under `quizzes/`. Normal quizzes us
 
 Every MCQ/MR choice should have answer-specific feedback. Wrong choices should map to real misconceptions and explain why the choice is tempting, why it fails, and what idea to use instead.
 
-`sequence` and `hotspot` are supported advanced item types for planning, but frontend rendering is not part of the golden chapter content standard.
+`sequence` and `hotspot` are supported advanced item types for planning, but frontend rendering is not part of the golden unit content standard.
 
-## Review standard
+## Review Standard
 
-Before a chapter becomes the model for future chapters, review:
+Before a unit becomes the model for future units, review:
 
 - mathematical correctness;
 - lesson voice;
@@ -168,34 +168,34 @@ Before a chapter becomes the model for future chapters, review:
 - source safety;
 - Obsidian rendering.
 
-Do not mark a chapter as golden if any major file is only a raw draft.
+Do not mark a unit as golden if any major file is only a raw draft.
 
-## Golden chapter tracker
+## Golden Unit Tracker
 
-A chapter `_index.md` should include a tracker like:
+A unit `_index.md` should include a tracker like:
 
 ```md
-## Golden chapter readiness
+## Golden unit readiness
 
 | Area | Status | Notes |
 |---|---|---|
-| Chapter plan | planned | TODO |
+| Unit plan | planned | TODO |
 | Mini-lesson source, dump, and curation | planned | TODO |
 | Mini-lessons | planned | TODO |
 | Lesson voice review | planned | TODO |
-| Raw exercise seeds and design cards | planned | Cluster-based Stage 5a/5b, plus chapter balance |
+| Raw exercise seeds and design cards | planned | Cluster-based Stage 5a/5b, plus unit balance |
 | Exercises | planned | TODO |
 | Solution review | planned | TODO |
-| Quiz series, design cards, and review | planned | Quiz Q1-Q4 when standalone checkpoints are needed |
 | Exercise sets | planned | TODO |
+| Quiz series, design cards, and review | planned | Quiz Q1-Q4 when standalone checkpoints are needed |
 | Skill coverage | planned | TODO |
 | Diagram/interactivity plan | planned | TODO |
 | Source safety | planned | Official/exam claims and third-party usage to check |
-| Full chapter review | planned | TODO |
+| Full unit review | planned | TODO |
 ```
 
-## Completion rule
+## Completion Rule
 
-A chapter becomes the golden chapter only after the human author explicitly decides it is good enough.
+A unit becomes the golden unit only after the human author explicitly decides it is good enough.
 
 Codex or ChatGPT may recommend readiness, but should not declare it final without explicit instruction.

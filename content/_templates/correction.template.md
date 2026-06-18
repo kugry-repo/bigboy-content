@@ -1,18 +1,23 @@
 ---
 type: correction
-id: 2bac-pcsvt-CHAPTER_CODE-corr-SOURCE_SLUG
+id: 2bac-pcsvt-UNIT_CODE-corr-SOURCE_SLUG
 title: "CORRECTION_TITLE"
 program: 2bac-pc-svt
 level: 2bac
 tracks: [pc, svt]
 language: fr
+unit_kind: UNIT_KIND
+unit_code: UNIT_CODE
+unit_slug: UNIT_SLUG
+unit_folder: UNIT_FOLDER
+unit_order: UNIT_ORDER
+official: OFFICIAL
+content_scope: CONTENT_SCOPE
 domain: DOMAIN_SLUG
-chapter: CHAPTER_SLUG
-chapter_code: CHAPTER_CODE
-chapter_order: CHAPTER_ORDER
-chapter_folder: CHAPTER_FOLDER
 skills: []
 status: draft
+sync_status: current
+sync_reason: null
 version: 0.1.0
 source_type: national-exam
 source_ref: "TODO"

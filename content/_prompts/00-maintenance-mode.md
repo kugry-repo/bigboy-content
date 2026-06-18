@@ -7,7 +7,7 @@ Maintenance Mode is parallel to the Stage 1-10 creation workflow. Do not remove 
 The user may write naturally, for example:
 
 ```text
-Use maintenance mode. I want to make the first part of the limits chapter less formal and more intuitive.
+Use maintenance mode. I want to make the first part of the limits unit less formal and more intuitive.
 ```
 
 ```text
@@ -22,61 +22,24 @@ Optional fields:
 
 ```text
 TARGET_UNIT: <unit-folder-or-path-or-code>
-TARGET_CHAPTER: <chapter-folder-or-path-or-code>
 CHANGE_REQUEST: <natural language description>
 ```
 
 Do not require these fields. The user is not responsible for knowing the dependency graph or listing affected files.
 
-If both `TARGET_UNIT` and `TARGET_CHAPTER` are provided, prefer `TARGET_UNIT`.
+## Current Unit
 
-## Current unit fallback
+If the request does not name a specific file, unit, or global workflow area, read `_workflow/current-unit.md`.
 
-If `TARGET_UNIT` and `TARGET_CHAPTER` are missing and the request does not name a specific file, unit, or global workflow area, read `_workflow/current-unit.md` first.
+Use only `TARGET_UNIT` for unit-level scope.
 
-If it does not exist, fall back to:
+## Scope Resolution
 
-```text
-_workflow/current-chapter.md
-```
-
-Expected local file formats:
-
-```text
-TARGET_UNIT: <unit-folder-or-path-or-code>
-TARGET_CHAPTER: <chapter-folder-or-path-or-code>
-```
-
-Use the same target resolution rules as `content/_prompts/00-diagnose-next-action.md`.
-
-## Scope resolution
-
-Before editing, resolve the scope.
-
-1. Read the user request and identify any explicit file path, unit folder, unit code, unit title, guide, template, prompt, or script.
-2. If the user names a file, inspect that file first. If it belongs to a content unit, derive the unit folder and unit index from the path.
-3. If the user names a content unit, resolve it to a unit folder.
-4. If no file or unit is named, read `_workflow/current-unit.md`, then fall back to `_workflow/current-chapter.md`.
-5. If the request is global, inspect the relevant global files instead of forcing a unit target.
-6. If the scope is truly impossible to infer, ask for the missing target. Do not guess across the whole repo.
-
-Unit target resolution:
-
-1. Look for explicit `TARGET_UNIT` in the user message. If it is missing, look for legacy `TARGET_CHAPTER`.
-2. If no explicit target exists, use the unit inferred from the request, `_workflow/current-unit.md`, or `_workflow/current-chapter.md`.
-3. Resolve the target to a real content unit folder.
-   - If it starts with `content/`, use it as the unit folder candidate.
-   - If it starts with `topics/`, resolve it as `content/2bac-pc-svt/<target>`.
-   - If it looks like a numbered chapter folder name, resolve it as `content/2bac-pc-svt/<target>`.
-   - If it starts with `topic:`, strip `topic:` and search topic indexes first.
-   - Otherwise, scan official chapter indexes under `content/2bac-pc-svt/*/_index.md` and unofficial topic indexes under `content/2bac-pc-svt/topics/*/_index.md`.
-   - Match against `unit_code`, `topic_code`, `chapter_code`, `unit_slug`, `topic`, `chapter`, `unit_folder`, `topic_folder`, and `chapter_folder`.
-4. Derive `TARGET_UNIT_FOLDER` as the resolved folder.
-5. Derive `TARGET_UNIT_INDEX` as `<resolved-folder>/_index.md`.
-6. Read `TARGET_UNIT_INDEX`.
-7. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and other metadata from the unit index frontmatter. Derive `TARGET_PROGRAM` from frontmatter or, if missing, from the resolved path.
-8. For older instructions/templates, also expose `TARGET_CHAPTER_FOLDER`, `TARGET_CHAPTER_INDEX`, `TARGET_CHAPTER_CODE`, and `TARGET_CHAPTER_TITLE` as compatibility aliases with the same resolved values.
-9. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
+1. Identify whether the request is file-specific, unit-specific, prompt/guide/template-specific, validator-specific, or global.
+2. If a unit is named, resolve it using the standard target resolution rules from `content/_prompts/00-diagnose-next-action.md`.
+3. If no unit is named and the request is unit-level, read `_workflow/current-unit.md`.
+4. If the scope is still unclear, stop and ask.
+5. Derive affected files from the requested change, not from the creation-stage checklist alone.
 
 ## Required reading
 
@@ -85,7 +48,7 @@ Always read:
 - `AGENTS.md`
 - `content/AGENTS.md`
 - `content/_guides/authoring-workflow.md`
-- `content/_guides/chapter-workflow.md`
+- `content/_guides/unit-workflow.md`
 - `content/_guides/frontmatter-schema.md`
 
 For lesson voice, ceremony, coherence, compression, or lesson shape changes, also read:
@@ -126,7 +89,7 @@ For unit-level or content-level changes, inspect as relevant:
 - unit workflow checklist
 - `## Suivi de production`
 - `## Journal de production`
-- `## Golden chapter readiness` or `## Golden unit readiness`
+- `## Golden unit readiness`
 - lesson and exercise frontmatter
 - quiz frontmatter
 - lesson IDs
@@ -134,8 +97,8 @@ For unit-level or content-level changes, inspect as relevant:
 - quiz IDs
 - `skills`
 - `lesson_number`
-- `unit_code` or `chapter_code`
-- `unit_folder` or `chapter_folder`
+- `unit_code`
+- `unit_folder`
 - internal Markdown links
 - mentions of moved or renamed concepts
 - previous and next mini-lessons around any changed lesson
@@ -288,7 +251,7 @@ Report updates to:
 - file frontmatter if any;
 - `## Suivi de production`;
 - `## Journal de production`;
-- `## Golden chapter readiness` or `## Golden unit readiness` if relevant.
+- `## Golden unit readiness` or `## Golden unit readiness` if relevant.
 
 ## Remaining risks
 

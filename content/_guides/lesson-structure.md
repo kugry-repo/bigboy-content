@@ -37,9 +37,9 @@ For lesson tone and voice, also read `_guides/lesson-voice.md`.
 
 ## Mini-Lesson File Architecture
 
-A chapter has multiple mini-lesson files under `lessons/`.
+A unit has multiple mini-lesson files under `lessons/`.
 
-The chapter `_index.md` contains the lesson map and blueprint.
+The unit `_index.md` contains the lesson map and blueprint.
 
 Each mini-lesson should be small, focused, and reviewable.
 
@@ -47,7 +47,7 @@ Each mini-lesson should follow the lesson voice: French, friendly mentor, `tu`, 
 
 Mini-lessons should be ordered by prerequisite logic and learner difficulty.
 
-Do not use one huge root-level `lesson.md` as the main chapter lesson format unless explicitly requested for export or compatibility.
+Do not use one huge root-level `lesson.md` as the main unit lesson format unless explicitly requested.
 
 ## Stable Contract, Flexible Shape
 
@@ -117,7 +117,7 @@ Use this section to show the student the local map:
 - related concepts;
 - similar-but-different concepts.
 
-Keep it short. The goal is orientation, not a full chapter overview.
+Keep it short. The goal is orientation, not a full unit overview.
 
 ## Es-Tu Prêt ?
 

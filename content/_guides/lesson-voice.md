@@ -4,7 +4,7 @@
 
 This guide defines the distinctive writing style for student-facing lesson units.
 
-It applies mainly to mini-lesson files under chapter `lessons/` folders.
+It applies mainly to mini-lesson files under unit `lessons/` folders.
 
 Exercises and solutions may borrow some of the tone, but the full storytelling and mentor style is mainly for lessons.
 
@@ -536,7 +536,7 @@ Just leave a clear author note when it would help the future app.
 
 ## Lesson size and organization
 
-Use separate mini-lesson files under each chapter `lessons/` folder.
+Use separate mini-lesson files under each unit `lessons/` folder.
 
 Choose a lesson shape after curation:
 
@@ -560,7 +560,7 @@ A mini-lesson should be focused enough that the friendly mentor style can stay s
 
 Do not stretch one mini-lesson across too many concepts.
 
-If a mini-lesson becomes too long, split it into two files and update the chapter `_index.md`.
+If a mini-lesson becomes too long, split it into two files and update the unit `_index.md`.
 
 Useful related files:
 
@@ -945,7 +945,7 @@ Use these names consistently when possible:
 - `À la fin, tu dois savoir faire`
 - `Pourquoi on étudie ça ?`
 - `Pourquoi c'est important`
-- `Carte du chapitre`
+- `Carte de l'unite`
 - `Mini-leçon`
 - `Le problème qu'on veut résoudre`
 - `Intuition`
@@ -976,7 +976,7 @@ Use these names consistently when possible:
 - `La carte mentale`
 - `Notes auteur`
 
-The names can vary when a chapter needs flexibility, but do not invent random section names without a reason.
+The names can vary when a unit needs flexibility, but do not invent random section names without a reason.
 
 ## Voice calibration phrases
 

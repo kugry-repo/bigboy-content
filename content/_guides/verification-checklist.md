@@ -9,7 +9,7 @@ Use this checklist before marking a file as `reviewed` or `published`.
 - [ ] `id` is stable and unique.
 - [ ] `program` is `2bac-pc-svt`.
 - [ ] `tracks` includes `pc` and/or `svt`.
-- [ ] `domain` and `chapter` are correct.
+- [ ] `domain` and unit metadata are correct.
 - [ ] `skills` are filled.
 - [ ] `status` is realistic.
 - [ ] `source_type` and `source_ref` are correct.
@@ -40,9 +40,9 @@ Use this checklist before marking a file as `reviewed` or `published`.
 ## Standalone quiz checklist
 
 - [ ] The quiz uses `type: quiz`.
-- [ ] The file is under the chapter `quizzes/` folder.
-- [ ] The filename follows `{chapter_code}-quiz-###.md`.
-- [ ] The ID follows `2bac-pcsvt-{chapter_code}-quiz-###`.
+- [ ] The file is under the unit `quizzes/` folder.
+- [ ] The filename follows `{unit_code}-quiz-###.md`.
+- [ ] The ID follows `2bac-pcsvt-{unit_code}-quiz-###`.
 - [ ] `quiz_kind`, `quiz_series`, `answer_key_status`, and `feedback_status` are filled.
 - [ ] The quiz is standalone and not dependent on hidden lesson text.
 - [ ] The quiz is a diagnostic or mastery checkpoint, not a short exercise sheet.
@@ -96,7 +96,7 @@ For full lesson review, use `_guides/lesson-quality-rubric.md`.
 - [ ] The mini-lesson has complete frontmatter.
 - [ ] The mini-lesson uses `type: lesson`.
 - [ ] The mini-lesson uses `lesson_kind: mini-lesson`.
-- [ ] The file is under the chapter `lessons/` folder.
+- [ ] The file is under the unit `lessons/` folder.
 - [ ] The mini-lesson has a clear purpose or learning contract.
 - [ ] The mini-lesson has a natural shape chosen after curation.
 - [ ] The mini-lesson says where this idea fits or gives prerequisite context when needed.
@@ -119,20 +119,20 @@ For full lesson review, use `_guides/lesson-quality-rubric.md`.
 - [ ] Author notes are separated from student-facing content.
 - [ ] The mini-lesson can be reviewed using `_guides/lesson-quality-rubric.md`.
 
-## Chapter coverage checklist
+## Unit coverage checklist
 
-- [ ] The chapter `_index.md` has a mini-lesson plan.
-- [ ] The chapter `_index.md` has a misconception map.
-- [ ] The chapter `_index.md` has cluster-based raw exercise seeds or a clear note that the compatibility shortcut was used.
-- [ ] The chapter `_index.md` has curated exercise design cards.
-- [ ] The chapter-level exercise plan has balance notes or card statuses from `MODE: CHAPTER_BALANCE` when several clusters exist.
+- [ ] The unit `_index.md` has a mini-lesson plan.
+- [ ] The unit `_index.md` has a misconception map.
+- [ ] The unit `_index.md` has cluster-based raw exercise seeds or a direct-planning note.
+- [ ] The unit `_index.md` has curated exercise design cards.
+- [ ] The unit-level exercise plan has balance notes or card statuses from `MODE: UNIT_BALANCE` when several clusters exist.
 - [ ] Exercise files are one exercise per file and were created in a small batch unless explicitly requested otherwise.
-- [ ] The chapter `_index.md` has quiz series planning when standalone quizzes are needed.
-- [ ] The chapter `_index.md` has raw quiz dumps or quiz design cards before final quiz files are created.
+- [ ] The unit `_index.md` has quiz series planning when standalone quizzes are needed.
+- [ ] The unit `_index.md` has raw quiz dumps or quiz design cards before final quiz files are created.
 - [ ] Quiz files are created in small batches, usually one at a time.
-- [ ] The chapter `_index.md` has diagram/interactivity planning.
-- [ ] The chapter has a `lessons/` folder.
-- [ ] The chapter does not rely on one huge `lesson.md`.
+- [ ] The unit `_index.md` has diagram/interactivity planning.
+- [ ] The unit has a `lessons/` folder.
+- [ ] The unit does not rely on one huge `lesson.md`.
 - [ ] Skill coverage is reflected in `_tracking/skill-coverage.md`.
 
 ## Exam alignment

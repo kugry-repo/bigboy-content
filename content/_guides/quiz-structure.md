@@ -6,15 +6,15 @@ Standalone quizzes are a first-class content type next to mini-lessons, exercise
 
 A quiz is not a short exercise sheet. It is a diagnostic or mastery checkpoint that helps the author and learner see whether important ideas are recognized, chosen, and used correctly.
 
-Standalone quizzes are not mini-quizzes embedded inside lessons. They live as their own Markdown files, grouped into quiz series inside a chapter.
+Standalone quizzes are not mini-quizzes embedded inside lessons. They live as their own Markdown files, grouped into quiz series inside a unit.
 
 Do not build frontend, app rendering, or interaction logic as part of quiz authoring. This guide defines the content system only.
 
 ## Quiz series
 
-A quiz series is an ordered group of standalone quiz files inside one chapter.
+A quiz series is an ordered group of standalone quiz files inside one unit.
 
-Each quiz file lives under the chapter `quizzes/` folder:
+Each quiz file lives under the unit `quizzes/` folder:
 
 ```text
 content/2bac-pc-svt/01-limites-continuite/quizzes/lc-quiz-001.md
@@ -46,12 +46,12 @@ Quizzes should reveal real misconceptions and decision errors. Wrong answers sho
 
 Use one of these `quiz_kind` values:
 
-- `prerequisite`: checks readiness before a lesson cluster or chapter segment.
+- `prerequisite`: checks readiness before a lesson cluster or unit segment.
 - `skill`: checks one focused skill or method family.
 - `method-choice`: checks whether the student chooses the right method.
 - `error-clinic`: diagnoses common mistakes.
 - `fluency`: checks quick, low-friction execution of known procedures.
-- `mixed-review`: combines skills across a chapter segment.
+- `mixed-review`: combines skills across a unit segment.
 - `exam-readiness`: checks whether the student can handle exam-style recognition, traps, and transfers.
 
 ## Quiz item types
@@ -120,7 +120,7 @@ Use the same dump-and-chop philosophy as lessons and exercises:
 raw quiz dump
 -> human curation / chop
 -> quiz design cards with item design cards
--> quiz series / chapter quiz balance
+-> quiz series / unit quiz balance
 -> quiz file creation
 -> answer key and feedback review
 ```

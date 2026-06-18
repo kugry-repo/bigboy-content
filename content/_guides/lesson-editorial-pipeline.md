@@ -35,7 +35,7 @@ source / target
 
 Define the target before generating material:
 
-- chapter and planned lesson ID;
+- unit and planned lesson ID;
 - exact concept, method, misconception, or exam pattern;
 - prerequisite ideas;
 - target student difficulty;

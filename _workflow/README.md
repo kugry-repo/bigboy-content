@@ -2,7 +2,7 @@
 
 `_workflow/` may hold local authoring workflow state.
 
-`_workflow/current-chapter.md` stores the current chapter for prompt-library use and is ignored by Git.
+`_workflow/current-unit.md` stores the current content unit for prompt-library use and is ignored by Git.
 
 Do not store important educational content here. Real educational content belongs under `content/`.
 

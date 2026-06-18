@@ -21,7 +21,7 @@ Use:
 ## Coverage table template
 
 ```md
-| Skill ID | Chapter | Mini-lessons | Exercises | Sets | Status | Notes |
+| Skill ID | Unit | Mini-lessons | Exercises | Sets | Status | Notes |
 |---|---|---|---:|---|---|---|
 | TODO | TODO | TODO | 0 | TODO | planned | TODO |
 ```
@@ -33,7 +33,7 @@ Limit skill ID note:
 - `lc-limite-infinie`: infinite limit value, such as a limit equal to `+infty` or `-infty`.
 - `lc-limite-en-infini`: limit as the variable tends to `+infty` or `-infty`.
 
-| Skill ID | Chapter | Mini-lessons | Exercises | Sets | Status | Notes |
+| Skill ID | Unit | Mini-lessons | Exercises | Sets | Status | Notes |
 |---|---|---|---:|---|---|---|
 | lc-limite-finie | limites-continuite | planned | 0 | planned | planned | TODO |
 | lc-limite-infinie | limites-continuite | planned | 0 | planned | planned | Limit value is infinite |
@@ -61,6 +61,6 @@ A skill is not considered covered until it has:
 
 ## Notes
 
-Do not over-optimize this dashboard before the first golden chapter exists.
+Do not over-optimize this dashboard before the first golden unit exists.
 
-Update it after each meaningful chapter milestone.
+Update it after each meaningful unit milestone.

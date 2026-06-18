@@ -20,25 +20,6 @@ const REQUIRED_BASE_DIRS = [
   "content/2bac-pc-svt/topics",
 ];
 
-const CANONICAL_CHAPTERS = [
-  { folder: "01-limites-continuite", code: "lc", order: 1 },
-  { folder: "02-derivabilite-etude-fonctions", code: "def", order: 2 },
-  { folder: "03-suites-numeriques", code: "sn", order: 3 },
-  { folder: "04-fonctions-primitives", code: "fp", order: 4 },
-  { folder: "05-fonction-logarithme", code: "fl", order: 5 },
-  { folder: "06-nombres-complexes-partie-1", code: "nc1", order: 6 },
-  { folder: "07-fonction-exponentielle", code: "fe", order: 7 },
-  { folder: "08-nombres-complexes-partie-2", code: "nc2", order: 8 },
-  { folder: "09-calcul-integral", code: "ci", order: 9 },
-  { folder: "10-equations-differentielles", code: "ed", order: 10 },
-  { folder: "11-geometrie-espace", code: "ge", order: 11 },
-  { folder: "12-denombrement-probabilites", code: "dp", order: 12 },
-];
-
-const CHAPTERS_BY_FOLDER = new Map(
-  CANONICAL_CHAPTERS.map((chapter) => [chapter.folder, chapter]),
-);
-
 const ALLOWED_PROGRAM_EXTRA_FOLDERS = new Set(["topics"]);
 
 const FORBIDDEN_DOMAIN_FOLDERS = new Set([
@@ -47,15 +28,42 @@ const FORBIDDEN_DOMAIN_FOLDERS = new Set([
   "probabilites",
 ]);
 
-const REQUIRED_CHAPTER_HEADINGS = [
-  "## Workflow",
-  "## Suivi de production",
-  "## Golden chapter readiness",
-  "## Diagrammes et interactions a prevoir",
-  "## Carte des series de quiz",
-  "## Dumps bruts des quiz",
-  "## Plan des quiz",
-  "## Design cards des quiz",
+const REQUIRED_UNIT_FIELDS = [
+  "unit_kind",
+  "unit_code",
+  "unit_slug",
+  "unit_folder",
+  "unit_order",
+  "official",
+  "content_scope",
+  "status",
+];
+
+const REQUIRED_UNIT_SUBFOLDERS = ["lessons", "exercises", "quizzes", "sets"];
+
+const ALLOWED_UNIT_KINDS = new Set([
+  "official-curriculum-unit",
+  "unofficial-topic",
+]);
+
+const ALLOWED_CONTENT_SCOPES = new Set([
+  "official-curriculum",
+  "cross-chapter-method",
+  "global-revision",
+  "synthesis",
+  "exam-prep",
+  "custom",
+]);
+
+const DISALLOWED_FRONTMATTER_FIELDS = [
+  "chapter",
+  "chapter_code",
+  "chapter_folder",
+  "chapter_order",
+  "topic",
+  "topic_code",
+  "topic_folder",
+  "related_chapters",
 ];
 
 const FINALIZED_STATUSES = new Set(["reviewed", "published"]);
@@ -79,12 +87,10 @@ const ALLOWED_LESSON_SHAPES = new Set([
 
 const LESSON_QUALITY_SIGNAL_CHECKS = [
   {
-    label: "H1 title",
     message: "missing H1 lesson title",
     test: (text) => /^#\s+\S/m.test(text),
   },
   {
-    label: "purpose or learning goal",
     message:
       "missing a clear learning goal or purpose; add it visibly or in a concise opening",
     test: (text) =>
@@ -101,7 +107,6 @@ const LESSON_QUALITY_SIGNAL_CHECKS = [
       ]),
   },
   {
-    label: "mathematical precision",
     message:
       "missing mathematical precision signals such as LaTeX notation, a definition/property/theorem/method, conditions, or domain notes",
     test: (text) =>
@@ -120,7 +125,6 @@ const LESSON_QUALITY_SIGNAL_CHECKS = [
       ]),
   },
   {
-    label: "active check or practice direction",
     message:
       "missing active check, checkpoint, practice direction, or next action; OK for true micro-lessons if Notes auteur explains why",
     test: (text) =>
@@ -138,7 +142,6 @@ const LESSON_QUALITY_SIGNAL_CHECKS = [
       ]),
   },
   {
-    label: "verification notes",
     message:
       'missing verification/source notes; add them in "## Notes auteur" when math, curriculum, or exam claims need tracking',
     test: (text) =>
@@ -157,8 +160,9 @@ const LESSON_QUALITY_SIGNAL_CHECKS = [
 const errors = [];
 const warnings = [];
 const ids = new Map();
-let checkedChapters = 0;
-let checkedTopics = 0;
+const units = [];
+let checkedOfficialUnits = 0;
+let checkedUnofficialUnits = 0;
 
 function toPosix(filePath) {
   return filePath.replaceAll(path.sep, "/");
@@ -261,10 +265,6 @@ function hasHeading(text, heading) {
   return normalizeForHeading(text).includes(normalizeForHeading(heading));
 }
 
-function hasAnyHeading(text, headings) {
-  return headings.some((heading) => hasHeading(text, heading));
-}
-
 function countMatches(text, regex) {
   return [...text.matchAll(regex)].length;
 }
@@ -281,6 +281,18 @@ function requireFrontmatter(filePath, parsed, label) {
   return false;
 }
 
+function isFalse(value) {
+  return value === false || value === "false";
+}
+
+function isTrue(value) {
+  return value === true || value === "true";
+}
+
+function escapeRegex(text) {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 function checkBaseFolders() {
   for (const requiredDir of REQUIRED_BASE_DIRS) {
     const fullPath = path.join(ROOT, ...requiredDir.split("/"));
@@ -293,93 +305,172 @@ function checkBaseFolders() {
 function checkProgramFolderShape() {
   if (!isDirectory(PROGRAM_DIR)) return;
 
-  const chapterDirs = readDir(PROGRAM_DIR)
+  for (const entry of readDir(PROGRAM_DIR)) {
+    if (!entry.isDirectory()) continue;
+
+    if (ALLOWED_PROGRAM_EXTRA_FOLDERS.has(entry.name)) continue;
+    if (entry.name.startsWith(".") || entry.name.startsWith("_")) continue;
+
+    if (FORBIDDEN_DOMAIN_FOLDERS.has(entry.name)) {
+      errors.push(`content/2bac-pc-svt/${entry.name}/: domain folders are not allowed here`);
+    }
+  }
+}
+
+function checkTopicCatalog() {
+  const catalogPath = path.join(TOPICS_DIR, "_index.md");
+
+  if (!isFile(catalogPath)) {
+    addError(catalogPath, "missing topic catalog index");
+    return;
+  }
+
+  const text = fs.readFileSync(catalogPath, "utf8");
+  const parsed = parseFrontmatter(text);
+
+  if (!requireFrontmatter(catalogPath, parsed, "topic catalog _index.md")) {
+    return;
+  }
+
+  if (parsed.data.type !== "topic-catalog") {
+    addError(catalogPath, 'frontmatter "type" must be "topic-catalog"');
+  }
+
+  if (!isFalse(parsed.data.official)) {
+    addError(catalogPath, 'frontmatter "official" must be false');
+  }
+}
+
+function discoverOfficialUnitDirs() {
+  if (!isDirectory(PROGRAM_DIR)) return [];
+
+  return readDir(PROGRAM_DIR)
     .filter((entry) => entry.isDirectory())
-    .map((entry) => entry.name);
-
-  for (const dir of chapterDirs) {
-    if (ALLOWED_PROGRAM_EXTRA_FOLDERS.has(dir)) {
-      continue;
-    }
-
-    if (FORBIDDEN_DOMAIN_FOLDERS.has(dir)) {
-      errors.push(`content/2bac-pc-svt/${dir}/: domain folders are not allowed here`);
-      continue;
-    }
-
-    if (!CHAPTERS_BY_FOLDER.has(dir)) {
-      errors.push(`content/2bac-pc-svt/${dir}/: unexpected chapter folder`);
-    }
-  }
-
-  for (const chapter of CANONICAL_CHAPTERS) {
-    const chapterDir = path.join(PROGRAM_DIR, chapter.folder);
-    if (!isDirectory(chapterDir)) {
-      errors.push(`content/2bac-pc-svt/${chapter.folder}/: missing canonical chapter folder`);
-    }
-  }
+    .filter((entry) => entry.name !== "topics")
+    .filter((entry) => !entry.name.startsWith(".") && !entry.name.startsWith("_"))
+    .map((entry) => path.join(PROGRAM_DIR, entry.name))
+    .sort();
 }
 
-function isFalse(value) {
-  return value === false || value === "false";
+function discoverTopicUnitDirs() {
+  if (!isDirectory(TOPICS_DIR)) return [];
+
+  return readDir(TOPICS_DIR)
+    .filter((entry) => entry.isDirectory())
+    .filter((entry) => !entry.name.startsWith(".") && !entry.name.startsWith("_"))
+    .map((entry) => path.join(TOPICS_DIR, entry.name))
+    .sort();
 }
 
-function checkChapterIndex(chapter, chapterDir) {
-  const indexPath = path.join(chapterDir, "_index.md");
+function checkUnitIndex(unitDir, expectedGroup) {
+  const indexPath = path.join(unitDir, "_index.md");
 
   if (!isFile(indexPath)) {
-    addError(indexPath, "missing chapter index");
-    return;
+    addError(indexPath, "missing unit index");
+    return null;
   }
 
   const text = fs.readFileSync(indexPath, "utf8");
   const parsed = parseFrontmatter(text);
 
-  if (!requireFrontmatter(indexPath, parsed, "chapter _index.md")) {
-    return;
+  if (!requireFrontmatter(indexPath, parsed, "unit _index.md")) {
+    return null;
   }
 
   const { data } = parsed;
+  const expectedUnitFolder =
+    expectedGroup === "official"
+      ? path.basename(unitDir)
+      : `topics/${path.basename(unitDir)}`;
 
-  if (data.type !== "chapter-index") {
-    addError(indexPath, 'frontmatter "type" must be "chapter-index"');
+  if (data.type !== "unit-index") {
+    addError(indexPath, 'frontmatter "type" must be "unit-index"');
   }
 
-  if (data.chapter_code !== chapter.code) {
-    addError(indexPath, `frontmatter "chapter_code" must be "${chapter.code}"`);
-  }
-
-  if (Number(data.chapter_order) !== chapter.order) {
-    addError(indexPath, `frontmatter "chapter_order" must be ${chapter.order}`);
-  }
-
-  if (data.chapter_folder !== chapter.folder) {
-    addError(indexPath, `frontmatter "chapter_folder" must be "${chapter.folder}"`);
-  }
-
-  for (const heading of REQUIRED_CHAPTER_HEADINGS) {
-    if (!hasHeading(text, heading)) {
-      addError(indexPath, `missing required section "${heading}"`);
+  for (const field of REQUIRED_UNIT_FIELDS) {
+    if (!Object.hasOwn(data, field) || data[field] === "") {
+      addError(indexPath, `missing frontmatter field "${field}"`);
     }
   }
+
+  if (data.unit_kind && !ALLOWED_UNIT_KINDS.has(data.unit_kind)) {
+    addError(indexPath, `frontmatter "unit_kind" has invalid value "${data.unit_kind}"`);
+  }
+
+  if (data.content_scope && !ALLOWED_CONTENT_SCOPES.has(data.content_scope)) {
+    addError(indexPath, `frontmatter "content_scope" has invalid value "${data.content_scope}"`);
+  }
+
+  if (data.unit_folder !== expectedUnitFolder) {
+    addError(indexPath, `frontmatter "unit_folder" must be "${expectedUnitFolder}"`);
+  }
+
+  if (data.unit_code) {
+    const expectedId = `2bac-pcsvt-${data.unit_code}-index`;
+    if (data.id !== expectedId) {
+      addError(indexPath, `frontmatter "id" must be "${expectedId}"`);
+    }
+  }
+
+  if (expectedGroup === "official") {
+    if (!isTrue(data.official)) {
+      addError(indexPath, 'frontmatter "official" must be true');
+    }
+
+    if (data.unit_kind !== "official-curriculum-unit") {
+      addError(indexPath, 'frontmatter "unit_kind" must be "official-curriculum-unit"');
+    }
+
+    if (data.content_scope !== "official-curriculum") {
+      addError(indexPath, 'frontmatter "content_scope" must be "official-curriculum"');
+    }
+
+    if (!/^\d{2}-[a-z0-9-]+$/.test(path.basename(unitDir))) {
+      addWarning(indexPath, "official unit folder normally uses a numeric prefix like 01-slug");
+    }
+  }
+
+  if (expectedGroup === "topic") {
+    if (!isFalse(data.official)) {
+      addError(indexPath, 'frontmatter "official" must be false');
+    }
+
+    if (data.unit_kind !== "unofficial-topic") {
+      addError(indexPath, 'frontmatter "unit_kind" must be "unofficial-topic"');
+    }
+
+    if (data.content_scope === "official-curriculum") {
+      addError(indexPath, 'unofficial topic cannot use "content_scope: official-curriculum"');
+    }
+  }
+
+  for (const heading of ["## Workflow", "## Suivi de production", "## Golden unit readiness"]) {
+    if (!hasHeading(text, heading)) {
+      addWarning(indexPath, `missing recommended section "${heading}"`);
+    }
+  }
+
+  return {
+    indexPath,
+    dir: unitDir,
+    group: expectedGroup,
+    code: data.unit_code,
+    folder: data.unit_folder,
+    order: Number(data.unit_order),
+    id: data.id,
+    kind: data.unit_kind,
+  };
 }
 
-function checkChapterFolders(chapter) {
-  const chapterDir = path.join(PROGRAM_DIR, chapter.folder);
-
-  if (!isDirectory(chapterDir)) return;
-  checkedChapters += 1;
-
-  checkChapterIndex(chapter, chapterDir);
-
-  for (const subdir of ["lessons", "exercises", "quizzes", "sets"]) {
-    const subdirPath = path.join(chapterDir, subdir);
+function checkUnitSubfolders(unit) {
+  for (const subdir of REQUIRED_UNIT_SUBFOLDERS) {
+    const subdirPath = path.join(unit.dir, subdir);
     if (!isDirectory(subdirPath)) {
-      errors.push(`content/2bac-pc-svt/${chapter.folder}/${subdir}/: missing chapter subfolder`);
+      errors.push(`${rel(subdirPath)}/: missing unit subfolder`);
     }
   }
 
-  const rootLessonPath = path.join(chapterDir, "lesson.md");
+  const rootLessonPath = path.join(unit.dir, "lesson.md");
   if (isFile(rootLessonPath)) {
     addError(rootLessonPath, 'root-level "lesson.md" is not allowed; use lessons/ mini-lessons');
   }
@@ -387,8 +478,7 @@ function checkChapterFolders(chapter) {
 
 function checkMiniLessonQualitySignals(filePath, text) {
   for (const check of LESSON_QUALITY_SIGNAL_CHECKS) {
-    const present = check.test(text);
-    if (!present) {
+    if (!check.test(text)) {
       addWarning(filePath, check.message);
     }
   }
@@ -399,7 +489,7 @@ function checkMiniLessonQualitySignals(filePath, text) {
   ]);
   const hasDecisionSignal = hasAnyNormalizedText(text, [
     "quand l'utiliser",
-    "quand l’utiliser",
+    "quand l'utiliser",
     "a utiliser lorsque",
     "utilise cette methode quand",
     "signaux",
@@ -438,12 +528,12 @@ function checkMiniLessonQualitySignals(filePath, text) {
   }
 }
 
-function checkLessonFile(chapter, filePath) {
+function checkLessonFile(unit, filePath) {
   const fileName = path.basename(filePath);
-  const nameMatch = fileName.match(new RegExp(`^${chapter.code}-lesson-(\\d{3})\\.md$`));
+  const nameMatch = fileName.match(new RegExp(`^${escapeRegex(unit.code)}-lesson-(\\d{3})\\.md$`));
 
   if (!nameMatch) {
-    addError(filePath, `filename must match "${chapter.code}-lesson-###.md"`);
+    addError(filePath, `filename must match "${unit.code}-lesson-###.md"`);
   }
 
   const text = fs.readFileSync(filePath, "utf8");
@@ -463,8 +553,12 @@ function checkLessonFile(chapter, filePath) {
     addError(filePath, 'frontmatter "lesson_kind" must be "mini-lesson"');
   }
 
+  if (data.unit_code && data.unit_code !== unit.code) {
+    addError(filePath, `frontmatter "unit_code" must be "${unit.code}"`);
+  }
+
   if (nameMatch) {
-    const expectedId = `2bac-pcsvt-${chapter.code}-lesson-${nameMatch[1]}`;
+    const expectedId = `2bac-pcsvt-${unit.code}-lesson-${nameMatch[1]}`;
     if (data.id !== expectedId) {
       addError(filePath, `frontmatter "id" must be "${expectedId}"`);
     }
@@ -509,12 +603,12 @@ function checkLessonFile(chapter, filePath) {
   checkMiniLessonQualitySignals(filePath, text);
 }
 
-function checkExerciseFile(chapter, filePath) {
+function checkExerciseFile(unit, filePath) {
   const fileName = path.basename(filePath);
-  const nameMatch = fileName.match(new RegExp(`^${chapter.code}-ex-(\\d{3})\\.md$`));
+  const nameMatch = fileName.match(new RegExp(`^${escapeRegex(unit.code)}-ex-(\\d{3})\\.md$`));
 
   if (!nameMatch) {
-    addError(filePath, `filename must match "${chapter.code}-ex-###.md"`);
+    addError(filePath, `filename must match "${unit.code}-ex-###.md"`);
   }
 
   const text = fs.readFileSync(filePath, "utf8");
@@ -530,8 +624,12 @@ function checkExerciseFile(chapter, filePath) {
     addError(filePath, 'frontmatter "type" must be "exercise"');
   }
 
-  if (chapter.kind === "unofficial-topic" && nameMatch) {
-    const expectedId = `2bac-pcsvt-${chapter.code}-ex-${nameMatch[1]}`;
+  if (data.unit_code && data.unit_code !== unit.code) {
+    addError(filePath, `frontmatter "unit_code" must be "${unit.code}"`);
+  }
+
+  if (nameMatch) {
+    const expectedId = `2bac-pcsvt-${unit.code}-ex-${nameMatch[1]}`;
     if (data.id !== expectedId) {
       addError(filePath, `frontmatter "id" must be "${expectedId}"`);
     }
@@ -542,12 +640,12 @@ function checkExerciseFile(chapter, filePath) {
   }
 }
 
-function checkQuizFile(chapter, filePath) {
+function checkQuizFile(unit, filePath) {
   const fileName = path.basename(filePath);
-  const nameMatch = fileName.match(new RegExp(`^${chapter.code}-quiz-(\\d{3})\\.md$`));
+  const nameMatch = fileName.match(new RegExp(`^${escapeRegex(unit.code)}-quiz-(\\d{3})\\.md$`));
 
   if (!nameMatch) {
-    addError(filePath, `filename must match "${chapter.code}-quiz-###.md"`);
+    addError(filePath, `filename must match "${unit.code}-quiz-###.md"`);
   }
 
   const text = fs.readFileSync(filePath, "utf8");
@@ -563,8 +661,12 @@ function checkQuizFile(chapter, filePath) {
     addError(filePath, 'frontmatter "type" must be "quiz"');
   }
 
+  if (data.unit_code && data.unit_code !== unit.code) {
+    addError(filePath, `frontmatter "unit_code" must be "${unit.code}"`);
+  }
+
   if (nameMatch) {
-    const expectedId = `2bac-pcsvt-${chapter.code}-quiz-${nameMatch[1]}`;
+    const expectedId = `2bac-pcsvt-${unit.code}-quiz-${nameMatch[1]}`;
     if (data.id !== expectedId) {
       addError(filePath, `frontmatter "id" must be "${expectedId}"`);
     }
@@ -610,18 +712,12 @@ function checkQuizFile(chapter, filePath) {
   }
 }
 
-function checkSetFile(filePath, unit = null) {
-  if (unit?.kind === "unofficial-topic") {
-    const fileName = path.basename(filePath);
-    const escapedCode = unit.code.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const topicSetName = new RegExp(`^${escapedCode}-(set-)?[a-z0-9][a-z0-9-]*\\.md$`);
+function checkSetFile(unit, filePath) {
+  const fileName = path.basename(filePath);
+  const nameMatch = fileName.match(new RegExp(`^${escapeRegex(unit.code)}-set-([a-z0-9][a-z0-9-]*)\\.md$`));
 
-    if (!topicSetName.test(fileName)) {
-      addError(
-        filePath,
-        `filename must start with "${unit.code}-" and use a sensible set slug`,
-      );
-    }
+  if (!nameMatch) {
+    addError(filePath, `filename must match "${unit.code}-set-<slug>.md"`);
   }
 
   const text = fs.readFileSync(filePath, "utf8");
@@ -634,169 +730,93 @@ function checkSetFile(filePath, unit = null) {
   if (parsed.data.type !== "exercise-set") {
     addError(filePath, 'frontmatter "type" must be "exercise-set"');
   }
-}
 
-function checkChapterContentFiles(chapter) {
-  const chapterDir = path.join(PROGRAM_DIR, chapter.folder);
-  if (!isDirectory(chapterDir)) return;
-
-  for (const filePath of walkMarkdownFiles(path.join(chapterDir, "lessons"))) {
-    checkLessonFile(chapter, filePath);
+  if (parsed.data.unit_code && parsed.data.unit_code !== unit.code) {
+    addError(filePath, `frontmatter "unit_code" must be "${unit.code}"`);
   }
 
-  for (const filePath of walkMarkdownFiles(path.join(chapterDir, "exercises"))) {
-    checkExerciseFile(chapter, filePath);
-  }
-
-  for (const filePath of walkMarkdownFiles(path.join(chapterDir, "quizzes"))) {
-    checkQuizFile(chapter, filePath);
-  }
-
-  for (const filePath of walkMarkdownFiles(path.join(chapterDir, "sets"))) {
-    checkSetFile(filePath);
-  }
-}
-
-function checkTopicCatalog() {
-  const catalogPath = path.join(TOPICS_DIR, "_index.md");
-
-  if (!isFile(catalogPath)) {
-    addError(catalogPath, "missing topic catalog index");
-    return;
-  }
-
-  const text = fs.readFileSync(catalogPath, "utf8");
-  const parsed = parseFrontmatter(text);
-
-  if (!requireFrontmatter(catalogPath, parsed, "topic catalog _index.md")) {
-    return;
-  }
-
-  if (parsed.data.type !== "topic-catalog") {
-    addError(catalogPath, 'frontmatter "type" must be "topic-catalog"');
-  }
-
-  if (!isFalse(parsed.data.official)) {
-    addError(catalogPath, 'frontmatter "official" must be false');
-  }
-}
-
-function checkTopicIndex(topicDir) {
-  const indexPath = path.join(topicDir, "_index.md");
-  const topicFolder = path.basename(topicDir);
-  const expectedUnitFolder = `topics/${topicFolder}`;
-
-  if (!isFile(indexPath)) {
-    addError(indexPath, "missing topic index");
-    return null;
-  }
-
-  const text = fs.readFileSync(indexPath, "utf8");
-  const parsed = parseFrontmatter(text);
-
-  if (!requireFrontmatter(indexPath, parsed, "topic _index.md")) {
-    return null;
-  }
-
-  const { data } = parsed;
-
-  if (data.type !== "topic-index") {
-    addError(indexPath, 'frontmatter "type" must be "topic-index"');
-  }
-
-  if (data.unit_kind !== "unofficial-topic") {
-    addError(indexPath, 'frontmatter "unit_kind" must be "unofficial-topic"');
-  }
-
-  for (const field of [
-    "unit_code",
-    "unit_folder",
-    "topic_code",
-    "topic_folder",
-    "status",
-  ]) {
-    if (!Object.hasOwn(data, field) || data[field] === "") {
-      addError(indexPath, `missing frontmatter field "${field}"`);
+  if (nameMatch) {
+    const expectedId = `2bac-pcsvt-${unit.code}-set-${nameMatch[1]}`;
+    if (parsed.data.id !== expectedId) {
+      addError(filePath, `frontmatter "id" must be "${expectedId}"`);
     }
   }
-
-  if (!isFalse(data.official)) {
-    addError(indexPath, 'frontmatter "official" must be false');
-  }
-
-  if (data.unit_folder && data.unit_folder !== expectedUnitFolder) {
-    addError(indexPath, `frontmatter "unit_folder" must be "${expectedUnitFolder}"`);
-  }
-
-  if (data.topic_folder && data.topic_folder !== expectedUnitFolder) {
-    addError(indexPath, `frontmatter "topic_folder" must be "${expectedUnitFolder}"`);
-  }
-
-  if (data.unit_code && data.topic_code && data.topic_code !== data.unit_code) {
-    addError(indexPath, 'frontmatter "topic_code" must match "unit_code"');
-  }
-
-  if (data.unit_code) {
-    const expectedId = `2bac-pcsvt-${data.unit_code}-index`;
-    if (data.id !== expectedId) {
-      addError(indexPath, `frontmatter "id" must be "${expectedId}"`);
-    }
-  }
-
-  return {
-    code: data.unit_code || data.topic_code || data.chapter_code,
-    folder: expectedUnitFolder,
-    kind: "unofficial-topic",
-  };
 }
 
-function checkTopicFolder(topicDir) {
-  if (!isDirectory(topicDir)) return;
-
-  checkedTopics += 1;
-  const topicUnit = checkTopicIndex(topicDir);
-
-  for (const subdir of ["lessons", "exercises", "quizzes", "sets"]) {
-    const subdirPath = path.join(topicDir, subdir);
-    if (!isDirectory(subdirPath)) {
-      errors.push(`${rel(subdirPath)}/: missing topic subfolder`);
-    }
+function checkUnitContentFiles(unit) {
+  for (const filePath of walkMarkdownFiles(path.join(unit.dir, "lessons"))) {
+    checkLessonFile(unit, filePath);
   }
 
-  if (!topicUnit?.code) {
-    return;
+  for (const filePath of walkMarkdownFiles(path.join(unit.dir, "exercises"))) {
+    checkExerciseFile(unit, filePath);
   }
 
-  for (const filePath of walkMarkdownFiles(path.join(topicDir, "lessons"))) {
-    checkLessonFile(topicUnit, filePath);
+  for (const filePath of walkMarkdownFiles(path.join(unit.dir, "quizzes"))) {
+    checkQuizFile(unit, filePath);
   }
 
-  for (const filePath of walkMarkdownFiles(path.join(topicDir, "exercises"))) {
-    checkExerciseFile(topicUnit, filePath);
-  }
-
-  for (const filePath of walkMarkdownFiles(path.join(topicDir, "quizzes"))) {
-    checkQuizFile(topicUnit, filePath);
-  }
-
-  for (const filePath of walkMarkdownFiles(path.join(topicDir, "sets"))) {
-    checkSetFile(filePath, topicUnit);
+  for (const filePath of walkMarkdownFiles(path.join(unit.dir, "sets"))) {
+    checkSetFile(unit, filePath);
   }
 }
 
-function checkTopics() {
-  if (!isDirectory(TOPICS_DIR)) {
-    errors.push("content/2bac-pc-svt/topics/: missing topics folder");
-    return;
+function discoverAndCheckUnits() {
+  for (const unitDir of discoverOfficialUnitDirs()) {
+    checkedOfficialUnits += 1;
+    const unit = checkUnitIndex(unitDir, "official");
+    if (!unit) continue;
+    units.push(unit);
+    checkUnitSubfolders(unit);
+    checkUnitContentFiles(unit);
   }
 
   checkTopicCatalog();
 
-  for (const entry of readDir(TOPICS_DIR)) {
-    if (!entry.isDirectory()) continue;
-    if (entry.name.startsWith(".")) continue;
+  for (const unitDir of discoverTopicUnitDirs()) {
+    checkedUnofficialUnits += 1;
+    const unit = checkUnitIndex(unitDir, "topic");
+    if (!unit) continue;
+    units.push(unit);
+    checkUnitSubfolders(unit);
+    checkUnitContentFiles(unit);
+  }
+}
 
-    checkTopicFolder(path.join(TOPICS_DIR, entry.name));
+function checkUnitUniqueness() {
+  const byCode = new Map();
+  const byFolder = new Map();
+  const officialOrders = new Map();
+  const topicOrders = new Map();
+
+  for (const unit of units) {
+    if (unit.code) {
+      const previous = byCode.get(unit.code);
+      if (previous) {
+        addError(unit.indexPath, `duplicate unit_code "${unit.code}" also used in ${previous}`);
+      } else {
+        byCode.set(unit.code, rel(unit.indexPath));
+      }
+    }
+
+    if (unit.folder) {
+      const previous = byFolder.get(unit.folder);
+      if (previous) {
+        addError(unit.indexPath, `duplicate unit_folder "${unit.folder}" also used in ${previous}`);
+      } else {
+        byFolder.set(unit.folder, rel(unit.indexPath));
+      }
+    }
+
+    const orderMap = unit.group === "official" ? officialOrders : topicOrders;
+    if (Number.isFinite(unit.order)) {
+      const previous = orderMap.get(unit.order);
+      if (previous) {
+        addError(unit.indexPath, `duplicate ${unit.group} unit_order ${unit.order} also used in ${previous}`);
+      } else {
+        orderMap.set(unit.order, rel(unit.indexPath));
+      }
+    }
   }
 }
 
@@ -823,6 +843,12 @@ function collectIdsAndWarnings() {
         addWarning(filePath, "has no frontmatter; allowed for guides, prompts, and references");
       }
       continue;
+    }
+
+    for (const field of DISALLOWED_FRONTMATTER_FIELDS) {
+      if (Object.hasOwn(parsed.data, field)) {
+        addError(filePath, `frontmatter field "${field}" is not allowed in the unit system`);
+      }
     }
 
     if (
@@ -854,8 +880,9 @@ function printResults() {
   console.log("==================");
   console.log(`Errors: ${errors.length}`);
   console.log(`Warnings: ${warnings.length}`);
-  console.log(`Checked chapters: ${checkedChapters}/${CANONICAL_CHAPTERS.length}`);
-  console.log(`Checked topics: ${checkedTopics}`);
+  console.log(`Checked official units: ${checkedOfficialUnits}`);
+  console.log(`Checked unofficial units: ${checkedUnofficialUnits}`);
+  console.log(`Checked total units: ${units.length}`);
   console.log(`Checked IDs: ${ids.size}`);
 
   if (warnings.length) {
@@ -881,13 +908,8 @@ function printResults() {
 function main() {
   checkBaseFolders();
   checkProgramFolderShape();
-
-  for (const chapter of CANONICAL_CHAPTERS) {
-    checkChapterFolders(chapter);
-    checkChapterContentFiles(chapter);
-  }
-
-  checkTopics();
+  discoverAndCheckUnits();
+  checkUnitUniqueness();
   collectIdsAndWarnings();
   printResults();
 }

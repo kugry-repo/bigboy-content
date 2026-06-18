@@ -182,7 +182,7 @@ Use:
 \vec{u}\wedge\vec{v}
 ```
 
-Use `\wedge` for vector product unless a chapter decides on another convention.
+Use `\wedge` for vector product unless a unit decides on another convention.
 
 For coordinates:
 

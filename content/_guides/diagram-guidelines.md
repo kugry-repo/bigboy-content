@@ -56,8 +56,8 @@ Do not build interactions during content drafting.
 When assets are eventually added, use:
 
 ```text
-assets/{chapter_code}-{concept}-{short-description}.svg
-assets/{chapter_code}-{concept}-{short-description}.png
+assets/{unit_code}-{concept}-{short-description}.svg
+assets/{unit_code}-{concept}-{short-description}.png
 ```
 
 Examples:
@@ -107,7 +107,7 @@ Use this pattern:
 
 ## Diagram tracker
 
-Chapter `_index.md` files should include:
+Unit `_index.md` files should include:
 
 ```md
 ## Diagrammes et interactions à prévoir

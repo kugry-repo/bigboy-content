@@ -1,5 +1,5 @@
 ---
-type: topic-index
+type: unit-index
 id: 2bac-pcsvt-syn-index
 title: "Exercices de synthèse"
 program: 2bac-pc-svt
@@ -12,16 +12,9 @@ unit_slug: exercices-de-synthese
 unit_folder: topics/exercices-de-synthese
 unit_order: 2
 official: false
-content_scope: cross-chapter-synthesis
-topic: exercices-de-synthese
-topic_code: syn
-topic_folder: topics/exercices-de-synthese
-chapter: exercices-de-synthese
-chapter_code: syn
-chapter_folder: topics/exercices-de-synthese
-chapter_order: null
+content_scope: synthesis
 domain: transversal
-related_chapters:
+related_units:
   - 01-limites-continuite
   - 02-derivabilite-etude-fonctions
   - 03-suites-numeriques
@@ -47,11 +40,9 @@ updated: 2026-06-18
 
 # Exercices de synthèse
 
-## Nature du topic
+## Nature de l'unite
 
 Unité non officielle pour organiser des exercices mixtes et des problèmes transversaux. Elle réutilise le workflow normal des unités de contenu, sans se présenter comme un chapitre officiel.
-
-Les champs `chapter`, `chapter_code`, `chapter_folder` et `chapter_order` existent seulement comme alias de compatibilité pour les anciens prompts orientés chapitre.
 
 ## Workflow
 
@@ -109,7 +100,7 @@ Les champs `chapter`, `chapter_code`, `chapter_folder` et `chapter_order` existe
 
 TODO: préciser comment ce topic relie plusieurs chapitres officiels sans créer une progression officielle parallèle.
 
-## Objectifs du topic
+## Objectifs de l'unite
 
 TODO.
 

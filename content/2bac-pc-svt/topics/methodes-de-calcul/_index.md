@@ -1,5 +1,5 @@
 ---
-type: topic-index
+type: unit-index
 id: 2bac-pcsvt-mdc-index
 title: "Méthodes de calcul"
 program: 2bac-pc-svt
@@ -12,16 +12,9 @@ unit_slug: methodes-de-calcul
 unit_folder: topics/methodes-de-calcul
 unit_order: 4
 official: false
-content_scope: transversal-methods
-topic: methodes-de-calcul
-topic_code: mdc
-topic_folder: topics/methodes-de-calcul
-chapter: methodes-de-calcul
-chapter_code: mdc
-chapter_folder: topics/methodes-de-calcul
-chapter_order: null
+content_scope: cross-chapter-method
 domain: transversal
-related_chapters:
+related_units:
   - 01-limites-continuite
   - 02-derivabilite-etude-fonctions
   - 03-suites-numeriques
@@ -47,11 +40,9 @@ updated: 2026-06-18
 
 # Méthodes de calcul
 
-## Nature du topic
+## Nature de l'unite
 
 Unité non officielle pour organiser des techniques de calcul utiles dans plusieurs chapitres. Elle réutilise le workflow normal des unités de contenu, sans se présenter comme un chapitre officiel.
-
-Les champs `chapter`, `chapter_code`, `chapter_folder` et `chapter_order` existent seulement comme alias de compatibilité pour les anciens prompts orientés chapitre.
 
 ## Workflow
 
@@ -109,7 +100,7 @@ Les champs `chapter`, `chapter_code`, `chapter_folder` et `chapter_order` existe
 
 TODO: vérifier humainement la liste des chapitres liés, surtout pour décider si les liens vers géométrie et probabilités doivent rester dans le périmètre initial.
 
-## Objectifs du topic
+## Objectifs de l'unite
 
 TODO.
 
