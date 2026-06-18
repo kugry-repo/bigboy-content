@@ -6,6 +6,16 @@ These instructions apply to all files under `content/`.
 
 This directory is an Obsidian-compatible vault for authoring Moroccan 2BAC PC/SVT mathematics content in Markdown.
 
+## Current phase: content authoring system buildout
+
+The Markdown content system is not a frozen production format yet. For guides, prompts, templates, validators, trackers, naming rules, frontmatter schemas, and folder structure, prefer one clear current system over backward compatibility with older drafts.
+
+- Assume breaking changes to the authoring format are acceptable unless the user explicitly asks for compatibility.
+- Do not keep old and new workflows, schemas, templates, prompts, validation paths, aliases, fallbacks, or migration shims running in parallel.
+- When a content-system concept, schema, workflow, or folder structure changes, update affected source files, templates, examples, prompts, guides, and validation rules to the new source of truth.
+- Delete old structures instead of deprecating them when the intended replacement is clear.
+- If destructive cleanup could erase meaningful authored content, or if the new source of truth is ambiguous, stop and ask before editing.
+
 ## Must-read guides before content work
 
 Before chapter planning or chapter-level edits:
