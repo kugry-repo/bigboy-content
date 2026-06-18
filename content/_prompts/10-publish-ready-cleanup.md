@@ -58,6 +58,7 @@ Before doing any work:
 - `TARGET_CHAPTER_INDEX`
 - all mini-lessons under `TARGET_CHAPTER_FOLDER/lessons/`
 - all exercises under `TARGET_CHAPTER_FOLDER/exercises/`
+- all quizzes under `TARGET_CHAPTER_FOLDER/quizzes/`
 - all sets under `TARGET_CHAPTER_FOLDER/sets/`
 
 ## Task
@@ -74,8 +75,9 @@ Do not:
 
 - create new mini-lessons;
 - create new exercises;
+- create new quizzes;
 - create exercise sets;
-- write new substantive lesson or exercise content;
+- write new substantive lesson, exercise, or quiz content;
 - rewrite the full chapter;
 - invent official curriculum claims;
 - mark files as `published` unless explicitly requested;
@@ -94,6 +96,8 @@ Check:
 - diagram and interactivity notes;
 - no root-level `lesson.md`;
 - all mini-lessons live under `lessons/`;
+- standalone quizzes live under `quizzes/`;
+- quiz `answer_key_status` and `feedback_status` fields are accurate;
 - files remain ready for future app parsing.
 
 Make only targeted cleanup edits.

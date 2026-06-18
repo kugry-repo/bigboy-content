@@ -1,6 +1,6 @@
 # Prompt - Review Solutions
 
-Use this prompt to review existing exercise solutions.
+Use this prompt to review existing draft exercise solutions after exercise files have been created.
 
 ## Target
 
@@ -55,11 +55,14 @@ Before doing any work:
 - `content/_guides/math-notation.md`
 - `content/_guides/source-policy.md`
 - `TARGET_CHAPTER_INDEX`
+- exercise design cards in `TARGET_CHAPTER_INDEX`, if present
+- the planned exercise table, for backward compatibility
+- relevant mini-lesson files under `TARGET_CHAPTER_FOLDER/lessons/`
 - selected exercise files under `TARGET_CHAPTER_FOLDER/exercises/`
 
 ## Task
 
-Review selected existing exercise solutions.
+Review selected existing exercise solutions created during Stage 6 or edited later.
 
 This is Stage 7 only.
 
@@ -79,6 +82,8 @@ Check:
 - enough intermediate steps;
 - conditions and domains;
 - consistency with mini-lessons;
+- consistency with the source exercise design card, if present;
+- consistency with the legacy planned exercise table when no design card exists;
 - useful common mistakes;
 - verification where useful;
 - source-safety notes if a solution or statement depends on an exam or third-party source.
@@ -86,6 +91,8 @@ Check:
 Make targeted edits only.
 
 Update `solution_status` when appropriate.
+
+Do not create new exercises from missing design cards or table rows during Stage 7. If coverage gaps are discovered, record them as review notes or recommend returning to Stage 5b or Stage 6.
 
 Finish by summarizing:
 

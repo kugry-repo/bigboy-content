@@ -11,6 +11,7 @@ Strict YAML frontmatter is required for generated content files and index files,
 - program and chapter indexes;
 - mini-lessons;
 - exercises;
+- standalone quizzes;
 - exercise sets;
 - examples and templates where this schema defines frontmatter.
 
@@ -63,6 +64,7 @@ Allowed values for `type`:
 - `chapter-index`
 - `lesson`
 - `exercise`
+- `quiz`
 - `exercise-set`
 - `correction`
 - `reference`
@@ -303,6 +305,101 @@ Use only these `difficulty` values for exercises:
 
 Do not use `technique` as a frontmatter `difficulty` value. Use it only as a descriptive theme in prose when needed.
 
+## Quiz frontmatter
+
+Standalone quiz files use `type: quiz` and live under the chapter `quizzes/` folder.
+
+Example path:
+
+```text
+content/2bac-pc-svt/01-limites-continuite/quizzes/lc-quiz-001.md
+```
+
+Example ID:
+
+```text
+2bac-pcsvt-lc-quiz-001
+```
+
+Template:
+
+```yaml
+---
+type: quiz
+id: 2bac-pcsvt-lc-quiz-001
+title: "Quiz de diagnostic sur les limites"
+program: 2bac-pc-svt
+level: 2bac
+tracks: [pc, svt]
+language: fr
+domain: analyse
+chapter: limites-continuite
+chapter_code: lc
+chapter_order: 1
+chapter_folder: 01-limites-continuite
+quiz_number: 1
+quiz_series: "diagnostic-limites"
+quiz_kind: skill
+skills:
+  - lc-limite-finie
+difficulty: application-directe
+item_types: [multiple-choice]
+cognitive_roles:
+  - recognition
+question_count: 10
+estimated_time_minutes: 8
+mastery_threshold: 80
+answer_key_status: draft
+feedback_status: draft
+status: draft
+sync_status: current
+sync_reason: null
+version: 0.1.0
+source_type: original
+source_ref: null
+created: YYYY-MM-DD
+updated: YYYY-MM-DD
+---
+```
+
+Use only these `difficulty` values for quizzes:
+
+- `decouverte`
+- `application-directe`
+- `application-guidee`
+- `probleme-type`
+- `approfondissement`
+
+Do not use `technique` as a frontmatter `difficulty` value.
+
+Allowed `quiz_kind` values:
+
+- `prerequisite`
+- `skill`
+- `method-choice`
+- `error-clinic`
+- `fluency`
+- `mixed-review`
+- `exam-readiness`
+
+Allowed quiz item types:
+
+- `multiple-choice`
+- `multiple-response`
+- `true-false`
+- `fill-blank`
+- `match`
+- `sequence`
+- `hotspot`
+
+`sequence` and `hotspot` are supported advanced item types, even if frontend rendering is implemented later.
+
+Use `answer_key_status` and `feedback_status` to track review maturity:
+
+- `draft`
+- `needs-review`
+- `reviewed`
+
 ## Exercise set frontmatter
 
 Template:
@@ -356,6 +453,7 @@ Examples:
 ```text
 2bac-pcsvt-lc-lesson-001
 2bac-pcsvt-lc-ex-001
+2bac-pcsvt-lc-quiz-001
 2bac-pcsvt-nc1-lesson-001
 2bac-pcsvt-nc2-ex-001
 2bac-pcsvt-dp-set-examen-standard

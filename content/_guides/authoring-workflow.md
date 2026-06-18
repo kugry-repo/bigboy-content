@@ -16,7 +16,7 @@ For the golden chapter target, see `_guides/golden-chapter-standard.md`.
 
 Treat Markdown content like source code.
 
-Every lesson, exercise, and solution should be:
+Every lesson, exercise, standalone quiz, and solution should be:
 
 - Structured.
 - Reviewable.
@@ -109,15 +109,52 @@ Run the review passes in this order:
 
 If uncertain, mark the file as `needs-review`.
 
-### 6. Exercise creation
+### 6. Exercise planning
 
-Create exercises one by one.
+Generate raw exercise seeds one cluster at a time, then curate that cluster into rich exercise design cards.
+
+For substantial chapters, do not make one huge chapter-wide exercise dump by default. Derive clusters from the chapter plan, mini-lessons, skill families, official program notes, and exam patterns.
+
+Each raw seed should record the rough exercise shape, expected method, main trap, parameter constraints, feasibility sketch, hint or MCQ opportunities, and verification or mismath risks.
+
+Each exercise design card should be detailed enough for Stage 6 to create a final exercise without inventing the target skill, method, traps, or verification concerns from scratch.
+
+After cluster curation, use `MODE: CHAPTER_BALANCE` to check duplicates, missing skills, difficulty balance, mini-lesson coverage, progression, and verification risks across the chapter.
+
+## Parallel standalone quiz workflow
+
+Standalone quizzes are first-class content, but they do not replace lessons or exercises and they do not renumber the Stage 1-10 workflow.
+
+Use this quiz workflow when a chapter needs diagnostic or mastery checkpoints:
+
+```text
+Quiz Q1 - Raw quiz dump
+Quiz Q2 - Quiz design cards and quiz series balance
+Quiz Q3 - Quiz creation
+Quiz Q4 - Quiz review
+```
+
+Quiz planning should happen one quiz series, quiz cluster, or target skill area at a time.
+
+Final quiz creation should usually create one quiz file at a time, with a maximum of two unless explicitly requested.
+
+Standalone quiz files live under the chapter `quizzes/` folder. Each quiz contains multiple questions and should include answer-specific feedback, especially for multiple-choice and multiple-response items.
+
+`sequence` and `hotspot` are allowed advanced item types for quiz planning. Frontend or UI implementation is out of scope.
+
+### 7. Exercise batch creation
+
+Each exercise lives in its own Markdown file.
+
+Exercise files are usually created in small batches of 3 to 5 unless explicitly requested otherwise.
+
+A full chapter may eventually target 20 to 35 individual exercises, but those are accumulated over multiple batches. Do not generate the whole chapter exercise library at once unless explicitly requested.
 
 Each exercise should target a small set of skills.
 
 Avoid mixing too many ideas in beginner exercises.
 
-### 7. Solution creation
+### 8. Solution creation and review
 
 Every exercise should include:
 
@@ -127,7 +164,9 @@ Every exercise should include:
 - Verification when useful.
 - Common mistakes.
 
-### 8. Exam alignment review
+Solutions created during exercise batch creation are drafts. Review them after creation for mathematical correctness, conditions, notation, clarity, and alignment with the exercise design card and mini-lessons.
+
+### 9. Exam alignment review
 
 Check whether the chapter has a balance of:
 
@@ -138,7 +177,7 @@ Check whether the chapter has a balance of:
 
 Use the official weighting only as a planning guide, not as a strict rule for every chapter.
 
-### 9. Publish readiness
+### 10. Publish readiness
 
 A file can move to `published` only when:
 

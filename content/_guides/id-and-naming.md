@@ -63,6 +63,7 @@ Use predictable names:
 - `_index.md`
 - `lessons/{chapter_code}-lesson-001.md`
 - `exercises/{chapter_code}-ex-001.md`
+- `quizzes/{chapter_code}-quiz-001.md`
 - `sets/{chapter_code}-set-application-directe.md`
 
 Examples:
@@ -70,6 +71,7 @@ Examples:
 ```text
 content/2bac-pc-svt/01-limites-continuite/lessons/lc-lesson-001.md
 content/2bac-pc-svt/01-limites-continuite/exercises/lc-ex-001.md
+content/2bac-pc-svt/01-limites-continuite/quizzes/lc-quiz-001.md
 content/2bac-pc-svt/01-limites-continuite/sets/lc-set-application-directe.md
 content/2bac-pc-svt/06-nombres-complexes-partie-1/lessons/nc1-lesson-001.md
 ```
@@ -98,6 +100,28 @@ Do not reuse mini-lesson IDs after deletion.
 
 If a mini-lesson title changes, keep the ID.
 
+## Standalone quiz files
+
+Each standalone quiz lives in the chapter `quizzes/` folder.
+
+File pattern:
+
+```text
+quizzes/{chapter_code}-quiz-001.md
+quizzes/{chapter_code}-quiz-002.md
+```
+
+ID pattern:
+
+```text
+2bac-pcsvt-{chapter_code}-quiz-001
+2bac-pcsvt-{chapter_code}-quiz-002
+```
+
+Do not confuse standalone quizzes with mini-lesson checkpoints. A standalone quiz is one Markdown file with multiple questions.
+
+Do not reuse quiz IDs after deletion.
+
 ## Stable ID pattern
 
 Use:
@@ -111,6 +135,7 @@ Examples:
 ```text
 2bac-pcsvt-lc-lesson-001
 2bac-pcsvt-lc-ex-001
+2bac-pcsvt-lc-quiz-001
 2bac-pcsvt-lc-set-application-directe
 2bac-pcsvt-nc1-lesson-001
 2bac-pcsvt-nc2-ex-001

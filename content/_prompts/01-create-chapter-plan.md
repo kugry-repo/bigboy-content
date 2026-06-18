@@ -54,6 +54,7 @@ Before doing any work:
 - `content/_guides/curriculum-map-2bac-pc-svt.md`
 - `content/_guides/frontmatter-schema.md`
 - `content/_guides/id-and-naming.md`
+- `content/_guides/quiz-structure.md`
 - `content/_guides/lesson-editorial-pipeline.md`
 - `content/_guides/lesson-structure.md`
 - `content/_guides/lesson-voice.md`
@@ -72,6 +73,7 @@ Do not create:
 
 - mini-lesson files;
 - exercise files;
+- quiz files;
 - exercise set files;
 - full lesson content;
 - frontend or app code.
@@ -91,11 +93,14 @@ The chapter plan must include:
 11. Planned examples, counterexamples, or exercise candidates.
 12. Misconceptions to treat, including recovery plans for major traps.
 13. Planned checkpoints and practice progression.
-14. Planned exercise progression.
-15. Planned diagrams and future interactions.
-16. Exam-style patterns, with unsupported official claims marked for verification.
-17. Production tracker.
-18. Author notes and uncertainty markers.
+14. Exercise planning placeholders: exercise cluster map, raw seed area, design-card area, and planned exercise table.
+15. Planned exercise progression.
+16. Quiz planning placeholders: quiz series map, raw dump area, design-card area, and planned quiz table.
+17. Planned quiz progression for diagnostic or mastery checkpoints.
+18. Planned diagrams and future interactions.
+19. Exam-style patterns, with unsupported official claims marked for verification.
+20. Production tracker.
+21. Author notes and uncertainty markers.
 
 Use the current chapter metadata and naming rules from `TARGET_CHAPTER_INDEX`. Do not hardcode a chapter code, title, or folder.
 

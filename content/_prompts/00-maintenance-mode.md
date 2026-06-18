@@ -89,6 +89,12 @@ For exercise or solution changes, also read:
 - relevant exercise, solution, math notation, and verification guides
 - `content/_templates/exercise.template.md` if creating or reshaping exercise files
 
+For standalone quiz changes, also read:
+
+- `content/_guides/quiz-structure.md`
+- relevant math notation, source policy, and verification guides
+- `content/_templates/quiz.template.md` if creating or reshaping quiz files
+
 For global workflow/template/schema/validation changes, inspect the relevant files under:
 
 - `content/_guides/`
@@ -105,14 +111,17 @@ For chapter-level or content-level changes, inspect as relevant:
 - `TARGET_CHAPTER_INDEX`
 - `TARGET_CHAPTER_FOLDER/lessons/`
 - `TARGET_CHAPTER_FOLDER/exercises/`
+- `TARGET_CHAPTER_FOLDER/quizzes/`
 - `TARGET_CHAPTER_FOLDER/sets/`
 - chapter workflow checklist
 - `## Suivi de production`
 - `## Journal de production`
 - `## Golden chapter readiness`
 - lesson and exercise frontmatter
+- quiz frontmatter
 - lesson IDs
 - exercise IDs
+- quiz IDs
 - `skills`
 - `lesson_number`
 - `chapter_code`
@@ -120,7 +129,7 @@ For chapter-level or content-level changes, inspect as relevant:
 - internal Markdown links
 - mentions of moved or renamed concepts
 - previous and next mini-lessons around any changed lesson
-- exercises linked to the affected mini-lesson or skill
+- exercises or quizzes linked to the affected mini-lesson or skill
 - relevant guides/templates if the request is about structure, style, voice, ceremony, review, or workflow
 
 For global changes, inspect as relevant:
@@ -146,7 +155,7 @@ Behavior:
 
 ### `medium-content-sync`
 
-A change that may affect a chapter plan, one or more mini-lessons, neighboring lessons, linked exercises, trackers, or status notes.
+A change that may affect a chapter plan, one or more mini-lessons, neighboring lessons, linked exercises, linked quizzes, trackers, or status notes.
 
 Behavior:
 
@@ -257,6 +266,7 @@ Report checks performed:
 - chapter flow;
 - neighboring lessons;
 - linked exercises;
+- linked quizzes;
 - frontmatter/status;
 - internal links;
 - tracker consistency;

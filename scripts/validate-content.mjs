@@ -48,6 +48,10 @@ const REQUIRED_CHAPTER_HEADINGS = [
   "## Suivi de production",
   "## Golden chapter readiness",
   "## Diagrammes et interactions a prevoir",
+  "## Carte des series de quiz",
+  "## Dumps bruts des quiz",
+  "## Plan des quiz",
+  "## Design cards des quiz",
 ];
 
 const FINALIZED_STATUSES = new Set(["reviewed", "published"]);
@@ -351,7 +355,7 @@ function checkChapterFolders(chapter) {
 
   checkChapterIndex(chapter, chapterDir);
 
-  for (const subdir of ["lessons", "exercises", "sets"]) {
+  for (const subdir of ["lessons", "exercises", "quizzes", "sets"]) {
     const subdirPath = path.join(chapterDir, subdir);
     if (!isDirectory(subdirPath)) {
       errors.push(`content/2bac-pc-svt/${chapter.folder}/${subdir}/: missing chapter subfolder`);
@@ -513,6 +517,74 @@ function checkExerciseFile(chapter, filePath) {
   }
 }
 
+function checkQuizFile(chapter, filePath) {
+  const fileName = path.basename(filePath);
+  const nameMatch = fileName.match(new RegExp(`^${chapter.code}-quiz-(\\d{3})\\.md$`));
+
+  if (!nameMatch) {
+    addError(filePath, `filename must match "${chapter.code}-quiz-###.md"`);
+  }
+
+  const text = fs.readFileSync(filePath, "utf8");
+  const parsed = parseFrontmatter(text);
+
+  if (!requireFrontmatter(filePath, parsed, "quiz file")) {
+    return;
+  }
+
+  const { data } = parsed;
+
+  if (data.type !== "quiz") {
+    addError(filePath, 'frontmatter "type" must be "quiz"');
+  }
+
+  if (nameMatch) {
+    const expectedId = `2bac-pcsvt-${chapter.code}-quiz-${nameMatch[1]}`;
+    if (data.id !== expectedId) {
+      addError(filePath, `frontmatter "id" must be "${expectedId}"`);
+    }
+  }
+
+  for (const field of [
+    "quiz_kind",
+    "quiz_series",
+    "answer_key_status",
+    "feedback_status",
+    "status",
+  ]) {
+    if (!Object.hasOwn(data, field)) {
+      addError(filePath, `missing frontmatter field "${field}"`);
+    }
+  }
+
+  for (const heading of [
+    "## Questions",
+    "## Corrige et feedback",
+    "## Notes auteur",
+  ]) {
+    if (!hasHeading(text, heading)) {
+      addWarning(filePath, `missing quiz section "${heading}"`);
+    }
+  }
+
+  const appearsMcqOrMr =
+    /multiple-choice|multiple-response/i.test(parsed.raw) ||
+    /multiple-choice|multiple-response/i.test(text);
+  const hasAnswerSpecificFeedback = hasAnyNormalizedText(text, [
+    "answer-specific feedback",
+    "feedback specifique",
+    "feedback par reponse",
+    "feedback par choix",
+  ]);
+
+  if (appearsMcqOrMr && !hasAnswerSpecificFeedback) {
+    addWarning(
+      filePath,
+      "appears to use multiple-choice or multiple-response but lacks answer-specific feedback",
+    );
+  }
+}
+
 function checkSetFile(filePath) {
   const text = fs.readFileSync(filePath, "utf8");
   const parsed = parseFrontmatter(text);
@@ -536,6 +608,10 @@ function checkChapterContentFiles(chapter) {
 
   for (const filePath of walkMarkdownFiles(path.join(chapterDir, "exercises"))) {
     checkExerciseFile(chapter, filePath);
+  }
+
+  for (const filePath of walkMarkdownFiles(path.join(chapterDir, "quizzes"))) {
+    checkQuizFile(chapter, filePath);
   }
 
   for (const filePath of walkMarkdownFiles(path.join(chapterDir, "sets"))) {

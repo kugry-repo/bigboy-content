@@ -67,6 +67,36 @@ source / target
 
 Raw dumps are not final lessons. Human curation decides what is kept, deleted, merged, split, reordered, marked optional, moved to future exercises, marked too heavy, or kept as useful but not student-facing.
 
+Exercises use a matching planning strategy:
+
+```text
+raw exercise seeds for one cluster
+-> exercise design cards for that cluster
+-> MODE: CHAPTER_BALANCE across clusters
+-> small batch creation
+-> solution review
+-> exercise sets
+```
+
+Stage 5a output is a raw exercise seed. Stage 5b output is an exercise design card. Stage 6 output is a final exercise file.
+
+For substantial chapters, Stage 5a and Stage 5b work cluster by cluster by default. A cluster is derived from the chapter plan, mini-lessons, skills, official program notes, and exam patterns.
+
+Each exercise lives in its own file, but exercise files are usually created in small batches of 3 to 5 unless explicitly requested otherwise. A full chapter may eventually target 20 to 35 exercises, accumulated over multiple batches.
+
+Standalone quizzes use a parallel workflow and do not renumber the Stage 1-10 prompts:
+
+```text
+raw quiz dump
+-> human curation / chop
+-> quiz design cards with item design cards
+-> quiz series / chapter quiz balance
+-> quiz file creation
+-> answer key and feedback review
+```
+
+Quiz prompts work one quiz series, quiz cluster, or target skill area at a time. Final quiz creation usually creates one quiz file at a time, maximum two unless explicitly requested. Sequence and hotspot are valid advanced item types for planning, but frontend/UI implementation is out of scope.
+
 Helper prompts:
 
 - `00-diagnose-next-action.md`
@@ -74,6 +104,8 @@ Helper prompts:
 - `00-set-current-chapter.md`
 
 Stage prompts:
+
+Stage 5 is split into cluster-based `05a` and `05b`. Use `05-create-exercise-blueprint.md` only as a compatibility shortcut for very small/simple chapters or emergency direct planning.
 
 - `01-create-chapter-plan.md`
 - `02-create-mini-lesson-blueprint.md`
@@ -85,9 +117,18 @@ Stage prompts:
 - `04b-review-mini-lesson-voice.md`
 - `04c-compression-taste-pass-mini-lesson.md`
 - `04d-verify-finalize-mini-lesson.md`
-- `05-create-exercise-blueprint.md`
+- `05a-generate-exercise-raw-dump.md` creates raw exercise seeds for one cluster
+- `05b-curate-exercise-blueprint.md` curates exercise design cards for one cluster or runs `MODE: CHAPTER_BALANCE`
+- `05-create-exercise-blueprint.md` compatibility shortcut for quick/simple chapters
 - `06-create-exercise-batch.md`
 - `07-review-solutions.md`
 - `08-create-exercise-sets.md`
 - `09-full-chapter-review.md`
 - `10-publish-ready-cleanup.md`
+
+Quiz workflow prompts:
+
+- `q01-generate-quiz-raw-dump.md`
+- `q02-curate-quiz-design-cards.md`
+- `q03-create-quiz-batch.md`
+- `q04-review-quizzes.md`

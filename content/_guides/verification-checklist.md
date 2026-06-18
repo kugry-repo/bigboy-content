@@ -37,6 +37,24 @@ Use this checklist before marking a file as `reviewed` or `published`.
 - [ ] The final answer is easy to find.
 - [ ] A 2BAC PC/SVT student can follow the reasoning.
 
+## Standalone quiz checklist
+
+- [ ] The quiz uses `type: quiz`.
+- [ ] The file is under the chapter `quizzes/` folder.
+- [ ] The filename follows `{chapter_code}-quiz-###.md`.
+- [ ] The ID follows `2bac-pcsvt-{chapter_code}-quiz-###`.
+- [ ] `quiz_kind`, `quiz_series`, `answer_key_status`, and `feedback_status` are filled.
+- [ ] The quiz is standalone and not dependent on hidden lesson text.
+- [ ] The quiz is a diagnostic or mastery checkpoint, not a short exercise sheet.
+- [ ] Item types and cognitive roles are recorded.
+- [ ] MCQ/MR choices have answer-specific feedback.
+- [ ] Wrong choices represent real misconceptions or common mistakes.
+- [ ] Feedback explains why tempting wrong choices fail and what idea to use instead.
+- [ ] Multiple-response items include selected-wrong and missed-correct feedback.
+- [ ] Fill-blank items include accepted alternatives and common wrong answers when useful.
+- [ ] Match, sequence, and hotspot data is clear when those item types are used.
+- [ ] Answer key and feedback statuses are realistic.
+
 ## Lesson voice checklist
 
 For full lesson review, use `_guides/lesson-quality-rubric.md`.
@@ -105,7 +123,13 @@ For full lesson review, use `_guides/lesson-quality-rubric.md`.
 
 - [ ] The chapter `_index.md` has a mini-lesson plan.
 - [ ] The chapter `_index.md` has a misconception map.
-- [ ] The chapter `_index.md` has an exercise blueprint.
+- [ ] The chapter `_index.md` has cluster-based raw exercise seeds or a clear note that the compatibility shortcut was used.
+- [ ] The chapter `_index.md` has curated exercise design cards.
+- [ ] The chapter-level exercise plan has balance notes or card statuses from `MODE: CHAPTER_BALANCE` when several clusters exist.
+- [ ] Exercise files are one exercise per file and were created in a small batch unless explicitly requested otherwise.
+- [ ] The chapter `_index.md` has quiz series planning when standalone quizzes are needed.
+- [ ] The chapter `_index.md` has raw quiz dumps or quiz design cards before final quiz files are created.
+- [ ] Quiz files are created in small batches, usually one at a time.
 - [ ] The chapter `_index.md` has diagram/interactivity planning.
 - [ ] The chapter has a `lessons/` folder.
 - [ ] The chapter does not rely on one huge `lesson.md`.

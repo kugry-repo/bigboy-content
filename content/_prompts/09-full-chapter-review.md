@@ -56,6 +56,7 @@ Before doing any work:
 - `content/_guides/lesson-editorial-pipeline.md`
 - `content/_guides/lesson-structure.md`
 - `content/_guides/exercise-structure.md`
+- `content/_guides/quiz-structure.md`
 - `content/_guides/verification-checklist.md`
 - `content/_guides/lesson-quality-rubric.md`
 - `content/_guides/source-policy.md`
@@ -63,6 +64,7 @@ Before doing any work:
 - `TARGET_CHAPTER_INDEX`
 - all mini-lessons under `TARGET_CHAPTER_FOLDER/lessons/`
 - all exercises under `TARGET_CHAPTER_FOLDER/exercises/`
+- all quizzes under `TARGET_CHAPTER_FOLDER/quizzes/`
 - all sets under `TARGET_CHAPTER_FOLDER/sets/`
 
 ## Task
@@ -75,6 +77,7 @@ Do not:
 
 - create new mini-lessons;
 - create new exercises;
+- create new quizzes;
 - create new exercise sets;
 - mass rewrite the chapter;
 - mark files as `published` unless explicitly requested;
@@ -90,8 +93,10 @@ Check:
 - frontmatter fields and IDs are consistent;
 - all major skills are covered or clearly planned;
 - exercises match mini-lessons;
+- standalone quizzes match mini-lessons, exercises, and quiz design cards;
 - difficulty progression is reasonable;
 - solutions are clear and correct;
+- quiz answer keys and feedback are clear, correct, and misconception-based;
 - notation is consistent;
 - diagrams/interactions are planned where useful;
 - internal links and status fields look consistent;

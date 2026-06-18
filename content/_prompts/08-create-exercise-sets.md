@@ -1,6 +1,6 @@
 # Prompt - Create Exercise Sets
 
-Use this prompt after exercises exist or have been explicitly planned.
+Use this prompt after exercises exist or have been explicitly planned in exercise design cards.
 
 ## Target
 
@@ -56,6 +56,8 @@ Before doing any work:
 - `content/_guides/source-policy.md`
 - `content/_templates/exercise-set.template.md`
 - `TARGET_CHAPTER_INDEX`
+- exercise design cards in `TARGET_CHAPTER_INDEX`, if present
+- the planned exercise table, for backward compatibility
 - exercise files under `TARGET_CHAPTER_FOLDER/exercises/`
 
 ## Task
@@ -64,7 +66,7 @@ Create or update exercise set files under `TARGET_CHAPTER_FOLDER/sets/`.
 
 This is Stage 8 only.
 
-Exercise sets must organize existing or explicitly planned exercises. They should link to exercise files instead of duplicating full exercise content.
+Exercise sets must organize existing exercises, or explicitly planned exercises when the set is clearly a future planning artifact. They should link to exercise files instead of duplicating full exercise content.
 
 Do not create:
 
@@ -83,7 +85,9 @@ Possible sets:
 
 Use frontmatter values derived from `TARGET_CHAPTER_INDEX`, including the resolved chapter code, title, program, chapter folder, order, domain, tracks, and language.
 
-If no exercises exist and the blueprint is not specific enough to build sets safely, stop and ask for clarification.
+If no exercises exist and the design cards or legacy planned table are not specific enough to build sets safely, stop and ask for clarification.
+
+Do not create missing exercise files during Stage 8. If a useful set needs exercises that do not exist yet, record the missing planned IDs and recommend returning to Stage 6.
 
 Finish by summarizing:
 

@@ -45,6 +45,15 @@ Before creating or editing exercises:
 - Read `_guides/solution-style.md`.
 - Read `_guides/verification-checklist.md`.
 
+Before creating or editing standalone quizzes:
+- Read `_guides/quiz-structure.md`.
+- Read `_guides/math-notation.md`.
+- Read `_guides/frontmatter-schema.md`.
+- Read `_guides/id-and-naming.md`.
+- Read `_guides/verification-checklist.md`.
+- Read `_references/misconception-map.md`.
+- Read `_templates/quiz.template.md`.
+
 Before adapting material from exams or other sources:
 - Read `_guides/source-policy.md`.
 
@@ -120,6 +129,7 @@ Before generating the golden chapter, make sure the base system exists:
 - Use LaTeX for mathematical expressions.
 - Use Obsidian-compatible Markdown and callouts.
 - Use stable IDs for lessons, exercises, sets, and corrections.
+- Use stable IDs for standalone quizzes.
 
 ## Content status
 
@@ -146,6 +156,16 @@ New generated content should normally start as `draft`, not `published`.
 - Do not rename IDs after creation unless explicitly asked.
 - Do not move content files without updating links.
 - Do not mix multiple unrelated exercises in one exercise file.
+- Each exercise lives in its own file, but exercise files are usually created in small batches of 3 to 5 unless explicitly requested otherwise.
+- Do not generate a full 20 to 35 exercise chapter library in one pass unless explicitly requested.
+- Standalone quizzes live under `quizzes/`.
+- Each standalone quiz is one Markdown file with multiple questions.
+- Do not confuse standalone quizzes with mini-lesson checkpoints.
+- Every MCQ/MR option should have answer-specific feedback.
+- Wrong choices should map to real misconceptions.
+- Generate quizzes through raw dump and curation/design cards before final quiz creation unless explicitly requested otherwise.
+- Create quizzes only in small batches, usually one quiz file at a time.
+- Sequence and hotspot are supported advanced quiz item types, but frontend implementation is out of scope.
 - Do not create huge files. Prefer focused mini-lesson files and one exercise per file.
 
 ## Final response after content edits

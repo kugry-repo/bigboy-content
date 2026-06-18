@@ -6,6 +6,86 @@ Use one Markdown file per exercise.
 
 An exercise file should contain the statement, metadata, hints, solution, common mistakes, and review notes.
 
+Each exercise lives in its own file, but exercise files are usually created in small batches of 3 to 5 unless explicitly requested otherwise.
+
+A full chapter may eventually contain 20 to 35 individual exercises. Build that library over multiple batches instead of generating it all at once.
+
+## Exercise authoring workflow
+
+Use this sequence:
+
+1. Raw exercise seeds: generate rough seed cards for one exercise cluster at a time.
+2. Exercise design cards: curate one cluster's seeds into rich planned exercise cards.
+3. Chapter balance: review all cluster cards with `MODE: CHAPTER_BALANCE`.
+4. Exercise batch creation: create 3 to 5 final exercise files at a time by default.
+5. Solution review: verify draft solutions after the exercise files exist.
+6. Exercise sets: organize existing exercises into learner paths.
+
+## Raw seed vs design card vs final file
+
+### Raw exercise seed
+
+A raw exercise seed is Stage 5a planning material.
+
+It is not a final exercise and should not contain a polished final statement or full polished solution.
+
+It should capture:
+
+- cluster;
+- linked mini-lessons;
+- precise skill tested;
+- rough exercise shape or statement idea;
+- difficulty direction;
+- why the idea is useful;
+- expected method;
+- main trap;
+- parameter or domain constraints;
+- short feasibility sketch;
+- hint or MCQ opportunities;
+- verification and mismath risks;
+- curation note.
+
+### Exercise design card
+
+An exercise design card is Stage 5b curated planning material.
+
+It is the main source of truth for Stage 6. It should be detailed enough that Stage 6 can create a high-quality final exercise without inventing the pedagogical goal, method, traps, or verification concerns from scratch.
+
+It should capture:
+
+- planned ID and planned file;
+- status;
+- cluster;
+- difficulty and type;
+- linked mini-lessons;
+- exact target skill;
+- role in progression;
+- student-facing exercise shape;
+- parameter constraints;
+- expected method;
+- main traps and misconceptions;
+- hint opportunities;
+- MCQ opportunities when relevant;
+- solution feasibility sketch;
+- variants;
+- verification risks;
+- keep rationale.
+
+### Final exercise file
+
+A final exercise file is Stage 6 output.
+
+It lives under the chapter `exercises/` folder, uses the exercise template, and contains the learner-facing statement, hints, solution, common mistakes, verification, variants, and author notes.
+
+Stage 6 files start as:
+
+```yaml
+status: draft
+solution_status: draft
+```
+
+They are not reviewed until Stage 7.
+
 ## Why one exercise per file?
 
 This makes it easier to:
