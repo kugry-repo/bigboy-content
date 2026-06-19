@@ -14,8 +14,7 @@ unit_order: UNIT_ORDER
 official: OFFICIAL
 content_scope: CONTENT_SCOPE
 domain: DOMAIN_SLUG
-related_units:
-RELATED_UNITS
+related_units: []
 skills: []
 status: planned
 sync_status: current
@@ -33,47 +32,39 @@ updated: YYYY-MM-DD
 
 TODO.
 
-## Objectifs de l'unite
+## Objectifs et plan de l'unité
 
 TODO.
 
-## Prerequis
+## Prérequis
 
 TODO.
 
-## Competences
+## Compétences
 
 TODO.
 
-## Plan des mini-lecons
+## Plan des mini-leçons
 
-| ID prevu | Fichier prevu | Titre | Source / cible | Resultat attendu | Dump brut | Curation humaine | Forme possible | A garder | A supprimer / trop lourd | Verifications |
+| ID prévu | Fichier prévu | Titre | Source / cible | Résultat attendu | Dump brut | Curation humaine | Forme possible | À garder | À supprimer / trop lourd | Vérifications |
 |---|---|---|---|---|---|---|---|---|---|---|
 | 2bac-pcsvt-UNIT_CODE-lesson-001 | `lessons/UNIT_CODE-lesson-001.md` | TODO | TODO | TODO | TODO | TODO | TODO | TODO | TODO | TODO |
 
-## Misconceptions a traiter
+## Misconceptions à traiter
 
-| Confusion | Pourquoi elle arrive | Comment la lecon doit la corriger | Ou la traiter |
+| Confusion | Pourquoi elle arrive | Comment la leçon doit la corriger | Où la traiter |
 |---|---|---|---|
 | TODO | TODO | TODO | TODO |
 
-## Lecons
+## Leçons
 
 - TODO: `lessons/UNIT_CODE-lesson-001.md`
 
-## Exercise planning
-
-### Series d'exercices
-
-- TODO.
-
-### Exercices individuels
-
-- TODO.
+## Planification des exercices
 
 ### Carte des clusters d'exercices
 
-| Cluster | Base de derivation | Mini-lecons liees | Competences | Importance | Statut 5a | Statut 5b | Notes |
+| Cluster | Base de dérivation | Mini-leçons liées | Compétences | Importance | Statut 5a | Statut 5b | Notes |
 |---|---|---|---|---|---|---|---|
 | TODO | TODO | TODO | TODO | TODO | TODO | TODO | TODO |
 
@@ -81,113 +72,173 @@ TODO.
 
 Raw exercise seeds - one cluster at a time, not final exercises.
 
-A completer pendant Stage 5a.
-
-### Plan des exercices
-
-| ID prevu | Fichier prevu | Cluster | Niveau | Type | Competences | Objectif | Mini-lecon liee |
-|---|---|---|---|---|---|---|---|
-| 2bac-pcsvt-UNIT_CODE-ex-001 | `exercises/UNIT_CODE-ex-001.md` | TODO | TODO | TODO | TODO | TODO | TODO |
+À compléter pendant Stage 5a.
 
 ### Design cards des exercices
 
-A completer pendant Stage 5b. Les design cards sont la source principale pour Stage 6.
+Les design cards d'exercices sont la source de vérité pour Stage 6. Une table de planification seule n'est pas une source valide pour créer un exercice.
 
-## Quiz planning
+#### 2bac-pcsvt-UNIT_CODE-ex-001 - TODO
 
-### Carte des series de quiz
+Status: planned
+Cluster: TODO
+Planned file: `exercises/UNIT_CODE-ex-001.md`
+Difficulty: `decouverte | application-directe | application-guidee | probleme-type | approfondissement`
+Type: TODO
+Mini-lessons linked:
+- TODO
 
-| Serie | Base de derivation | Mini-lecons liees | Competences | Role | Statut 01 | Statut 02 | Notes |
-|---|---|---|---|---|---|---|---|
-| TODO | TODO | TODO | TODO | TODO | TODO | TODO | TODO |
+Target skill:
+- TODO
 
-### Dumps bruts des quiz
+Exercise role in progression:
+- TODO
 
-Raw quiz dumps - one quiz series/cluster at a time, not final quizzes.
+Student-facing exercise shape:
+- TODO
 
-A completer avec `workflows/quizzes/01-generate-raw-dump.md`.
+Parameter constraints:
+- TODO
 
-### Plan des quiz
+Expected method:
+1. TODO
 
-| ID prevu | Fichier prevu | Serie | Type de quiz | Niveau | Questions | Competences | Objectif | Mini-lecons liees |
-|---|---|---|---|---|---|---|---|---|
-| 2bac-pcsvt-UNIT_CODE-quiz-001 | `quizzes/UNIT_CODE-quiz-001.md` | TODO | TODO | TODO | TODO | TODO | TODO | TODO |
+Main traps / misconceptions:
+- TODO
+
+Hint opportunities:
+- TODO
+
+MCQ opportunities:
+- TODO
+
+Solution feasibility sketch:
+- TODO
+
+Variants:
+- Easier: TODO
+- Harder: TODO
+- Exam-style: TODO
+
+Verification risks:
+- TODO
+
+Keep rationale:
+- TODO
+
+## Planification des séries d'exercices
+
+TODO: planifier les fichiers sous `sets/` uniquement à partir d'exercices existants ou de design cards d'exercices suffisamment précises.
+
+## Planification des quiz
+
+### Matériel brut des quiz
+
+Raw quiz material - one quiz series or target skill area at a time, not final quizzes.
+
+À compléter avec `workflows/quizzes/01-generate-raw-dump.md`.
 
 ### Design cards des quiz
 
-A completer avec `workflows/quizzes/02-curate-design-cards.md`. Les quiz design cards sont la source principale pour `workflows/quizzes/03-create-batch.md`.
+Les design cards de quiz sont la source de vérité pour `workflows/quizzes/03-create-batch.md`. Une table de planification seule n'est pas une source valide pour créer un quiz.
 
-## Diagrammes et interactions a prevoir
+#### 2bac-pcsvt-UNIT_CODE-quiz-001 - TODO
 
-| ID | Type | Ou | Objectif pedagogique | Statut |
+Status: planned
+Planned file: `quizzes/UNIT_CODE-quiz-001.md`
+Quiz series: TODO
+Quiz number: 1
+Quiz kind: `prerequisite | skill | method-choice | error-clinic | fluency | mixed-review | exam-readiness`
+Difficulty: `decouverte | application-directe | application-guidee | probleme-type | approfondissement`
+Estimated time: TODO
+Mastery threshold: TODO
+Linked mini-lessons:
+- TODO
+Linked exercises:
+- TODO
+
+Target skills:
+- TODO
+
+Quiz role in progression:
+- TODO
+
+What this quiz checks:
+- TODO
+
+What passing means:
+- TODO
+
+What failing means:
+- TODO
+
+Item mix:
+- multiple-choice: TODO
+- multiple-response: TODO
+- true-false: TODO
+- fill-blank: TODO
+- match: TODO
+- sequence: TODO
+- hotspot: TODO
+
+Cognitive mix:
+- recognition: TODO
+- method-choice: TODO
+- micro-calculation: TODO
+- error-diagnosis: TODO
+- missing-step: TODO
+- representation: TODO
+- transfer: TODO
+
+Misconceptions targeted:
+- TODO
+
+Feedback policy:
+- Answer-specific feedback required.
+- Wrong choices should map to real misconceptions.
+
+Item design cards:
+- TODO
+
+Verification and mismath risks:
+- TODO
+
+Keep rationale:
+- TODO
+
+## Diagrammes et interactions à prévoir
+
+| ID | Type | Où | Objectif pédagogique | Statut |
 |---|---|---|---|---|
 | TODO | diagramme | TODO | TODO | planned |
 
-## Motifs frequents a l'examen
+## Notes d'alignement examen
 
 TODO.
 
 ## Workflow
 
 - [ ] Stage 1 - Unit plan
-- [ ] Stage 2 - Mini-lesson source, raw dump, and curation
-- [ ] Stage 3 - Mini-lesson assembly
-- [ ] Stage 4 - Mini-lesson passes
-- [ ] Stage 5a - Raw exercise seed cluster
-- [ ] Stage 5b - Exercise design cards and unit balance
+- [ ] Stage 2 - Lesson source, raw material, and curation
+- [ ] Stage 3 - Lesson assembly
+- [ ] Stage 4 - Lesson review and finalization
+- [ ] Stage 5a - Exercise seed generation
+- [ ] Stage 5b - Exercise-card curation and balance
 - [ ] Stage 6 - Exercise creation
 - [ ] Stage 7 - Solution review
 - [ ] Stage 8 - Exercise sets
-- [ ] Stage 9 - Full unit review
-- [ ] Stage 10 - Publish-ready cleanup
-- [ ] Quiz workflow 01 - Raw quiz dump
-- [ ] Quiz workflow 02 - Quiz design cards and quiz series balance
+- [ ] Quiz workflow 01 - Raw quiz material
+- [ ] Quiz workflow 02 - Quiz-card curation and balance
 - [ ] Quiz workflow 03 - Quiz creation
 - [ ] Quiz workflow 04 - Quiz review
-
-## Suivi de production
-
-| Element | Fichier | Statut | Notes |
-|---|---|---|---|
-| Plan de l'unite | `_index.md` | planned | TODO |
-| Plan des mini-lecons | `_index.md` | planned | TODO |
-| Mini-lecons | `lessons/` | planned | TODO |
-| Seeds bruts des exercices | `_index.md` | planned | Stage 5a par cluster |
-| Design cards des exercices | `_index.md` | planned | Design-card curation; balance with `workflows/exercises/03-check-unit-balance.md` |
-| Exercices individuels | `exercises/` | planned | TODO |
-| Series d'exercices | `sets/` | planned | TODO |
-| Series de quiz | `_index.md` | planned | Quiz workflow planning |
-| Dumps bruts des quiz | `_index.md` | planned | `workflows/quizzes/01-generate-raw-dump.md` |
-| Design cards des quiz | `_index.md` | planned | `workflows/quizzes/02-curate-design-cards.md` |
-| Quiz individuels | `quizzes/` | planned | `workflows/quizzes/03-create-batch.md` |
-| Relecture des quiz | `quizzes/` | planned | `workflows/quizzes/04-review-quizzes.md` |
-| Relecture mathematique | - | planned | TODO |
-| Relecture pedagogique | - | planned | TODO |
-| Relecture voix de lecon | - | planned | TODO |
+- [ ] Stage 9 - Unit review
+- [ ] Stage 10 - Final cleanup
 
 ## Journal de production
 
 | Date | Changement | Notes |
 |---|---|---|
 | YYYY-MM-DD | Initialisation du suivi | TODO |
-
-## Golden unit readiness
-
-| Area | Status | Notes |
-|---|---|---|
-| Unit plan | planned | TODO |
-| Mini-lesson source, dump, and curation | planned | TODO |
-| Mini-lessons | planned | TODO |
-| Lesson voice review | planned | TODO |
-| Raw exercise seeds and design cards | planned | Cluster-based Stage 5a/5b, plus unit balance |
-| Exercises | planned | TODO |
-| Solution review | planned | TODO |
-| Exercise sets | planned | TODO |
-| Quiz series, design cards, and review | planned | Quiz workflow steps 01-04 when standalone checkpoints are needed |
-| Skill coverage | planned | TODO |
-| Diagram/interactivity plan | planned | TODO |
-| Source safety | planned | Official/exam claims and third-party usage to check |
-| Full unit review | planned | TODO |
 
 ## Notes auteur
 

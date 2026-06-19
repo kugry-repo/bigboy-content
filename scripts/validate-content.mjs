@@ -2,11 +2,13 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { parse as parseYaml } from "yaml";
 
 const ROOT = process.cwd();
 const CONTENT_DIR = path.join(ROOT, "content");
 const PROGRAM_DIR = path.join(CONTENT_DIR, "2bac-pc-svt");
 const TOPICS_DIR = path.join(PROGRAM_DIR, "topics");
+const PROMPTS_DIR = path.join(CONTENT_DIR, "_prompts");
 
 const REQUIRED_BASE_DIRS = [
   "content",
@@ -20,15 +22,22 @@ const REQUIRED_BASE_DIRS = [
   "content/2bac-pc-svt/topics",
 ];
 
-const ALLOWED_PROGRAM_EXTRA_FOLDERS = new Set(["topics"]);
-
 const FORBIDDEN_DOMAIN_FOLDERS = new Set([
   "analyse",
   "algebre-geometrie",
   "probabilites",
 ]);
 
+const REQUIRED_UNIT_SUBFOLDERS = ["lessons", "exercises", "quizzes", "sets"];
+
 const REQUIRED_UNIT_FIELDS = [
+  "type",
+  "id",
+  "title",
+  "program",
+  "level",
+  "tracks",
+  "language",
   "unit_kind",
   "unit_code",
   "unit_slug",
@@ -36,10 +45,45 @@ const REQUIRED_UNIT_FIELDS = [
   "unit_order",
   "official",
   "content_scope",
+  "domain",
+  "related_units",
+  "skills",
   "status",
+  "sync_status",
+  "sync_reason",
+  "version",
+  "source_type",
+  "source_ref",
+  "created",
+  "updated",
 ];
 
-const REQUIRED_UNIT_SUBFOLDERS = ["lessons", "exercises", "quizzes", "sets"];
+const COMMON_CONTENT_FIELDS = [
+  "type",
+  "id",
+  "title",
+  "program",
+  "level",
+  "tracks",
+  "language",
+  "unit_kind",
+  "unit_code",
+  "unit_slug",
+  "unit_folder",
+  "unit_order",
+  "official",
+  "content_scope",
+  "domain",
+  "skills",
+  "status",
+  "sync_status",
+  "sync_reason",
+  "version",
+  "source_type",
+  "source_ref",
+  "created",
+  "updated",
+];
 
 const ALLOWED_UNIT_KINDS = new Set([
   "official-curriculum-unit",
@@ -55,24 +99,30 @@ const ALLOWED_CONTENT_SCOPES = new Set([
   "custom",
 ]);
 
-const DISALLOWED_FRONTMATTER_FIELDS = [
-  "chapter",
-  "chapter_code",
-  "chapter_folder",
-  "chapter_order",
-  "topic",
-  "topic_code",
-  "topic_folder",
-  "related_chapters",
-];
-
-const FINALIZED_STATUSES = new Set(["reviewed", "published"]);
+const ALLOWED_STATUS_VALUES = new Set([
+  "planned",
+  "draft",
+  "needs-review",
+  "reviewed",
+  "published",
+]);
 
 const ALLOWED_SYNC_STATUSES = new Set([
   "current",
   "needs-sync",
   "needs-review",
   "stale",
+]);
+
+const ALLOWED_SOURCE_TYPES = new Set([
+  "original",
+  "official-reference",
+  "national-exam",
+  "exam-inspired",
+  "teacher-note",
+  "textbook",
+  "third-party",
+  "unknown",
 ]);
 
 const ALLOWED_LESSON_SHAPES = new Set([
@@ -84,6 +134,88 @@ const ALLOWED_LESSON_SHAPES = new Set([
   "micro",
   "recap",
 ]);
+
+const DISALLOWED_FRONTMATTER_FIELDS = [
+  "chapter",
+  "chapter_code",
+  "chapter_folder",
+  "chapter_order",
+  "topic",
+  "topic_code",
+  "topic_folder",
+  "related_chapters",
+];
+
+const REMOVED_UNIT_HEADINGS = new Set([
+  "Suivi de production",
+  "Golden unit readiness",
+  "Plan des exercices",
+  "Plan des quiz",
+  "Séries d'exercices",
+  "Series d'exercices",
+  "Exercices individuels",
+  "Carte des séries de quiz",
+  "Carte des series de quiz",
+  "Dumps bruts des quiz",
+  "Sets / parcours",
+]);
+
+const CANONICAL_UNIT_H2 = [
+  "Place dans le programme",
+  "Objectifs et plan de l'unité",
+  "Prérequis",
+  "Compétences",
+  "Plan des mini-leçons",
+  "Misconceptions à traiter",
+  "Leçons",
+  "Planification des exercices",
+  "Planification des séries d'exercices",
+  "Planification des quiz",
+  "Diagrammes et interactions à prévoir",
+  "Notes d'alignement examen",
+  "Workflow",
+  "Journal de production",
+  "Notes auteur",
+];
+
+const REQUIRED_EXERCISE_H3 = [
+  "Carte des clusters d'exercices",
+  "Seeds bruts des exercices",
+  "Design cards des exercices",
+];
+
+const REQUIRED_QUIZ_H3 = [
+  "Matériel brut des quiz",
+  "Design cards des quiz",
+];
+
+const CANONICAL_WORKFLOW_ITEMS = [
+  "Stage 1 - Unit plan",
+  "Stage 2 - Lesson source, raw material, and curation",
+  "Stage 3 - Lesson assembly",
+  "Stage 4 - Lesson review and finalization",
+  "Stage 5a - Exercise seed generation",
+  "Stage 5b - Exercise-card curation and balance",
+  "Stage 6 - Exercise creation",
+  "Stage 7 - Solution review",
+  "Stage 8 - Exercise sets",
+  "Quiz workflow 01 - Raw quiz material",
+  "Quiz workflow 02 - Quiz-card curation and balance",
+  "Quiz workflow 03 - Quiz creation",
+  "Quiz workflow 04 - Quiz review",
+  "Stage 9 - Unit review",
+  "Stage 10 - Final cleanup",
+];
+
+const REMOVED_ACTIVE_TEXT = [
+  /author-designated planning note/i,
+  /older simple planned/i,
+  /older simple planned exercise table/i,
+  /simple planned quiz table/i,
+  /planned exercise table/i,
+  /planned quiz table/i,
+  /when no design card exists/i,
+];
 
 const LESSON_QUALITY_SIGNAL_CHECKS = [
   {
@@ -165,7 +297,7 @@ let checkedOfficialUnits = 0;
 let checkedUnofficialUnits = 0;
 
 function toPosix(filePath) {
-  return filePath.replaceAll(path.sep, "/");
+  return filePath.split(path.sep).join("/");
 }
 
 function rel(filePath) {
@@ -212,73 +344,70 @@ function walkMarkdownFiles(dirPath) {
   return files;
 }
 
-function parseFrontmatter(text) {
+function parseFrontmatter(filePath, text) {
   const match = text.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/);
 
   if (!match) {
-    return { hasFrontmatter: false, data: {}, raw: "" };
+    return { hasFrontmatter: false, data: {}, raw: "", body: text };
   }
 
-  const data = {};
-
-  for (const line of match[1].split(/\r?\n/)) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith("#") || trimmed.startsWith("- ")) continue;
-
-    const field = trimmed.match(/^([A-Za-z0-9_-]+):\s*(.*)$/);
-    if (!field) continue;
-
-    const key = field[1];
-    let value = field[2].trim();
-
-    if (value === "null") {
-      value = null;
-    } else if (value === "true") {
-      value = true;
-    } else if (value === "false") {
-      value = false;
-    } else if (/^\d+$/.test(value)) {
-      value = Number(value);
-    } else {
-      value = value.replace(/^["']|["']$/g, "");
-    }
-
-    data[key] = value;
+  try {
+    const data = parseYaml(match[1]) ?? {};
+    return {
+      hasFrontmatter: true,
+      data,
+      raw: match[1],
+      body: text.slice(match[0].length),
+    };
+  } catch (error) {
+    addError(filePath, `invalid YAML frontmatter: ${error.message}`);
+    return {
+      hasFrontmatter: true,
+      data: {},
+      raw: match[1],
+      body: text.slice(match[0].length),
+    };
   }
-
-  return { hasFrontmatter: true, data, raw: match[1] };
 }
 
-function normalizeForHeading(text) {
-  return text
+function normalizeForSearch(text) {
+  return String(text)
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase();
 }
 
 function hasAnyNormalizedText(text, snippets) {
-  const normalizedText = normalizeForHeading(text);
-  return snippets.some((snippet) => normalizedText.includes(normalizeForHeading(snippet)));
+  const normalizedText = normalizeForSearch(text);
+  return snippets.some((snippet) =>
+    normalizedText.includes(normalizeForSearch(snippet)),
+  );
 }
 
-function hasHeading(text, heading) {
-  return normalizeForHeading(text).includes(normalizeForHeading(heading));
+function escapeRegex(text) {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function countMatches(text, regex) {
   return [...text.matchAll(regex)].length;
 }
 
-function isGuidePromptOrReference(filePath) {
-  const relativePath = rel(filePath);
-  return /^content\/_(guides|prompts|references)\//.test(relativePath);
+function isGuidePromptReferenceOrTracking(filePath) {
+  return /^content\/_(guides|prompts|references|tracking)\//.test(rel(filePath));
 }
 
 function requireFrontmatter(filePath, parsed, label) {
   if (parsed.hasFrontmatter) return true;
-
   addError(filePath, `${label} must have YAML frontmatter`);
   return false;
+}
+
+function requireFields(filePath, data, fields) {
+  for (const field of fields) {
+    if (!Object.hasOwn(data, field)) {
+      addError(filePath, `missing frontmatter field "${field}"`);
+    }
+  }
 }
 
 function isFalse(value) {
@@ -289,8 +418,64 @@ function isTrue(value) {
   return value === true || value === "true";
 }
 
-function escapeRegex(text) {
-  return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+function getHeadings(body) {
+  return [...body.matchAll(/^(#{1,6})\s+(.+?)\s*$/gm)].map((match) => ({
+    level: match[1].length,
+    text: match[2].trim(),
+  }));
+}
+
+function getH2Headings(body) {
+  return getHeadings(body)
+    .filter((heading) => heading.level === 2)
+    .map((heading) => heading.text);
+}
+
+function getSection(body, level, heading) {
+  const headingMatches = [...body.matchAll(/^(#{1,6})\s+(.+?)\s*$/gm)];
+
+  for (let index = 0; index < headingMatches.length; index += 1) {
+    const match = headingMatches[index];
+    const foundLevel = match[1].length;
+    const foundHeading = match[2].trim();
+
+    if (foundLevel !== level || foundHeading !== heading) continue;
+
+    const start = match.index + match[0].length;
+    let end = body.length;
+
+    for (let nextIndex = index + 1; nextIndex < headingMatches.length; nextIndex += 1) {
+      const nextMatch = headingMatches[nextIndex];
+      if (nextMatch[1].length <= level) {
+        end = nextMatch.index;
+        break;
+      }
+    }
+
+    return body.slice(start, end);
+  }
+
+  return "";
+}
+
+function hasHeadingInSection(sectionText, level, heading) {
+  return getHeadings(sectionText).some(
+    (found) => found.level === level && found.text === heading,
+  );
+}
+
+function compareLists(filePath, label, actual, expected) {
+  if (
+    actual.length === expected.length &&
+    actual.every((value, index) => value === expected[index])
+  ) {
+    return;
+  }
+
+  addError(
+    filePath,
+    `${label} must be exactly: ${expected.map((item) => `"${item}"`).join(", ")}`,
+  );
 }
 
 function checkBaseFolders() {
@@ -307,37 +492,14 @@ function checkProgramFolderShape() {
 
   for (const entry of readDir(PROGRAM_DIR)) {
     if (!entry.isDirectory()) continue;
-
-    if (ALLOWED_PROGRAM_EXTRA_FOLDERS.has(entry.name)) continue;
+    if (entry.name === "topics") continue;
     if (entry.name.startsWith(".") || entry.name.startsWith("_")) continue;
 
     if (FORBIDDEN_DOMAIN_FOLDERS.has(entry.name)) {
-      errors.push(`content/2bac-pc-svt/${entry.name}/: domain folders are not allowed here`);
+      errors.push(
+        `content/2bac-pc-svt/${entry.name}/: old domain folders are not allowed here`,
+      );
     }
-  }
-}
-
-function checkTopicCatalog() {
-  const catalogPath = path.join(TOPICS_DIR, "_index.md");
-
-  if (!isFile(catalogPath)) {
-    addError(catalogPath, "missing topic catalog index");
-    return;
-  }
-
-  const text = fs.readFileSync(catalogPath, "utf8");
-  const parsed = parseFrontmatter(text);
-
-  if (!requireFrontmatter(catalogPath, parsed, "topic catalog _index.md")) {
-    return;
-  }
-
-  if (parsed.data.type !== "topic-catalog") {
-    addError(catalogPath, 'frontmatter "type" must be "topic-catalog"');
-  }
-
-  if (!isFalse(parsed.data.official)) {
-    addError(catalogPath, 'frontmatter "official" must be false');
   }
 }
 
@@ -362,43 +524,63 @@ function discoverTopicUnitDirs() {
     .sort();
 }
 
-function checkUnitIndex(unitDir, expectedGroup) {
-  const indexPath = path.join(unitDir, "_index.md");
-
-  if (!isFile(indexPath)) {
-    addError(indexPath, "missing unit index");
-    return null;
-  }
-
-  const text = fs.readFileSync(indexPath, "utf8");
-  const parsed = parseFrontmatter(text);
-
-  if (!requireFrontmatter(indexPath, parsed, "unit _index.md")) {
-    return null;
-  }
-
-  const { data } = parsed;
+function checkUnitFrontmatter(indexPath, unitDir, expectedGroup, data) {
   const expectedUnitFolder =
     expectedGroup === "official"
       ? path.basename(unitDir)
       : `topics/${path.basename(unitDir)}`;
 
+  requireFields(indexPath, data, REQUIRED_UNIT_FIELDS);
+
   if (data.type !== "unit-index") {
     addError(indexPath, 'frontmatter "type" must be "unit-index"');
   }
 
-  for (const field of REQUIRED_UNIT_FIELDS) {
-    if (!Object.hasOwn(data, field) || data[field] === "") {
-      addError(indexPath, `missing frontmatter field "${field}"`);
-    }
+  if (data.program !== "2bac-pc-svt") {
+    addError(indexPath, 'frontmatter "program" must be "2bac-pc-svt"');
+  }
+
+  if (data.level !== "2bac") {
+    addError(indexPath, 'frontmatter "level" must be "2bac"');
+  }
+
+  if (data.language !== "fr") {
+    addError(indexPath, 'frontmatter "language" must be "fr"');
   }
 
   if (data.unit_kind && !ALLOWED_UNIT_KINDS.has(data.unit_kind)) {
-    addError(indexPath, `frontmatter "unit_kind" has invalid value "${data.unit_kind}"`);
+    addError(
+      indexPath,
+      `frontmatter "unit_kind" has invalid value "${data.unit_kind}"`,
+    );
   }
 
   if (data.content_scope && !ALLOWED_CONTENT_SCOPES.has(data.content_scope)) {
-    addError(indexPath, `frontmatter "content_scope" has invalid value "${data.content_scope}"`);
+    addError(
+      indexPath,
+      `frontmatter "content_scope" has invalid value "${data.content_scope}"`,
+    );
+  }
+
+  if (data.status && !ALLOWED_STATUS_VALUES.has(data.status)) {
+    addError(indexPath, `frontmatter "status" has invalid value "${data.status}"`);
+  }
+
+  if (
+    Object.hasOwn(data, "sync_status") &&
+    !ALLOWED_SYNC_STATUSES.has(data.sync_status)
+  ) {
+    addError(
+      indexPath,
+      `frontmatter "sync_status" must be one of ${[...ALLOWED_SYNC_STATUSES].join(", ")}`,
+    );
+  }
+
+  if (data.source_type && !ALLOWED_SOURCE_TYPES.has(data.source_type)) {
+    addError(
+      indexPath,
+      `frontmatter "source_type" has invalid value "${data.source_type}"`,
+    );
   }
 
   if (data.unit_folder !== expectedUnitFolder) {
@@ -425,8 +607,15 @@ function checkUnitIndex(unitDir, expectedGroup) {
       addError(indexPath, 'frontmatter "content_scope" must be "official-curriculum"');
     }
 
-    if (!/^\d{2}-[a-z0-9-]+$/.test(path.basename(unitDir))) {
-      addWarning(indexPath, "official unit folder normally uses a numeric prefix like 01-slug");
+    const folderName = path.basename(unitDir);
+    const prefixMatch = folderName.match(/^(\d{2})-[a-z0-9-]+$/);
+    if (!prefixMatch) {
+      addError(indexPath, "official unit folder must use a numeric prefix like 01-slug");
+    } else if (Number(prefixMatch[1]) !== Number(data.unit_order)) {
+      addError(
+        indexPath,
+        `official unit folder prefix ${prefixMatch[1]} must match frontmatter "unit_order" ${data.unit_order}`,
+      );
     }
   }
 
@@ -443,22 +632,116 @@ function checkUnitIndex(unitDir, expectedGroup) {
       addError(indexPath, 'unofficial topic cannot use "content_scope: official-curriculum"');
     }
   }
+}
 
-  for (const heading of ["## Workflow", "## Suivi de production", "## Golden unit readiness"]) {
-    if (!hasHeading(text, heading)) {
-      addWarning(indexPath, `missing recommended section "${heading}"`);
+function checkCanonicalUnitBody(indexPath, body, data) {
+  compareLists(indexPath, "unit _index.md H2 headings", getH2Headings(body), CANONICAL_UNIT_H2);
+
+  const headings = getHeadings(body);
+  for (const heading of headings) {
+    if (heading.level === 2 && REMOVED_UNIT_HEADINGS.has(heading.text)) {
+      addError(indexPath, `removed duplicate or table-only tracker heading "## ${heading.text}" is not allowed`);
     }
   }
+
+  const exerciseSection = getSection(body, 2, "Planification des exercices");
+  for (const requiredHeading of REQUIRED_EXERCISE_H3) {
+    if (!hasHeadingInSection(exerciseSection, 3, requiredHeading)) {
+      addError(
+        indexPath,
+        `missing exercise planning area "### ${requiredHeading}" under "## Planification des exercices"`,
+      );
+    }
+  }
+
+  const quizSection = getSection(body, 2, "Planification des quiz");
+  for (const requiredHeading of REQUIRED_QUIZ_H3) {
+    if (!hasHeadingInSection(quizSection, 3, requiredHeading)) {
+      addError(
+        indexPath,
+        `missing quiz planning area "### ${requiredHeading}" under "## Planification des quiz"`,
+      );
+    }
+  }
+
+  const exerciseCardSection = getSection(exerciseSection, 3, "Design cards des exercices");
+  if (!/####\s+2bac-pcsvt-[a-z0-9]+-ex-\d{3}\b/.test(exerciseCardSection)) {
+    addError(
+      indexPath,
+      'missing canonical exercise design card heading like "#### 2bac-pcsvt-UNIT-ex-001 - ..."',
+    );
+  }
+
+  if (!/Target skill:\s*\n-\s+/i.test(exerciseCardSection)) {
+    addError(indexPath, 'exercise design cards must include "Target skill"');
+  }
+
+  if (!/Verification risks:\s*\n-\s+/i.test(exerciseCardSection)) {
+    addError(indexPath, 'exercise design cards must include "Verification risks"');
+  }
+
+  const quizCardSection = getSection(quizSection, 3, "Design cards des quiz");
+  if (!/####\s+2bac-pcsvt-[a-z0-9]+-quiz-\d{3}\b/.test(quizCardSection)) {
+    addError(
+      indexPath,
+      'missing canonical quiz design card heading like "#### 2bac-pcsvt-UNIT-quiz-001 - ..."',
+    );
+  }
+
+  if (!/Item design cards:\s*\n-\s+/i.test(quizCardSection)) {
+    addError(indexPath, 'quiz design cards must include "Item design cards"');
+  }
+
+  if (!/Verification and mismath risks:\s*\n-\s+/i.test(quizCardSection)) {
+    addError(indexPath, 'quiz design cards must include "Verification and mismath risks"');
+  }
+
+  const workflowSection = getSection(body, 2, "Workflow");
+  const workflowItems = [...workflowSection.matchAll(/^- \[[ xX]\] (.+)$/gm)].map(
+    (match) => match[1].trim(),
+  );
+  compareLists(indexPath, "unit workflow items", workflowItems, CANONICAL_WORKFLOW_ITEMS);
+
+  if (!getSection(body, 2, "Journal de production").trim()) {
+    addError(indexPath, 'missing body content under "## Journal de production"');
+  }
+
+  if (
+    /\bTODO\b/.test(body) &&
+    data.status === "published"
+  ) {
+    addError(indexPath, 'published unit index contains unresolved TODO placeholders');
+  }
+}
+
+function checkUnitIndex(unitDir, expectedGroup) {
+  const indexPath = path.join(unitDir, "_index.md");
+
+  if (!isFile(indexPath)) {
+    addError(indexPath, "missing unit index");
+    return null;
+  }
+
+  const text = fs.readFileSync(indexPath, "utf8");
+  const parsed = parseFrontmatter(indexPath, text);
+
+  if (!requireFrontmatter(indexPath, parsed, "unit _index.md")) {
+    return null;
+  }
+
+  checkUnitFrontmatter(indexPath, unitDir, expectedGroup, parsed.data);
+  checkCanonicalUnitBody(indexPath, parsed.body, parsed.data);
 
   return {
     indexPath,
     dir: unitDir,
     group: expectedGroup,
-    code: data.unit_code,
-    folder: data.unit_folder,
-    order: Number(data.unit_order),
-    id: data.id,
-    kind: data.unit_kind,
+    code: parsed.data.unit_code,
+    folder: parsed.data.unit_folder,
+    order: Number(parsed.data.unit_order),
+    id: parsed.data.id,
+    kind: parsed.data.unit_kind,
+    data: parsed.data,
   };
 }
 
@@ -466,13 +749,51 @@ function checkUnitSubfolders(unit) {
   for (const subdir of REQUIRED_UNIT_SUBFOLDERS) {
     const subdirPath = path.join(unit.dir, subdir);
     if (!isDirectory(subdirPath)) {
-      errors.push(`${rel(subdirPath)}/: missing unit subfolder`);
+      errors.push(`${rel(subdirPath)}/: missing canonical unit artifact subfolder`);
     }
   }
 
   const rootLessonPath = path.join(unit.dir, "lesson.md");
   if (isFile(rootLessonPath)) {
     addError(rootLessonPath, 'root-level "lesson.md" is not allowed; use lessons/ mini-lessons');
+  }
+}
+
+function checkRequiredContentFields(filePath, data, unit) {
+  requireFields(filePath, data, COMMON_CONTENT_FIELDS);
+
+  if (data.unit_code !== unit.code) {
+    addError(filePath, `frontmatter "unit_code" must be "${unit.code}"`);
+  }
+
+  if (data.unit_folder !== unit.folder) {
+    addError(filePath, `frontmatter "unit_folder" must be "${unit.folder}"`);
+  }
+
+  if (data.unit_kind !== unit.kind) {
+    addError(filePath, `frontmatter "unit_kind" must be "${unit.kind}"`);
+  }
+
+  if (data.program !== "2bac-pc-svt") {
+    addError(filePath, 'frontmatter "program" must be "2bac-pc-svt"');
+  }
+
+  if (data.status && !ALLOWED_STATUS_VALUES.has(data.status)) {
+    addError(filePath, `frontmatter "status" has invalid value "${data.status}"`);
+  }
+
+  if (
+    Object.hasOwn(data, "sync_status") &&
+    !ALLOWED_SYNC_STATUSES.has(data.sync_status)
+  ) {
+    addError(
+      filePath,
+      `frontmatter "sync_status" must be one of ${[...ALLOWED_SYNC_STATUSES].join(", ")}`,
+    );
+  }
+
+  if (data.source_type && !ALLOWED_SOURCE_TYPES.has(data.source_type)) {
+    addError(filePath, `frontmatter "source_type" has invalid value "${data.source_type}"`);
   }
 }
 
@@ -483,12 +804,8 @@ function checkMiniLessonQualitySignals(filePath, text) {
     }
   }
 
-  const hasMethodBlock = hasAnyNormalizedText(text, [
-    "[!method]",
-    "methode",
-  ]);
+  const hasMethodBlock = hasAnyNormalizedText(text, ["[!method]", "methode"]);
   const hasDecisionSignal = hasAnyNormalizedText(text, [
-    "quand l'utiliser",
     "quand l'utiliser",
     "a utiliser lorsque",
     "utilise cette methode quand",
@@ -498,10 +815,7 @@ function checkMiniLessonQualitySignals(filePath, text) {
   ]);
 
   if (hasMethodBlock && !hasDecisionSignal) {
-    addWarning(
-      filePath,
-      "has a method signal but no clear guidance for when to use it",
-    );
+    addWarning(filePath, "has a method signal but no clear guidance for when to use it");
   }
 
   const hasMistakeSignal = hasAnyNormalizedText(text, [
@@ -521,29 +835,23 @@ function checkMiniLessonQualitySignals(filePath, text) {
   ]);
 
   if (hasMistakeSignal && !hasRecoverySignal) {
-    addWarning(
-      filePath,
-      "has mistake/warning signals but no recovery guidance; add it when the trap is important",
-    );
+    addWarning(filePath, "has mistake/warning signals but no recovery guidance; add it when the trap is important");
   }
 }
 
 function checkLessonFile(unit, filePath) {
   const fileName = path.basename(filePath);
   const nameMatch = fileName.match(new RegExp(`^${escapeRegex(unit.code)}-lesson-(\\d{3})\\.md$`));
-
   if (!nameMatch) {
     addError(filePath, `filename must match "${unit.code}-lesson-###.md"`);
   }
 
   const text = fs.readFileSync(filePath, "utf8");
-  const parsed = parseFrontmatter(text);
-
-  if (!requireFrontmatter(filePath, parsed, "mini-lesson file")) {
-    return;
-  }
+  const parsed = parseFrontmatter(filePath, text);
+  if (!requireFrontmatter(filePath, parsed, "mini-lesson file")) return;
 
   const { data } = parsed;
+  checkRequiredContentFields(filePath, data, unit);
 
   if (data.type !== "lesson") {
     addError(filePath, 'frontmatter "type" must be "lesson"');
@@ -553,19 +861,11 @@ function checkLessonFile(unit, filePath) {
     addError(filePath, 'frontmatter "lesson_kind" must be "mini-lesson"');
   }
 
-  if (data.unit_code && data.unit_code !== unit.code) {
-    addError(filePath, `frontmatter "unit_code" must be "${unit.code}"`);
-  }
-
   if (nameMatch) {
     const expectedId = `2bac-pcsvt-${unit.code}-lesson-${nameMatch[1]}`;
     if (data.id !== expectedId) {
       addError(filePath, `frontmatter "id" must be "${expectedId}"`);
     }
-  }
-
-  if (!data.status) {
-    addWarning(filePath, 'missing frontmatter "status"');
   }
 
   if (data.lesson_shape && !ALLOWED_LESSON_SHAPES.has(data.lesson_shape)) {
@@ -577,27 +877,8 @@ function checkLessonFile(unit, filePath) {
     );
   }
 
-  if (FINALIZED_STATUSES.has(data.status)) {
-    if (/\bTODO\b/.test(text)) {
-      addError(filePath, `finalized lesson with status "${data.status}" contains unresolved TODOs`);
-    }
-
-    if (
-      !hasAnyNormalizedText(text, [
-        "verification",
-        "verifications",
-        "verifie",
-        "a verifier",
-        "source",
-        "officiel",
-        "programme",
-      ])
-    ) {
-      addWarning(
-        filePath,
-        `lesson status is "${data.status}" but no verification/source note was found`,
-      );
-    }
+  if (data.status === "published" && /\bTODO\b/.test(text)) {
+    addError(filePath, 'published lesson contains unresolved TODO placeholders');
   }
 
   checkMiniLessonQualitySignals(filePath, text);
@@ -606,26 +887,19 @@ function checkLessonFile(unit, filePath) {
 function checkExerciseFile(unit, filePath) {
   const fileName = path.basename(filePath);
   const nameMatch = fileName.match(new RegExp(`^${escapeRegex(unit.code)}-ex-(\\d{3})\\.md$`));
-
   if (!nameMatch) {
     addError(filePath, `filename must match "${unit.code}-ex-###.md"`);
   }
 
   const text = fs.readFileSync(filePath, "utf8");
-  const parsed = parseFrontmatter(text);
-
-  if (!requireFrontmatter(filePath, parsed, "exercise file")) {
-    return;
-  }
+  const parsed = parseFrontmatter(filePath, text);
+  if (!requireFrontmatter(filePath, parsed, "exercise file")) return;
 
   const { data } = parsed;
+  checkRequiredContentFields(filePath, data, unit);
 
   if (data.type !== "exercise") {
     addError(filePath, 'frontmatter "type" must be "exercise"');
-  }
-
-  if (data.unit_code && data.unit_code !== unit.code) {
-    addError(filePath, `frontmatter "unit_code" must be "${unit.code}"`);
   }
 
   if (nameMatch) {
@@ -635,34 +909,33 @@ function checkExerciseFile(unit, filePath) {
     }
   }
 
-  if (!Object.hasOwn(data, "solution_status")) {
-    addError(filePath, 'missing frontmatter field "solution_status"');
+  for (const field of ["solution_status", "exercise_type", "difficulty"]) {
+    if (!Object.hasOwn(data, field)) {
+      addError(filePath, `missing frontmatter field "${field}"`);
+    }
+  }
+
+  if (data.status === "published" && /\bTODO\b/.test(text)) {
+    addError(filePath, 'published exercise contains unresolved TODO placeholders');
   }
 }
 
 function checkQuizFile(unit, filePath) {
   const fileName = path.basename(filePath);
   const nameMatch = fileName.match(new RegExp(`^${escapeRegex(unit.code)}-quiz-(\\d{3})\\.md$`));
-
   if (!nameMatch) {
     addError(filePath, `filename must match "${unit.code}-quiz-###.md"`);
   }
 
   const text = fs.readFileSync(filePath, "utf8");
-  const parsed = parseFrontmatter(text);
-
-  if (!requireFrontmatter(filePath, parsed, "quiz file")) {
-    return;
-  }
+  const parsed = parseFrontmatter(filePath, text);
+  if (!requireFrontmatter(filePath, parsed, "quiz file")) return;
 
   const { data } = parsed;
+  checkRequiredContentFields(filePath, data, unit);
 
   if (data.type !== "quiz") {
     addError(filePath, 'frontmatter "type" must be "quiz"');
-  }
-
-  if (data.unit_code && data.unit_code !== unit.code) {
-    addError(filePath, `frontmatter "unit_code" must be "${unit.code}"`);
   }
 
   if (nameMatch) {
@@ -677,7 +950,8 @@ function checkQuizFile(unit, filePath) {
     "quiz_series",
     "answer_key_status",
     "feedback_status",
-    "status",
+    "quiz_number",
+    "question_count",
   ]) {
     if (!Object.hasOwn(data, field)) {
       addError(filePath, `missing frontmatter field "${field}"`);
@@ -686,10 +960,10 @@ function checkQuizFile(unit, filePath) {
 
   for (const heading of [
     "## Questions",
-    "## Corrige et feedback",
+    "## Corrigé et feedback",
     "## Notes auteur",
   ]) {
-    if (!hasHeading(text, heading)) {
+    if (!text.includes(heading)) {
       addWarning(filePath, `missing quiz section "${heading}"`);
     }
   }
@@ -705,40 +979,42 @@ function checkQuizFile(unit, filePath) {
   ]);
 
   if (appearsMcqOrMr && !hasAnswerSpecificFeedback) {
-    addWarning(
-      filePath,
-      "appears to use multiple-choice or multiple-response but lacks answer-specific feedback",
-    );
+    addWarning(filePath, "appears to use multiple-choice or multiple-response but lacks answer-specific feedback");
+  }
+
+  if (data.status === "published" && /\bTODO\b/.test(text)) {
+    addError(filePath, 'published quiz contains unresolved TODO placeholders');
   }
 }
 
 function checkSetFile(unit, filePath) {
   const fileName = path.basename(filePath);
   const nameMatch = fileName.match(new RegExp(`^${escapeRegex(unit.code)}-set-([a-z0-9][a-z0-9-]*)\\.md$`));
-
   if (!nameMatch) {
     addError(filePath, `filename must match "${unit.code}-set-<slug>.md"`);
   }
 
   const text = fs.readFileSync(filePath, "utf8");
-  const parsed = parseFrontmatter(text);
+  const parsed = parseFrontmatter(filePath, text);
+  if (!requireFrontmatter(filePath, parsed, "exercise set file")) return;
 
-  if (!requireFrontmatter(filePath, parsed, "exercise set file")) {
-    return;
-  }
+  const { data } = parsed;
+  checkRequiredContentFields(filePath, data, unit);
 
-  if (parsed.data.type !== "exercise-set") {
+  if (data.type !== "exercise-set") {
     addError(filePath, 'frontmatter "type" must be "exercise-set"');
-  }
-
-  if (parsed.data.unit_code && parsed.data.unit_code !== unit.code) {
-    addError(filePath, `frontmatter "unit_code" must be "${unit.code}"`);
   }
 
   if (nameMatch) {
     const expectedId = `2bac-pcsvt-${unit.code}-set-${nameMatch[1]}`;
-    if (parsed.data.id !== expectedId) {
+    if (data.id !== expectedId) {
       addError(filePath, `frontmatter "id" must be "${expectedId}"`);
+    }
+  }
+
+  for (const field of ["difficulty_range", "exercise_ids"]) {
+    if (!Object.hasOwn(data, field)) {
+      addError(filePath, `missing frontmatter field "${field}"`);
     }
   }
 }
@@ -770,8 +1046,6 @@ function discoverAndCheckUnits() {
     checkUnitSubfolders(unit);
     checkUnitContentFiles(unit);
   }
-
-  checkTopicCatalog();
 
   for (const unitDir of discoverTopicUnitDirs()) {
     checkedUnofficialUnits += 1;
@@ -820,14 +1094,247 @@ function checkUnitUniqueness() {
   }
 }
 
+function unitByFolder() {
+  return new Map(units.map((unit) => [unit.folder, unit]));
+}
+
+function checkCatalogFile(filePath, expectedType) {
+  if (!isFile(filePath)) {
+    addError(filePath, "missing catalog index");
+    return null;
+  }
+
+  const text = fs.readFileSync(filePath, "utf8");
+  const parsed = parseFrontmatter(filePath, text);
+  if (!requireFrontmatter(filePath, parsed, "catalog _index.md")) {
+    return null;
+  }
+
+  if (parsed.data.type !== expectedType) {
+    addError(filePath, `frontmatter "type" must be "${expectedType}"`);
+  }
+
+  return { text, parsed };
+}
+
+function parseCatalogRows(text) {
+  return text
+    .split(/\r?\n/)
+    .filter((line) => /^\|/.test(line))
+    .filter((line) => /\[\[.+_index/.test(line))
+    .map(splitMarkdownTableRow);
+}
+
+function splitMarkdownTableRow(line) {
+  const cells = [];
+  let current = "";
+  let inWikiLink = false;
+
+  for (let index = 0; index < line.length; index += 1) {
+    const currentPair = line.slice(index, index + 2);
+
+    if (currentPair === "[[") {
+      inWikiLink = true;
+      current += currentPair;
+      index += 1;
+      continue;
+    }
+
+    if (currentPair === "]]") {
+      inWikiLink = false;
+      current += currentPair;
+      index += 1;
+      continue;
+    }
+
+    if (line[index] === "|" && !inWikiLink) {
+      cells.push(current.trim());
+      current = "";
+      continue;
+    }
+
+    current += line[index];
+  }
+
+  cells.push(current.trim());
+
+  return cells.slice(1, -1);
+}
+
+function checkCatalogRow(filePath, row, catalogKind, unitsByFolder) {
+  const linkMatch = row.join("|").match(/\[\[([^|\]]+)_index\|([^\]]+)\]\]/);
+  if (!linkMatch) return;
+
+  const folder = linkMatch[1].replace(/\/$/, "");
+  const unit = unitsByFolder.get(folder);
+  if (!unit) {
+    addError(filePath, `catalog references missing unit "${folder}"`);
+    return;
+  }
+
+  const order = Number(row[0]);
+  const code = row[2]?.replace(/`/g, "");
+
+  if (Number.isFinite(order) && order !== unit.order) {
+    addError(filePath, `catalog order for "${folder}" is ${order}, but unit_order is ${unit.order}`);
+  }
+
+  if (code && code !== unit.code) {
+    addError(filePath, `catalog code for "${folder}" is "${code}", but unit_code is "${unit.code}"`);
+  }
+
+  if (catalogKind === "topic") {
+    const catalogFolder = row[3]?.replace(/`/g, "");
+    const scope = row[4]?.replace(/`/g, "");
+    const status = row[7]?.replace(/`/g, "");
+
+    if (catalogFolder && catalogFolder !== unit.folder) {
+      addError(filePath, `topic catalog folder for "${folder}" is "${catalogFolder}", but unit_folder is "${unit.folder}"`);
+    }
+
+    if (scope && scope !== unit.data.content_scope) {
+      addError(filePath, `topic catalog scope for "${folder}" is "${scope}", but content_scope is "${unit.data.content_scope}"`);
+    }
+
+    if (status && status !== unit.data.status) {
+      addError(filePath, `topic catalog status for "${folder}" is "${status}", but status is "${unit.data.status}"`);
+    }
+  }
+}
+
+function checkCatalogs() {
+  const unitsByFolder = unitByFolder();
+  const programCatalog = checkCatalogFile(
+    path.join(PROGRAM_DIR, "_index.md"),
+    "program-index",
+  );
+  const topicCatalog = checkCatalogFile(
+    path.join(TOPICS_DIR, "_index.md"),
+    "topic-catalog",
+  );
+
+  if (programCatalog) {
+    for (const row of parseCatalogRows(programCatalog.text)) {
+      const isTopic = /\[\[topics\//.test(row.join("|"));
+      checkCatalogRow(
+        path.join(PROGRAM_DIR, "_index.md"),
+        row,
+        isTopic ? "program-topic" : "official",
+        unitsByFolder,
+      );
+    }
+  }
+
+  if (topicCatalog) {
+    if (!isFalse(topicCatalog.parsed.data.official)) {
+      addError(path.join(TOPICS_DIR, "_index.md"), 'frontmatter "official" must be false');
+    }
+
+    for (const row of parseCatalogRows(topicCatalog.text)) {
+      checkCatalogRow(path.join(TOPICS_DIR, "_index.md"), row, "topic", unitsByFolder);
+    }
+  }
+
+  const officialLinked = new Set();
+  const topicLinked = new Set();
+
+  if (programCatalog) {
+    for (const row of parseCatalogRows(programCatalog.text)) {
+      const match = row.join("|").match(/\[\[([^|\]]+)_index\|/);
+      if (!match) continue;
+      const folder = match[1].replace(/\/$/, "");
+      if (folder.startsWith("topics/")) topicLinked.add(folder);
+      else officialLinked.add(folder);
+    }
+  }
+
+  for (const unit of units) {
+    if (unit.group === "official" && !officialLinked.has(unit.folder)) {
+      addError(path.join(PROGRAM_DIR, "_index.md"), `missing official catalog entry for "${unit.folder}"`);
+    }
+  }
+
+  if (topicCatalog) {
+    const topicCatalogLinked = new Set(
+      parseCatalogRows(topicCatalog.text)
+        .map((row) => row.join("|").match(/\[\[([^|\]]+)_index\|/))
+        .filter(Boolean)
+        .map((match) => match[1].replace(/\/$/, "")),
+    );
+
+    for (const unit of units) {
+      if (unit.group === "topic" && !topicCatalogLinked.has(unit.folder)) {
+        addError(path.join(TOPICS_DIR, "_index.md"), `missing topic catalog entry for "${unit.folder}"`);
+      }
+    }
+  }
+}
+
+function checkPromptLayout() {
+  for (const filePath of walkMarkdownFiles(PROMPTS_DIR)) {
+    const relative = rel(filePath);
+    const basename = path.basename(filePath);
+    const parent = toPosix(path.relative(PROMPTS_DIR, path.dirname(filePath)));
+
+    if (/^00-/.test(basename)) {
+      addError(filePath, 'obsolete prompt filename pattern "00-*" is not allowed');
+    }
+
+    if (/^q\d{1,2}[-_]/i.test(basename) || /^q-\d/i.test(basename)) {
+      addError(filePath, 'obsolete flat quiz prompt filename pattern like "q01-*" is not allowed');
+    }
+
+    if (/^\d{2}[a-z]-/i.test(basename)) {
+      addError(filePath, 'obsolete number-plus-letter prompt filename pattern like "02a-*" is not allowed');
+    }
+
+    if (/^\d{2}-/.test(basename) && !parent.startsWith("workflows/")) {
+      addError(filePath, "numbered prompt files are only allowed inside workflow folders");
+    }
+
+    const text = fs.readFileSync(filePath, "utf8");
+    const deletedPathReference =
+      /content\/_prompts\/(?:00-|q\d{1,2}[-_]|[^`\s)]*\/\d{2}[a-z]-)/i;
+    if (deletedPathReference.test(text)) {
+      addError(filePath, "references an obsolete prompt path");
+    }
+
+    for (const pattern of REMOVED_ACTIVE_TEXT) {
+      if (pattern.test(text)) {
+        addError(filePath, `contains removed planning/creation compatibility text matching ${pattern}`);
+      }
+    }
+
+    if (relative.includes("\\\\")) {
+      addError(filePath, "prompt path should use repository-root-relative POSIX separators in text references");
+    }
+  }
+}
+
+function checkRemovedGuideText() {
+  for (const filePath of walkMarkdownFiles(path.join(CONTENT_DIR, "_guides"))) {
+    const text = fs.readFileSync(filePath, "utf8");
+    for (const pattern of REMOVED_ACTIVE_TEXT) {
+      if (pattern.test(text)) {
+        addError(filePath, `contains removed planning/creation compatibility text matching ${pattern}`);
+      }
+    }
+  }
+}
+
 function collectIdsAndWarnings() {
   for (const filePath of walkMarkdownFiles(CONTENT_DIR)) {
     const text = fs.readFileSync(filePath, "utf8");
-    const parsed = parseFrontmatter(text);
+    const parsed = parseFrontmatter(filePath, text);
     const todoCount = countMatches(text, /\bTODO\b/g);
 
     if (todoCount > 0) {
-      addWarning(filePath, `contains ${todoCount} TODO placeholder(s)`);
+      const status = parsed.data?.status;
+      if (status === "published") {
+        addError(filePath, 'published file contains unresolved TODO placeholders');
+      } else {
+        addWarning(filePath, `contains ${todoCount} TODO placeholder(s)`);
+      }
     }
 
     if (/^created:\s*YYYY-MM-DD\s*$/m.test(text)) {
@@ -839,8 +1346,8 @@ function collectIdsAndWarnings() {
     }
 
     if (!parsed.hasFrontmatter) {
-      if (isGuidePromptOrReference(filePath)) {
-        addWarning(filePath, "has no frontmatter; allowed for guides, prompts, and references");
+      if (isGuidePromptReferenceOrTracking(filePath)) {
+        addWarning(filePath, "has no frontmatter; allowed for guides, prompts, references, and tracking files");
       }
       continue;
     }
@@ -849,18 +1356,6 @@ function collectIdsAndWarnings() {
       if (Object.hasOwn(parsed.data, field)) {
         addError(filePath, `frontmatter field "${field}" is not allowed in the unit system`);
       }
-    }
-
-    if (
-      Object.hasOwn(parsed.data, "sync_status") &&
-      !ALLOWED_SYNC_STATUSES.has(parsed.data.sync_status)
-    ) {
-      addWarning(
-        filePath,
-        `frontmatter "sync_status" is optional; expected one of ${[
-          ...ALLOWED_SYNC_STATUSES,
-        ].join(", ")}`,
-      );
     }
 
     if (!parsed.data.id) continue;
@@ -910,6 +1405,9 @@ function main() {
   checkProgramFolderShape();
   discoverAndCheckUnits();
   checkUnitUniqueness();
+  checkCatalogs();
+  checkPromptLayout();
+  checkRemovedGuideText();
   collectIdsAndWarnings();
   printResults();
 }

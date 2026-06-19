@@ -65,8 +65,7 @@ Before doing any work:
 - `content/_guides/source-policy.md`
 - `content/_templates/exercise.template.md`
 - `TARGET_UNIT_INDEX`
-- curated exercise design cards in `TARGET_UNIT_INDEX` or an author-designated planning note
-- the planned exercise table, when it exists as a scanning aid
+- curated exercise design cards in `TARGET_UNIT_INDEX`
 - relevant mini-lesson files under `TARGET_UNIT_FOLDER/lessons/`
 
 ## Task
@@ -75,12 +74,16 @@ Create the requested exercise file(s) under `TARGET_UNIT_FOLDER/exercises/`.
 
 This is Stage 6 only.
 
-Use rich exercise design cards as the main source of truth. If design cards exist, use them before the planned table.
+Use rich exercise design cards as the source of truth.
 
-If only the older simple planned exercise table exists:
+If a selected exercise lacks a canonical design card in `TARGET_UNIT_INDEX`, stop with this actionable error:
 
-- warn in the final summary that rich design cards are recommended before Stage 6;
-- do not silently invent missing pedagogical goals, methods, traps, or verification concerns from scratch.
+```text
+Cannot create <planned-exercise-id>: no canonical exercise design card found in TARGET_UNIT_INDEX.
+Run content/_prompts/workflows/exercises/02-curate-design-cards.md for the selected cluster before Stage 6.
+```
+
+Do not create an exercise from a table-only planning row or incomplete old planning data.
 
 If a selected design card is missing critical information such as target skill, intended method, parameter constraints, traps, or verification risks, pause that card or mark the created draft clearly as needing review in `## Notes auteur`. Prefer returning to `workflows/exercises/02-curate-design-cards.md` when the missing information would determine the exercise's mathematical shape.
 
@@ -90,10 +93,10 @@ If the user named specific planned IDs, file paths, a cluster, or a small range,
 
 If no selection is provided:
 
-- choose the first missing planned exercises whose design cards are `planned` or `ready-for-stage-6`;
+- choose the first missing exercise files whose design cards are `planned` or `ready-for-stage-6`;
 - create only a small batch of 3 to 5 files.
 
-Do not create all planned exercises in one pass unless explicitly requested.
+Do not create every carded exercise in one pass unless explicitly requested.
 
 Do not create:
 
@@ -165,5 +168,4 @@ Finish by summarizing:
 - design cards used;
 - skills covered;
 - any uncertainty or verification needs;
-- whether any table-only planning source was used;
 - suggested solution-review prompt: `workflows/exercises/05-review-solutions.md`.

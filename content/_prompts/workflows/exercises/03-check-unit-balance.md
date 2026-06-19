@@ -99,8 +99,7 @@ Check:
 
 Then update:
 
-- the unit-level planned exercise table;
-- balance notes;
+- exercise cluster map and balance notes;
 - design-card statuses.
 
 Use these design-card statuses:

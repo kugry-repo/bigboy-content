@@ -92,11 +92,11 @@ If no raw seed dump exists for the selected cluster, stop and recommend `workflo
 
 ## Task
 
-Curate the selected cluster's raw exercise seeds into rich exercise design cards in `TARGET_UNIT_INDEX` or an author-designated planning note.
+Curate the selected cluster's raw exercise seeds into rich exercise design cards in `TARGET_UNIT_INDEX`.
 
 This is the design-card curation step only.
 
-The main output is the exercise design cards. The planned exercise table is only an index and scanning summary.
+The main output is the exercise design cards. Do not create or maintain a separate planned-exercise summary table.
 
 Do not create:
 
@@ -133,19 +133,6 @@ Use only these `Difficulty` / `Niveau` values:
 - `approfondissement`
 
 Do not use `technique` as a frontmatter `difficulty` value. If technical practice is needed, use a valid difficulty and describe the technical theme in `Type`, `Objectif`, or `Target skill`.
-
-## Planned exercise table
-
-Keep a concise planned exercise table for scanning, but do not treat it as sufficient for Stage 6 by itself.
-
-Use this table shape:
-
-```md
-| ID prevu | Fichier prevu | Cluster | Niveau | Type | Competences | Objectif | Mini-lecon liee |
-|---|---|---|---|---|---|---|---|
-```
-
-Use planned IDs and file paths derived from `TARGET_UNIT_CODE` and `TARGET_UNIT_FOLDER`.
 
 ## Exercise design card format
 

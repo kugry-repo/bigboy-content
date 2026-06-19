@@ -104,6 +104,28 @@ updated: YYYY-MM-DD
 ---
 ```
 
+The body of every unit `_index.md` must follow `content/_templates/unit-index.template.md` exactly at the top level. Required H2 headings, in order:
+
+```md
+## Place dans le programme
+## Objectifs et plan de l'unité
+## Prérequis
+## Compétences
+## Plan des mini-leçons
+## Misconceptions à traiter
+## Leçons
+## Planification des exercices
+## Planification des séries d'exercices
+## Planification des quiz
+## Diagrammes et interactions à prévoir
+## Notes d'alignement examen
+## Workflow
+## Journal de production
+## Notes auteur
+```
+
+`## Workflow` is the authoritative current-state tracker. `status` remains content maturity metadata. `sync_status` remains freshness metadata when used. `## Journal de production` records historical changes only.
+
 Official curriculum unit example:
 
 ```yaml

@@ -112,18 +112,7 @@ Do not create:
 - exercise set files;
 - frontend or app code.
 
-Keep a concise planned quiz table for scanning.
-
-## Planned quiz table
-
-Use this table:
-
-```md
-| ID prevu | Fichier prevu | Serie | Type de quiz | Niveau | Questions | Competences | Objectif | Mini-lecons liees |
-|---|---|---|---|---|---|---|---|---|
-```
-
-Use planned IDs and file paths derived from `TARGET_UNIT_CODE` and `TARGET_UNIT_FOLDER`.
+Do not create or maintain a separate planned-quiz summary table. Quiz design cards are the stored source of truth.
 
 ## Quiz design card format
 
@@ -240,7 +229,7 @@ When `MODE: QUIZ_SERIES_BALANCE` is used:
 - do not create final quiz files;
 - read all relevant quiz design cards;
 - review duplicate skills, missing skills, overused item types, poor difficulty progression, too many MCQs, not enough error diagnosis or method choice, and weak feedback design;
-- update the planned quiz table, balance notes, and card statuses.
+- update quiz balance notes and card statuses.
 
 Do not expand all cards into full quizzes during balance mode.
 

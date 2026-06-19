@@ -170,29 +170,11 @@ Before a unit becomes the model for future units, review:
 
 Do not mark a unit as golden if any major file is only a raw draft.
 
-## Golden Unit Tracker
+## Golden Unit Tracking
 
-A unit `_index.md` should include a tracker like:
+A candidate golden unit uses the same canonical `## Workflow` tracker and `## Journal de production` log as every other content unit.
 
-```md
-## Golden unit readiness
-
-| Area | Status | Notes |
-|---|---|---|
-| Unit plan | planned | TODO |
-| Mini-lesson source, dump, and curation | planned | TODO |
-| Mini-lessons | planned | TODO |
-| Lesson voice review | planned | TODO |
-| Raw exercise seeds and design cards | planned | Cluster-based Stage 5a/5b, plus unit balance |
-| Exercises | planned | TODO |
-| Solution review | planned | TODO |
-| Exercise sets | planned | TODO |
-| Quiz series, design cards, and review | planned | Quiz workflow steps 01-04 when standalone checkpoints are needed |
-| Skill coverage | planned | TODO |
-| Diagram/interactivity plan | planned | TODO |
-| Source safety | planned | Official/exam claims and third-party usage to check |
-| Full unit review | planned | TODO |
-```
+Golden-unit readiness is a review judgment, not a separate unit-index tracker.
 
 ## Completion Rule
 

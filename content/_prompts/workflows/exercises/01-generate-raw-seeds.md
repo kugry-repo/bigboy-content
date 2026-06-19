@@ -85,7 +85,7 @@ If `TARGET_EXERCISE_CLUSTER` is provided:
 
 If no `TARGET_EXERCISE_CLUSTER` is provided:
 
-1. Look for an existing exercise cluster map in `TARGET_UNIT_INDEX` or an author-designated planning note.
+1. Look for an existing exercise cluster map in `TARGET_UNIT_INDEX`.
 2. If no cluster map exists, create a proposed cluster map in the unit planning area.
 3. Select only the first missing or incomplete cluster dump.
 4. Generate raw seeds only for that selected cluster.
@@ -96,7 +96,7 @@ A cluster is usually based on a mini-lesson group, a skill family, a recurring m
 
 ## Task
 
-Create or update raw exercise seeds for the selected cluster in `TARGET_UNIT_INDEX` or in an author-designated planning note.
+Create or update raw exercise seeds for the selected cluster in `TARGET_UNIT_INDEX`.
 
 This is Stage 5a only.
 
@@ -114,7 +114,7 @@ Do not create:
 - exercise set files;
 - final polished exercise statements;
 - full polished solutions;
-- the final planned exercise table, unless you are only adding a clearly marked scratch note;
+- exercise design cards;
 - new mini-lessons;
 - frontend or app code.
 

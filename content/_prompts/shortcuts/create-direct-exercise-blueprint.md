@@ -19,7 +19,7 @@ The direct blueprint route is allowed only when:
 
 If the unit is substantial and no cluster raw seeds exist, stop and recommend `content/_prompts/workflows/exercises/01-generate-raw-seeds.md` instead of inventing the whole exercise plan directly.
 
-This direct route must produce the same rich exercise design cards used by `workflows/exercises/02-curate-design-cards.md`, not only a simple planned exercise table.
+This direct route must produce the same rich exercise design cards used by `workflows/exercises/02-curate-design-cards.md`.
 
 ## Target
 
@@ -101,14 +101,7 @@ Do not create:
 
 If a cluster is specified, create direct design cards only for that cluster. If no cluster is specified and the unit is small enough for this route, derive a compact cluster map first so the plan still records why the exercise cards exist.
 
-Keep a concise planned exercise table for scanning:
-
-```md
-| ID prevu | Fichier prevu | Cluster | Niveau | Type | Competences | Objectif | Mini-lecon liee |
-|---|---|---|---|---|---|---|---|
-```
-
-Then add rich exercise design cards using the normal design-card format:
+Add rich exercise design cards using the normal design-card format:
 
 ```md
 ### <planned-exercise-id> - <working title>

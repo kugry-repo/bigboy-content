@@ -76,6 +76,7 @@ Do not create:
 
 - mini-lesson files;
 - exercises;
+- quizzes;
 - exercise sets;
 - frontend or app code.
 

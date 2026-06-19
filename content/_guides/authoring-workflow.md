@@ -1,31 +1,14 @@
 # Authoring Workflow
 
-This guide defines how to create content without losing consistency.
+This guide gives the conceptual overview for creating content without losing consistency.
 
-The repository uses a Markdown-first content-unit system. A content unit can be an official curriculum unit or an unofficial topic. Both use the same index schema, staged prompts, lifecycle workflow, subfolders, naming rules, and validator logic.
+For the authoritative lifecycle, stage names, tracker shape, and unit `_index.md` body schema, use `content/_guides/unit-workflow.md`.
 
-Official curriculum units form the main program spine and live directly under `content/2bac-pc-svt/`. Unofficial topics live under `content/2bac-pc-svt/topics/` and are extra learning, revision, method, synthesis, or exam-prep units.
-
-Both unit kinds reuse the same subfolders:
-
-- `lessons/`
-- `exercises/`
-- `quizzes/`
-- `sets/`
-
-Unofficial topics may contain topic-native lessons, linked official-unit lessons, topic-native exercises, linked official-unit exercises, topic-native quizzes, and synthesis sets. Avoid duplicating official curriculum content unnecessarily.
-
-For the detailed unit production sequence, see `_guides/unit-workflow.md`.
-
-For the mini-lesson editorial pipeline, see `_guides/lesson-editorial-pipeline.md`.
-
-For the golden unit target, see `_guides/golden-unit-standard.md`.
-
-## Core Idea
+## Core idea
 
 Treat Markdown content like source code.
 
-Every lesson, exercise, standalone quiz, and solution should be:
+Every lesson, exercise, standalone quiz, set, and solution should be:
 
 - structured;
 - reviewable;
@@ -33,177 +16,101 @@ Every lesson, exercise, standalone quiz, and solution should be:
 - easy to improve;
 - safe to render later in an app.
 
-## Targeted Revision
+## Content units
 
-Treat content like source code after it exists.
+The repository uses one content-unit system.
 
-You can change earlier plans after downstream lesson, exercise, quiz, or set files already exist. The system should not restart from zero or rerun every later stage automatically.
+Official curriculum units live directly under `content/2bac-pc-svt/`. Unofficial topics live under `content/2bac-pc-svt/topics/`.
 
-When a user asks for a revision, Codex should inspect dependencies, discover affected files, classify the risk, and patch only the files that need to change. For big structural revisions, Codex should produce an impact report and patch plan before mass editing.
+Both unit kinds use:
 
-## Recommended Unit Workflow
+- one unit `_index.md` schema;
+- one lifecycle guide;
+- one prompt system;
+- one validator;
+- the same artifact folders: `lessons/`, `exercises/`, `quizzes/`, and `sets/`.
 
-### 1. Unit Planning
+Unofficial topics may contain topic-native content and links to official-unit content, but they must not pretend to be official curriculum units.
 
-Create or update the unit `_index.md`.
+## Planning source of truth
 
-Define:
+The unit `_index.md` is the only unit-planning artifact.
 
-- unit title;
-- unit kind;
-- content scope;
-- domain;
-- related units;
-- skills covered;
-- prerequisites;
-- expected exam patterns;
-- planned mini-lessons under `lessons/`;
-- planned exercise sets.
+Use it for:
 
-Do not write full mini-lesson content yet.
+- mini-lesson source/target notes, raw material, and curation;
+- exercise cluster maps, raw exercise seeds, and exercise design cards;
+- exercise-set planning;
+- raw quiz material and quiz design cards;
+- diagram and exam-alignment notes;
+- workflow state and production journal.
 
-### 2. Mini-Lesson Editorial Preparation
+Do not move unit planning into a separate note.
 
-Prepare one mini-lesson inside the unit `_index.md` or a clearly marked author note.
+## Lessons
 
-Use the editorial pipeline from `_guides/lesson-editorial-pipeline.md`:
-
-```text
-source / target
--> raw dump
--> human curation / chop
--> assembled lesson
--> coherence pass
--> compression / taste pass
--> verification pass
--> final student lesson
-```
-
-First define the source and target: concept, lesson ID, prerequisites, learning outcome, source constraints, and any curriculum or exam claims that need verification.
-
-Then generate a raw dump of possible material. The dump is not the final lesson.
-
-### 3. Human Curation
-
-The human author chops the dump before assembly.
-
-Mark material as:
-
-- keep;
-- delete;
-- merge;
-- split;
-- reorder;
-- optional;
-- future exercise;
-- too much;
-- useful but not student-facing.
-
-Do not silently re-add deleted material during assembly.
-
-### 4. Mini-Lesson Assembly
-
-Create one file under `lessons/` using `_templates/mini-lesson.template.md`.
-
-Assemble only the curated material into a coherent mini-lesson.
+Mini-lessons are prepared in the unit `_index.md`, then created as separate files under `lessons/`.
 
 The visible lesson shape is flexible. Motivation, intuition, formal statements, examples, method boxes, mistakes, exam notes, summaries, diagrams, and checkpoints are reusable blocks, not mandatory sections.
 
-Mark status as `draft`.
+Use:
 
-### 5. Coherence, Taste, And Verification Passes
+- `content/_guides/lesson-editorial-pipeline.md`
+- `content/_guides/lesson-structure.md`
+- `content/_guides/lesson-voice.md`
 
-Run the review passes in this order:
+## Exercises
 
-1. Coherence pass: flow, transitions, repeated ideas, notation consistency, and example fit.
-2. Compression / taste pass: remove ceremony, repetitive headings, weak analogies, bloated exam notes, redundant summaries, and AI-sounding structure.
-3. Verification pass: math correctness, curriculum alignment, official-source safety, notation, solved examples, prerequisites, and checkpoint answers.
-
-If uncertain, mark the file as `needs-review`.
-
-### 6. Exercise Planning
-
-Generate raw exercise seeds one cluster at a time, then curate that cluster into rich exercise design cards.
-
-For substantial units, do not make one huge unit-wide exercise dump by default. Derive clusters from the unit plan, mini-lessons, skill families, official program notes, and exam patterns.
-
-Each raw seed should record the rough exercise shape, expected method, main trap, parameter constraints, feasibility sketch, hint or MCQ opportunities, and verification or mismath risks.
-
-Each exercise design card should be detailed enough for Stage 6 to create a final exercise without inventing the target skill, method, traps, or verification concerns from scratch.
-
-After cluster curation, use `content/_prompts/workflows/exercises/03-check-unit-balance.md` to check duplicates, missing skills, difficulty balance, mini-lesson coverage, progression, and verification risks across the unit.
-
-## Parallel Standalone Quiz Workflow
-
-Standalone quizzes are first-class content, but they do not replace lessons or exercises and they do not renumber the Stage 1-10 workflow.
-
-Use this quiz workflow when a unit needs diagnostic or mastery checkpoints:
+Exercise planning is cluster-based for substantial units:
 
 ```text
-workflows/quizzes/01-generate-raw-dump.md
-workflows/quizzes/02-curate-design-cards.md
-workflows/quizzes/03-create-batch.md
-workflows/quizzes/04-review-quizzes.md
+raw exercise seeds
+-> rich exercise design cards
+-> unit balance
+-> final exercise files in small batches
+-> solution review
+-> exercise sets
 ```
 
-Quiz planning should happen one quiz series, quiz cluster, or target skill area at a time.
+Exercise design cards are the source of truth for final exercise creation. A table-only exercise summary is not enough to create an exercise.
 
-Final quiz creation should usually create one quiz file at a time, with a maximum of two unless explicitly requested.
+Each exercise lives in its own Markdown file under `exercises/`.
 
-Standalone quiz files live under the unit `quizzes/` folder. Each quiz contains multiple questions and should include answer-specific feedback, especially for multiple-choice and multiple-response items.
+## Standalone quizzes
 
-`sequence` and `hotspot` are allowed advanced quiz item types for quiz planning. Frontend or UI implementation is out of scope.
+Standalone quizzes are first-class unit content. They live under `quizzes/` and contain multiple questions.
 
-### 7. Exercise Batch Creation
+Quiz planning follows:
 
-Each exercise lives in its own Markdown file.
+```text
+raw quiz material
+-> quiz design cards with item design cards
+-> quiz balance
+-> final quiz file creation
+-> answer key and feedback review
+```
 
-Exercise files are usually created in small batches of 3 to 5 unless explicitly requested otherwise.
+Quiz design cards are the source of truth for quiz creation. A table-only quiz summary is not enough to create a quiz.
 
-A full official curriculum unit may eventually target 20 to 35 individual exercises, but those are accumulated over multiple batches. Do not generate a whole unit exercise library at once unless explicitly requested.
+Every MCQ/MR option should have answer-specific feedback. Wrong choices should map to real misconceptions.
 
-### 8. Solution Creation And Review
+## Targeted revision
 
-Every exercise should include:
+Content can be revised after it exists. Updating an earlier plan does not mean rerunning every later creation stage from zero.
 
-- a clear solution;
-- step-by-step reasoning;
-- final answer;
-- verification when useful;
-- common mistakes.
+For existing content, stale-file sync, or global schema/template/prompt/validator changes, use:
 
-Solutions created during exercise batch creation are drafts. Review them after creation for mathematical correctness, conditions, notation, clarity, and alignment with the exercise design card and mini-lessons.
+```text
+content/_prompts/commands/change-existing-content.md
+```
 
-### 9. Exam Alignment Review
+Structural changes must migrate affected existing source files to the new schema, heading names, filenames, folder rules, and prompt paths in the same change.
 
-Check whether the unit has a balance of:
-
-- direct applications;
-- guided applications;
-- exam-style exercises;
-- synthesis problems.
-
-Use the official weighting only as a planning guide for official curriculum units. For unofficial topics, mark official-curriculum claims as needing verification unless already documented.
-
-### 10. Publish Readiness
-
-A file can move to `published` only when:
-
-- math is correct;
-- notation is consistent;
-- metadata is complete;
-- internal links work;
-- the solution is understandable by a 2BAC PC/SVT student.
-
-## Good Codex Task Size
+## Good Codex task size
 
 Good task:
 
 > Create 5 application-directe exercises for finite limits using the exercise template. Do not edit the lesson.
-
-Bad task:
-
-> Generate all 2BAC math content.
 
 Good task:
 
@@ -211,4 +118,4 @@ Good task:
 
 Bad task:
 
-> Make this unit better.
+> Generate all 2BAC math content.

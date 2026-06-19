@@ -9,6 +9,7 @@
     "zip:chatgpt": "node scripts/package-chatgpt-source.mjs"
   },
   "devDependencies": {
-    "repomix": "1.14.1"
+    "repomix": "1.14.1",
+    "yaml": "^2.9.0"
   }
 }

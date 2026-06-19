@@ -2,13 +2,13 @@
 
 ## Purpose
 
-This guide explains basic automated checks for the Markdown content vault.
+This guide explains the automated structural checks for the Markdown content vault.
 
-Automation should help catch structural mistakes. It does not replace mathematical or pedagogical review.
+Automation catches schema, folder, metadata, prompt-layout, and tracker mistakes. It does not replace mathematical or pedagogical review.
 
-## Validation Script
+## Validation command
 
-Run validation from the repo root:
+Run from the repository root:
 
 ```bash
 npm run validate
@@ -20,62 +20,60 @@ or:
 node scripts/validate-content.mjs
 ```
 
-## What Automated Checks Can Catch
+## What the validator enforces
 
-Automated checks can catch:
+The validator checks:
 
-- missing frontmatter;
-- duplicate IDs;
-- missing required unit fields;
-- missing unit `_index.md` files;
-- official curriculum units outside the expected direct folder shape;
-- unofficial topic units outside `content/2bac-pc-svt/topics/`;
-- forbidden domain folders directly under `content/2bac-pc-svt/`;
-- duplicate `unit_code`, `unit_folder`, frontmatter `id`, or repeated unit order inside a unit group;
-- missing unit subfolders: `lessons/`, `exercises/`, `quizzes/`, and `sets/`;
-- lesson, exercise, quiz, and set filenames that do not use the unit code;
-- lesson, exercise, and quiz IDs that do not use the unit code;
-- mini-lesson files missing useful quality signals;
-- old root `lesson.md` files used accidentally;
-- broken project conventions.
+- required base folders;
+- official units directly under `content/2bac-pc-svt/`;
+- unofficial topics under `content/2bac-pc-svt/topics/`;
+- catalog indexes distinguished from content-unit indexes;
+- maintained YAML parsing for frontmatter;
+- duplicate frontmatter IDs;
+- canonical unit-index frontmatter fields;
+- permitted unit kinds and content scopes;
+- folder/frontmatter consistency;
+- numeric prefixes for official unit folders as errors;
+- required artifact folders: `lessons/`, `exercises/`, `quizzes/`, and `sets/`;
+- exact canonical unit `_index.md` top-level heading order;
+- required exercise cluster, raw-seed, and design-card areas;
+- required exercise-set planning area;
+- required quiz raw-material and design-card areas;
+- `## Workflow` as the authoritative unit tracker;
+- `## Journal de production` as the historical log;
+- absence of removed duplicate tracker headings;
+- absence of old planned-exercise or planned-quiz table sections;
+- absence of old `chapter_*` and `topic_*` frontmatter fields;
+- absence of old domain-folder structures;
+- lesson, exercise, quiz, and set filename and ID consistency;
+- required canonical fields on generated content files, including `unit_code`;
+- unit identity consistency between frontmatter and containing folder;
+- prompt-folder layout so old flat prompt systems cannot return;
+- catalog references against unit frontmatter.
 
-## What Automated Checks Cannot Catch
+## Scaffold warnings
 
-Automated checks cannot reliably catch:
+Draft and planned scaffolds may contain TODO placeholders. The validator reports these as warnings.
+
+TODO placeholders become blocking errors for files whose `status` claims learner publish readiness.
+
+## What automation cannot catch
+
+The validator cannot reliably catch:
 
 - incorrect mathematics;
-- bad pedagogy;
-- weak analogies;
-- fake motivation;
+- weak pedagogy;
 - unclear explanations;
-- exam misalignment.
+- fake motivation;
+- exam misalignment;
+- copied third-party substance that has been paraphrased poorly.
 
-Use human review and `_guides/lesson-quality-rubric.md`.
+Use human review, source checks, and the relevant content guides for those.
 
-## Validation Philosophy
+## Validation philosophy
 
-Checks should be helpful, not annoying.
+Serious structural problems are errors.
 
-During early drafting, warnings are acceptable.
+Content-completeness gaps in planned/draft scaffolds are warnings.
 
-Serious structural problems should be errors.
-
-For mini-lessons, validation should encourage the editorial pipeline:
-
-```text
-source / target -> raw dump -> curation -> assembly -> coherence -> compression / taste -> verification -> final lesson
-```
-
-Validation should not require rigid visible sections.
-
-Instead, it should look for useful signals:
-
-- a clear learning goal or purpose;
-- enough mathematical precision;
-- active check, practice direction, or next action when appropriate;
-- no unresolved TODOs in finalized student-facing files;
-- verification status or notes where the system expects them.
-
-Optional blocks, such as motivation, intuition, formal definition, method box, examples, mistakes, exam note, summary, diagrams, or checkpoints, should not be required just because they exist in the template.
-
-A lesson should not fail validation only because it chose a small or unusual shape.
+The validator enforces one canonical content-unit system. It does not accept older unit-index structures, table-only exercise or quiz planning, alternate planning notes, old prompt layouts, or old folder schemes.

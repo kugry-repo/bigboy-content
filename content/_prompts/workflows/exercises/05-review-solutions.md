@@ -58,7 +58,6 @@ Before doing any work:
 - `content/_guides/source-policy.md`
 - `TARGET_UNIT_INDEX`
 - exercise design cards in `TARGET_UNIT_INDEX`, if present
-- the planned exercise table, when it exists as a scanning aid
 - relevant mini-lesson files under `TARGET_UNIT_FOLDER/lessons/`
 - selected exercise files under `TARGET_UNIT_FOLDER/exercises/`
 
@@ -85,7 +84,6 @@ Check:
 - conditions and domains;
 - consistency with mini-lessons;
 - consistency with the source exercise design card, if present;
-- consistency with the planned exercise table when no design card exists;
 - useful common mistakes;
 - verification where useful;
 - source-safety notes if a solution or statement depends on an exam or third-party source.

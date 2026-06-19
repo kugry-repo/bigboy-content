@@ -80,9 +80,10 @@ For content tasks:
 
 ## Validation
 
-There is no build step yet. For now, validate by:
-- Checking file paths and names.
-- Checking YAML frontmatter consistency.
-- Checking Markdown headings.
-- Checking LaTeX syntax visually.
-- Ensuring no full lesson/exercise/quiz content was generated unless requested.
+Run the repository validator after structural or content-system changes:
+
+```bash
+npm run validate
+```
+
+For content work, also check Markdown headings, LaTeX syntax visually, and ensure no full lesson, exercise, quiz, or set content was generated unless requested.

@@ -86,7 +86,7 @@ If `TARGET_QUIZ_SERIES` or `TARGET_QUIZ_CLUSTER` is provided:
 
 If no target series or cluster is provided:
 
-1. Look for an existing quiz series map in `TARGET_UNIT_INDEX` or an author-designated planning note.
+1. Look for existing quiz planning in `TARGET_UNIT_INDEX`.
 2. If no quiz series map exists, propose one from the unit plan, mini-lessons, skills, exercises, misconception map, and exam patterns.
 3. Select only the first missing or incomplete quiz series or cluster.
 4. Generate raw material only for that selected series or cluster.
@@ -95,7 +95,7 @@ Do not generate all quiz series at once unless the user explicitly asks for more
 
 ## Task
 
-Create or update raw quiz material for the selected quiz series or cluster in `TARGET_UNIT_INDEX` or an author-designated planning note.
+Create or update raw quiz material for the selected quiz series or cluster in `TARGET_UNIT_INDEX`.
 
 Default output:
 

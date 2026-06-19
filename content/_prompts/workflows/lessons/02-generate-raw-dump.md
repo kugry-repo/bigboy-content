@@ -70,7 +70,7 @@ Before doing any work:
 
 ## Task
 
-Create or update the raw dump for the selected mini-lesson in `TARGET_UNIT_INDEX` or in the author-designated planning note.
+Create or update the raw dump for the selected mini-lesson in `TARGET_UNIT_INDEX`.
 
 This is Stage 2 raw-material work only.
 
@@ -78,6 +78,7 @@ Do not create:
 
 - mini-lesson files;
 - exercises;
+- quizzes;
 - exercise sets;
 - final student-facing lesson prose;
 - frontend or app code.

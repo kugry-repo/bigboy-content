@@ -95,10 +95,10 @@ The unit plan must include:
 11. Planned examples, counterexamples, or exercise candidates.
 12. Misconceptions to treat, including recovery plans for major traps.
 13. Planned checkpoints and practice progression.
-14. Exercise planning placeholders: exercise cluster map, raw seed area, design-card area, and planned exercise table.
-15. Planned exercise progression.
-16. Quiz planning placeholders: quiz series map, raw dump area, design-card area, and planned quiz table.
-17. Planned quiz progression for diagnostic or mastery checkpoints.
+14. Exercise planning placeholders: exercise cluster map, raw seed area, and rich design-card area.
+15. Exercise-set planning under `sets/`.
+16. Quiz planning placeholders: raw quiz material area and rich quiz design-card area.
+17. Planned quiz progression for diagnostic or mastery checkpoints inside quiz design cards.
 18. Planned diagrams and future interactions.
 19. Exam-style patterns, with unsupported official claims marked for verification.
 20. Production tracker.

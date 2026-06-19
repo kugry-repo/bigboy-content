@@ -59,7 +59,6 @@ Before doing any work:
 - `content/_templates/exercise-set.template.md`
 - `TARGET_UNIT_INDEX`
 - exercise design cards in `TARGET_UNIT_INDEX`, if present
-- the planned exercise table, when it exists as a scanning aid
 - exercise files under `TARGET_UNIT_FOLDER/exercises/`
 
 ## Task
@@ -68,7 +67,7 @@ Create or update exercise set files under `TARGET_UNIT_FOLDER/sets/`.
 
 This is Stage 8 only.
 
-Exercise sets must organize existing exercises, or explicitly planned exercises when the set is clearly a future planning artifact. They should link to exercise files instead of duplicating full exercise content.
+Exercise sets must organize existing exercises, or canonical exercise design cards when the set is clearly a future planning artifact. They should link to exercise files instead of duplicating full exercise content.
 
 Do not create:
 
@@ -87,7 +86,7 @@ Possible sets:
 
 Use frontmatter values derived from `TARGET_UNIT_INDEX`, including the resolved unit code, title, program, unit folder, order, domain, tracks, and language.
 
-If no exercises exist and the design cards or planned table are not specific enough to build sets safely, stop and ask for clarification.
+If no exercises exist and the design cards are not specific enough to build sets safely, stop and ask for clarification.
 
 Do not create missing exercise files during Stage 8. If a useful set needs exercises that do not exist yet, record the missing planned IDs and recommend returning to Stage 6.
 

@@ -40,5 +40,5 @@ If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not
 
 - Use the current prompt file as the source of truth for the requested command or workflow step.
 - Do not ask for or fill `TARGET_STAGE`.
-- Do not preserve aliases, fallback names, or compatibility references to removed prompt paths.
+- Use only current folder-based prompt paths.
 - Do not create frontend rendering, app logic, or deployment work unless explicitly requested.

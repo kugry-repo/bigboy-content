@@ -71,4 +71,4 @@ Quiz workflow:
 - `_shared/output-rules.md` defines final-response and reporting conventions.
 - `_shared/validation-rules.md` defines checks to run or report after prompt-driven edits.
 
-Prompts should follow these shared rules without keeping alternate legacy paths alive.
+Prompts should follow these shared rules and use only the current folder-based paths.

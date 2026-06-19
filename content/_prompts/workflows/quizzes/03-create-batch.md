@@ -70,8 +70,7 @@ Before doing any work:
 - `content/_references/concept-dependencies.md`
 - `content/_references/notation-decisions.md`
 - `TARGET_UNIT_INDEX`
-- quiz design cards in `TARGET_UNIT_INDEX` or an author-designated planning note
-- the planned quiz table, for scan checks
+- quiz design cards in `TARGET_UNIT_INDEX`
 - relevant mini-lesson files under `TARGET_UNIT_FOLDER/lessons/`
 - relevant exercise files under `TARGET_UNIT_FOLDER/exercises/`
 
@@ -92,10 +91,14 @@ Use `content/_templates/quiz.template.md`.
 
 Use quiz design cards as the source of truth.
 
-If only a simple planned quiz table exists without design cards:
+If a selected quiz lacks a canonical quiz design card in `TARGET_UNIT_INDEX`, stop with this actionable error:
 
-- warn in the final summary;
-- do not invent missing traps, feedback, skills, item logic, or verification risks from scratch.
+```text
+Cannot create <planned-quiz-id>: no canonical quiz design card found in TARGET_UNIT_INDEX.
+Run content/_prompts/workflows/quizzes/02-curate-design-cards.md for the selected quiz series or cluster before quiz creation.
+```
+
+Do not create a quiz from a table-only planning row or incomplete old planning data.
 
 If a selected design card is missing critical information such as target skill, correct answers, distractors, answer-specific feedback, accepted alternatives, or verification risks, pause that card or mark the created draft clearly as needing review in `## Notes auteur`. Prefer returning to `workflows/quizzes/02-curate-design-cards.md` when missing information determines the quiz's mathematical shape.
 
@@ -148,6 +151,5 @@ Finish by summarizing:
 - quiz design cards used;
 - quiz series and skills covered;
 - item types and cognitive roles included;
-- whether any table-only planning source was used;
 - answer key, feedback, and verification uncertainties;
 - recommended review prompt: `workflows/quizzes/04-review-quizzes.md`.

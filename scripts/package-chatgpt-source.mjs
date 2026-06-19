@@ -17,6 +17,7 @@ const EXCLUDED_ROOTS = new Set([
   ".obsidian",
   "node_modules",
   "_exports",
+  "_workflow",
   ".fallow",
 ]);
 const EXCLUDED_PATHS = new Set(["content/.obsidian"]);

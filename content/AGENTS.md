@@ -89,7 +89,7 @@ When doing staged creation work on a content unit:
 4. Work only on the requested stage or the first unchecked stage.
 5. Do not skip stages unless explicitly requested.
 6. Update the unit tracker after making unit changes.
-7. Do not create lessons, exercises, or sets unless the current task asks for them.
+7. Do not create lessons, exercises, quizzes, or sets unless the current task asks for them.
 
 When revising existing content, syncing stale files, or responding to an upstream plan/template/guide change, use `_prompts/commands/change-existing-content.md`. Do not restart the full Stage 1-10 pipeline just because earlier work changed; discover the blast radius and patch only affected files or produce an impact plan.
 
@@ -160,7 +160,7 @@ Before generating the golden unit, make sure the base system exists:
 - Do not over-formalize. The tone should feel like a careful teacher explaining at the board.
 - Use LaTeX for mathematical expressions.
 - Use Obsidian-compatible Markdown and callouts.
-- Use stable IDs for lessons, exercises, sets, and corrections.
+- Use stable IDs for lessons, exercises, standalone quizzes, sets, and corrections.
 - Use stable IDs for standalone quizzes.
 
 ## Content status

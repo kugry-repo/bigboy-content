@@ -2,7 +2,7 @@
 
 Use this command when you are unsure where a content unit is in the workflow, whether existing files are stale, or what to do next.
 
-This command is read-only. It is the diagnostic engine for the prompt system: inspect the current state, decide whether creation or revision is appropriate, and name the next exact prompt to run.
+This command is read-only. It diagnoses the current unit state, distinguishes creation from targeted revision, and names the next exact prompt to run.
 
 ## Target
 
@@ -46,8 +46,9 @@ Before doing any work:
 7. Read `TARGET_UNIT_INDEX`.
 8. Require `type: unit-index`.
 9. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM` from the unit index frontmatter.
-10. Use this prompt file as the source of truth for this stage or review behavior. Do not ask for or fill `TARGET_STAGE`.
+10. Use this prompt file as the source of truth for this diagnostic behavior. Do not ask for or fill `TARGET_STAGE`.
 11. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
+
 ## Read and inspect
 
 Read:
@@ -59,9 +60,12 @@ Read:
 
 Inspect, without editing:
 
-- `TARGET_UNIT_FOLDER/lessons/`
-- `TARGET_UNIT_FOLDER/exercises/`
-- `TARGET_UNIT_FOLDER/sets/`
+- the complete canonical unit index body;
+- `TARGET_UNIT_FOLDER/lessons/`;
+- `TARGET_UNIT_FOLDER/exercises/`;
+- `TARGET_UNIT_FOLDER/quizzes/`;
+- `TARGET_UNIT_FOLDER/sets/`;
+- partial, empty, malformed, or inconsistent files in all four artifact folders.
 
 ## Rules
 
@@ -72,25 +76,35 @@ Do not:
 - run a workflow stage;
 - create lessons;
 - create exercises;
+- create quizzes;
 - create exercise sets;
 - build frontend or app code.
 
 Use the unit `_index.md` workflow checklist as the main source of truth. Compare it with actual files on disk and note mismatches.
 
+Check the canonical dashboard areas:
+
+- mini-lesson plan;
+- exercise cluster map;
+- raw exercise seeds;
+- exercise design cards;
+- exercise-set planning;
+- raw quiz material;
+- quiz design cards;
+- diagram notes;
+- exam-alignment notes;
+- workflow;
+- production journal.
+
 Distinguish:
 
 - creation progress through the Stage 1-10 workflow;
+- quiz workflow progress;
 - existing-content revision needs;
 - stale or inconsistent files;
 - whether `commands/change-existing-content.md` is more appropriate than continuing the next creation step.
 
-If the user is asking to revise existing content, or if the current state shows mismatches/stale downstream files, the recommended next action may be:
-
-```text
-content/_prompts/commands/change-existing-content.md
-```
-
-Do not always recommend the next unchecked creation stage when a targeted revision pass is safer.
+Do not always recommend the next unchecked creation stage when targeted revision is safer.
 
 ## Report
 
@@ -100,7 +114,7 @@ Use exactly this output format:
 
 ## Resolved target
 
-Report the current unit, resolved folder, index path, program, unit code, title, and any other relevant frontmatter metadata.
+Report the current unit, resolved folder, index path, program, unit code, title, and relevant frontmatter metadata.
 
 ## Target source
 
@@ -108,11 +122,11 @@ Report whether the target came from explicit `TARGET_UNIT` or `_workflow/current
 
 ## Current state
 
-Summarize the visible workflow state from `TARGET_UNIT_INDEX` and the files that exist under `lessons/`, `exercises/`, and `sets/`.
+Summarize the visible workflow state from `TARGET_UNIT_INDEX` and the files that exist under `lessons/`, `exercises/`, `quizzes/`, and `sets/`.
 
 ## Completed stages
 
-List checked workflow stages and any stages that appear complete because their expected files exist.
+List checked workflow stages, checked quiz workflow items, and any stages that appear complete because their expected files or canonical planning areas exist.
 
 ## First unchecked stage
 
@@ -120,19 +134,19 @@ Name the first unchecked workflow item from the unit dashboard. If the dashboard
 
 ## Partial items
 
-List partially completed mini-lessons, exercises, sets, reviews, statuses, or tracker rows.
+List partially completed mini-lessons, exercise seeds, exercise design cards, exercises, solution reviews, quiz raw material, quiz design cards, quiz files, quiz reviews, sets, statuses, or journal entries.
 
 ## Missing or inconsistent files
 
-List files expected by the unit dashboard that are missing, plus files that exist but are not referenced by the dashboard.
+List files expected by the unit dashboard that are missing, plus files that exist but are not referenced by the dashboard. Include all four artifact folders.
 
 ## Recommended next action
 
-Give one exact next action. If this is ordinary creation progress, stay within the relevant workflow sequence. If the user asked to revise existing content or you found stale/inconsistent downstream files, recommend `commands/change-existing-content.md` instead of forcing the next unchecked creation stage.
+Give one exact next action. If this is ordinary creation progress, stay within the relevant workflow sequence. If the user asked to revise existing content or you found stale/inconsistent downstream files, recommend `commands/change-existing-content.md`.
 
 ## Prompt to run next
 
-Name the prompt file to run next, using the new folder-based path under `content/_prompts/`.
+Name the prompt file to run next, using the folder-based path under `content/_prompts/`.
 
 ## Likely files touched by next action
 
@@ -140,4 +154,4 @@ List the files that the next prompt would likely edit or create.
 
 ## Warnings
 
-List ambiguities, unsupported official claims, missing guide information, stale statuses, or anything that needs human verification.
+List ambiguities, unsupported official claims, missing guide information, stale statuses, incomplete quiz state, or anything that needs human verification.
