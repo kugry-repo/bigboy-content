@@ -127,45 +127,19 @@ Use five layers of state:
 
 `status` means content maturity. `sync_status` means alignment/freshness against current upstream plans, templates, and guides. `## Journal de production` is a historical log, not a current-state tracker.
 
-## Canonical initialized unit index body
+## Canonical initialized unit index scaffold
 
-Every initialized or published unit `_index.md` uses these top-level body headings in this exact order:
+`content/_templates/unit-index.template.md` is the canonical authored scaffold for an initialized unit `_index.md`.
 
-```md
-## Place dans le programme
-## Objectifs et plan de l'unité
-## Prérequis
-## Compétences
-## Plan des mini-leçons
-## Misconceptions à traiter
-## Leçons
-## Planification des exercices
-## Planification des séries d'exercices
-## Planification des quiz
-## Diagrammes et interactions à prévoir
-## Notes d'alignement examen
-## Production dashboard
-## Journal de production
-## Notes auteur
-```
+Guides and prompts should describe the scaffold's purpose and workstream semantics, but they should not maintain a second full copy of its headings, placeholder text, or dashboard rows. The validator derives the initialized-unit heading, subsection, and dashboard-row contract from this template.
 
-`## Planification des exercices` must contain:
+Use `content/_fixtures/initialized-unit/_index.md` only as a non-production reference fixture for seeing the current scaffold in a checked-in unit-shaped folder. It is not educational content, not a golden unit, and not curriculum evidence.
 
-```md
-### Carte des clusters d'exercices
-### Seeds bruts des exercices
-### Design cards des exercices
-```
+At a high level, an initialized or published unit index contains placement notes, objectives, prerequisites, skills, mini-lesson planning, misconceptions, lesson inventory, exercise planning, exercise-set planning, quiz planning, diagram/interaction notes, exam-alignment notes, the production dashboard, the production journal, and author notes.
 
-`## Planification des quiz` must contain:
+The exercise planning area stores the cluster map, raw seeds, and exercise design cards. The quiz planning area stores quiz intent cards, raw item pools, and quiz item design cards.
 
-```md
-### Intent cards des quiz
-### Pools bruts d'items
-### Design cards des items de quiz
-```
-
-The template `content/_templates/unit-index.template.md` is the canonical initialized scaffold. New registered units should use `content/_templates/unit-index-stub.template.md` unless the user explicitly asks to initialize the unit immediately.
+New registered units should use `content/_templates/unit-index-stub.template.md` unless the user explicitly asks to initialize the unit immediately. Use `content/_prompts/commands/initialize-unit.md` to instantiate the canonical initialized scaffold for one target unit.
 
 ## Production dashboard
 
@@ -183,50 +157,7 @@ Allowed dashboard statuses:
 
 Use the smallest honest status. Do not mark a workstream complete just because an unrelated workstream is complete.
 
-Every initialized or published unit `_index.md` contains this dashboard:
-
-```md
-## Production dashboard
-
-### Unit map
-- Curriculum scope: not-started
-- Skill map: not-started
-- Misconception map: not-started
-- Exam pattern notes: not-started
-
-### Lessons
-- Source/target prep: not-started
-- Raw dumps: not-started
-- Curation: not-started
-- Draft files: not-started
-- Coherence review: not-started
-- Compression/voice review: not-started
-- Final verification: not-started
-
-### Exercises
-- Cluster map: not-started
-- Raw seeds: not-started
-- Design cards: not-started
-- Balance review: not-started
-- Exercise files: not-started
-- Quality review: not-started
-- Solution review: not-started
-- Sets: not-started
-
-### Quizzes
-- Quiz intent map: not-started
-- Raw item pool: not-started
-- Item design cards: not-started
-- Quiz files: not-started
-- Item quality review: not-started
-- Answer key review: not-started
-- Feedback/remediation review: not-started
-
-### Unit review
-- Cross-artifact progression: not-started
-- Metadata and links: not-started
-- Validator: not-run
-```
+The canonical dashboard groups and rows are defined in `content/_templates/unit-index.template.md`. The current groups are Unit map, Lessons, Exercises, Quizzes, and Unit review.
 
 Update dashboard rows when the corresponding artifact changes. Use `## Journal de production` for dated history and rationale.
 

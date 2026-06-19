@@ -63,134 +63,17 @@ Resolve the target in this order:
 
 ## Initialized Body
 
-Use exactly the current unit heading order from `content/_guides/units/unit-workflow.md`.
+Instantiate `content/_templates/unit-index.template.md`. That template is the canonical initialized scaffold; this command must not maintain an independent full body copy.
 
-The initialized body should be lightweight but ready for real planning:
+When writing the actual unit `_index.md`:
 
-```md
-# UNIT_TITLE
+1. Preserve the resolved unit's identity, source, status, version, sync, skill, and date fields according to the rules above.
+2. Set `planning_state: initialized`.
+3. Replace the stub body with the template body, using the resolved unit title as the H1.
+4. Keep the template's French headings, planning subsections, dashboard groups, dashboard rows, and initial statuses exactly.
+5. Replace the journal date placeholder with the current date.
 
-## Place dans le programme
-
-No unit-specific placement notes recorded yet.
-
-## Objectifs et plan de l'unité
-
-No unit objectives recorded yet.
-
-## Prérequis
-
-No prerequisite decisions recorded yet.
-
-## Compétences
-
-No skill map recorded yet.
-
-## Plan des mini-leçons
-
-No mini-lesson plan recorded yet.
-
-## Misconceptions à traiter
-
-No unit-specific misconceptions recorded yet.
-
-## Leçons
-
-No lesson files created yet.
-
-## Planification des exercices
-
-### Carte des clusters d'exercices
-
-No exercise cluster map recorded yet.
-
-### Seeds bruts des exercices
-
-No raw exercise seeds recorded yet.
-
-### Design cards des exercices
-
-No exercise design cards recorded yet.
-
-## Planification des séries d'exercices
-
-No exercise-set plan recorded yet.
-
-## Planification des quiz
-
-### Intent cards des quiz
-
-No quiz intent cards recorded yet.
-
-### Pools bruts d'items
-
-No raw quiz item pools recorded yet.
-
-### Design cards des items de quiz
-
-No quiz item design cards recorded yet.
-
-## Diagrammes et interactions à prévoir
-
-No diagram or interaction decisions recorded yet.
-
-## Notes d'alignement examen
-
-No exam-alignment notes recorded yet.
-
-## Production dashboard
-
-### Unit map
-- Curriculum scope: not-started
-- Skill map: not-started
-- Misconception map: not-started
-- Exam pattern notes: not-started
-
-### Lessons
-- Source/target prep: not-started
-- Raw dumps: not-started
-- Curation: not-started
-- Draft files: not-started
-- Coherence review: not-started
-- Compression/voice review: not-started
-- Final verification: not-started
-
-### Exercises
-- Cluster map: not-started
-- Raw seeds: not-started
-- Design cards: not-started
-- Balance review: not-started
-- Exercise files: not-started
-- Quality review: not-started
-- Solution review: not-started
-- Sets: not-started
-
-### Quizzes
-- Quiz intent map: not-started
-- Raw item pool: not-started
-- Item design cards: not-started
-- Quiz files: not-started
-- Item quality review: not-started
-- Answer key review: not-started
-- Feedback/remediation review: not-started
-
-### Unit review
-- Cross-artifact progression: not-started
-- Metadata and links: not-started
-- Validator: not-run
-
-## Journal de production
-
-| Date | Changement | Notes |
-|---|---|---|
-| YYYY-MM-DD | Unit initialized | Stub expanded into the current planning dashboard. |
-
-## Notes auteur
-
-No author notes recorded yet.
-```
-
-When writing the actual file, keep the French headings exactly as required by the validator and current guide, including accents already used by the repository.
+For a checked-in shape reference, compare against `content/_fixtures/initialized-unit/_index.md`. Use that fixture only to understand structure; do not copy its reference metadata into production units.
 
 ## Validation
 

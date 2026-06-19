@@ -153,7 +153,7 @@ For full lesson review, use `_guides/lessons/lesson-quality-rubric.md`.
 
 - [ ] The unit `_index.md` has a mini-lesson plan.
 - [ ] The unit `_index.md` has a misconception map.
-- [ ] The unit `_index.md` has cluster-based raw exercise seeds or a direct-planning note.
+- [ ] The unit `_index.md` has cluster-based raw exercise seeds, or author notes explain why raw seeds are intentionally absent for the current scope.
 - [ ] The unit `_index.md` has curated exercise design cards.
 - [ ] The unit-level exercise plan has balance notes or card statuses from `content/_prompts/workflows/exercises/03-check-unit-balance.md` when several clusters exist.
 - [ ] Exercise files are one exercise per file and were created in a small batch unless explicitly requested otherwise.

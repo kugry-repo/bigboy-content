@@ -41,11 +41,12 @@ The validator checks:
 - folder/frontmatter consistency;
 - numeric prefixes for official unit folders as errors;
 - required artifact folders: `lessons/`, `exercises/`, `quizzes/`, and `sets/`;
-- exact canonical initialized/published unit `_index.md` top-level heading order;
-- required exercise cluster, raw-seed, and design-card areas;
-- required quiz raw-material and design-card areas;
-- `## Production dashboard` as the authoritative initialized/published unit workstream tracker;
+- exact canonical initialized/published unit `_index.md` structure as derived from `content/_templates/unit-index.template.md`;
+- required exercise cluster, raw-seed, and design-card areas from the canonical initialized scaffold;
+- required quiz raw-material and design-card areas from the canonical initialized scaffold;
+- `## Production dashboard` rows from the canonical initialized scaffold as the authoritative initialized/published unit workstream tracker;
 - `## Journal de production` as the historical log;
+- the non-production initialized-unit reference fixture under `content/_fixtures/initialized-unit/`;
 - absence of removed duplicate tracker headings;
 - absence of old planned-exercise or planned-quiz table sections;
 - absence of old `chapter_*` and `topic_*` frontmatter fields;
@@ -91,7 +92,13 @@ Serious structural problems are errors.
 
 Content-completeness gaps in planned/draft scaffolds are warnings.
 
-The validator enforces one canonical multi-program content system. It accepts stub unit indexes only in the new lightweight lifecycle shape and accepts full dashboards only for initialized or published units. It does not accept older unit-index structures, table-only exercise or quiz planning, alternate planning notes, old prompt layouts, obsolete lesson prompt names, old single-program roots, or old folder schemes.
+The validator enforces one canonical multi-program content system. It accepts stub unit indexes only in the current lightweight lifecycle shape and accepts full dashboards only for initialized or published units. For initialized scaffolds, the source of truth is `content/_templates/unit-index.template.md`; validation reads that template to enforce current headings, planning subsections, and dashboard rows.
+
+It does not accept older unit-index structures, table-only exercise or quiz planning, alternate planning notes, old prompt layouts, obsolete lesson prompt names, old single-program roots, or old folder schemes.
+
+## Permanent anti-regression guards
+
+Some validation checks intentionally mention old prompt names, old folder patterns, or old wording. Those names are not active options. They are permanent anti-regression guards so removed workflows do not silently return.
 
 ## Lesson prompt canonicalization
 

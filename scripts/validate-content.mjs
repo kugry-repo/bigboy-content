@@ -7,11 +7,16 @@ import { parse as parseYaml } from "yaml";
 const ROOT = process.cwd();
 const CONTENT_DIR = path.join(ROOT, "content");
 const PROGRAMS_DIR = path.join(CONTENT_DIR, "programs");
+const FIXTURES_DIR = path.join(CONTENT_DIR, "_fixtures");
 const PROMPTS_DIR = path.join(CONTENT_DIR, "_prompts");
 const LESSON_WORKFLOW_DIR = path.join(PROMPTS_DIR, "workflows", "lessons");
 const EXERCISE_WORKFLOW_DIR = path.join(PROMPTS_DIR, "workflows", "exercises");
 const QUIZ_WORKFLOW_DIR = path.join(PROMPTS_DIR, "workflows", "quizzes");
 const PROMPT_COMMANDS_DIR = path.join(PROMPTS_DIR, "commands");
+const CANONICAL_INITIALIZED_UNIT_TEMPLATE_PATH =
+  "content/_templates/unit-index.template.md";
+const INITIALIZED_UNIT_REFERENCE_FIXTURE_PATH =
+  "content/_fixtures/initialized-unit/_index.md";
 
 const REQUIRED_BASE_DIRS = [
   "content",
@@ -27,6 +32,7 @@ const REQUIRED_BASE_DIRS = [
   "content/_prompts",
   "content/_references",
   "content/_examples",
+  "content/_fixtures",
   "content/programs",
 ];
 
@@ -345,35 +351,27 @@ const REMOVED_UNIT_HEADINGS = new Set([
   "Sets / parcours",
 ]);
 
-const CANONICAL_UNIT_H2 = [
-  "Place dans le programme",
-  "Objectifs et plan de l'unité",
-  "Prérequis",
-  "Compétences",
-  "Plan des mini-leçons",
-  "Misconceptions à traiter",
-  "Leçons",
+const CANONICAL_INITIALIZED_UNIT_TEMPLATE_BODY =
+  readMarkdownBodyWithoutDiagnostics(
+    fullPathFromRepoPath(CANONICAL_INITIALIZED_UNIT_TEMPLATE_PATH),
+  );
+
+// The initialized unit scaffold is authored in the template above.
+// These derived contracts keep validation protective without making this script
+// a separate editorial copy of the scaffold.
+const CANONICAL_UNIT_H2 = getH2Headings(
+  CANONICAL_INITIALIZED_UNIT_TEMPLATE_BODY,
+);
+
+const REQUIRED_EXERCISE_H3 = getH3HeadingsUnderH2(
+  CANONICAL_INITIALIZED_UNIT_TEMPLATE_BODY,
   "Planification des exercices",
-  "Planification des séries d'exercices",
+);
+
+const REQUIRED_QUIZ_H3 = getH3HeadingsUnderH2(
+  CANONICAL_INITIALIZED_UNIT_TEMPLATE_BODY,
   "Planification des quiz",
-  "Diagrammes et interactions à prévoir",
-  "Notes d'alignement examen",
-  "Production dashboard",
-  "Journal de production",
-  "Notes auteur",
-];
-
-const REQUIRED_EXERCISE_H3 = [
-  "Carte des clusters d'exercices",
-  "Seeds bruts des exercices",
-  "Design cards des exercices",
-];
-
-const REQUIRED_QUIZ_H3 = [
-  "Intent cards des quiz",
-  "Pools bruts d'items",
-  "Design cards des items de quiz",
-];
+);
 
 const REQUIRED_QUIZ_H2 = [
   "Objectif du quiz",
@@ -400,62 +398,9 @@ const ALLOWED_DASHBOARD_STATUSES = new Set([
   "not-run",
 ]);
 
-const REQUIRED_DASHBOARD = [
-  {
-    section: "Unit map",
-    rows: [
-      "Curriculum scope",
-      "Skill map",
-      "Misconception map",
-      "Exam pattern notes",
-    ],
-  },
-  {
-    section: "Lessons",
-    rows: [
-      "Source/target prep",
-      "Raw dumps",
-      "Curation",
-      "Draft files",
-      "Coherence review",
-      "Compression/voice review",
-      "Final verification",
-    ],
-  },
-  {
-    section: "Exercises",
-    rows: [
-      "Cluster map",
-      "Raw seeds",
-      "Design cards",
-      "Balance review",
-      "Exercise files",
-      "Quality review",
-      "Solution review",
-      "Sets",
-    ],
-  },
-  {
-    section: "Quizzes",
-    rows: [
-      "Quiz intent map",
-      "Raw item pool",
-      "Item design cards",
-      "Quiz files",
-      "Item quality review",
-      "Answer key review",
-      "Feedback/remediation review",
-    ],
-  },
-  {
-    section: "Unit review",
-    rows: [
-      "Cross-artifact progression",
-      "Metadata and links",
-      "Validator",
-    ],
-  },
-];
+const REQUIRED_DASHBOARD = parseDashboardContractFromTemplate(
+  CANONICAL_INITIALIZED_UNIT_TEMPLATE_BODY,
+);
 
 const REQUIRED_GUIDE_FILES = [
   "content/_guides/README.md",
@@ -488,6 +433,9 @@ const REQUIRED_GUIDE_FILES = [
 
 const LEGACY_STAGE_WORD = `${"Sta"}${"ge"}`;
 const LEGACY_STAGE_WORD_LOWER = `${"sta"}${"ge"}`;
+
+// Permanent anti-regression guards for removed global production sequencing.
+// These strings are assembled to keep the validator from flagging itself.
 const LEGACY_GLOBAL_PATTERNS = [
   {
     label: "numbered global production marker",
@@ -579,6 +527,8 @@ const OBSOLETE_COMMAND_PROMPTS = [
   `content/_prompts/commands/${"review"}-${"existing"}-${"lesson"}.md`,
 ];
 
+// Permanent anti-regression guards for removed prompt names.
+// Allowed references are limited to this validator and the validation guide.
 const OBSOLETE_LESSON_WORKFLOW_PROMPTS = [
   "content/_prompts/workflows/lessons/06-voice-pass.md",
   "content/_prompts/workflows/lessons/07-compression-pass.md",
@@ -1053,6 +1003,32 @@ function getH2Headings(body) {
     .map((heading) => heading.text);
 }
 
+function readMarkdownBodyWithoutDiagnostics(filePath) {
+  if (!fs.existsSync(filePath)) return "";
+
+  const text = fs.readFileSync(filePath, "utf8");
+  const match = text.match(/^---\r?\n[\s\S]*?\r?\n---(?:\r?\n|$)/);
+  return match ? text.slice(match[0].length) : text;
+}
+
+function getH3HeadingsUnderH2(body, h2Heading) {
+  return getHeadings(getSection(body, 2, h2Heading))
+    .filter((heading) => heading.level === 3)
+    .map((heading) => heading.text);
+}
+
+function parseDashboardContractFromTemplate(body) {
+  const dashboardSection = getSection(body, 2, DASHBOARD_HEADING);
+
+  return getH3HeadingsUnderH2(body, DASHBOARD_HEADING).map((section) => {
+    const sectionText = getSection(dashboardSection, 3, section);
+    const rows = [...sectionText.matchAll(/^\s*-\s+([^:\n]+):\s*[a-z-]+\s*$/gmu)]
+      .map((match) => match[1].trim());
+
+    return { section, rows };
+  });
+}
+
 function getSection(body, level, heading) {
   const headingMatches = [...body.matchAll(/^(#{1,6})\s+(.+?)\s*$/gm)];
 
@@ -1100,9 +1076,16 @@ function compareLists(filePath, label, actual, expected) {
   );
 }
 
+function initializedTemplateHint() {
+  return `; expected by ${CANONICAL_INITIALIZED_UNIT_TEMPLATE_PATH}`;
+}
+
 function checkProductionDashboard(filePath, dashboardSection) {
   if (!dashboardSection.trim()) {
-    addError(filePath, `missing body content under "## ${DASHBOARD_HEADING}"`);
+    addError(
+      filePath,
+      `missing body content under "## ${DASHBOARD_HEADING}"${initializedTemplateHint()}`,
+    );
     return;
   }
 
@@ -1110,7 +1093,7 @@ function checkProductionDashboard(filePath, dashboardSection) {
     if (!hasHeadingInSection(dashboardSection, 3, group.section)) {
       addError(
         filePath,
-        `missing dashboard section "### ${group.section}" under "## ${DASHBOARD_HEADING}"`,
+        `missing dashboard section "### ${group.section}" under "## ${DASHBOARD_HEADING}"${initializedTemplateHint()}`,
       );
       continue;
     }
@@ -1125,7 +1108,7 @@ function checkProductionDashboard(filePath, dashboardSection) {
       if (!rows.has(row)) {
         addError(
           filePath,
-          `missing dashboard row "${row}: <status>" under "### ${group.section}"`,
+          `missing dashboard row "${row}: <status>" under "### ${group.section}"${initializedTemplateHint()}`,
         );
         continue;
       }
@@ -1516,7 +1499,12 @@ function checkCanonicalUnitBody(indexPath, body, data) {
     return;
   }
 
-  compareLists(indexPath, "unit _index.md H2 headings", getH2Headings(body), CANONICAL_UNIT_H2);
+  compareLists(
+    indexPath,
+    `unit _index.md H2 headings${initializedTemplateHint()}`,
+    getH2Headings(body),
+    CANONICAL_UNIT_H2,
+  );
 
   const headings = getHeadings(body);
   for (const heading of headings) {
@@ -1530,7 +1518,7 @@ function checkCanonicalUnitBody(indexPath, body, data) {
     if (!hasHeadingInSection(exerciseSection, 3, requiredHeading)) {
       addError(
         indexPath,
-        `missing exercise planning area "### ${requiredHeading}" under "## Planification des exercices"`,
+        `missing exercise planning area "### ${requiredHeading}" under "## Planification des exercices"${initializedTemplateHint()}`,
       );
     }
   }
@@ -1540,7 +1528,7 @@ function checkCanonicalUnitBody(indexPath, body, data) {
     if (!hasHeadingInSection(quizSection, 3, requiredHeading)) {
       addError(
         indexPath,
-        `missing quiz planning area "### ${requiredHeading}" under "## Planification des quiz"`,
+        `missing quiz planning area "### ${requiredHeading}" under "## Planification des quiz"${initializedTemplateHint()}`,
       );
     }
   }
@@ -1558,6 +1546,135 @@ function checkCanonicalUnitBody(indexPath, body, data) {
     data.status === "published"
   ) {
     addError(indexPath, 'published unit index contains unresolved TODO placeholders');
+  }
+}
+
+function checkCanonicalInitializedUnitTemplate() {
+  const templatePath = fullPathFromRepoPath(
+    CANONICAL_INITIALIZED_UNIT_TEMPLATE_PATH,
+  );
+
+  if (!isFile(templatePath)) {
+    addError(
+      templatePath,
+      "missing canonical initialized unit-index template",
+    );
+    return;
+  }
+
+  const parsed = parseFrontmatter(
+    templatePath,
+    fs.readFileSync(templatePath, "utf8"),
+  );
+
+  if (!requireFrontmatter(templatePath, parsed, "unit-index template")) return;
+
+  requireFields(templatePath, parsed.data, REQUIRED_UNIT_FIELDS);
+
+  if (parsed.data.type !== "unit-index") {
+    addError(templatePath, 'frontmatter "type" must be "unit-index"');
+  }
+
+  if (parsed.data.planning_state !== "initialized") {
+    addError(
+      templatePath,
+      'frontmatter "planning_state" must be "initialized"',
+    );
+  }
+
+  checkCanonicalUnitBody(templatePath, parsed.body, parsed.data);
+
+  if (!CANONICAL_UNIT_H2.includes(DASHBOARD_HEADING)) {
+    addError(
+      templatePath,
+      `canonical initialized scaffold must include "## ${DASHBOARD_HEADING}"`,
+    );
+  }
+
+  if (REQUIRED_EXERCISE_H3.length === 0) {
+    addError(
+      templatePath,
+      'canonical initialized scaffold must define exercise planning H3 areas',
+    );
+  }
+
+  if (REQUIRED_QUIZ_H3.length === 0) {
+    addError(
+      templatePath,
+      'canonical initialized scaffold must define quiz planning H3 areas',
+    );
+  }
+
+  if (REQUIRED_DASHBOARD.length === 0) {
+    addError(
+      templatePath,
+      "canonical initialized scaffold must define production dashboard groups",
+    );
+  }
+}
+
+function checkInitializedUnitReferenceFixture() {
+  const fixturePath = fullPathFromRepoPath(
+    INITIALIZED_UNIT_REFERENCE_FIXTURE_PATH,
+  );
+  const fixtureDir = path.dirname(fixturePath);
+
+  if (!isFile(fixturePath)) {
+    addError(
+      fixturePath,
+      "missing initialized-unit reference fixture",
+    );
+    return;
+  }
+
+  const parsed = parseFrontmatter(
+    fixturePath,
+    fs.readFileSync(fixturePath, "utf8"),
+  );
+
+  if (!requireFrontmatter(fixturePath, parsed, "initialized-unit fixture")) {
+    return;
+  }
+
+  requireFields(fixturePath, parsed.data, REQUIRED_UNIT_FIELDS);
+
+  if (parsed.data.type !== "unit-index") {
+    addError(fixturePath, 'frontmatter "type" must be "unit-index"');
+  }
+
+  if (parsed.data.planning_state !== "initialized") {
+    addError(
+      fixturePath,
+      'reference fixture must use "planning_state: initialized"',
+    );
+  }
+
+  if (parsed.data.status !== "planned") {
+    addError(fixturePath, 'reference fixture must use "status: planned"');
+  }
+
+  if (!isFalse(parsed.data.official)) {
+    addError(fixturePath, 'reference fixture frontmatter "official" must be false');
+  }
+
+  checkCanonicalUnitBody(fixturePath, parsed.body, parsed.data);
+
+  for (const subfolder of REQUIRED_UNIT_SUBFOLDERS) {
+    const subfolderPath = path.join(fixtureDir, subfolder);
+    if (!isDirectory(subfolderPath)) {
+      addError(
+        subfolderPath,
+        "reference fixture must include the empty artifact folder",
+      );
+      continue;
+    }
+
+    for (const filePath of walkMarkdownFiles(subfolderPath)) {
+      addError(
+        filePath,
+        "reference fixture artifact folders must not contain authored Markdown content",
+      );
+    }
   }
 }
 
@@ -3069,6 +3186,8 @@ function printResults() {
 function main() {
   checkBaseFolders();
   checkGuideTaxonomy();
+  checkCanonicalInitializedUnitTemplate();
+  checkInitializedUnitReferenceFixture();
   discoverAndCheckPrograms();
   for (const program of programs) {
     checkProgramFolderShape(program);
