@@ -100,10 +100,10 @@ Check:
 - frontmatter fields and IDs are consistent;
 - all major skills are covered or clearly planned;
 - exercises match mini-lessons;
-- standalone quizzes match mini-lessons, exercises, and quiz design cards;
+- standalone quizzes match mini-lessons, exercises, quiz intent cards, and item design cards;
 - difficulty progression is reasonable;
 - solutions are clear and correct;
-- quiz answer keys and feedback are clear, correct, and misconception-based;
+- quiz item quality, answer keys, feedback, and remediation are clear, correct, useful, and misconception-based;
 - notation is consistent;
 - diagrams/interactions are planned where useful;
 - internal links and status fields look consistent;

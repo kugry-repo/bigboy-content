@@ -89,7 +89,7 @@ This project is still in the system-design/buildout phase. The priority is a cle
 - Use `content/_prompts/commands/content-studio.md` for conversational polishing, critique, diagnosis, proposals, and targeted patches across existing content artifacts.
 - Do not create one huge lesson file unless explicitly requested.
 - Each exercise lives in its own file, but exercise files are usually created in small batches of 3 to 5 unless explicitly requested otherwise.
-- Standalone quizzes live under the target unit `quizzes/` folder and are created through raw dumps, quiz design cards, small-batch quiz creation, and feedback review.
+- Standalone quizzes live under the target unit `quizzes/` folder and are created through quiz intent cards, raw item pools, curated item design cards, one-file quiz creation, item-quality review, answer-key review, and feedback/remediation review.
 - Do not mass-generate units unless explicitly asked.
 - Do not treat unofficial topics as official curriculum units. They are curated revision, synthesis, or method units under `content/2bac-pc-svt/topics/`.
 - Prefer small, reviewable changes.

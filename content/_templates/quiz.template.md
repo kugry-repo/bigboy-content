@@ -19,13 +19,15 @@ quiz_series: "QUIZ_SERIES_SLUG"
 quiz_kind: skill
 skills: []
 difficulty: application-directe
-item_types: [multiple-choice]
+item_types: []
 cognitive_roles: []
-question_count: 10
-estimated_time_minutes: 8
+question_count: 0
 mastery_threshold: 80
+estimated_time_minutes: 8
+item_quality_status: draft
 answer_key_status: draft
 feedback_status: draft
+remediation_status: draft
 status: draft
 sync_status: current
 sync_reason: null
@@ -54,28 +56,39 @@ TODO.
 
 TODO.
 
-<!-- The Questions section is student-facing. -->
-<!-- sequence and hotspot are valid item types, but may remain advanced/experimental for rendering. -->
+## Carte diagnostique
+
+| Résultat / signal | Ce que cela signifie | Suite conseillée |
+|---|---|---|
+| TODO | TODO | TODO |
 
 ## Questions
 
 ### Question 1 — TODO
 
-Type: `multiple-choice | multiple-response | true-false | fill-blank | match | sequence | hotspot`
+Type:
+- multiple-choice
 
-Cognitive role: `recognition | method-choice | micro-calculation | error-diagnosis | missing-step | representation | transfer`
+Cognitive role:
+- recognition
 
 Skill tested:
+- TODO
+
+Misconception target:
+- TODO
+
+Estimated time:
 - TODO
 
 Stem:
 TODO.
 
 Options / interaction:
-- TODO.
-
-<!-- The Corrige et feedback section may later be hidden by the app until after an attempt. -->
-<!-- Answer-specific feedback is mandatory for MCQ/MR and strongly recommended for all item types. -->
+- A. TODO
+- B. TODO
+- C. TODO
+- D. TODO
 
 ## Corrigé et feedback
 
@@ -84,14 +97,47 @@ Options / interaction:
 Correct answer:
 - TODO
 
-Answer-specific feedback:
+Why the correct answer is correct:
 - TODO
 
-Misconception tags:
-- TODO
+Choice feedback:
+- A:
+  - Status: correct | incorrect | partially-correct
+  - Diagnostic signal: TODO
+  - Why this is tempting: TODO
+  - Why it is correct/incorrect: TODO
+  - What to remember: TODO
+  - Remediation: TODO
+- B:
+  - Status: correct | incorrect | partially-correct
+  - Diagnostic signal: TODO
+  - Why this is tempting: TODO
+  - Why it is correct/incorrect: TODO
+  - What to remember: TODO
+  - Remediation: TODO
+- C:
+  - Status: correct | incorrect | partially-correct
+  - Diagnostic signal: TODO
+  - Why this is tempting: TODO
+  - Why it is correct/incorrect: TODO
+  - What to remember: TODO
+  - Remediation: TODO
+- D:
+  - Status: correct | incorrect | partially-correct
+  - Diagnostic signal: TODO
+  - Why this is tempting: TODO
+  - Why it is correct/incorrect: TODO
+  - What to remember: TODO
+  - Remediation: TODO
+
+Accepted alternatives, if needed:
+- TODO.
 
 Verification notes:
-- TODO
+- TODO.
+
+Misconception tags:
+- TODO.
 
 ## Critères de maîtrise
 
@@ -99,10 +145,30 @@ TODO.
 
 ## Remédiation / suite conseillée
 
-- Si maîtrisé : TODO.
-- Si partiel : TODO.
-- Si échoué : TODO.
+### Si maîtrisé
+
+TODO.
+
+### Si partiel
+
+TODO.
+
+### Si échoué
+
+TODO.
+
+### Par misconception
+
+| Misconception | Signal | Remediation |
+|---|---|---|
+| TODO | TODO | TODO |
 
 ## Notes auteur
 
-TODO.
+- Design card:
+- Item quality status:
+- Answer key status:
+- Feedback status:
+- Remediation status:
+- Mismath risks:
+- Source/exam claim risks:

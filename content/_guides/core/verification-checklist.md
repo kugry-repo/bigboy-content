@@ -64,17 +64,25 @@ Use this checklist before marking a file as `reviewed` or `published`.
 - [ ] The file is under the unit `quizzes/` folder.
 - [ ] The filename follows `{unit_code}-quiz-###.md`.
 - [ ] The ID follows `2bac-pcsvt-{unit_code}-quiz-###`.
-- [ ] `quiz_kind`, `quiz_series`, `answer_key_status`, and `feedback_status` are filled.
+- [ ] `quiz_kind`, `quiz_series`, `item_types`, `cognitive_roles`, `question_count`, `mastery_threshold`, `estimated_time_minutes`, `item_quality_status`, `answer_key_status`, `feedback_status`, and `remediation_status` are filled.
 - [ ] The quiz is standalone and not dependent on hidden lesson text.
-- [ ] The quiz is a diagnostic or mastery checkpoint, not a short exercise sheet.
+- [ ] The quiz is a diagnostic instrument, not a short exercise sheet.
+- [ ] The quiz has a clear purpose and place in the quiz series.
+- [ ] The diagnostic map explains what student states the results reveal.
 - [ ] Item types and cognitive roles are recorded.
+- [ ] Each item has a precise skill target and cognitive role.
+- [ ] Item types fit the intended diagnostic signal.
 - [ ] MCQ/MR choices have answer-specific feedback.
 - [ ] Wrong choices represent real misconceptions or common mistakes.
+- [ ] Wrong choices explain why they are tempting.
 - [ ] Feedback explains why tempting wrong choices fail and what idea to use instead.
 - [ ] Multiple-response items include selected-wrong and missed-correct feedback.
 - [ ] Fill-blank items include accepted alternatives and common wrong answers when useful.
 - [ ] Match, sequence, and hotspot data is clear when those item types are used.
-- [ ] Answer key and feedback statuses are realistic.
+- [ ] Mastery criteria are realistic.
+- [ ] Remediation routes by mastery level and misconception.
+- [ ] Item quality, answer key, feedback, and remediation statuses are realistic.
+- [ ] `status: published` is used only when all four quiz review statuses are `reviewed`.
 
 ## Lesson voice checklist
 
@@ -152,7 +160,7 @@ For full lesson review, use `_guides/lessons/lesson-quality-rubric.md`.
 - [ ] Exercise files pass quality review through `content/_prompts/workflows/exercises/05-review-exercise-quality.md`.
 - [ ] Exercise solutions pass solution review through `content/_prompts/workflows/exercises/06-review-solutions.md`.
 - [ ] The unit `_index.md` has quiz series planning when standalone quizzes are needed.
-- [ ] The unit `_index.md` has raw quiz dumps or quiz design cards before final quiz files are created.
+- [ ] The unit `_index.md` has quiz intent cards, raw item pools, and item design cards before final quiz files are created.
 - [ ] Quiz files are created in small batches, usually one at a time.
 - [ ] The unit `_index.md` has diagram/interactivity planning.
 - [ ] The unit has a `lessons/` folder.

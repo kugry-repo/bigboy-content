@@ -102,8 +102,8 @@ The unit plan must include:
 13. Planned checkpoints and practice progression.
 14. Exercise planning areas: exercise cluster map, raw seed area, and rich design-card area when there are real decisions to record.
 15. Exercise-set planning under `sets/`.
-16. Quiz planning areas: raw quiz material area and rich quiz design-card area when there are real decisions to record.
-17. Planned quiz progression for diagnostic or mastery checkpoints inside quiz design cards.
+16. Quiz planning areas: quiz intent cards, raw item pools, and rich item design-card areas when there are real decisions to record.
+17. Planned quiz progression for diagnostic checkpoints inside quiz intent cards and item design cards.
 18. Planned diagrams and future interactions.
 19. Exam-style patterns, with unsupported official claims marked for verification.
 20. Production dashboard.

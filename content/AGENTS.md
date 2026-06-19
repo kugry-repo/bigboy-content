@@ -99,7 +99,7 @@ When doing unit-level work:
 
 Exercises may be created from the unit map, skill map, official curriculum notes, misconception map, exam patterns, exercise cluster map, raw seeds, exercise design cards, or existing lessons when available. Existing lessons are useful references, not a universal prerequisite. Exercises are ability-building devices; batch-created exercises still need exercise quality review and solution review before reviewed status.
 
-Quizzes may be created from quiz intent, skill targets, misconceptions, lessons, exercises, exam patterns, raw quiz material, or quiz design cards. Lessons and exercises are optional remediation references unless the specific quiz intent depends on them.
+Quizzes may be created from quiz intent cards, skill targets, misconceptions, lessons, exercises, exam patterns, raw item pools, or curated item design cards. Lessons and exercises are optional remediation references unless the specific quiz intent depends on them.
 
 When revising existing content, syncing stale files, or responding to an upstream plan/template/guide change, use `_prompts/commands/change-existing-content.md`. Discover the blast radius and patch only affected files or produce an impact plan.
 
@@ -206,9 +206,10 @@ New generated content should normally start as `draft`, not `published`.
 - Each standalone quiz is one Markdown file with multiple questions.
 - Do not confuse standalone quizzes with mini-lesson checkpoints.
 - Every MCQ/MR option should have answer-specific feedback.
-- Wrong choices should map to real misconceptions.
-- Generate quizzes through raw dump and curation/design cards before final quiz creation unless explicitly requested otherwise.
-- Create quizzes only in small batches, usually one quiz file at a time.
+- Wrong choices should map to real misconceptions and explain why they are tempting.
+- Generate quizzes through quiz intent cards, raw item pools, and curated item design cards before final quiz creation unless explicitly requested otherwise.
+- Create quizzes one file at a time by default.
+- Review item quality, answer keys, feedback, and remediation separately.
 - Sequence and hotspot are supported advanced quiz item types, but frontend implementation is out of scope.
 - Do not create huge files. Prefer focused mini-lesson files and one exercise per file.
 

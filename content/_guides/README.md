@@ -11,7 +11,7 @@ Use the category folders to pick the smallest relevant guide set for the task.
 - `units/` = unit-level planning, curriculum structure, lifecycle, and the golden unit standard.
 - `lessons/` = lesson-specific editorial pipeline, structure, voice, and quality review.
 - `exercises/` = exercise structure, design, quality rubric, and solution style.
-- `quizzes/` = standalone quiz structure.
+- `quizzes/` = standalone quiz structure, item writing, quality review, and remediation.
 - `media/` = diagrams, visuals, and other media guidance.
 
 Do not add compatibility copies at the old flat guide paths. When a guide moves or is renamed, update all references to the canonical categorized path.

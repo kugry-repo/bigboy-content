@@ -77,13 +77,17 @@ No exercise-set plan recorded yet.
 
 ## Planification des quiz
 
-### Matériel brut des quiz
+### Intent cards des quiz
 
-No raw quiz material recorded yet.
+No quiz intent cards recorded yet.
 
-### Design cards des quiz
+### Pools bruts d'items
 
-No quiz design cards recorded yet.
+No raw quiz item pools recorded yet.
+
+### Design cards des items de quiz
+
+No quiz item design cards recorded yet.
 
 ## Diagrammes et interactions à prévoir
 
@@ -122,9 +126,11 @@ No exam-alignment notes recorded yet.
 
 ### Quizzes
 - Quiz intent map: not-started
-- Raw quiz material: not-started
-- Quiz design cards: not-started
+- Raw item pool: not-started
+- Item design cards: not-started
 - Quiz files: not-started
+- Item quality review: not-started
+- Answer key review: not-started
 - Feedback/remediation review: not-started
 
 ### Unit review

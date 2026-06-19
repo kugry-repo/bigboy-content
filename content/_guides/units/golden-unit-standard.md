@@ -66,8 +66,8 @@ A golden unit should include:
 - exercise quality review for statement, design, progression, hints, mistakes, and learner experience;
 - detailed solutions for all exercises;
 - standalone quiz series planning;
-- raw quiz dumps and quiz design cards for important diagnostic or mastery checkpoints;
-- draft quiz files with answer-specific feedback reviewed before learner use;
+- quiz intent cards, raw item pools, and item design cards for important diagnostic checkpoints;
+- draft quiz files with item quality, answer keys, feedback, and remediation reviewed before learner use;
 - at least 3 exercise sets;
 - full mathematical review;
 - full pedagogical review;
@@ -154,24 +154,51 @@ Exercises created during batch creation are drafts until they pass exercise qual
 
 ## Quiz Quality Standard
 
-Standalone quiz planning should follow the same dump-and-chop strategy:
+Standalone quizzes are central to a golden unit because they diagnose student states and route learners to the next useful action.
+
+A golden unit should include quizzes that diagnose:
+
+- prerequisite readiness;
+- concept recognition;
+- method choice;
+- common misconceptions;
+- fluency when appropriate;
+- mixed review;
+- exam readiness when enough supporting content exists.
+
+Not every unit needs every quiz kind. Missing quiz kinds should be intentional and recorded. Quiz count matters less than diagnostic value and remediation quality. Quiz results should route students back to lessons, exercises, exercise sets, or prerequisite review paths.
+
+Standalone quiz planning should follow the diagnostic quiz workflow:
 
 ```text
-raw quiz dump
--> human curation / chop
--> quiz design cards with item design cards
--> quiz series / unit quiz balance
+quiz intent
+-> raw item pool
+-> item design cards
 -> quiz file creation
--> answer key and feedback review
+-> item quality review
+-> answer key review
+-> feedback/remediation review
 ```
 
-Quizzes should be diagnostic or mastery checkpoints, not short exercise sheets. They should test recognition, method choice, micro-calculation, error diagnosis, missing steps, representation, and transfer.
+Quizzes should be diagnostic instruments, not short exercise sheets. They should test recognition, method choice, micro-calculation, error diagnosis, missing steps, representation, transfer, theorem conditions, graph reading, and proof order when those roles fit the target skill.
 
 Each quiz belongs to a quiz series and lives under `quizzes/`. Normal quizzes usually contain 8 to 12 questions; exam-readiness quizzes may contain 12 to 20.
 
 Every MCQ/MR choice should have answer-specific feedback. Wrong choices should map to real misconceptions and explain why the choice is tempting, why it fails, and what idea to use instead.
 
+Quiz remediation should route by mastery level and by misconception. A correct answer key alone is not enough for reviewed quiz status.
+
 `sequence` and `hotspot` are supported advanced item types for planning, but frontend rendering is not part of the golden unit content standard.
+
+Example quiz series shape for a major unit:
+
+1. Prerequisite quiz
+2. Concept recognition quiz
+3. Method-choice quiz
+4. Error clinic quiz
+5. Fluency quiz
+6. Mixed review quiz
+7. Exam-readiness quiz
 
 ## Review Standard
 
@@ -180,7 +207,7 @@ Before a unit becomes the model for future units, review:
 - mathematical correctness;
 - lesson voice;
 - exercise-solution clarity;
-- quiz answer key and feedback quality;
+- quiz item quality, answer key correctness, feedback quality, and remediation quality;
 - skill coverage;
 - exam alignment;
 - notation consistency;

@@ -170,10 +170,13 @@ For exercise requests:
 
 For quiz requests:
 
-1. If quiz intent, target skill area, or series is missing, recommend `content/_prompts/workflows/quizzes/01-generate-raw-dump.md` or a small unit-map patch if the intent is genuinely unclear.
-2. If raw quiz material exists but design cards are missing or incomplete, recommend `content/_prompts/workflows/quizzes/02-curate-design-cards.md`.
-3. If ready quiz design cards exist and quiz files are missing, recommend `content/_prompts/workflows/quizzes/03-create-batch.md`.
-4. If quiz files exist with draft answer keys or feedback, recommend `content/_prompts/workflows/quizzes/04-review-quizzes.md`.
+1. If quiz intent, target skill area, or series is missing, recommend `content/_prompts/workflows/quizzes/01-plan-quiz-intent.md` or a small unit-map patch if the intent is genuinely unclear.
+2. If a quiz intent exists but raw item seeds are missing or thin, recommend `content/_prompts/workflows/quizzes/02-generate-raw-item-pool.md`.
+3. If raw item seeds exist but item design cards are missing or incomplete, recommend `content/_prompts/workflows/quizzes/03-curate-item-design-cards.md`.
+4. If ready item design cards exist and the quiz file is missing, recommend `content/_prompts/workflows/quizzes/04-create-quiz-file.md`.
+5. If quiz files exist with draft or weak item quality, recommend `content/_prompts/workflows/quizzes/05-review-item-quality.md`.
+6. If quiz files exist with draft answer keys, recommend `content/_prompts/workflows/quizzes/06-review-answer-keys.md`.
+7. If quiz files exist with draft feedback or remediation, recommend `content/_prompts/workflows/quizzes/07-review-feedback-remediation.md`.
 
 ## Report
 
@@ -203,7 +206,7 @@ List dashboard rows or artifacts that appear ready or complete because their exp
 
 ## Partial or blocked work
 
-List partially completed mini-lessons, exercise seeds, exercise design cards, exercises, exercise quality reviews, solution reviews, quiz raw material, quiz design cards, quiz files, quiz reviews, sets, statuses, blockers, or journal entries.
+List partially completed mini-lessons, exercise seeds, exercise design cards, exercises, exercise quality reviews, solution reviews, quiz intent cards, raw item pools, quiz item design cards, quiz files, quiz reviews, sets, statuses, blockers, or journal entries.
 
 ## Missing or inconsistent files
 

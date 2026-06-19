@@ -79,7 +79,7 @@ Then read only the relevant guides:
 - Unit planning: `content/_guides/units/unit-workflow.md`, `content/_guides/units/golden-unit-standard.md`, `content/_guides/schema/frontmatter-schema.md`, `content/_guides/schema/id-and-naming.md`
 - Lessons: `content/_guides/lessons/lesson-editorial-pipeline.md`, `content/_guides/lessons/lesson-structure.md`, `content/_guides/lessons/lesson-voice.md`, `content/_guides/lessons/lesson-quality-rubric.md`, `content/_guides/schema/math-notation.md`, `content/_guides/core/source-policy.md`
 - Exercises: `content/_guides/exercises/exercise-quality-rubric.md`, `content/_guides/exercises/exercise-design-guide.md`, `content/_guides/exercises/exercise-structure.md`, `content/_guides/exercises/solution-style.md`, `content/_guides/schema/math-notation.md`, `content/_guides/core/source-policy.md`
-- Quizzes: `content/_guides/quizzes/quiz-structure.md`, `content/_guides/schema/math-notation.md`, `content/_guides/schema/id-and-naming.md`, `content/_guides/core/source-policy.md`
+- Quizzes: `content/_guides/quizzes/quiz-structure.md`, `content/_guides/quizzes/quiz-quality-rubric.md`, `content/_guides/quizzes/quiz-item-writing-guide.md`, `content/_guides/quizzes/quiz-remediation-guide.md`, `content/_guides/schema/math-notation.md`, `content/_guides/schema/id-and-naming.md`, `content/_guides/core/source-policy.md`
 - Media or diagrams: `content/_guides/media/diagram-guidelines.md`
 - General review: `content/_guides/core/style-guide.md`, `content/_guides/core/verification-checklist.md`, `content/_guides/core/obsidian-conventions.md`
 
@@ -200,9 +200,25 @@ Do not mark `solution_status: reviewed` during a general patch unless the reques
 
 ### Quizzes
 
-Use quiz guides.
+Use quiz guides: quiz-quality-rubric, quiz-item-writing-guide, quiz-remediation-guide, and quiz-structure.
 
-Focus on distractor quality, wrong-answer feedback, correct-answer feedback, misconceptions, question type suitability, pacing, standalone usefulness, and supported item types: multiple choice, multiple response, true/false, fill in blanks, matching, sequence, and hotspot when the system supports them.
+Content studio supports quiz modes across `diagnose`, `propose`, `patch`, and `patch-and-review`.
+
+When the active file or selection is inside a quiz file, infer the target unit from the path when possible, then use frontmatter and the parent unit `_index.md` to confirm.
+
+Focus on quiz purpose, place in series, exact skill target, diagnostic signal, distractor quality, wrong-answer feedback, correct-answer feedback, misconceptions, item-type suitability, pacing, standalone usefulness, mastery criteria, remediation paths, and supported item types: multiple choice, multiple response, true/false, fill in blanks, matching, sequence, and hotspot when the system supports them.
+
+Use these critique questions for quiz selections:
+
+- Is this item diagnostically useful?
+- Is this the right item type?
+- What misconception does each wrong answer reveal?
+- Why is each wrong answer tempting?
+- Is the feedback specific enough?
+- What should the student do next after this answer?
+- Is this quiz checking ability or just producing a score?
+
+Do not mark `item_quality_status`, `answer_key_status`, `feedback_status`, or `remediation_status` as reviewed during a general patch unless the request explicitly includes the corresponding review criteria. Do not mark `status: published` unless explicitly requested and all four quiz review statuses are already `reviewed`.
 
 ### Unit `_index.md`
 

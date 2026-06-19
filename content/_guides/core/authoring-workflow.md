@@ -43,7 +43,7 @@ After initialization, use it for:
 - mini-lesson source/target notes, raw material, and curation;
 - exercise cluster maps, raw exercise seeds, and exercise design cards;
 - exercise-set planning;
-- raw quiz material and quiz design cards;
+- quiz intent cards, raw item pools, and item design cards;
 - diagram and exam-alignment notes;
 - production dashboard state and production journal.
 
@@ -104,14 +104,16 @@ Standalone quizzes are first-class unit content. They live under `quizzes/` and 
 Quiz planning follows:
 
 ```text
-raw quiz material
--> quiz design cards with item design cards
--> quiz balance
+quiz intent
+-> raw item pool
+-> item design cards
 -> final quiz file creation
--> answer key and feedback review
+-> item quality review
+-> answer key review
+-> feedback/remediation review
 ```
 
-Quiz design cards are the source of truth for quiz creation. A table-only quiz summary is not enough to create a quiz.
+Quiz item design cards are the source of truth for quiz creation. A table-only quiz summary is not enough to create a quiz.
 
 Every MCQ/MR option should have answer-specific feedback. Wrong choices should map to real misconceptions.
 

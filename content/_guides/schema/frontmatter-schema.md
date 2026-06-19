@@ -515,14 +515,15 @@ quiz_series: "diagnostic"
 quiz_kind: skill
 skills: []
 difficulty: application-directe
-item_types: [multiple-choice]
-cognitive_roles:
-  - recognition
+item_types: []
+cognitive_roles: []
 question_count: 10
-estimated_time_minutes: 8
 mastery_threshold: 80
+estimated_time_minutes: 8
+item_quality_status: draft
 answer_key_status: draft
 feedback_status: draft
+remediation_status: draft
 status: draft
 sync_status: current
 sync_reason: null
@@ -553,6 +554,75 @@ Allowed quiz item types:
 - `match`
 - `sequence`
 - `hotspot`
+
+Allowed quiz cognitive roles:
+
+- `recognition`
+- `method-choice`
+- `micro-calculation`
+- `error-diagnosis`
+- `missing-step`
+- `representation`
+- `transfer`
+- `theorem-condition`
+- `graph-reading`
+- `proof-order`
+
+Required quiz quality fields:
+
+```yaml
+quiz_kind: prerequisite | skill | method-choice | error-clinic | fluency | mixed-review | exam-readiness
+item_types:
+  - multiple-choice
+  - multiple-response
+  - true-false
+  - fill-blank
+  - match
+  - sequence
+  - hotspot
+cognitive_roles:
+  - recognition
+  - method-choice
+  - micro-calculation
+  - error-diagnosis
+  - missing-step
+  - representation
+  - transfer
+  - theorem-condition
+  - graph-reading
+  - proof-order
+question_count: number
+mastery_threshold: number
+estimated_time_minutes: number
+item_quality_status: draft | needs-review | reviewed | needs-correction
+answer_key_status: draft | needs-review | reviewed | needs-correction
+feedback_status: draft | needs-review | reviewed | needs-correction
+remediation_status: draft | needs-review | reviewed | needs-correction
+```
+
+`item_quality_status` is about item purpose, clarity, diagnostic value, distractor quality, and item-type fit.
+
+`answer_key_status` is about mathematical correctness and accepted answers.
+
+`feedback_status` is about answer-specific teaching quality.
+
+`remediation_status` is about next-step routing.
+
+These statuses are separate on purpose. A quiz can have a mathematically reviewed answer key while still needing stronger distractors, feedback, or remediation paths.
+
+Allowed quiz status combinations:
+
+- New quiz files normally start with `status: draft`, `item_quality_status: draft`, `answer_key_status: draft`, `feedback_status: draft`, and `remediation_status: draft`.
+- Do not set `status: published` unless `item_quality_status`, `answer_key_status`, `feedback_status`, and `remediation_status` are all `reviewed`.
+- Do not set any quiz review status to `reviewed` while its reviewed section still contains unresolved TODO placeholders.
+
+Use only the standard exercise difficulty values if `difficulty` is present on a quiz:
+
+- `decouverte`
+- `application-directe`
+- `application-guidee`
+- `probleme-type`
+- `approfondissement`
 
 ## Exercise Set Frontmatter
 

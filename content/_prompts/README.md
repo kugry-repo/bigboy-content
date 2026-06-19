@@ -61,10 +61,13 @@ Exercise workflow:
 
 Quiz workflow:
 
-- `workflows/quizzes/01-generate-raw-dump.md`
-- `workflows/quizzes/02-curate-design-cards.md`
-- `workflows/quizzes/03-create-batch.md`
-- `workflows/quizzes/04-review-quizzes.md`
+- `workflows/quizzes/01-plan-quiz-intent.md`
+- `workflows/quizzes/02-generate-raw-item-pool.md`
+- `workflows/quizzes/03-curate-item-design-cards.md`
+- `workflows/quizzes/04-create-quiz-file.md`
+- `workflows/quizzes/05-review-item-quality.md`
+- `workflows/quizzes/06-review-answer-keys.md`
+- `workflows/quizzes/07-review-feedback-remediation.md`
 
 ## Shortcuts
 

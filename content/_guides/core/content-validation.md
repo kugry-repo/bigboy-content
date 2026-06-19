@@ -53,9 +53,11 @@ The validator checks:
 - prompt-folder layout so old flat prompt systems cannot return;
 - canonical seven-step lesson prompt family under `content/_prompts/workflows/lessons/`;
 - canonical seven-step exercise prompt family under `content/_prompts/workflows/exercises/`;
+- canonical seven-step quiz prompt family under `content/_prompts/workflows/quizzes/`;
 - general content studio command under `content/_prompts/commands/content-studio.md`;
 - absence of the old lesson-only review command;
 - absence of obsolete lesson workflow prompt filenames in live Markdown and script files;
+- required quiz frontmatter fields, allowed quiz values, required quiz headings, review-status conflicts, and quality-signal warnings;
 - required production dashboard sections, rows, and allowed dashboard status values;
 - catalog references against unit frontmatter.
 
@@ -127,3 +129,28 @@ The canonical exercise workflow is:
 ```
 
 The validator checks exercise frontmatter, headings, result/hint/mistake callouts, reviewed TODOs, source safety, and status conflicts. It does not attempt deep symbolic mathematics.
+
+## Quiz prompt canonicalization
+
+Validation fails if the quiz workflow prompt directory is missing any canonical prompt, contains unexpected numbered quiz workflow prompts, or brings back obsolete quiz prompt names such as:
+
+```text
+01-generate-raw-dump.md
+02-curate-design-cards.md
+03-create-batch.md
+04-review-quizzes.md
+```
+
+The canonical quiz workflow is:
+
+```text
+01-plan-quiz-intent.md
+02-generate-raw-item-pool.md
+03-curate-item-design-cards.md
+04-create-quiz-file.md
+05-review-item-quality.md
+06-review-answer-keys.md
+07-review-feedback-remediation.md
+```
+
+The validator checks quiz frontmatter, required headings, item type and cognitive role signals, per-choice feedback signals, remediation structure, reviewed TODO conflicts, source safety, and status conflicts. It does not attempt deep symbolic mathematics.

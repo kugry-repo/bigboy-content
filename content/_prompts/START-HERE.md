@@ -19,7 +19,7 @@ Use workflow prompts when you already know what you are producing:
 
 - `workflows/lessons/`
 - `workflows/exercises/` - exercise seeds, design cards, balance, batch creation, quality review, solution review, and sets.
-- `workflows/quizzes/`
+- `workflows/quizzes/` - quiz intent, raw item pools, item design cards, quiz file creation, item-quality review, answer-key review, and feedback/remediation review.
 - `workflows/unit/`
 
 Use shortcuts only for special cases:

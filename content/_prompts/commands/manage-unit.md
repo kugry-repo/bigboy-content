@@ -35,7 +35,7 @@ Unit management operations can affect:
 - trackers;
 - guides;
 - prompt examples;
-- exercise workflow prompt paths and dashboard rows;
+- artifact workflow prompt paths and dashboard rows;
 - generated content;
 - validation scripts;
 - references from lessons, exercises, quizzes, and sets;

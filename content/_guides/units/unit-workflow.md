@@ -26,8 +26,9 @@ All unit-level planning belongs in the unit `_index.md`, including:
 - raw exercise seeds;
 - exercise design cards;
 - exercise-set planning;
-- raw quiz material;
-- quiz design cards;
+- quiz intent cards;
+- raw item pools for quizzes;
+- item design cards for quizzes;
 - diagram and visual requirements;
 - exam-alignment notes;
 - production dashboard state;
@@ -145,8 +146,9 @@ Every initialized or published unit `_index.md` uses these top-level body headin
 `## Planification des quiz` must contain:
 
 ```md
-### Matériel brut des quiz
-### Design cards des quiz
+### Intent cards des quiz
+### Pools bruts d'items
+### Design cards des items de quiz
 ```
 
 The template `content/_templates/unit-index.template.md` is the canonical initialized scaffold. New registered units should use `content/_templates/unit-index-stub.template.md` unless the user explicitly asks to initialize the unit immediately.
@@ -199,9 +201,11 @@ Every initialized or published unit `_index.md` contains this dashboard:
 
 ### Quizzes
 - Quiz intent map: not-started
-- Raw quiz material: not-started
-- Quiz design cards: not-started
+- Raw item pool: not-started
+- Item design cards: not-started
 - Quiz files: not-started
+- Item quality review: not-started
+- Answer key review: not-started
 - Feedback/remediation review: not-started
 
 ### Unit review
@@ -226,7 +230,7 @@ Choose work by artifact/request, not by the first incomplete dashboard row.
 Examples:
 
 - If the user asks for exercises, route to the exercise workflow. Existing lessons are helpful references, but exercises do not require lessons first.
-- If the user asks for quizzes, route to the quiz workflow. A quiz is not a late add-on; it may be prerequisite, diagnostic, skill-check, misconception-clinic, exam-readiness, or mixed.
+- If the user asks for quizzes, route to the quiz workflow. A quiz is not a late add-on; it may be prerequisite, skill, method-choice, error-clinic, fluency, mixed-review, or exam-readiness.
 - If the user asks for lesson work, route to the local lesson workflow.
 - If the user asks for unit review, review existing artifacts and report gaps.
 - If the user asks for cleanup, clean the existing metadata, links, TODOs, statuses, and author notes without requiring every workstream to be finished.
@@ -240,7 +244,7 @@ Lesson draft creation requires adequate source/target notes, raw material, and c
 
 Exercise batch creation requires canonical exercise design cards for the selected exercises. Exercises may draw from the unit map, skill map, official curriculum notes, misconception map, exam patterns, raw seeds, design cards, or existing lessons when available.
 
-Quiz file creation requires a quiz design card or an explicit small direct request that supplies quiz intent, target skills, item design, answer logic, feedback policy, and verification risks. Quizzes may link to lessons or exercises for remediation, but those links are optional unless the quiz intent depends on them.
+Quiz file creation requires a quiz intent card and ready item design cards. Quizzes may link to lessons or exercises for remediation, but those links are optional unless the quiz intent depends on them.
 
 Exercise set creation requires existing exercise files or precise exercise design cards. Sets should link to exercise files instead of duplicating full exercise content.
 
@@ -250,12 +254,12 @@ Unit review and cleanup operate on whatever exists. They should report missing a
 
 Exercise design cards are the stored source of truth for creating exercise files. A table-only exercise plan is not sufficient for exercise batch creation.
 
-Quiz design cards are the stored source of truth for creating standalone quiz files. A table-only quiz plan is not sufficient for quiz creation.
+Quiz item design cards are the stored source of truth for creating standalone quiz files. A table-only quiz plan is not sufficient for quiz creation.
 
 If a selected exercise or quiz lacks a canonical design card, stop and run the relevant curation prompt before creating final files:
 
 - `content/_prompts/workflows/exercises/02-curate-design-cards.md`
-- `content/_prompts/workflows/quizzes/02-curate-design-cards.md`
+- `content/_prompts/workflows/quizzes/03-curate-item-design-cards.md`
 
 ## Local workflows
 
@@ -308,13 +312,16 @@ Standalone quizzes are first-class unit content and live under `quizzes/`.
 Use:
 
 ```text
-content/_prompts/workflows/quizzes/01-generate-raw-dump.md
-content/_prompts/workflows/quizzes/02-curate-design-cards.md
-content/_prompts/workflows/quizzes/03-create-batch.md
-content/_prompts/workflows/quizzes/04-review-quizzes.md
+content/_prompts/workflows/quizzes/01-plan-quiz-intent.md
+content/_prompts/workflows/quizzes/02-generate-raw-item-pool.md
+content/_prompts/workflows/quizzes/03-curate-item-design-cards.md
+content/_prompts/workflows/quizzes/04-create-quiz-file.md
+content/_prompts/workflows/quizzes/05-review-item-quality.md
+content/_prompts/workflows/quizzes/06-review-answer-keys.md
+content/_prompts/workflows/quizzes/07-review-feedback-remediation.md
 ```
 
-Quizzes can exist independently. They can be prerequisite, diagnostic, skill-check, misconception-clinic, exam-readiness, or mixed. MCQ/MR choices need answer-specific feedback. Wrong choices should map to real misconceptions. `sequence` and `hotspot` remain optional planning item types, not required defaults.
+Quizzes can exist independently. They can be prerequisite, skill, method-choice, error-clinic, fluency, mixed-review, or exam-readiness. MCQ/MR choices need answer-specific feedback. Wrong choices should map to real misconceptions. Item quality, answer key correctness, feedback quality, and remediation quality are reviewed separately. `sequence` and `hotspot` remain optional planning item types, not required defaults.
 
 ### Unit review
 

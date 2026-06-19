@@ -11,6 +11,7 @@ const TOPICS_DIR = path.join(PROGRAM_DIR, "topics");
 const PROMPTS_DIR = path.join(CONTENT_DIR, "_prompts");
 const LESSON_WORKFLOW_DIR = path.join(PROMPTS_DIR, "workflows", "lessons");
 const EXERCISE_WORKFLOW_DIR = path.join(PROMPTS_DIR, "workflows", "exercises");
+const QUIZ_WORKFLOW_DIR = path.join(PROMPTS_DIR, "workflows", "quizzes");
 const PROMPT_COMMANDS_DIR = path.join(PROMPTS_DIR, "commands");
 
 const REQUIRED_BASE_DIRS = [
@@ -225,6 +226,61 @@ const REQUIRED_EXERCISE_FIELDS = [
   "solution_status",
 ];
 
+const ALLOWED_QUIZ_KINDS = new Set([
+  "prerequisite",
+  "skill",
+  "method-choice",
+  "error-clinic",
+  "fluency",
+  "mixed-review",
+  "exam-readiness",
+]);
+
+const ALLOWED_QUIZ_ITEM_TYPES = new Set([
+  "multiple-choice",
+  "multiple-response",
+  "true-false",
+  "fill-blank",
+  "match",
+  "sequence",
+  "hotspot",
+]);
+
+const ALLOWED_QUIZ_COGNITIVE_ROLES = new Set([
+  "recognition",
+  "method-choice",
+  "micro-calculation",
+  "error-diagnosis",
+  "missing-step",
+  "representation",
+  "transfer",
+  "theorem-condition",
+  "graph-reading",
+  "proof-order",
+]);
+
+const ALLOWED_QUIZ_REVIEW_STATUSES = new Set([
+  "draft",
+  "needs-review",
+  "reviewed",
+  "needs-correction",
+]);
+
+const REQUIRED_QUIZ_FIELDS = [
+  "quiz_kind",
+  "quiz_series",
+  "quiz_number",
+  "item_types",
+  "cognitive_roles",
+  "question_count",
+  "mastery_threshold",
+  "estimated_time_minutes",
+  "item_quality_status",
+  "answer_key_status",
+  "feedback_status",
+  "remediation_status",
+];
+
 const REQUIRED_EXERCISE_H2 = [
   "Énoncé",
   "Ce que cet exercice entraîne",
@@ -296,8 +352,22 @@ const REQUIRED_EXERCISE_H3 = [
 ];
 
 const REQUIRED_QUIZ_H3 = [
-  "Matériel brut des quiz",
-  "Design cards des quiz",
+  "Intent cards des quiz",
+  "Pools bruts d'items",
+  "Design cards des items de quiz",
+];
+
+const REQUIRED_QUIZ_H2 = [
+  "Objectif du quiz",
+  "Place dans la série",
+  "Prérequis",
+  "Consignes",
+  "Carte diagnostique",
+  "Questions",
+  "Corrigé et feedback",
+  "Critères de maîtrise",
+  "Remédiation / suite conseillée",
+  "Notes auteur",
 ];
 
 const DASHBOARD_HEADING = "Production dashboard";
@@ -351,9 +421,11 @@ const REQUIRED_DASHBOARD = [
     section: "Quizzes",
     rows: [
       "Quiz intent map",
-      "Raw quiz material",
-      "Quiz design cards",
+      "Raw item pool",
+      "Item design cards",
       "Quiz files",
+      "Item quality review",
+      "Answer key review",
       "Feedback/remediation review",
     ],
   },
@@ -390,6 +462,9 @@ const REQUIRED_GUIDE_FILES = [
   "content/_guides/exercises/exercise-structure.md",
   "content/_guides/exercises/solution-style.md",
   "content/_guides/quizzes/quiz-structure.md",
+  "content/_guides/quizzes/quiz-quality-rubric.md",
+  "content/_guides/quizzes/quiz-item-writing-guide.md",
+  "content/_guides/quizzes/quiz-remediation-guide.md",
   "content/_guides/media/diagram-guidelines.md",
 ];
 
@@ -466,6 +541,16 @@ const REQUIRED_EXERCISE_WORKFLOW_PROMPTS = [
   "content/_prompts/workflows/exercises/07-create-sets.md",
 ];
 
+const REQUIRED_QUIZ_WORKFLOW_PROMPTS = [
+  "content/_prompts/workflows/quizzes/01-plan-quiz-intent.md",
+  "content/_prompts/workflows/quizzes/02-generate-raw-item-pool.md",
+  "content/_prompts/workflows/quizzes/03-curate-item-design-cards.md",
+  "content/_prompts/workflows/quizzes/04-create-quiz-file.md",
+  "content/_prompts/workflows/quizzes/05-review-item-quality.md",
+  "content/_prompts/workflows/quizzes/06-review-answer-keys.md",
+  "content/_prompts/workflows/quizzes/07-review-feedback-remediation.md",
+];
+
 const REQUIRED_CONTENT_STUDIO_COMMAND =
   "content/_prompts/commands/content-studio.md";
 
@@ -485,12 +570,24 @@ const OBSOLETE_EXERCISE_WORKFLOW_PROMPTS = [
   "content/_prompts/workflows/exercises/06-create-sets.md",
 ];
 
+const OBSOLETE_QUIZ_WORKFLOW_PROMPTS = [
+  "content/_prompts/workflows/quizzes/01-generate-raw-dump.md",
+  "content/_prompts/workflows/quizzes/02-curate-design-cards.md",
+  "content/_prompts/workflows/quizzes/03-create-batch.md",
+  "content/_prompts/workflows/quizzes/04-review-quizzes.md",
+];
+
 const ALLOWED_OBSOLETE_LESSON_REFERENCE_FILES = new Set([
   "scripts/validate-content.mjs",
   "content/_guides/core/content-validation.md",
 ]);
 
 const ALLOWED_OBSOLETE_EXERCISE_REFERENCE_FILES = new Set([
+  "scripts/validate-content.mjs",
+  "content/_guides/core/content-validation.md",
+]);
+
+const ALLOWED_OBSOLETE_QUIZ_REFERENCE_FILES = new Set([
   "scripts/validate-content.mjs",
   "content/_guides/core/content-validation.md",
 ]);
@@ -1528,41 +1625,227 @@ function checkQuizFile(unit, filePath) {
     }
   }
 
-  for (const field of [
-    "quiz_kind",
-    "quiz_series",
-    "answer_key_status",
-    "feedback_status",
-    "quiz_number",
-    "question_count",
-  ]) {
-    if (!Object.hasOwn(data, field)) {
-      addError(filePath, `missing frontmatter field "${field}"`);
+  requireFields(filePath, data, REQUIRED_QUIZ_FIELDS);
+
+  checkAllowedValue(filePath, data, "quiz_kind", ALLOWED_QUIZ_KINDS);
+  checkAllowedArrayValues(filePath, data, "item_types", ALLOWED_QUIZ_ITEM_TYPES);
+  checkAllowedArrayValues(filePath, data, "cognitive_roles", ALLOWED_QUIZ_COGNITIVE_ROLES);
+  checkAllowedValue(filePath, data, "item_quality_status", ALLOWED_QUIZ_REVIEW_STATUSES);
+  checkAllowedValue(filePath, data, "answer_key_status", ALLOWED_QUIZ_REVIEW_STATUSES);
+  checkAllowedValue(filePath, data, "feedback_status", ALLOWED_QUIZ_REVIEW_STATUSES);
+  checkAllowedValue(filePath, data, "remediation_status", ALLOWED_QUIZ_REVIEW_STATUSES);
+  checkAllowedValue(filePath, data, "difficulty", ALLOWED_EXERCISE_DIFFICULTIES);
+  checkAllowedValue(filePath, data, "exam_relevance", ALLOWED_EXAM_RELEVANCE);
+
+  for (const field of ["quiz_number", "question_count", "mastery_threshold", "estimated_time_minutes"]) {
+    if (
+      Object.hasOwn(data, field) &&
+      (!Number.isFinite(data[field]) || data[field] < 0)
+    ) {
+      addError(filePath, `frontmatter "${field}" must be a non-negative number`);
     }
   }
 
-  for (const heading of [
-    "## Questions",
-    "## Corrigé et feedback",
-    "## Notes auteur",
-  ]) {
-    if (!text.includes(heading)) {
-      addWarning(filePath, `missing quiz section "${heading}"`);
+  const h2Headings = new Set(getH2Headings(parsed.body));
+  for (const heading of REQUIRED_QUIZ_H2) {
+    if (!h2Headings.has(heading)) {
+      addWarning(filePath, `missing quiz section "## ${heading}"`);
     }
+  }
+
+  const itemTypes = Array.isArray(data.item_types)
+    ? data.item_types
+    : isEmptyValue(data.item_types)
+      ? []
+      : [data.item_types];
+  const cognitiveRoles = Array.isArray(data.cognitive_roles)
+    ? data.cognitive_roles
+    : isEmptyValue(data.cognitive_roles)
+      ? []
+      : [data.cognitive_roles];
+
+  if (itemTypes.length === 0) {
+    addWarning(filePath, 'frontmatter "item_types" is empty');
+  }
+
+  if (cognitiveRoles.length === 0) {
+    addWarning(filePath, 'frontmatter "cognitive_roles" is empty');
+  }
+
+  for (const itemType of itemTypes) {
+    if (!hasAnyNormalizedText(parsed.body, [itemType])) {
+      addWarning(filePath, `frontmatter "item_types" includes "${itemType}" but it is not visible in the quiz body`);
+    }
+  }
+
+  for (const cognitiveRole of cognitiveRoles) {
+    if (!hasAnyNormalizedText(parsed.body, [cognitiveRole])) {
+      addWarning(filePath, `frontmatter "cognitive_roles" includes "${cognitiveRole}" but it is not visible in the quiz body`);
+    }
+  }
+
+  const questionHeadingCount = countMatches(parsed.body, /^###\s+Question\b/gm);
+  if (
+    Number.isFinite(data.question_count) &&
+    data.question_count !== questionHeadingCount
+  ) {
+    addWarning(
+      filePath,
+      `frontmatter "question_count" is ${data.question_count} but found ${questionHeadingCount} "### Question" heading(s)`,
+    );
+  }
+
+  if (data.quiz_kind === "method-choice" && !cognitiveRoles.includes("method-choice")) {
+    addWarning(filePath, 'frontmatter "quiz_kind: method-choice" but cognitive_roles does not include "method-choice"');
+  }
+
+  if (data.quiz_kind === "error-clinic" && !cognitiveRoles.includes("error-diagnosis")) {
+    addWarning(filePath, 'frontmatter "quiz_kind: error-clinic" but cognitive_roles does not include "error-diagnosis"');
   }
 
   const appearsMcqOrMr =
-    /multiple-choice|multiple-response/i.test(parsed.raw) ||
+    itemTypes.some((itemType) => itemType === "multiple-choice" || itemType === "multiple-response") ||
     /multiple-choice|multiple-response/i.test(text);
-  const hasAnswerSpecificFeedback = hasAnyNormalizedText(text, [
+  const feedbackSection = getSection(parsed.body, 2, "Corrigé et feedback");
+  const hasPerChoiceFeedback = hasAnyNormalizedText(feedbackSection, [
+    "choice feedback",
     "answer-specific feedback",
     "feedback specifique",
     "feedback par reponse",
     "feedback par choix",
-  ]);
+  ]) || /^-\s*(?:A|B|C|D|Vrai|Faux):/m.test(feedbackSection);
 
-  if (appearsMcqOrMr && !hasAnswerSpecificFeedback) {
-    addWarning(filePath, "appears to use multiple-choice or multiple-response but lacks answer-specific feedback");
+  if (appearsMcqOrMr && !hasPerChoiceFeedback) {
+    addWarning(filePath, "appears to use multiple-choice or multiple-response but lacks per-choice feedback");
+  }
+
+  if (feedbackSection.trim()) {
+    if (!hasAnyNormalizedText(feedbackSection, ["diagnostic signal", "signal diagnostique"])) {
+      addWarning(filePath, 'feedback lacks "Diagnostic signal" or equivalent');
+    }
+
+    if (!hasAnyNormalizedText(feedbackSection, ["why this is tempting", "pourquoi c'est tentant", "pourquoi cette reponse est tentante"])) {
+      addWarning(filePath, 'feedback lacks "Why this is tempting" or equivalent');
+    }
+
+    if (!hasAnyNormalizedText(feedbackSection, ["remediation", "remediation", "suite conseillee", "a revoir", "practice"])) {
+      addWarning(filePath, 'feedback lacks "Remediation" or equivalent');
+    }
+  }
+
+  const effectiveQuestionCount = Number.isFinite(data.question_count)
+    ? data.question_count
+    : questionHeadingCount;
+  if (
+    effectiveQuestionCount >= 6 &&
+    !hasAnyNormalizedText(text, [
+      "misconception tags",
+      "misconception target",
+      "misconception",
+    ])
+  ) {
+    addWarning(filePath, "substantial quiz has no visible misconception tags");
+  }
+
+  const remediationSection = getSection(parsed.body, 2, "Remédiation / suite conseillée");
+  const remediationLooksEmpty =
+    !remediationSection.trim() ||
+    !hasAnyNormalizedText(remediationSection, [
+      "si maitrise",
+      "si partiel",
+      "si echoue",
+      "par misconception",
+    ]);
+  if (remediationLooksEmpty) {
+    addWarning(filePath, 'remediation section is empty or missing mastery/misconception routing');
+  }
+
+  if (
+    data.answer_key_status === "reviewed" &&
+    /Correct answer:\s*(?:\r?\n\s*-\s*)?TODO\b/i.test(feedbackSection)
+  ) {
+    addWarning(filePath, 'frontmatter "answer_key_status: reviewed" but "Correct answer" still has TODO');
+  }
+
+  if (data.feedback_status === "reviewed" && /\bTODO\b/.test(feedbackSection)) {
+    addWarning(filePath, 'frontmatter "feedback_status: reviewed" but feedback still has TODO');
+  }
+
+  if (
+    data.remediation_status === "reviewed" &&
+    (remediationLooksEmpty || /\bTODO\b/.test(remediationSection))
+  ) {
+    addWarning(filePath, 'frontmatter "remediation_status: reviewed" but remediation is empty or still has TODO');
+  }
+
+  if (
+    data.item_quality_status === "reviewed" &&
+    (itemTypes.length === 0 || cognitiveRoles.length === 0)
+  ) {
+    addWarning(filePath, 'frontmatter "item_quality_status: reviewed" but item_types or cognitive_roles is empty');
+  }
+
+  const quizReviewStatuses = [
+    data.item_quality_status,
+    data.answer_key_status,
+    data.feedback_status,
+    data.remediation_status,
+  ];
+  if (
+    data.status === "published" &&
+    quizReviewStatuses.some((status) => status !== "reviewed")
+  ) {
+    addWarning(
+      filePath,
+      'frontmatter "status: published" requires item_quality_status, answer_key_status, feedback_status, and remediation_status to be reviewed',
+    );
+  }
+
+  const notesAuteur = getSection(parsed.body, 2, "Notes auteur");
+  const hasItemTypeRationale = hasAnyNormalizedText(notesAuteur, [
+    "item type rationale",
+    "type d'item",
+    "mcq",
+    "multiple-choice",
+    "choix multiple",
+    "justification",
+  ]);
+  if (
+    effectiveQuestionCount >= 8 &&
+    itemTypes.length === 1 &&
+    itemTypes[0] === "multiple-choice" &&
+    !hasItemTypeRationale
+  ) {
+    addWarning(filePath, "quiz has many MCQs and no other item type; explain the item-type choice in Notes auteur");
+  }
+
+  if (data.source_type && data.source_type !== "original" && isEmptyValue(data.source_ref)) {
+    addWarning(
+      filePath,
+      'frontmatter "source_type" is not "original" but "source_ref" is empty',
+    );
+  }
+
+  const examSensitive =
+    data.quiz_kind === "exam-readiness" ||
+    data.exam_relevance === "high";
+  const hasExamClaimSafetyNote =
+    !isEmptyValue(data.source_ref) ||
+    hasAnyNormalizedText(notesAuteur || text, [
+      "source/exam claim risks",
+      "source claim",
+      "exam claim",
+      "exam-pattern only",
+      "official-sources",
+      "no official claim",
+      "aucune affirmation officielle",
+      "a verifier",
+    ]);
+  if (examSensitive && !hasExamClaimSafetyNote) {
+    addWarning(
+      filePath,
+      "exam-readiness or high exam relevance quiz needs explicit source/exam claim safety notes",
+    );
   }
 
   if (data.status === "published" && /\bTODO\b/.test(text)) {
@@ -1969,6 +2252,51 @@ function checkExercisePromptFamily() {
   }
 }
 
+function checkQuizPromptFamily() {
+  const expectedBasenames = REQUIRED_QUIZ_WORKFLOW_PROMPTS.map((repoPath) =>
+    repoPath.split("/").at(-1),
+  );
+  const expectedBasenameSet = new Set(expectedBasenames);
+
+  for (const repoPath of REQUIRED_QUIZ_WORKFLOW_PROMPTS) {
+    const fullPath = fullPathFromRepoPath(repoPath);
+    if (!isFile(fullPath)) {
+      addError(fullPath, "missing required canonical quiz workflow prompt");
+    }
+  }
+
+  for (const repoPath of OBSOLETE_QUIZ_WORKFLOW_PROMPTS) {
+    const fullPath = fullPathFromRepoPath(repoPath);
+    if (isFile(fullPath)) {
+      addError(fullPath, "removed quiz workflow prompt must not exist");
+    }
+  }
+
+  const actualNumberedQuizPrompts = readDir(QUIZ_WORKFLOW_DIR)
+    .filter((entry) => entry.isFile())
+    .filter((entry) => /^\d{2}-.*\.md$/.test(entry.name))
+    .map((entry) => entry.name)
+    .sort();
+
+  for (const basename of actualNumberedQuizPrompts) {
+    if (!expectedBasenameSet.has(basename)) {
+      addError(
+        path.join(QUIZ_WORKFLOW_DIR, basename),
+        "unexpected numbered quiz workflow prompt",
+      );
+    }
+  }
+
+  for (const basename of expectedBasenames) {
+    if (!actualNumberedQuizPrompts.includes(basename)) {
+      addError(
+        path.join(QUIZ_WORKFLOW_DIR, basename),
+        "missing numbered quiz workflow prompt",
+      );
+    }
+  }
+}
+
 function repositoryTextFilesForObsoletePromptScan() {
   const rootMarkdownFiles = ["AGENTS.md", "README.md"]
     .map((repoPath) => fullPathFromRepoPath(repoPath))
@@ -2019,6 +2347,27 @@ function checkObsoleteExercisePromptReferences() {
         addError(
           filePath,
           `references obsolete exercise prompt name "${obsoleteName}"`,
+        );
+      }
+    }
+  }
+}
+
+function checkObsoleteQuizPromptReferences() {
+  for (const filePath of repositoryTextFilesForObsoletePromptScan()) {
+    const relative = rel(filePath);
+    if (ALLOWED_OBSOLETE_QUIZ_REFERENCE_FILES.has(relative)) continue;
+
+    const text = fs.readFileSync(filePath, "utf8");
+    for (const obsoletePath of OBSOLETE_QUIZ_WORKFLOW_PROMPTS) {
+      const obsoleteName = obsoletePath.split("/").at(-1);
+      const obsoletePathPattern = new RegExp(
+        `(?:${escapeRegex(obsoletePath)}|workflows/quizzes/${escapeRegex(obsoleteName)}|quizzes/${escapeRegex(obsoleteName)})`,
+      );
+      if (obsoletePathPattern.test(text)) {
+        addError(
+          filePath,
+          `references obsolete quiz prompt name "${obsoleteName}"`,
         );
       }
     }
@@ -2194,8 +2543,10 @@ function main() {
   checkPromptLayout();
   checkLessonPromptFamily();
   checkExercisePromptFamily();
+  checkQuizPromptFamily();
   checkObsoleteLessonPromptReferences();
   checkObsoleteExercisePromptReferences();
+  checkObsoleteQuizPromptReferences();
   checkRemovedGuideText();
   checkLegacyGlobalProductionReferences();
   collectIdsAndWarnings();

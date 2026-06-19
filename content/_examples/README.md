@@ -17,6 +17,10 @@ Use them to understand:
 - final exercise structure;
 - weak vs stronger exercise design;
 - exercise set progression.
+- quiz intent cards;
+- quiz item design cards;
+- diagnostic quiz structure;
+- weak vs stronger quiz items and feedback.
 
 Do not treat these examples as official curriculum content.
 
@@ -28,3 +32,8 @@ Do not treat these examples as official curriculum content.
 - `golden-exercise-limites.md` - final exercise structure example.
 - `bad-vs-better-exercise.md` - weak mechanical exercise improved into a training device.
 - `golden-exercise-set.md` - exercise set progression example.
+- `golden-quiz-intent-card.md` - canonical quiz intent card example.
+- `golden-quiz-design-card.md` - canonical quiz item design card example.
+- `golden-quiz-limites.md` - compact final quiz structure example.
+- `bad-vs-better-quiz-item.md` - weak quiz item improved into a diagnostic item.
+- `bad-vs-better-quiz-feedback.md` - generic feedback improved into diagnostic feedback.

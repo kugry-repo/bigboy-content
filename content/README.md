@@ -32,9 +32,9 @@ The unit `_index.md` is the only unit-planning artifact. Unstarted units stay li
 
 Use `content/_prompts/commands/initialize-unit.md` to expand one stub before planning lessons, exercises, quizzes, sets, or dashboard work. Do not expand every unit index just because the dashboard shape changes.
 
-After initialization, lesson preparation, exercise clusters, raw exercise seeds, exercise design cards, raw quiz material, quiz design cards, set planning, production dashboard state, and production journal entries all live in the unit `_index.md`.
+After initialization, lesson preparation, exercise clusters, raw exercise seeds, exercise design cards, quiz intent cards, raw item pools, quiz item design cards, set planning, production dashboard state, and production journal entries all live in the unit `_index.md`.
 
-Rich exercise design cards are the source of truth for exercise creation. Exercises build ability, so final exercise files pass a separate exercise quality review before solution review is considered enough. Rich quiz design cards are the source of truth for standalone quiz creation.
+Rich exercise design cards are the source of truth for exercise creation. Exercises build ability, so final exercise files pass a separate exercise quality review before solution review is considered enough. Curated quiz item design cards are the source of truth for standalone quiz creation. Quizzes diagnose, so item quality, answer keys, feedback, and remediation are reviewed separately.
 
 ## Authoring flow
 
@@ -48,7 +48,7 @@ Start with:
 
 Create final files only through the appropriate workflow prompts and in small batches. Do not create whole units, full exercise libraries, quiz libraries, or app/frontend work unless explicitly requested.
 
-Mini-lessons use the canonical seven-step lesson workflow under `content/_prompts/workflows/lessons/`, from source preparation through verification. Exercises use the canonical seven-step exercise workflow under `content/_prompts/workflows/exercises/`, from raw seeds through reviewed solutions and sets. Use `content/_prompts/commands/content-studio.md` for targeted repair or critique of existing lessons, exercises, quizzes, or unit planning sections.
+Mini-lessons use the canonical seven-step lesson workflow under `content/_prompts/workflows/lessons/`, from source preparation through verification. Exercises use the canonical seven-step exercise workflow under `content/_prompts/workflows/exercises/`, from raw seeds through reviewed solutions and sets. Quizzes use the canonical seven-step quiz workflow under `content/_prompts/workflows/quizzes/`, from intent planning through feedback/remediation review. Use `content/_prompts/commands/content-studio.md` for targeted repair or critique of existing lessons, exercises, quizzes, or unit planning sections.
 
 ## Validation
 
