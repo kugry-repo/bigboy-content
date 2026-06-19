@@ -2,7 +2,7 @@
 
 Use this prompt to generate raw exercise seeds for ONE exercise cluster in one target unit.
 
-Stage 5a does not produce final exercises, final polished statements, full polished solutions, or final exercise files.
+Raw exercise seed generation does not produce final exercises, final polished statements, full polished solutions, or final exercise files.
 
 For substantial units, do not plan the whole unit in one giant pass. The default planning unit is an exercise cluster derived from the unit plan, mini-lessons, skills, official program notes, and exam patterns.
 
@@ -27,7 +27,7 @@ Expected local file format:
 TARGET_UNIT: <unit-folder-or-path-or-code>
 ```
 
-If neither an explicit target nor local workflow state exists, stop and ask the user to set a current unit by running:
+If neither an explicit target nor local current-unit state exists, stop and ask the user to set a current unit by running:
 
 ```text
 content/_prompts/commands/set-current-unit.md
@@ -53,7 +53,7 @@ Before doing any work:
 7. Read `TARGET_UNIT_INDEX`.
 8. Require `type: unit-index`.
 9. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM` from the unit index frontmatter.
-10. Use this prompt file as the source of truth for this stage or review behavior. Do not ask for or fill `TARGET_STAGE`.
+10. Use this prompt file as the source of truth for this workflow step or review behavior. Do not ask for a global production marker.
 11. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
 ## Read first
@@ -76,7 +76,7 @@ Before doing any work:
 
 ## Cluster selection
 
-Stage 5a works on one cluster by default.
+Raw exercise seed work uses one cluster by default.
 
 If `TARGET_EXERCISE_CLUSTER` is provided:
 
@@ -98,7 +98,7 @@ A cluster is usually based on a mini-lesson group, a skill family, a recurring m
 
 Create or update raw exercise seeds for the selected cluster in `TARGET_UNIT_INDEX`.
 
-This is Stage 5a only.
+This is raw exercise seed work only.
 
 The output is a raw exercise seed dump, not a curated exercise design card set and not a final exercise library.
 
@@ -118,7 +118,7 @@ Do not create:
 - new mini-lessons;
 - frontend or app code.
 
-Do not update final unit trackers directly except where the project convention requires a scratch note in the unit `_index.md`. Do not mark later exercise workflow steps complete.
+Do not update final production dashboard rows directly except where the project convention requires a scratch note in the unit `_index.md`. Do not mark later exercise workflow rows complete.
 
 ## Output sections
 
@@ -127,7 +127,7 @@ If needed, add or update a cluster map:
 ```md
 ## Carte des clusters d'exercices
 
-| Cluster | Base de derivation | Mini-lecons liees | Competences | Importance | Statut 5a | Statut 5b | Notes |
+| Cluster | Base de derivation | Mini-lecons liees | Competences | Importance | Statut seeds | Statut design cards | Notes |
 |---|---|---|---|---|---|---|---|
 | TODO | TODO | TODO | TODO | TODO | TODO | TODO | TODO |
 ```
@@ -142,7 +142,7 @@ Raw exercise seeds - one cluster at a time, not final exercises.
 ### Cluster: <cluster id/title>
 ```
 
-Use "rough exercise shape" or "statement idea" language. Do not describe Stage 5a output as final exercises.
+Use "rough exercise shape" or "statement idea" language. Do not describe raw seed output as final exercises.
 
 Use this raw exercise seed card format for every seed:
 

@@ -23,7 +23,7 @@ Expected local file format:
 TARGET_UNIT: <unit-folder-or-path-or-code>
 ```
 
-If neither an explicit target nor local workflow state exists, stop and ask the user to set a current unit by running:
+If neither an explicit target nor local current-unit state exists, stop and ask the user to set a current unit by running:
 
 ```text
 content/_prompts/commands/set-current-unit.md
@@ -49,7 +49,7 @@ Before doing any work:
 7. Read `TARGET_UNIT_INDEX`.
 8. Require `type: unit-index`.
 9. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM` from the unit index frontmatter.
-10. Use this prompt file as the source of truth for this stage behavior. Do not ask for or fill `TARGET_STAGE`.
+10. Use this prompt file as the source of truth for this local workflow-step behavior. Do not ask for a global production marker.
 11. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
 ## Read first
@@ -123,7 +123,7 @@ Rules:
 npm run validate
 ```
 
-After verification, update final workflow state and the production journal honestly.
+After verification, update the relevant lesson planning row, production dashboard, and production journal honestly.
 
 Finish with:
 
@@ -131,6 +131,6 @@ Finish with:
 - status decision;
 - math, notation, curriculum, source, or official-claim uncertainties;
 - frontmatter/link/formatting fixes;
-- workflow or journal updates;
+- dashboard or journal updates;
 - validation result;
 - next action through `content/_prompts/commands/next-action.md`, unless the user asked for a specific downstream unit, exercise, quiz, or diagnostic prompt.

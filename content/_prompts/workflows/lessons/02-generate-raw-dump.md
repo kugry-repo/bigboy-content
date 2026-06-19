@@ -25,7 +25,7 @@ Expected local file format:
 TARGET_UNIT: <unit-folder-or-path-or-code>
 ```
 
-If neither an explicit target nor local workflow state exists, stop and ask the user to set a current unit by running:
+If neither an explicit target nor local current-unit state exists, stop and ask the user to set a current unit by running:
 
 ```text
 content/_prompts/commands/set-current-unit.md
@@ -51,7 +51,7 @@ Before doing any work:
 7. Read `TARGET_UNIT_INDEX`.
 8. Require `type: unit-index`.
 9. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM` from the unit index frontmatter.
-10. Use this prompt file as the source of truth for this stage behavior. Do not ask for or fill `TARGET_STAGE`.
+10. Use this prompt file as the source of truth for this local workflow-step behavior. Do not ask for a global production marker.
 11. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
 ## Read first
@@ -92,7 +92,7 @@ content/_prompts/workflows/lessons/01-prepare-source.md
 
 Generate or expand the raw dump for the selected mini-lesson in `TARGET_UNIT_INDEX`.
 
-This is Stage 2 raw-material work only.
+This is mini-lesson raw-dump work only.
 
 Store the raw material only in the canonical planning area of the unit `_index.md`, normally the selected mini-lesson entry under `## Plan des mini-leçons`. Do not create a separate planning file.
 

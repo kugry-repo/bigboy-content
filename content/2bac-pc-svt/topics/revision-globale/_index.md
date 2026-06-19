@@ -76,7 +76,7 @@ TODO.
 
 ### Carte des clusters d'exercices
 
-| Cluster | Base de dérivation | Mini-leçons liées | Compétences | Importance | Statut 5a | Statut 5b | Notes |
+| Cluster | Base de dérivation | Mini-leçons liées | Compétences | Importance | Statut seeds | Statut design cards | Notes |
 |---|---|---|---|---|---|---|---|
 | TODO | TODO | TODO | TODO | TODO | TODO | TODO | TODO |
 
@@ -84,11 +84,11 @@ TODO.
 
 Raw exercise seeds - one cluster at a time, not final exercises.
 
-À compléter pendant Stage 5a.
+À compléter avec `workflows/exercises/01-generate-raw-seeds.md`.
 
 ### Design cards des exercices
 
-Les design cards d'exercices sont la source de vérité pour Stage 6. Une table de planification seule n'est pas une source valide pour créer un exercice.
+Les design cards d'exercices sont la source de vérité pour la création des fichiers d'exercices. Une table de planification seule n'est pas une source valide pour créer un exercice.
 
 #### 2bac-pcsvt-rg-ex-001 - TODO
 
@@ -228,30 +228,43 @@ Keep rationale:
 
 TODO.
 
-## Workflow
+## Production dashboard
 
-- [ ] Stage 1 - Unit plan
-- [ ] Stage 2 - Lesson source, raw material, and curation
-  - [ ] Lesson workflow 01 - Prepare source and target
-  - [ ] Lesson workflow 02 - Generate raw dump
-  - [ ] Lesson workflow 03 - Curate material
-- [ ] Stage 3 - Lesson assembly
-  - [ ] Lesson workflow 04 - Create lesson draft
-- [ ] Stage 4 - Lesson review and finalization
-  - [ ] Lesson workflow 05 - Coherence pass
-  - [ ] Lesson workflow 06 - Compression, taste, and voice pass
-  - [ ] Lesson workflow 07 - Verification and finalization
-- [ ] Stage 5a - Exercise seed generation
-- [ ] Stage 5b - Exercise-card curation and balance
-- [ ] Stage 6 - Exercise creation
-- [ ] Stage 7 - Solution review
-- [ ] Stage 8 - Exercise sets
-- [ ] Quiz workflow 01 - Raw quiz material
-- [ ] Quiz workflow 02 - Quiz-card curation and balance
-- [ ] Quiz workflow 03 - Quiz creation
-- [ ] Quiz workflow 04 - Quiz review
-- [ ] Stage 9 - Unit review
-- [ ] Stage 10 - Final cleanup
+### Unit map
+- Curriculum scope: not-started
+- Skill map: not-started
+- Misconception map: not-started
+- Exam pattern notes: not-started
+
+### Lessons
+- Source/target prep: not-started
+- Raw dumps: not-started
+- Curation: not-started
+- Draft files: not-started
+- Coherence review: not-started
+- Compression/voice review: not-started
+- Final verification: not-started
+
+### Exercises
+- Cluster map: not-started
+- Raw seeds: not-started
+- Design cards: not-started
+- Balance review: not-started
+- Exercise files: not-started
+- Solution review: not-started
+- Sets: not-started
+
+### Quizzes
+- Quiz intent map: not-started
+- Raw quiz material: not-started
+- Quiz design cards: not-started
+- Quiz files: not-started
+- Feedback/remediation review: not-started
+
+### Unit review
+- Cross-artifact progression: not-started
+- Metadata and links: not-started
+- Validator: not-run
 
 ## Journal de production
 

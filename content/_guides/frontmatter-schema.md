@@ -119,12 +119,12 @@ The body of every unit `_index.md` must follow `content/_templates/unit-index.te
 ## Planification des quiz
 ## Diagrammes et interactions à prévoir
 ## Notes d'alignement examen
-## Workflow
+## Production dashboard
 ## Journal de production
 ## Notes auteur
 ```
 
-`## Workflow` is the authoritative current-state tracker. `status` remains content maturity metadata. `sync_status` remains freshness metadata when used. `## Journal de production` records historical changes only.
+`## Production dashboard` is the authoritative current-state tracker for unit workstreams. `status` remains content maturity metadata. `sync_status` remains freshness metadata when used. `## Journal de production` records historical changes only.
 
 Official curriculum unit example:
 
@@ -188,7 +188,7 @@ Unofficial topics:
 - live under `content/2bac-pc-svt/topics/`;
 - are extra learning, revision, method, synthesis, or exam-prep units.
 
-Both unit kinds use the same unit index schema, lifecycle workflow, staged prompts, subfolders, naming rules, ID rules, and validator logic.
+Both unit kinds use the same unit index schema, production dashboard, artifact workflow prompts, subfolders, naming rules, ID rules, and validator logic.
 
 ## Topic Catalog Frontmatter
 

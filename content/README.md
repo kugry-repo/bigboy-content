@@ -18,7 +18,7 @@ The vault uses one content-unit system.
 
 Official curriculum units live directly under `content/2bac-pc-svt/` with numeric folder prefixes. Unofficial topics live under `content/2bac-pc-svt/topics/`.
 
-Both unit kinds use the same `_index.md` body schema, artifact folders, lifecycle guide, prompt system, and validator:
+Both unit kinds use the same `_index.md` body schema, artifact folders, dashboard guide, prompt system, and validator:
 
 ```text
 _index.md
@@ -28,7 +28,7 @@ quizzes/
 sets/
 ```
 
-The unit `_index.md` is the only unit-planning artifact. Lesson preparation, exercise clusters, raw exercise seeds, exercise design cards, raw quiz material, quiz design cards, set planning, workflow state, and production journal entries all live there.
+The unit `_index.md` is the only unit-planning artifact. Lesson preparation, exercise clusters, raw exercise seeds, exercise design cards, raw quiz material, quiz design cards, set planning, production dashboard state, and production journal entries all live there.
 
 Rich exercise design cards are the source of truth for exercise creation. Rich quiz design cards are the source of truth for standalone quiz creation.
 
@@ -38,7 +38,7 @@ Start with:
 
 - `content/_prompts/START-HERE.md` when choosing a prompt.
 - `content/_prompts/commands/next-action.md` when diagnosing a unit.
-- `content/_guides/unit-workflow.md` for the canonical lifecycle and stage meanings.
+- `content/_guides/unit-workflow.md` for the canonical dashboard model and workstream meanings.
 
 Create final files only through the appropriate workflow prompts and in small batches. Do not create whole units, full exercise libraries, quiz libraries, or app/frontend work unless explicitly requested.
 

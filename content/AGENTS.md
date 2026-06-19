@@ -71,7 +71,7 @@ Before adapting material from exams or other sources:
 
 ## Content unit workflow rule
 
-The staged workflow applies to a content unit.
+The unit workflow is artifact/workstream-driven.
 
 A content unit can be:
 
@@ -80,17 +80,24 @@ A content unit can be:
 
 Official curriculum units remain the canonical curriculum spine. Unofficial topics are curated learning paths, revision units, synthesis units, or method units. They must not pretend to be official curriculum units.
 
-When doing staged creation work on a content unit:
+When doing unit-level work:
 
 1. Read `_guides/unit-workflow.md`.
 2. Read the unit `_index.md`.
-3. Determine the current workflow stage from the `## Workflow` checklist.
-4. Work only on the requested stage or the first unchecked stage.
-5. Do not skip stages unless explicitly requested.
-6. Update the unit tracker after making unit changes.
-7. Do not create lessons, exercises, quizzes, or sets unless the current task asks for them.
+3. Identify the requested artifact or workstream: unit map, lessons, exercises, exercise sets, quizzes, unit review, metadata/link cleanup, or targeted revision.
+4. If the user explicitly names a workflow prompt or workstream, use that route.
+5. If the user asks "what next?", inspect `## Production dashboard`, existing files, blockers, and the likely user goal before recommending the smallest valuable next action.
+6. Do not force a lesson -> exercise -> quiz order.
+7. Required inputs are local to the artifact being created. Optional references should improve quality but must not become hidden blockers.
+8. If required inputs are missing, create the smallest missing prerequisite when the request allows it, or report the exact missing artifact that blocks the work.
+9. Update `## Production dashboard` and `## Journal de production` after unit changes when appropriate.
+10. Do not create lessons, exercises, quizzes, or sets unless the current task asks for them.
 
-When revising existing content, syncing stale files, or responding to an upstream plan/template/guide change, use `_prompts/commands/change-existing-content.md`. Do not restart the full Stage 1-10 pipeline just because earlier work changed; discover the blast radius and patch only affected files or produce an impact plan.
+Exercises may be created from the unit map, skill map, official curriculum notes, misconception map, exam patterns, exercise cluster map, raw seeds, exercise design cards, or existing lessons when available. Existing lessons are useful references, not a universal prerequisite.
+
+Quizzes may be created from quiz intent, skill targets, misconceptions, lessons, exercises, exam patterns, raw quiz material, or quiz design cards. Lessons and exercises are optional remediation references unless the specific quiz intent depends on them.
+
+When revising existing content, syncing stale files, or responding to an upstream plan/template/guide change, use `_prompts/commands/change-existing-content.md`. Discover the blast radius and patch only affected files or produce an impact plan.
 
 ## Unit folder rule
 

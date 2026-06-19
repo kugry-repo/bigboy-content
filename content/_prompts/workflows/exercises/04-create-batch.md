@@ -2,7 +2,7 @@
 
 Use this prompt to create a small batch of final exercise files from curated exercise design cards.
 
-Stage 6 output is final exercise files under `exercises/`. These files still start as draft/unreviewed content and must pass Stage 7 solution review later.
+Exercise batch creation outputs final exercise files under `exercises/`. These files still start as draft/unreviewed content and must pass solution review later.
 
 ## Target
 
@@ -23,7 +23,7 @@ Expected local file format:
 TARGET_UNIT: <unit-folder-or-path-or-code>
 ```
 
-If neither an explicit target nor local workflow state exists, stop and ask the user to set a current unit by running:
+If neither an explicit target nor local current-unit state exists, stop and ask the user to set a current unit by running:
 
 ```text
 content/_prompts/commands/set-current-unit.md
@@ -49,7 +49,7 @@ Before doing any work:
 7. Read `TARGET_UNIT_INDEX`.
 8. Require `type: unit-index`.
 9. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM` from the unit index frontmatter.
-10. Use this prompt file as the source of truth for this stage or review behavior. Do not ask for or fill `TARGET_STAGE`.
+10. Use this prompt file as the source of truth for this workflow step or review behavior. Do not ask for a global production marker.
 11. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
 ## Read first
@@ -72,7 +72,7 @@ Before doing any work:
 
 Create the requested exercise file(s) under `TARGET_UNIT_FOLDER/exercises/`.
 
-This is Stage 6 only.
+This is exercise batch creation only.
 
 Use rich exercise design cards as the source of truth.
 
@@ -80,7 +80,7 @@ If a selected exercise lacks a canonical design card in `TARGET_UNIT_INDEX`, sto
 
 ```text
 Cannot create <planned-exercise-id>: no canonical exercise design card found in TARGET_UNIT_INDEX.
-Run content/_prompts/workflows/exercises/02-curate-design-cards.md for the selected cluster before Stage 6.
+Run content/_prompts/workflows/exercises/02-curate-design-cards.md for the selected cluster before exercise batch creation.
 ```
 
 Do not create an exercise from a table-only planning row or incomplete old planning data.
@@ -93,7 +93,7 @@ If the user named specific planned IDs, file paths, a cluster, or a small range,
 
 If no selection is provided:
 
-- choose the first missing exercise files whose design cards are `planned` or `ready-for-stage-6`;
+- choose the first missing exercise files whose design cards are `planned` or `ready-for-exercise-batch`;
 - create only a small batch of 3 to 5 files.
 
 Do not create every carded exercise in one pass unless explicitly requested.
@@ -158,9 +158,9 @@ status: draft
 solution_status: draft
 ```
 
-Solutions written during Stage 6 are draft solutions. They must still pass Stage 7 solution review before being treated as reviewed.
+Solutions written during exercise batch creation are draft solutions. They must still pass solution review before being treated as reviewed.
 
-After creating the files, update the unit tracker only for the created batch. Do not mark Stage 6 complete unless all intended exercise files for the unit already exist and the tracker convention supports that conclusion.
+After creating the files, update the production dashboard only for the created batch. Update the exercise-file dashboard row honestly; use `partial` unless all intended exercise files for the current unit target exist.
 
 Finish by summarizing:
 

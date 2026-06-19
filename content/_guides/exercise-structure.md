@@ -25,7 +25,7 @@ Use this sequence:
 
 ### Raw exercise seed
 
-A raw exercise seed is Stage 5a planning material.
+A raw exercise seed is exploratory exercise planning material.
 
 It is not a final exercise and should not contain a polished final statement or full polished solution.
 
@@ -47,9 +47,9 @@ It should capture:
 
 ### Exercise design card
 
-An exercise design card is Stage 5b curated planning material.
+An exercise design card is curated exercise planning material.
 
-It is the main source of truth for Stage 6. It should be detailed enough that Stage 6 can create a high-quality final exercise without inventing the pedagogical goal, method, traps, or verification concerns from scratch.
+It is the main source of truth for exercise batch creation. It should be detailed enough that the batch creation step can create a high-quality final exercise without inventing the pedagogical goal, method, traps, or verification concerns from scratch.
 
 It should capture:
 
@@ -73,18 +73,18 @@ It should capture:
 
 ### Final exercise file
 
-A final exercise file is Stage 6 output.
+A final exercise file is exercise batch output.
 
 It lives under the unit `exercises/` folder, uses the exercise template, and contains the learner-facing statement, hints, solution, common mistakes, verification, variants, and author notes.
 
-Stage 6 files start as:
+Exercise batch files start as:
 
 ```yaml
 status: draft
 solution_status: draft
 ```
 
-They are not reviewed until Stage 7.
+They are not reviewed until solution review.
 
 ## Why one exercise per file?
 

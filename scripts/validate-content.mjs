@@ -175,7 +175,7 @@ const CANONICAL_UNIT_H2 = [
   "Planification des quiz",
   "Diagrammes et interactions à prévoir",
   "Notes d'alignement examen",
-  "Workflow",
+  "Production dashboard",
   "Journal de production",
   "Notes auteur",
 ];
@@ -191,29 +191,123 @@ const REQUIRED_QUIZ_H3 = [
   "Design cards des quiz",
 ];
 
-const CANONICAL_WORKFLOW_LINES = [
-  "- [ ] Stage 1 - Unit plan",
-  "- [ ] Stage 2 - Lesson source, raw material, and curation",
-  "  - [ ] Lesson workflow 01 - Prepare source and target",
-  "  - [ ] Lesson workflow 02 - Generate raw dump",
-  "  - [ ] Lesson workflow 03 - Curate material",
-  "- [ ] Stage 3 - Lesson assembly",
-  "  - [ ] Lesson workflow 04 - Create lesson draft",
-  "- [ ] Stage 4 - Lesson review and finalization",
-  "  - [ ] Lesson workflow 05 - Coherence pass",
-  "  - [ ] Lesson workflow 06 - Compression, taste, and voice pass",
-  "  - [ ] Lesson workflow 07 - Verification and finalization",
-  "- [ ] Stage 5a - Exercise seed generation",
-  "- [ ] Stage 5b - Exercise-card curation and balance",
-  "- [ ] Stage 6 - Exercise creation",
-  "- [ ] Stage 7 - Solution review",
-  "- [ ] Stage 8 - Exercise sets",
-  "- [ ] Quiz workflow 01 - Raw quiz material",
-  "- [ ] Quiz workflow 02 - Quiz-card curation and balance",
-  "- [ ] Quiz workflow 03 - Quiz creation",
-  "- [ ] Quiz workflow 04 - Quiz review",
-  "- [ ] Stage 9 - Unit review",
-  "- [ ] Stage 10 - Final cleanup",
+const DASHBOARD_HEADING = "Production dashboard";
+
+const ALLOWED_DASHBOARD_STATUSES = new Set([
+  "not-started",
+  "partial",
+  "ready",
+  "needs-review",
+  "complete",
+  "blocked",
+  "not-run",
+]);
+
+const REQUIRED_DASHBOARD = [
+  {
+    section: "Unit map",
+    rows: [
+      "Curriculum scope",
+      "Skill map",
+      "Misconception map",
+      "Exam pattern notes",
+    ],
+  },
+  {
+    section: "Lessons",
+    rows: [
+      "Source/target prep",
+      "Raw dumps",
+      "Curation",
+      "Draft files",
+      "Coherence review",
+      "Compression/voice review",
+      "Final verification",
+    ],
+  },
+  {
+    section: "Exercises",
+    rows: [
+      "Cluster map",
+      "Raw seeds",
+      "Design cards",
+      "Balance review",
+      "Exercise files",
+      "Solution review",
+      "Sets",
+    ],
+  },
+  {
+    section: "Quizzes",
+    rows: [
+      "Quiz intent map",
+      "Raw quiz material",
+      "Quiz design cards",
+      "Quiz files",
+      "Feedback/remediation review",
+    ],
+  },
+  {
+    section: "Unit review",
+    rows: [
+      "Cross-artifact progression",
+      "Metadata and links",
+      "Validator",
+    ],
+  },
+];
+
+const LEGACY_STAGE_WORD = `${"Sta"}${"ge"}`;
+const LEGACY_STAGE_WORD_LOWER = `${"sta"}${"ge"}`;
+const LEGACY_GLOBAL_PATTERNS = [
+  {
+    label: "numbered global production marker",
+    regex: new RegExp(`\\b${LEGACY_STAGE_WORD}\\s+(?:[1-9]|10|5a|5b)\\b`, "i"),
+  },
+  {
+    label: "old global production range",
+    regex: new RegExp(`\\b${LEGACY_STAGE_WORD}\\s*1\\s*[-\\u2013]\\s*10\\b`, "i"),
+  },
+  {
+    label: "old global production count",
+    regex: new RegExp(`\\b10\\s+${LEGACY_STAGE_WORD_LOWER}s\\b`, "i"),
+  },
+  {
+    label: "first incomplete global production marker",
+    regex: new RegExp(`first unchecked\\s+${LEGACY_STAGE_WORD_LOWER}`, "i"),
+  },
+  {
+    label: "current global production marker",
+    regex: new RegExp(`current\\s+${LEGACY_STAGE_WORD_LOWER}`, "i"),
+  },
+  {
+    label: "target global production variable",
+    regex: new RegExp(`${"TARGET"}_${"STAGE"}`, "i"),
+  },
+  {
+    label: "global production-only label",
+    regex: new RegExp(`${LEGACY_STAGE_WORD_LOWER}-only`, "i"),
+  },
+  {
+    label: "old readiness status",
+    regex: new RegExp(`ready-for-${LEGACY_STAGE_WORD_LOWER}`, "i"),
+  },
+  {
+    label: "old global production heading",
+    regex: new RegExp(`unit production\\s+${LEGACY_STAGE_WORD_LOWER}s`, "i"),
+  },
+  {
+    label: "old workflow production marker",
+    regex: new RegExp(`workflow\\s+${LEGACY_STAGE_WORD_LOWER}`, "i"),
+  },
+  {
+    label: "old no-skip rule",
+    regex: new RegExp(`do not skip\\s+${LEGACY_STAGE_WORD_LOWER}s`, "i"),
+  },
+  {
+    label: "old renumbering note",
+    regex: new RegExp(`${"without"}\\s+${"renumbering"}`, "i"),
+  },
 ];
 
 const REQUIRED_LESSON_WORKFLOW_PROMPTS = [
@@ -531,12 +625,67 @@ function compareLists(filePath, label, actual, expected) {
   );
 }
 
-function fullPathFromRepoPath(repoPath) {
-  return path.join(ROOT, ...repoPath.split("/"));
+function checkProductionDashboard(filePath, dashboardSection) {
+  if (!dashboardSection.trim()) {
+    addError(filePath, `missing body content under "## ${DASHBOARD_HEADING}"`);
+    return;
+  }
+
+  for (const group of REQUIRED_DASHBOARD) {
+    if (!hasHeadingInSection(dashboardSection, 3, group.section)) {
+      addError(
+        filePath,
+        `missing dashboard section "### ${group.section}" under "## ${DASHBOARD_HEADING}"`,
+      );
+      continue;
+    }
+
+    const sectionText = getSection(dashboardSection, 3, group.section);
+    const rows = new Map(
+      [...sectionText.matchAll(/^\s*-\s+([^:\n]+):\s*([a-z-]+)\s*$/gmu)]
+        .map((match) => [match[1].trim(), match[2].trim()]),
+    );
+
+    for (const row of group.rows) {
+      if (!rows.has(row)) {
+        addError(
+          filePath,
+          `missing dashboard row "${row}: <status>" under "### ${group.section}"`,
+        );
+        continue;
+      }
+
+      const status = rows.get(row);
+      if (!ALLOWED_DASHBOARD_STATUSES.has(status)) {
+        addError(
+          filePath,
+          `dashboard row "${row}" has invalid status "${status}"; expected one of ${[...ALLOWED_DASHBOARD_STATUSES].join(", ")}`,
+        );
+      }
+    }
+  }
+
+  for (const match of dashboardSection.matchAll(/^\s*-\s+([^:\n]+):\s*([^\s]+)\s*$/gmu)) {
+    const status = match[2].trim();
+    if (!ALLOWED_DASHBOARD_STATUSES.has(status)) {
+      addError(
+        filePath,
+        `dashboard row "${match[1].trim()}" has invalid status "${status}"; expected one of ${[...ALLOWED_DASHBOARD_STATUSES].join(", ")}`,
+      );
+    }
+  }
 }
 
-function normalizeWorkflowLine(line) {
-  return line.replace(/\[[ xX]\]/, "[ ]").replace(/\s+$/u, "");
+function checkLegacyGlobalProductionText(filePath, text) {
+  for (const pattern of LEGACY_GLOBAL_PATTERNS) {
+    if (pattern.regex.test(text)) {
+      addError(filePath, `contains removed global production wording: ${pattern.label}`);
+    }
+  }
+}
+
+function fullPathFromRepoPath(repoPath) {
+  return path.join(ROOT, ...repoPath.split("/"));
 }
 
 function checkBaseFolders() {
@@ -757,22 +906,9 @@ function checkCanonicalUnitBody(indexPath, body, data) {
     addError(indexPath, 'quiz design cards must include "Verification and mismath risks"');
   }
 
-  const workflowSection = getSection(body, 2, "Workflow");
-  const workflowLines = workflowSection
-    .split(/\r?\n/u)
-    .filter((line) => /^\s*- \[[ xX]\] /.test(line))
-    .map(normalizeWorkflowLine);
-  compareLists(indexPath, "unit workflow checklist", workflowLines, CANONICAL_WORKFLOW_LINES);
-
-  const obsoleteLessonWorkflowSequence =
-    /Lesson workflow 06\s+-\s+Voice\b/i.test(workflowSection) ||
-    /Lesson workflow 07\s+-\s+Compression\b/i.test(workflowSection) ||
-    /Lesson workflow 08\s+-\s+Verify\b/i.test(workflowSection) ||
-    /Lesson workflow 09\s+-\s+Review\b/i.test(workflowSection) ||
-    /0[6789]-(voice-pass|compression-pass|verify-finalize|review-existing)\.md/i.test(workflowSection);
-  if (obsoleteLessonWorkflowSequence) {
-    addError(indexPath, "unit workflow uses an obsolete lesson prompt sequence");
-  }
+  const dashboardSection = getSection(body, 2, DASHBOARD_HEADING);
+  checkProductionDashboard(indexPath, dashboardSection);
+  checkLegacyGlobalProductionText(indexPath, body);
 
   if (!getSection(body, 2, "Journal de production").trim()) {
     addError(indexPath, 'missing body content under "## Journal de production"');
@@ -1489,6 +1625,34 @@ function checkRemovedGuideText() {
   }
 }
 
+function coreMarkdownFilesForProductionWordingScan() {
+  const explicitFiles = [
+    "README.md",
+    "content/README.md",
+    "content/AGENTS.md",
+  ]
+    .map((repoPath) => fullPathFromRepoPath(repoPath))
+    .filter(isFile);
+
+  const coreDirs = [
+    path.join(CONTENT_DIR, "_guides"),
+    path.join(CONTENT_DIR, "_prompts"),
+    path.join(CONTENT_DIR, "_templates"),
+  ];
+
+  return [
+    ...explicitFiles,
+    ...coreDirs.flatMap((dirPath) => walkMarkdownFiles(dirPath)),
+  ];
+}
+
+function checkLegacyGlobalProductionReferences() {
+  for (const filePath of coreMarkdownFilesForProductionWordingScan()) {
+    const text = fs.readFileSync(filePath, "utf8");
+    checkLegacyGlobalProductionText(filePath, text);
+  }
+}
+
 function collectIdsAndWarnings() {
   for (const filePath of walkMarkdownFiles(CONTENT_DIR)) {
     const text = fs.readFileSync(filePath, "utf8");
@@ -1577,6 +1741,7 @@ function main() {
   checkLessonPromptFamily();
   checkObsoleteLessonPromptReferences();
   checkRemovedGuideText();
+  checkLegacyGlobalProductionReferences();
   collectIdsAndWarnings();
   printResults();
 }

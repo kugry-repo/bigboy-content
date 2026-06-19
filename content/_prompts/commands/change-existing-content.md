@@ -2,7 +2,7 @@
 
 Use this command when the user wants to modify existing content, sync stale files, or revise a workflow, guide, template, schema, prompt, or validator after some work already exists.
 
-This command is parallel to the creation workflows. Use the staged workflow prompts for first creation. Use this command when existing files may need targeted updates or structural migration.
+This command is parallel to the creation workflows. Use the relevant artifact workflow prompts for first creation. Use this command when existing files may need targeted updates or structural migration.
 
 The user may write naturally, for example:
 
@@ -35,7 +35,7 @@ Use only `TARGET_UNIT` for unit-level scope.
 2. If a unit is named, resolve it using the standard target resolution rules from `content/_prompts/commands/next-action.md`.
 3. If no unit is named and the request is unit-level, read `_workflow/current-unit.md`.
 4. If the scope is still unclear, stop and ask.
-5. Derive affected files from the requested change, not from the creation-stage checklist alone.
+5. Derive affected files from the requested change, not from the creation checklist alone.
 
 ## Required reading
 
@@ -82,7 +82,7 @@ For unit-level or content-level changes, inspect as relevant:
 - `TARGET_UNIT_FOLDER/exercises/`
 - `TARGET_UNIT_FOLDER/quizzes/`
 - `TARGET_UNIT_FOLDER/sets/`
-- unit `## Workflow`
+- unit `## Production dashboard`
 - `## Journal de production`
 - lesson, exercise, quiz, and set frontmatter
 - lesson, exercise, quiz, and set IDs
@@ -155,7 +155,7 @@ Behavior:
 Distinguish:
 
 - preserving student-facing meaning where it still belongs; and
-- migrating repository structure when a schema, filename, heading, folder rule, tracker, prompt path, or workflow contract changes.
+- migrating repository structure when a schema, filename, heading, folder rule, dashboard contract, prompt path, or workflow contract changes.
 
 For structural changes, every affected existing source file must move to the new source of truth in the same change. Do not leave old files on an old schema.
 
@@ -163,7 +163,7 @@ For structural changes, every affected existing source file must move to the new
 
 - Do not assume the user knows affected files.
 - Do not ask the user to list affected files.
-- Do not restart the full Stage 1-10 pipeline just because an earlier artifact changed.
+- Do not restart unrelated workstreams just because an earlier artifact changed.
 - Do not rewrite unrelated student-facing content.
 - Do not silently re-add raw-dump material that was marked delete, too much, future exercise, or useful but not student-facing.
 - Do not mark content as `published` unless explicitly requested.
@@ -183,7 +183,7 @@ describe change
 -> classify risk
 -> patch affected files or produce impact plan
 -> targeted review
--> update workflow/status/journal notes
+-> update dashboard/status/journal notes
 ```
 
 When patching existing content, preserve YAML frontmatter unless a field needs a targeted update. If using freshness metadata, remember:
@@ -245,14 +245,14 @@ Report checks performed:
 - sets;
 - frontmatter/status;
 - internal links;
-- workflow and journal consistency;
+- dashboard and journal consistency;
 - math/program/source uncertainty where relevant.
 
-## Tracker/status updates
+## Dashboard/status updates
 
 Report updates to:
 - file frontmatter if any;
-- unit `## Workflow` if any;
+- unit `## Production dashboard` if any;
 - `## Journal de production` if any.
 
 ## Remaining risks

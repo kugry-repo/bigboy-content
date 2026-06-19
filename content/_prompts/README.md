@@ -25,7 +25,7 @@ Do not add new `00-*` control prompts, `q01-*` quiz prompts, or letter suffix pr
 - `commands/manage-unit.md` creates, renames, splits, merges, deletes, reorders, or moves official/unofficial units.
 - `commands/change-existing-content.md` handles targeted revision, stale-file sync, and workflow/template/schema changes.
 
-## Workflows
+## Local Prompt Workflows
 
 Unit workflow:
 

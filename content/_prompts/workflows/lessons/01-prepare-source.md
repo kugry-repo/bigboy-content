@@ -23,7 +23,7 @@ Expected local file format:
 TARGET_UNIT: <unit-folder-or-path-or-code>
 ```
 
-If neither an explicit target nor local workflow state exists, stop and ask the user to set a current unit by running:
+If neither an explicit target nor local current-unit state exists, stop and ask the user to set a current unit by running:
 
 ```text
 content/_prompts/commands/set-current-unit.md
@@ -49,7 +49,7 @@ Before doing any work:
 7. Read `TARGET_UNIT_INDEX`.
 8. Require `type: unit-index`.
 9. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM` from the unit index frontmatter.
-10. Use this prompt file as the source of truth for this stage behavior. Do not ask for or fill `TARGET_STAGE`.
+10. Use this prompt file as the source of truth for this local workflow-step behavior. Do not ask for a global production marker.
 11. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
 ## Read first
@@ -72,7 +72,7 @@ Before doing any work:
 
 Prepare the source and target plan for one mini-lesson inside `TARGET_UNIT_INDEX`.
 
-This is Stage 2 preparation work only. Update the canonical mini-lesson planning area in the unit `_index.md`, normally the selected row under `## Plan des mini-leçons`.
+This is source/target preparation work only. Update the canonical mini-lesson planning area in the unit `_index.md`, normally the selected row under `## Plan des mini-leçons`.
 
 If the user named a specific mini-lesson ID, title, or planned file, use that item. Otherwise, choose the first missing or least-developed mini-lesson preparation entry in the unit dashboard. If more than one item is equally plausible, stop and ask.
 

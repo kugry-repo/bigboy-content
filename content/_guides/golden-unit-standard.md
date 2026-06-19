@@ -76,7 +76,7 @@ A golden unit should include:
 
 The first version does not need to reach all targets immediately.
 
-Use the workflow stages.
+Use the production dashboard workstreams.
 
 ## Mini-Lesson Quality Standard
 
@@ -106,7 +106,7 @@ raw exercise seeds for one cluster
 -> final exercise files in batches of 3 to 5
 ```
 
-Raw seeds are exploratory. Exercise design cards are the source of truth for Stage 6 and should record the target skill, intended method, traps, hints, MCQ opportunities when relevant, parameter constraints, and verification risks.
+Raw seeds are exploratory. Exercise design cards are the source of truth for exercise batch creation and should record the target skill, intended method, traps, hints, MCQ opportunities when relevant, parameter constraints, and verification risks.
 
 Exercises should progress from:
 
@@ -172,7 +172,7 @@ Do not mark a unit as golden if any major file is only a raw draft.
 
 ## Golden Unit Tracking
 
-A candidate golden unit uses the same canonical `## Workflow` tracker and `## Journal de production` log as every other content unit.
+A candidate golden unit uses the same canonical `## Production dashboard` tracker and `## Journal de production` log as every other content unit.
 
 Golden-unit readiness is a review judgment, not a separate unit-index tracker.
 

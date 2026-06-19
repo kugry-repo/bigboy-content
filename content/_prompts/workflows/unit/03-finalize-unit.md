@@ -1,6 +1,6 @@
 # Prompt - Publish-Ready Cleanup
 
-Use this prompt only for Stage 10 cleanup after a unit has already been drafted and reviewed.
+Use this prompt for metadata, link, status, TODO, and publish-readiness cleanup on existing unit artifacts.
 
 ## Target
 
@@ -18,7 +18,7 @@ Expected local file format:
 TARGET_UNIT: <unit-folder-or-path-or-code>
 ```
 
-If neither an explicit target nor local workflow state exists, stop and ask the user to set a current unit by running:
+If neither an explicit target nor local current-unit state exists, stop and ask the user to set a current unit by running:
 
 ```text
 content/_prompts/commands/set-current-unit.md
@@ -44,7 +44,7 @@ Before doing any work:
 7. Read `TARGET_UNIT_INDEX`.
 8. Require `type: unit-index`.
 9. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM` from the unit index frontmatter.
-10. Use this prompt file as the source of truth for this stage or review behavior. Do not ask for or fill `TARGET_STAGE`.
+10. Use this prompt file as the source of truth for this workflow step or review behavior. Do not ask for a global production marker.
 11. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
 ## Read first
@@ -67,9 +67,9 @@ Before doing any work:
 
 Perform publish-ready cleanup for `TARGET_UNIT_FOLDER`.
 
-This is Stage 10 only.
+This is cleanup work only.
 
-First, read `TARGET_UNIT_INDEX` and verify the workflow is ready for Stage 10. If major earlier-stage work is missing, stop and report the recommended earlier prompt instead of filling the gap.
+First, read `TARGET_UNIT_INDEX`, inspect `## Production dashboard`, and identify which existing artifacts can be cleaned safely. If major work is missing, report it as a gap or blocker instead of forcing unrelated workstreams to run first.
 
 This is cleanup only.
 

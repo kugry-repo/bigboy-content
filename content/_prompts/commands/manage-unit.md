@@ -1,6 +1,6 @@
 # Prompt - Manage Content Unit
 
-Use this prompt for lifecycle operations on content units.
+Use this prompt for unit management operations on content units.
 
 It supports:
 
@@ -22,7 +22,7 @@ It works for:
 
 Both are content units. The difference is metadata, folder location, and catalog placement.
 
-Lifecycle operations can affect:
+Unit management operations can affect:
 
 - folder paths;
 - unit frontmatter;
@@ -38,7 +38,7 @@ Lifecycle operations can affect:
 - generated content;
 - validation scripts;
 - references from lessons, exercises, quizzes, and sets;
-- workflow state.
+- production dashboard state.
 
 Do not leave duplicate entries, stale links, old names, or alternate schemas behind.
 

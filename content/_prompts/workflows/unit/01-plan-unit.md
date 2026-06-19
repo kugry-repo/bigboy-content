@@ -18,7 +18,7 @@ Expected local file format:
 TARGET_UNIT: <unit-folder-or-path-or-code>
 ```
 
-If neither an explicit target nor local workflow state exists, stop and ask the user to set a current unit by running:
+If neither an explicit target nor local current-unit state exists, stop and ask the user to set a current unit by running:
 
 ```text
 content/_prompts/commands/set-current-unit.md
@@ -44,7 +44,7 @@ Before doing any work:
 7. Read `TARGET_UNIT_INDEX`.
 8. Require `type: unit-index`.
 9. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM` from the unit index frontmatter.
-10. Use this prompt file as the source of truth for this stage or review behavior. Do not ask for or fill `TARGET_STAGE`.
+10. Use this prompt file as the source of truth for this workflow step or review behavior. Do not ask for a global production marker.
 11. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
 ## Read first
@@ -69,7 +69,7 @@ Before doing any work:
 
 Create or improve the unit plan in `TARGET_UNIT_INDEX`.
 
-This is Stage 1 only.
+This is unit-map work only.
 
 Do not create:
 
@@ -101,7 +101,7 @@ The unit plan must include:
 17. Planned quiz progression for diagnostic or mastery checkpoints inside quiz design cards.
 18. Planned diagrams and future interactions.
 19. Exam-style patterns, with unsupported official claims marked for verification.
-20. Production tracker.
+20. Production dashboard.
 21. Author notes and uncertainty markers.
 
 Use the current unit metadata and naming rules from `TARGET_UNIT_INDEX`. Do not hardcode a unit code, title, or folder.
@@ -123,4 +123,4 @@ Finish by summarizing:
 - file changed;
 - structure added;
 - assumptions or verification needs;
-- next recommended workflow stage.
+- next recommended workstream action.

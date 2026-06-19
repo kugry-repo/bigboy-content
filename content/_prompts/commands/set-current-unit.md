@@ -76,7 +76,7 @@ Unit kind: <official-curriculum-unit | unofficial-topic>
 Unit code: <unit-code>
 Unit title: <unit-title>
 
-This file is local authoring workflow state and should be ignored by Git.
+This file is local authoring current-unit state and should be ignored by Git.
 ```
 
 ## Final Response

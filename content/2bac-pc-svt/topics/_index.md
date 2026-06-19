@@ -19,7 +19,7 @@ updated: 2026-06-18
 
 # Topics Non Officiels
 
-These are unofficial content units. They share the same unit schema, lifecycle workflow, staged prompts, subfolders, naming rules, and validator logic as official curriculum units.
+These are unofficial content units. They share the same unit schema, production dashboard, artifact workflow prompts, subfolders, naming rules, and validator logic as official curriculum units.
 
 Official curriculum units remain the main program spine. Topic units organize transversal learning, revision, synthesis, exam preparation, or methods without replacing the official progression.
 

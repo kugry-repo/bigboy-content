@@ -2,14 +2,16 @@
 
 ## Purpose
 
-This guide defines the canonical production lifecycle for one content unit.
+This guide defines the production dashboard model for one content unit.
 
 A content unit can be:
 
 - an official curriculum unit under `content/2bac-pc-svt/`;
 - an unofficial topic under `content/2bac-pc-svt/topics/`.
 
-Both unit kinds use the same unit `_index.md` body schema, artifact folders, workflow tracker, prompt system, and validation rules. Official curriculum units remain the program spine. Unofficial topics are extra learning, revision, method, synthesis, or exam-prep units and must not present themselves as official curriculum units.
+Both unit kinds use the same unit `_index.md` body schema, artifact folders, production dashboard, prompt system, and validation rules. Official curriculum units remain the program spine. Unofficial topics are extra learning, revision, method, synthesis, or exam-prep units and must not present themselves as official curriculum units.
+
+There is no canonical global unit sequence. Do not invent numbered unit ladders, extra global gates, or split labels such as `5a` and `5b`. Numbered prompt files inside a workflow folder are local operating procedures for that workstream only.
 
 ## Core rule
 
@@ -26,7 +28,7 @@ All unit-level planning belongs in the unit `_index.md`, including:
 - quiz design cards;
 - diagram and visual requirements;
 - exam-alignment notes;
-- workflow state;
+- production dashboard state;
 - production journal entries.
 
 Do not create or use a second planning-note convention.
@@ -76,8 +78,8 @@ Resolution order:
 
 Use three layers of state:
 
-1. `content/_guides/unit-workflow.md` defines lifecycle semantics.
-2. The unit `_index.md` tracks unit-specific progress through `## Workflow`.
+1. `content/_guides/unit-workflow.md` defines dashboard semantics.
+2. The unit `_index.md` tracks unit-specific progress through `## Production dashboard`.
 3. File frontmatter tracks file-level status.
 
 `status` means content maturity. `sync_status` means alignment/freshness against current upstream plans, templates, and guides. `## Journal de production` is a historical log, not a current-state tracker.
@@ -99,7 +101,7 @@ Every unit `_index.md` uses these top-level body headings in this exact order:
 ## Planification des quiz
 ## Diagrammes et interactions à prévoir
 ## Notes d'alignement examen
-## Workflow
+## Production dashboard
 ## Journal de production
 ## Notes auteur
 ```
@@ -121,9 +123,103 @@ Every unit `_index.md` uses these top-level body headings in this exact order:
 
 The template `content/_templates/unit-index.template.md` is the canonical scaffold for this schema.
 
+## Production dashboard
+
+The production dashboard is a compact status view for independent but coordinated workstreams. It is not a global sequence, and it is not a checklist that must be completed from top to bottom.
+
+Allowed dashboard statuses:
+
+- `not-started`: no meaningful work exists yet.
+- `partial`: some useful work exists, but the item is incomplete.
+- `ready`: the item has enough information for the next local operation.
+- `needs-review`: work exists but needs human, mathematical, pedagogical, or source review.
+- `complete`: the item is complete for the current unit maturity target.
+- `blocked`: the item cannot progress until a named missing artifact, decision, source, or verification is supplied.
+- `not-run`: use only for validator or automation rows that have not been executed.
+
+Use the smallest honest status. Do not mark a workstream complete just because an unrelated workstream is complete.
+
+Every unit `_index.md` contains this dashboard:
+
+```md
+## Production dashboard
+
+### Unit map
+- Curriculum scope: not-started
+- Skill map: not-started
+- Misconception map: not-started
+- Exam pattern notes: not-started
+
+### Lessons
+- Source/target prep: not-started
+- Raw dumps: not-started
+- Curation: not-started
+- Draft files: not-started
+- Coherence review: not-started
+- Compression/voice review: not-started
+- Final verification: not-started
+
+### Exercises
+- Cluster map: not-started
+- Raw seeds: not-started
+- Design cards: not-started
+- Balance review: not-started
+- Exercise files: not-started
+- Solution review: not-started
+- Sets: not-started
+
+### Quizzes
+- Quiz intent map: not-started
+- Raw quiz material: not-started
+- Quiz design cards: not-started
+- Quiz files: not-started
+- Feedback/remediation review: not-started
+
+### Unit review
+- Cross-artifact progression: not-started
+- Metadata and links: not-started
+- Validator: not-run
+```
+
+Update dashboard rows when the corresponding artifact changes. Use `## Journal de production` for dated history and rationale.
+
+## Workstream routing
+
+Choose work by artifact/request, not by the first incomplete dashboard row.
+
+1. Identify the requested artifact or workstream.
+2. Read the required inputs for that artifact.
+3. Use optional references when available.
+4. If required inputs are missing, create the smallest missing prerequisite if the request allows it.
+5. If the missing input cannot be created safely, report the exact blocker.
+6. Do not force unrelated workstreams to run first.
+
+Examples:
+
+- If the user asks for exercises, route to the exercise workflow. Existing lessons are helpful references, but exercises do not require lessons first.
+- If the user asks for quizzes, route to the quiz workflow. A quiz is not a late add-on; it may be prerequisite, diagnostic, skill-check, misconception-clinic, exam-readiness, or mixed.
+- If the user asks for lesson work, route to the local lesson workflow.
+- If the user asks for unit review, review existing artifacts and report gaps.
+- If the user asks for cleanup, clean the existing metadata, links, TODOs, statuses, and author notes without requiring every workstream to be finished.
+- If the user asks "what next?", inspect the dashboard, existing files, blockers, and likely goal, then recommend the highest-leverage small action.
+
+## Dependencies
+
+Dependencies are local to the artifact.
+
+Lesson draft creation requires adequate source/target notes, raw material, and curation for the selected mini-lesson.
+
+Exercise batch creation requires canonical exercise design cards for the selected exercises. Exercises may draw from the unit map, skill map, official curriculum notes, misconception map, exam patterns, raw seeds, design cards, or existing lessons when available.
+
+Quiz file creation requires a quiz design card or an explicit small direct request that supplies quiz intent, target skills, item design, answer logic, feedback policy, and verification risks. Quizzes may link to lessons or exercises for remediation, but those links are optional unless the quiz intent depends on them.
+
+Exercise set creation requires existing exercise files or precise exercise design cards. Sets should link to exercise files instead of duplicating full exercise content.
+
+Unit review and cleanup operate on whatever exists. They should report missing artifacts as gaps, not treat them as reasons to stop.
+
 ## Design-card rule
 
-Exercise design cards are the stored source of truth for creating exercise files. A table-only exercise plan is not sufficient for Stage 6.
+Exercise design cards are the stored source of truth for creating exercise files. A table-only exercise plan is not sufficient for exercise batch creation.
 
 Quiz design cards are the stored source of truth for creating standalone quiz files. A table-only quiz plan is not sufficient for quiz creation.
 
@@ -132,89 +228,63 @@ If a selected exercise or quiz lacks a canonical design card, stop and run the r
 - `content/_prompts/workflows/exercises/02-curate-design-cards.md`
 - `content/_prompts/workflows/quizzes/02-curate-design-cards.md`
 
-## Unit production stages
+## Local workflows
 
-### Stage 1 - Unit plan
+### Unit map
 
-Update the unit `_index.md` with the unit blueprint: role, prerequisites, skills, mini-lesson plan, misconception map, exercise planning placeholders, quiz planning placeholders, diagram notes, exam-alignment notes, workflow, journal, and author notes.
+Use `content/_prompts/workflows/unit/01-plan-unit.md` to create or improve the unit map. This workstream updates the unit blueprint, prerequisite map, skill map, mini-lesson plan, misconception map, exercise/quiz planning placeholders, diagram notes, exam-alignment notes, production dashboard, journal, and author notes.
 
-Do not create lesson, exercise, quiz, or set files during Stage 1.
+Do not create lesson, exercise, quiz, or set files during unit map work unless the user explicitly asks for them.
 
-### Stage 2 - Lesson source, raw material, and curation
+### Lessons
 
-Prepare one mini-lesson inside the unit `_index.md`.
-
-Record the planned lesson ID/path, source/target notes, prerequisite blockers, concrete learning outcome, raw material, curation decisions, possible shape, and verification questions.
-
-Use the lesson prompts in this order:
+The lesson workflow is a local mini-lesson pipeline:
 
 ```text
 content/_prompts/workflows/lessons/01-prepare-source.md
 content/_prompts/workflows/lessons/02-generate-raw-dump.md
 content/_prompts/workflows/lessons/03-curate-material.md
-```
-
-Do not create the mini-lesson file during Stage 2.
-
-### Stage 3 - Lesson assembly
-
-Create one focused mini-lesson under `lessons/` from the curated material and `content/_templates/mini-lesson.template.md`.
-
-Use:
-
-```text
 content/_prompts/workflows/lessons/04-create-draft.md
-```
-
-Do not blindly re-add raw-dump material that was excluded during curation.
-
-### Stage 4 - Lesson review and finalization
-
-Review the mini-lesson for coherence, compression/taste/voice, mathematical correctness, notation, source safety, and readiness for downstream exercise/quiz planning.
-
-Use the lesson prompts in this order:
-
-```text
 content/_prompts/workflows/lessons/05-coherence-pass.md
 content/_prompts/workflows/lessons/06-compression-pass.md
 content/_prompts/workflows/lessons/07-verify-finalize.md
 ```
 
-Do not mark a file `published` unless explicitly requested.
+This sequence applies only to the selected mini-lesson. It does not block exercise-only or quiz-only requests.
 
-### Stage 5a - Exercise seed generation
+### Exercises
 
-Generate raw exercise seeds for one exercise cluster at a time inside `### Seeds bruts des exercices`.
+The exercise workflow is local to exercise production:
 
-Raw seeds are exploratory material, not final exercise statements and not polished solutions.
+```text
+content/_prompts/workflows/exercises/01-generate-raw-seeds.md
+content/_prompts/workflows/exercises/02-curate-design-cards.md
+content/_prompts/workflows/exercises/03-check-unit-balance.md
+content/_prompts/workflows/exercises/04-create-batch.md
+content/_prompts/workflows/exercises/05-review-solutions.md
+content/_prompts/workflows/exercises/06-create-sets.md
+```
 
-### Stage 5b - Exercise-card curation and balance
+Raw seeds are exploratory material, not final exercises. Design cards are the curated bridge between rough ideas and final exercise files. Create exercise files in small batches, usually 3 to 5 files, unless explicitly requested otherwise.
 
-Curate raw seeds into rich exercise design cards inside `### Design cards des exercices`.
+### Quizzes
 
-Each ready card must identify the target skill, role in progression, intended method, traps, hints, parameter/domain constraints, solution feasibility sketch, and verification risks.
+Standalone quizzes are first-class unit content and live under `quizzes/`.
 
-Use `content/_prompts/workflows/exercises/03-check-unit-balance.md` to review coverage and mark ready cards before creating many final exercise files.
+Use:
 
-### Stage 6 - Exercise creation
+```text
+content/_prompts/workflows/quizzes/01-generate-raw-dump.md
+content/_prompts/workflows/quizzes/02-curate-design-cards.md
+content/_prompts/workflows/quizzes/03-create-batch.md
+content/_prompts/workflows/quizzes/04-review-quizzes.md
+```
 
-Create final exercise files under `exercises/` from canonical exercise design cards.
+Quizzes can exist independently. They can be prerequisite, diagnostic, skill-check, misconception-clinic, exam-readiness, or mixed. MCQ/MR choices need answer-specific feedback. Wrong choices should map to real misconceptions. `sequence` and `hotspot` remain optional planning item types, not required defaults.
 
-Create small batches by default, usually 3 to 5 exercises. Each exercise lives in its own file.
+### Unit review
 
-### Stage 7 - Solution review
-
-Review existing exercise solutions for mathematical correctness, clarity, conditions, notation, alignment with design cards, and source safety.
-
-### Stage 8 - Exercise sets
-
-Create or update exercise set files under `sets/`.
-
-Sets organize existing exercises or precise exercise design cards. They should link to exercise files instead of duplicating full exercise content.
-
-### Stage 9 - Unit review
-
-Review the full unit sequence across:
+Use `content/_prompts/workflows/unit/02-review-unit.md` to review the full unit sequence across:
 
 ```text
 _index.md
@@ -226,59 +296,19 @@ sets/
 
 Check progression, metadata, links, statuses, skill coverage, quiz alignment, solution quality, notation, source safety, and unresolved TODOs.
 
-### Stage 10 - Final cleanup
+### Metadata and link cleanup
 
-Prepare the unit for learner-facing use: complete metadata, accurate statuses, clean Markdown, intentional TODOs only, separated author notes, checked quiz answer keys/feedback, and no stale planning contradictions.
+Use `content/_prompts/workflows/unit/03-finalize-unit.md` for targeted cleanup of metadata, links, status fields, TODOs, author notes, quiz answer-key states, feedback states, Markdown cleanliness, and source-safety notes.
 
 Do not mark files `published` unless explicitly requested.
 
-## Parallel standalone quiz workflow
+### Targeted revision
 
-Standalone quizzes are first-class unit content and live under `quizzes/`.
+When revising existing content or responding to schema/template/prompt/validator changes, use `content/_prompts/commands/change-existing-content.md`.
 
-Use this parallel workflow without renumbering the Stage 1-10 lifecycle:
+Structural changes must migrate affected existing files to the new source of truth in the same change. Do not leave old schemas, headings, filenames, prompt paths, folder rules, or dashboard rules valid.
 
-```text
-workflows/quizzes/01-generate-raw-dump.md - raw quiz material
-workflows/quizzes/02-curate-design-cards.md - quiz design cards and quiz balance
-workflows/quizzes/03-create-batch.md - quiz creation
-workflows/quizzes/04-review-quizzes.md - answer key and feedback review
-```
-
-Quiz workflow state must be visible in `## Workflow`.
-
-## Workflow tracker
-
-Every unit `_index.md` contains this authoritative tracker:
-
-```md
-## Workflow
-
-- [ ] Stage 1 - Unit plan
-- [ ] Stage 2 - Lesson source, raw material, and curation
-  - [ ] Lesson workflow 01 - Prepare source and target
-  - [ ] Lesson workflow 02 - Generate raw dump
-  - [ ] Lesson workflow 03 - Curate material
-- [ ] Stage 3 - Lesson assembly
-  - [ ] Lesson workflow 04 - Create lesson draft
-- [ ] Stage 4 - Lesson review and finalization
-  - [ ] Lesson workflow 05 - Coherence pass
-  - [ ] Lesson workflow 06 - Compression, taste, and voice pass
-  - [ ] Lesson workflow 07 - Verification and finalization
-- [ ] Stage 5a - Exercise seed generation
-- [ ] Stage 5b - Exercise-card curation and balance
-- [ ] Stage 6 - Exercise creation
-- [ ] Stage 7 - Solution review
-- [ ] Stage 8 - Exercise sets
-- [ ] Quiz workflow 01 - Raw quiz material
-- [ ] Quiz workflow 02 - Quiz-card curation and balance
-- [ ] Quiz workflow 03 - Quiz creation
-- [ ] Quiz workflow 04 - Quiz review
-- [ ] Stage 9 - Unit review
-- [ ] Stage 10 - Final cleanup
-```
-
-Update checkboxes only when the expected output exists.
+Targeted revision should patch only the affected files and any directly impacted links, metadata, dashboard rows, or journal notes.
 
 ## Production journal
 
@@ -293,9 +323,3 @@ Every unit `_index.md` also contains:
 ```
 
 Use the journal for historical authoring notes, not as a current-state tracker.
-
-## Existing-content changes
-
-When revising existing content or responding to schema/template/prompt/validator changes, use `content/_prompts/commands/change-existing-content.md`.
-
-Structural changes must migrate affected existing files to the new source of truth in the same change. Do not leave old schemas, headings, filenames, prompt paths, or folder rules valid.

@@ -23,7 +23,7 @@ Expected local file format:
 TARGET_UNIT: <unit-folder-or-path-or-code>
 ```
 
-If neither an explicit target nor local workflow state exists, stop and ask the user to set a current unit by running:
+If neither an explicit target nor local current-unit state exists, stop and ask the user to set a current unit by running:
 
 ```text
 content/_prompts/commands/set-current-unit.md
@@ -49,7 +49,7 @@ Before doing any work:
 7. Read `TARGET_UNIT_INDEX`.
 8. Require `type: unit-index`.
 9. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM` from the unit index frontmatter.
-10. Use this prompt file as the source of truth for this stage behavior. Do not ask for or fill `TARGET_STAGE`.
+10. Use this prompt file as the source of truth for this local workflow-step behavior. Do not ask for a global production marker.
 11. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
 ## Read first
@@ -90,7 +90,7 @@ If curation is incomplete, stop and recommend `content/_prompts/workflows/lesson
 
 Create the requested mini-lesson file under `TARGET_UNIT_FOLDER/lessons/`.
 
-This is Stage 3 assembly work only.
+This is lesson draft assembly work only.
 
 If the user named a specific mini-lesson ID, title, or planned file, create only that file. Otherwise, create the first planned mini-lesson in `TARGET_UNIT_INDEX` whose file does not yet exist and whose preparation, raw dump, and curation are complete. If the target item is ambiguous, stop and ask.
 
@@ -129,12 +129,12 @@ Use frontmatter values derived from `TARGET_UNIT_INDEX`, including the resolved 
 
 Use `status: draft` unless a more conservative status is justified by unresolved correctness or source concerns.
 
-After creating the file, update the canonical workflow state and production journal honestly. Do not claim the lesson is final.
+After creating the file, update the relevant lesson planning row, production dashboard, and production journal honestly. Do not claim the lesson is final.
 
 Finish by summarizing:
 
 - file created;
 - selected shape and main ideas included;
 - unresolved review or verification needs;
-- workflow or journal updates;
+- dashboard or journal updates;
 - successful next action: `content/_prompts/workflows/lessons/05-coherence-pass.md`.

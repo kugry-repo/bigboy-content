@@ -4,7 +4,7 @@
 
 This guide explains the automated structural checks for the Markdown content vault.
 
-Automation catches schema, folder, metadata, prompt-layout, and tracker mistakes. It does not replace mathematical or pedagogical review.
+Automation catches schema, folder, metadata, prompt-layout, and dashboard mistakes. It does not replace mathematical or pedagogical review.
 
 ## Validation command
 
@@ -39,7 +39,7 @@ The validator checks:
 - required exercise cluster, raw-seed, and design-card areas;
 - required exercise-set planning area;
 - required quiz raw-material and design-card areas;
-- `## Workflow` as the authoritative unit tracker;
+- `## Production dashboard` as the authoritative unit workstream tracker;
 - `## Journal de production` as the historical log;
 - absence of removed duplicate tracker headings;
 - absence of old planned-exercise or planned-quiz table sections;
@@ -52,7 +52,7 @@ The validator checks:
 - canonical seven-step lesson prompt family under `content/_prompts/workflows/lessons/`;
 - existing-lesson repair command under `content/_prompts/commands/review-existing-lesson.md`;
 - absence of obsolete lesson workflow prompt filenames in live Markdown and script files;
-- canonical unit workflow lesson substeps, including the merged compression/taste/voice pass;
+- required production dashboard sections, rows, and allowed dashboard status values;
 - catalog references against unit frontmatter.
 
 ## Scaffold warnings

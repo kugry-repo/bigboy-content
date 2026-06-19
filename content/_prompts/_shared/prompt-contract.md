@@ -39,6 +39,6 @@ If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not
 ## Behavior
 
 - Use the current prompt file as the source of truth for the requested command or workflow step.
-- Do not ask for or fill `TARGET_STAGE`.
+- Do not ask for a global production marker.
 - Use only current folder-based prompt paths.
 - Do not create frontend rendering, app logic, or deployment work unless explicitly requested.

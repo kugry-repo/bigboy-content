@@ -2,7 +2,7 @@
 
 This guide gives the conceptual overview for creating content without losing consistency.
 
-For the authoritative lifecycle, stage names, tracker shape, and unit `_index.md` body schema, use `content/_guides/unit-workflow.md`.
+For the authoritative dashboard model, workstream meanings, and unit `_index.md` body schema, use `content/_guides/unit-workflow.md`.
 
 ## Core idea
 
@@ -25,7 +25,7 @@ Official curriculum units live directly under `content/2bac-pc-svt/`. Unofficial
 Both unit kinds use:
 
 - one unit `_index.md` schema;
-- one lifecycle guide;
+- one dashboard guide;
 - one prompt system;
 - one validator;
 - the same artifact folders: `lessons/`, `exercises/`, `quizzes/`, and `sets/`.
@@ -43,7 +43,7 @@ Use it for:
 - exercise-set planning;
 - raw quiz material and quiz design cards;
 - diagram and exam-alignment notes;
-- workflow state and production journal.
+- production dashboard state and production journal.
 
 Do not move unit planning into a separate note.
 
@@ -108,7 +108,7 @@ Every MCQ/MR option should have answer-specific feedback. Wrong choices should m
 
 ## Targeted revision
 
-Content can be revised after it exists. Updating an earlier plan does not mean rerunning every later creation stage from zero.
+Content can be revised after it exists. Updating an earlier plan does not mean rerunning later work from zero.
 
 For existing content, stale-file sync, or global schema/template/prompt/validator changes, use:
 

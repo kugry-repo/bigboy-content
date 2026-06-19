@@ -24,7 +24,7 @@ Expected local file format:
 TARGET_UNIT: <unit-folder-or-path-or-code>
 ```
 
-If neither an explicit target nor local workflow state exists, stop and ask the user to set a current unit by running:
+If neither an explicit target nor local current-unit state exists, stop and ask the user to set a current unit by running:
 
 ```text
 content/_prompts/commands/set-current-unit.md
@@ -50,7 +50,7 @@ Before doing any work:
 7. Read `TARGET_UNIT_INDEX`.
 8. Require `type: unit-index`.
 9. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM` from the unit index frontmatter.
-10. Use this command file as the source of truth for existing-lesson review behavior. Do not ask for or fill `TARGET_STAGE`.
+10. Use this command file as the source of truth for existing-lesson review behavior. Do not ask for a global production marker.
 11. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
 ## Read first
@@ -96,7 +96,7 @@ Then perform only the review work justified by the request and current file stat
 Do not:
 
 - appear as step 08 or step 09 of the lesson creation sequence;
-- define an alternate lesson lifecycle;
+- define an alternate lesson workflow;
 - bypass required verification;
 - create new mini-lessons;
 - create exercises;
@@ -113,7 +113,7 @@ Use the same standards as the canonical passes:
 - Compression/taste/voice: concise direct French, `tu`, warm mentor tone, rhythm, directness, heading discipline, useful analogies, mistake recovery, honest exam guidance, and removal of ceremony or bloat.
 - Verification: mathematics, conditions, notation, frontmatter, IDs, links, sources, official claims, Markdown validity, unresolved placeholders, and status.
 
-Update the canonical workflow state and production journal honestly. If the command repeats a pass, record that it was repeated and why. Do not mark unfinished creation steps complete.
+Update the relevant lesson planning row, production dashboard, and production journal honestly. If the command repeats a pass, record that it was repeated and why. Do not mark unfinished creation steps complete.
 
 Finish with:
 
@@ -123,5 +123,5 @@ Finish with:
 - changes made;
 - status decisions;
 - remaining TODOs or verification needs;
-- workflow or journal updates;
+- dashboard or journal updates;
 - next action: `content/_prompts/commands/next-action.md`.
