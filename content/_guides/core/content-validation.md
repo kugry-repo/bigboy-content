@@ -48,9 +48,11 @@ The validator checks:
 - absence of old domain-folder structures;
 - lesson, exercise, quiz, and set filename and ID consistency;
 - required canonical fields on generated content files, including `unit_code`;
+- required exercise frontmatter fields, allowed exercise values, required exercise headings, and quality-signal warnings;
 - unit identity consistency between frontmatter and containing folder;
 - prompt-folder layout so old flat prompt systems cannot return;
 - canonical seven-step lesson prompt family under `content/_prompts/workflows/lessons/`;
+- canonical seven-step exercise prompt family under `content/_prompts/workflows/exercises/`;
 - general content studio command under `content/_prompts/commands/content-studio.md`;
 - absence of the old lesson-only review command;
 - absence of obsolete lesson workflow prompt filenames in live Markdown and script files;
@@ -102,3 +104,26 @@ content/_prompts/commands/content-studio.md
 ```
 
 The obsolete names above are mentioned here only because the validator rejects them.
+
+## Exercise prompt canonicalization
+
+Validation fails if the exercise workflow prompt directory is missing any canonical prompt, contains unexpected numbered exercise workflow prompts, or brings back obsolete exercise prompt names such as:
+
+```text
+05-review-solutions.md
+06-create-sets.md
+```
+
+The canonical exercise workflow is:
+
+```text
+01-generate-raw-seeds.md
+02-curate-design-cards.md
+03-check-unit-balance.md
+04-create-batch.md
+05-review-exercise-quality.md
+06-review-solutions.md
+07-create-sets.md
+```
+
+The validator checks exercise frontmatter, headings, result/hint/mistake callouts, reviewed TODOs, source safety, and status conflicts. It does not attempt deep symbolic mathematics.

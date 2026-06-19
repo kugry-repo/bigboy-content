@@ -17,8 +17,16 @@ domain: DOMAIN_SLUG
 skills: []
 difficulty: application-directe
 exercise_type: [calcul]
+exercise_role: core-skill
+estimated_time_min: 6
 exam_relevance: medium
 calculator: not-needed
+requires_graph: false
+has_hints: true
+has_common_mistakes: true
+has_verification: true
+design_status: draft
+statement_status: draft
 solution_status: draft
 status: draft
 sync_status: current
@@ -36,19 +44,26 @@ updated: YYYY-MM-DD
 
 TODO.
 
-## Objectif pédagogique
+## Ce que cet exercice entraîne
 
 TODO.
 
-## Indices
+## Avant de commencer
 
-> [!hint]- Indice 1
+TODO.
+
+## Indices progressifs
+
+> [!hint]- Indice 1 — Reconnaître la situation
 > TODO.
 
-> [!hint]- Indice 2
+> [!hint]- Indice 2 — Choisir la méthode
 > TODO.
 
-## Solution
+> [!hint]- Indice 3 — Démarrer
+> TODO.
+
+## Solution détaillée
 
 ### Étape 1 — TODO
 
@@ -65,19 +80,36 @@ TODO.
 > [!success] Résultat
 > TODO.
 
+## Pourquoi cette méthode marche
+
+TODO.
+
 ## Erreurs fréquentes
 
-> [!warning] TODO
-> TODO.
+> [!warning] Piège — TODO
+> Mauvais réflexe : TODO.
+>
+> Pourquoi c'est tentant : TODO.
+>
+> Pourquoi c'est faux : TODO.
+>
+> Bon réflexe : TODO.
 
-## Vérification
+## Vérification rapide
 
 TODO.
 
 ## Variantes
 
-- TODO.
+- Plus facile :
+- Même idée :
+- Plus difficile :
+- Style examen :
 
 ## Notes auteur
 
-TODO.
+- Design card :
+- Student decision point :
+- Misconception :
+- Review status :
+- Remaining risks :

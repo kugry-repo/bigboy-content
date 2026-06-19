@@ -63,6 +63,7 @@ A golden unit should include:
 - curated exercise design cards;
 - a unit-balance pass across all exercise clusters;
 - 20 to 35 individual exercises for a full official curriculum unit, accumulated over multiple batches;
+- exercise quality review for statement, design, progression, hints, mistakes, and learner experience;
 - detailed solutions for all exercises;
 - standalone quiz series planning;
 - raw quiz dumps and quiz design cards for important diagnostic or mastery checkpoints;
@@ -97,6 +98,8 @@ A golden mini-lesson should feel complete, coherent, and lean, not padded.
 
 ## Exercise Quality Standard
 
+Exercises are central to a golden unit. They are not secondary practice after lessons; they are the main ability-building engine.
+
 Exercise planning should be cluster-based for substantial units:
 
 ```text
@@ -104,9 +107,12 @@ raw exercise seeds for one cluster
 -> exercise design cards for that cluster
 -> exercise unit balance across all clusters
 -> final exercise files in batches of 3 to 5
+-> exercise quality review
+-> solution review
+-> exercise sets
 ```
 
-Raw seeds are exploratory. Exercise design cards are the source of truth for exercise batch creation and should record the target skill, intended method, traps, hints, MCQ opportunities when relevant, parameter constraints, and verification risks.
+Raw seeds are exploratory. Exercise design cards are the source of truth for exercise batch creation and should record the target ability, linked skills, student decision point, intended method, traps, hint ladder, parameter constraints, verification strategy, variants, and risks.
 
 Exercises should progress from:
 
@@ -118,12 +124,25 @@ Exercises should progress from:
 
 Use `technique` only as a descriptive theme when needed, not as a frontmatter `difficulty` value.
 
+A golden unit should not only have "20 to 35 exercises"; it should have intentional exercise coverage.
+
+For each important skill, the unit should aim for a ladder:
+
+- recognition;
+- core skill;
+- trap recovery;
+- method choice;
+- exam pattern;
+- synthesis when appropriate.
+
+Not every skill needs every ladder type. Missing ladder parts should be intentional and recorded. Exercise count matters less than coverage, progression, and quality.
+
 Every exercise should include:
 
 - frontmatter;
 - statement;
-- pedagogical objective;
-- hints;
+- student-facing training objective;
+- progressive hints;
 - detailed solution;
 - common mistakes;
 - verification;
@@ -131,7 +150,7 @@ Every exercise should include:
 
 Each exercise lives in its own Markdown file. Exercise files are usually created in small batches of 3 to 5 unless explicitly requested otherwise.
 
-Solutions created during batch creation are drafts until they pass solution review.
+Exercises created during batch creation are drafts until they pass exercise quality review and solution review. A correct answer alone is not enough for reviewed status.
 
 ## Quiz Quality Standard
 

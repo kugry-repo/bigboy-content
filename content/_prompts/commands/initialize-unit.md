@@ -151,6 +151,7 @@ No exam-alignment notes recorded yet.
 - Design cards: not-started
 - Balance review: not-started
 - Exercise files: not-started
+- Quality review: not-started
 - Solution review: not-started
 - Sets: not-started
 

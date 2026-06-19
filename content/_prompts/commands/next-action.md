@@ -162,8 +162,9 @@ For exercise requests:
 3. If raw seeds exist but design cards are missing or incomplete, recommend `content/_prompts/workflows/exercises/02-curate-design-cards.md`.
 4. If multiple clusters/cards exist but balance is unclear, recommend `content/_prompts/workflows/exercises/03-check-unit-balance.md`.
 5. If ready design cards exist and requested files are missing, recommend `content/_prompts/workflows/exercises/04-create-batch.md`.
-6. If exercise files exist with draft solutions, recommend `content/_prompts/workflows/exercises/05-review-solutions.md`.
-7. If the request is about learner paths or grouped practice, recommend `content/_prompts/workflows/exercises/06-create-sets.md`.
+6. If exercise files exist with draft design or statement statuses, recommend `content/_prompts/workflows/exercises/05-review-exercise-quality.md`.
+7. If exercise files exist with draft solutions, recommend `content/_prompts/workflows/exercises/06-review-solutions.md`.
+8. If the request is about learner paths or grouped practice, recommend `content/_prompts/workflows/exercises/07-create-sets.md`.
 
 ## Quiz diagnosis
 
@@ -202,7 +203,7 @@ List dashboard rows or artifacts that appear ready or complete because their exp
 
 ## Partial or blocked work
 
-List partially completed mini-lessons, exercise seeds, exercise design cards, exercises, solution reviews, quiz raw material, quiz design cards, quiz files, quiz reviews, sets, statuses, blockers, or journal entries.
+List partially completed mini-lessons, exercise seeds, exercise design cards, exercises, exercise quality reviews, solution reviews, quiz raw material, quiz design cards, quiz files, quiz reviews, sets, statuses, blockers, or journal entries.
 
 ## Missing or inconsistent files
 

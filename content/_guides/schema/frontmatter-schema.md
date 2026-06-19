@@ -394,8 +394,16 @@ domain: DOMAIN_SLUG
 skills: []
 difficulty: application-directe
 exercise_type: [calcul]
+exercise_role: core-skill
+estimated_time_min: 6
 exam_relevance: medium
 calculator: not-needed
+requires_graph: false
+has_hints: true
+has_common_mistakes: true
+has_verification: true
+design_status: draft
+statement_status: draft
 solution_status: draft
 status: draft
 sync_status: current
@@ -417,6 +425,69 @@ Use only these `difficulty` values for exercises:
 - `approfondissement`
 
 Do not use `technique` as a frontmatter `difficulty` value. Use it only as a descriptive theme in prose when needed.
+
+Use only these `exercise_type` values:
+
+- `calcul`
+- `preuve`
+- `lecture-graphique`
+- `etude-fonction`
+- `modelisation`
+- `probleme`
+- `extrait-examen`
+- `original`
+
+Use only these `exercise_role` values:
+
+- `warm-up`
+- `core-skill`
+- `method-choice`
+- `trap-recovery`
+- `exam-pattern`
+- `synthesis`
+- `challenge`
+- `revision`
+
+Use only these `exam_relevance` values:
+
+- `low`
+- `medium`
+- `high`
+
+Use only these `calculator` values:
+
+- `not-needed`
+- `allowed`
+- `required`
+- `forbidden`
+
+Required exercise quality fields:
+
+```yaml
+exercise_role: warm-up | core-skill | method-choice | trap-recovery | exam-pattern | synthesis | challenge | revision
+estimated_time_min: number
+requires_graph: boolean
+has_hints: boolean
+has_common_mistakes: boolean
+has_verification: boolean
+design_status: draft | reviewed | needs-redesign
+statement_status: draft | reviewed | needs-rewrite
+solution_status: draft | reviewed | needs-correction
+```
+
+`design_status` is about whether the exercise deserves to exist and fits the progression.
+
+`statement_status` is about clarity, validity, and ambiguity.
+
+`solution_status` is about mathematical correctness and pedagogical solution quality.
+
+These statuses are separate on purpose. A solution can be mathematically reviewed while the exercise design still needs redesign, or the statement can be clear while the solution still needs correction.
+
+Allowed exercise status combinations:
+
+- New exercise files normally start with `status: draft`, `design_status: draft`, `statement_status: draft`, and `solution_status: draft`.
+- Do not set `status: published` unless `design_status`, `statement_status`, and `solution_status` are all `reviewed`.
+- Do not set `solution_status: reviewed` without a visible final result callout and reviewed mathematics.
 
 ## Quiz Frontmatter
 

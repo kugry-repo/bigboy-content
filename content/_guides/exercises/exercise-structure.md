@@ -2,30 +2,50 @@
 
 ## Principle
 
-Use one Markdown file per exercise.
+Lesson explains.
+Exercise builds ability.
+Quiz diagnoses.
+Set creates progression.
 
-An exercise file should contain the statement, metadata, hints, solution, common mistakes, and review notes.
+An exercise is the main ability-building unit of the content system.
+
+Use one Markdown file per exercise. Each exercise file contains the statement, training target, preparation notes, progressive hints, detailed solution, method explanation, common mistakes, verification, variants, and author notes.
 
 Each exercise lives in its own file, but exercise files are usually created in small batches of 3 to 5 unless explicitly requested otherwise.
 
 A full official curriculum unit may eventually contain 20 to 35 individual exercises. Build that library over multiple batches instead of generating it all at once.
 
-## Exercise authoring workflow
+## Exercise Authoring Workflow
 
-Use this sequence:
+Use this canonical seven-step workflow:
 
-1. Raw exercise seeds: generate rough seed cards for one exercise cluster at a time.
-2. Exercise design cards: curate one cluster's seeds into rich planned exercise cards.
-3. Unit balance: review all cluster cards with `content/_prompts/workflows/exercises/03-check-unit-balance.md`.
-4. Exercise batch creation: create 3 to 5 final exercise files at a time by default.
-5. Solution review: verify draft solutions after the exercise files exist.
-6. Exercise sets: organize existing exercises into learner paths.
+```text
+01-generate-raw-seeds
+-> 02-curate-design-cards
+-> 03-check-unit-balance
+-> 04-create-batch
+-> 05-review-exercise-quality
+-> 06-review-solutions
+-> 07-create-sets
+```
 
-## Raw seed vs design card vs final file
+The workflow roles are:
+
+1. `01-generate-raw-seeds`: produce rough ideas for one cluster.
+2. `02-curate-design-cards`: keep, merge, reject, and upgrade seeds into canonical design cards.
+3. `03-check-unit-balance`: check the skill ladders and whole-unit exercise coverage before final files.
+4. `04-create-batch`: create 3 to 5 draft exercise files from ready design cards.
+5. `05-review-exercise-quality`: review statement, design, progression, hints, mistakes, learner experience, and quality signals.
+6. `06-review-solutions`: review mathematical correctness and solution pedagogy.
+7. `07-create-sets`: organize reviewed exercises into learner paths.
+
+Do not use old workflow names or keep parallel exercise review systems.
+
+## Raw Seed vs Design Card vs Final File
 
 ### Raw exercise seed
 
-A raw exercise seed is exploratory exercise planning material.
+A raw exercise seed is exploratory planning material.
 
 It is not a final exercise and should not contain a polished final statement or full polished solution.
 
@@ -34,14 +54,17 @@ It should capture:
 - cluster;
 - linked mini-lessons;
 - precise skill tested;
-- rough exercise shape or statement idea;
+- rough exercise shape;
+- student action trained;
+- likely wrong move;
 - difficulty direction;
-- why the idea is useful;
+- potential exercise role;
+- why the idea may be useful;
 - expected method;
 - main trap;
 - parameter or domain constraints;
 - short feasibility sketch;
-- hint or MCQ opportunities;
+- hint opportunities;
 - verification and mismath risks;
 - curation note.
 
@@ -49,87 +72,81 @@ It should capture:
 
 An exercise design card is curated exercise planning material.
 
-It is the main source of truth for exercise batch creation. It should be detailed enough that the batch creation step can create a high-quality final exercise without inventing the pedagogical goal, method, traps, or verification concerns from scratch.
+It is the main source of truth for exercise batch creation. It should be detailed enough that the batch creation step can create a high-quality final exercise without inventing the pedagogical goal, method, traps, hint ladder, or verification concerns from scratch.
 
-It should capture:
-
-- planned ID and planned file;
-- status;
-- cluster;
-- difficulty and type;
-- linked mini-lessons;
-- exact target skill;
-- role in progression;
-- student-facing exercise shape;
-- parameter constraints;
-- expected method;
-- main traps and misconceptions;
-- hint opportunities;
-- MCQ opportunities when relevant;
-- solution feasibility sketch;
-- variants;
-- verification risks;
-- keep rationale.
+Use the canonical format in `content/_guides/exercises/exercise-design-guide.md`.
 
 ### Final exercise file
 
 A final exercise file is exercise batch output.
 
-It lives under the unit `exercises/` folder, uses the exercise template, and contains the learner-facing statement, hints, solution, common mistakes, verification, variants, and author notes.
+It lives under the unit `exercises/` folder, uses `content/_templates/exercise.template.md`, and contains learner-facing sections plus author notes.
 
 Exercise batch files start as:
 
 ```yaml
 status: draft
+design_status: draft
+statement_status: draft
 solution_status: draft
 ```
 
-They are not reviewed until solution review.
+They are not reviewed until both quality review and solution review have passed.
 
-## Why one exercise per file?
+## Why One Exercise Per File?
 
 This makes it easier to:
 
-- Reuse exercises in multiple sets.
-- Track difficulty and skills.
-- Improve solutions independently.
-- Build future app rendering.
-- Review changes in Git.
+- reuse exercises in multiple sets;
+- track difficulty, role, estimated time, and skills;
+- improve statements and solutions independently;
+- validate structure;
+- build future app rendering;
+- review changes in Git.
 
-## Required sections
+## Exercise Roles
 
-Each exercise should follow this order:
+Use `exercise_role` in frontmatter.
 
-1. YAML frontmatter.
-2. `# Title`
-3. `## Énoncé`
-4. `## Objectif pédagogique`
-5. `## Indices`
-6. `## Solution`
-7. `## Erreurs fréquentes`
-8. `## Vérification`
-9. `## Variantes`
-10. `## Notes auteur`
+Allowed values:
 
-## Student-facing vs author-facing sections
+- `warm-up`: short entry exercise that activates a definition, notation, or first move.
+- `core-skill`: direct training of an essential method or calculation.
+- `method-choice`: trains choosing the appropriate method.
+- `trap-recovery`: trains avoiding or repairing a real misconception.
+- `exam-pattern`: trains a reusable exam-style chain without unsupported official claims.
+- `synthesis`: combines several skills or ideas.
+- `challenge`: asks for a non-obvious extension.
+- `revision`: refreshes an older skill needed in the current unit.
 
-Student-facing:
+Difficulty alone is not enough. Always name the role the exercise plays in the progression.
 
-- `Énoncé`
-- `Indices`
-- `Solution`
-- `Erreurs fréquentes`
-- `Vérification`
+## Skill Ladders
 
-Author-facing:
+For each important skill, aim for an intentional ladder:
 
-- `Objectif pédagogique`
-- `Variantes`
-- `Notes auteur`
+- recognition;
+- core skill;
+- trap recovery;
+- method choice;
+- exam pattern;
+- synthesis when appropriate.
 
-Future rendering can hide author-facing sections.
+Not every skill needs every rung. Missing ladder parts should be intentional and recorded in design cards, balance notes, or author notes.
 
-## Exercise difficulty labels
+## Worth-Existing Test
+
+Before writing or keeping an exercise, ask:
+
+- What ability does this build?
+- What decision does the student practice?
+- What mistake does it prevent?
+- Where does it sit in the progression?
+- How does the solution teach the method?
+
+Reject or merge exercises that only repeat the same solution shape with different numbers.
+
+## Exercise Difficulty Labels
 
 Use these values:
 
@@ -139,9 +156,9 @@ Use these values:
 - `probleme-type`: close to a common multi-step exam-style pattern.
 - `approfondissement`: requires combining several ideas or making a non-obvious choice.
 
-Use "technique" only as a descriptive theme in the objective, type, notes, or set title. It is not a frontmatter `difficulty` value.
+Use `technique` only as a descriptive theme in prose or set titles. It is not a frontmatter `difficulty` value.
 
-## Exercise type labels
+## Exercise Type Labels
 
 Use one or more:
 
@@ -150,80 +167,99 @@ Use one or more:
 - `lecture-graphique`
 - `etude-fonction`
 - `modelisation`
-- `qcm`
-- `vrai-faux`
 - `probleme`
 - `extrait-examen`
 - `original`
+
+Standalone quiz item types such as MCQ and true/false belong in quiz files unless the exercise is explicitly designed as a non-quiz training device.
+
+## Required Final Exercise Sections
+
+Each final exercise should follow this order:
+
+1. YAML frontmatter.
+2. `# Title`
+3. `## Énoncé`
+4. `## Ce que cet exercice entraîne`
+5. `## Avant de commencer`
+6. `## Indices progressifs`
+7. `## Solution détaillée`
+8. `## Pourquoi cette méthode marche`
+9. `## Erreurs fréquentes`
+10. `## Vérification rapide`
+11. `## Variantes`
+12. `## Notes auteur`
+
+`Avant de commencer` and `Pourquoi cette méthode marche` can be short or intentionally marked `Non nécessaire pour cet exercice.` for tiny warm-ups, but the headings should exist for consistency.
+
+## Student-Facing And Author-Facing Sections
+
+Student-facing:
+
+- `Énoncé`
+- `Ce que cet exercice entraîne`
+- `Avant de commencer`
+- `Indices progressifs`
+- `Solution détaillée`
+- `Pourquoi cette méthode marche`
+- `Erreurs fréquentes`
+- `Vérification rapide`
+
+Author-facing:
+
+- `Variantes`
+- `Notes auteur`
+
+Future rendering can hide author-facing sections when needed.
 
 ## Hints
 
 Use collapsible Obsidian callouts:
 
 ```md
-> [!hint]- Indice 1
+> [!hint]- Indice 1 — Reconnaître la situation
 > Commence par identifier la forme de la limite.
 
-> [!hint]- Indice 2
-> Factorise par le terme dominant.
+> [!hint]- Indice 2 — Choisir la méthode
+> Cherche si une factorisation, une quantité conjuguée ou un théorème est le bon outil.
+
+> [!hint]- Indice 3 — Démarrer
+> Écris la première transformation utile sans aller jusqu'au résultat.
 ```
 
 Hints should guide without immediately giving the answer.
 
-## Solution expectations
+## Solution Expectations
 
 A solution should:
 
-- Name the method when helpful.
-- Explain why the method applies.
-- Show important algebraic steps.
-- State the final answer clearly.
-- Include a quick verification when useful.
+- name the method when helpful;
+- explain why the method applies;
+- check theorem conditions explicitly;
+- show important algebraic steps;
+- state the final answer in a `[!success]` callout;
+- include a quick verification when useful;
+- repair at least one common mistake for substantial exercises.
 
-## Bad exercise pattern
-
-Avoid exercises that say:
-
-> Calculer la limite.
-
-without specifying enough context or without solution guidance.
-
-## Better exercise pattern
-
-Use:
-
-```md
-## Énoncé
-
-Soit la fonction $f$ définie par
-
-$$
-f(x)=\frac{2x^2-3x+1}{x^2+4}.
-$$
-
-Calculer
-
-$$
-\lim_{x \to +\infty} f(x).
-$$
-
-## Objectif pédagogique
-
-S'entraîner à calculer une limite en $+\infty$ d'une fonction rationnelle en factorisant par le terme dominant.
-```
-
-## Exercise sets
+## Exercise Sets
 
 An exercise set should not duplicate exercise content.
 
-It should link to exercise files and organize them by progression.
+It should link to exercise files and organize them by progression, using:
+
+- exercise role;
+- difficulty;
+- estimated time;
+- skill ladder;
+- prerequisites;
+- revision value.
 
 Example:
 
 ```md
 ## Exercices
 
-1. [[lc-ex-001]] — Limite rationnelle simple.
-2. [[lc-ex-002]] — Forme indéterminée avec factorisation.
-3. [[lc-ex-003]] — Utilisation de la quantité conjuguée.
+1. [[lc-ex-001]] — Reconnaître une limite rationnelle simple.
+2. [[lc-ex-002]] — Traiter une forme indéterminée par factorisation.
+3. [[lc-ex-003]] — Choisir entre factorisation et quantité conjuguée.
 ```

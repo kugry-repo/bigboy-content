@@ -35,6 +35,7 @@ Unit management operations can affect:
 - trackers;
 - guides;
 - prompt examples;
+- exercise workflow prompt paths and dashboard rows;
 - generated content;
 - validation scripts;
 - references from lessons, exercises, quizzes, and sets;
@@ -50,6 +51,7 @@ Do not leave duplicate entries, stale links, old names, or alternate schemas beh
 - `content/_guides/schema/frontmatter-schema.md`
 - `content/_guides/schema/id-and-naming.md`
 - `content/_guides/core/content-validation.md`
+- `content/_guides/exercises/exercise-structure.md` when the operation affects exercise workflow/dashboard references
 - `content/_templates/unit-index-stub.template.md`
 - `content/_templates/unit-index.template.md`
 

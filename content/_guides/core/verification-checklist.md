@@ -37,6 +37,27 @@ Use this checklist before marking a file as `reviewed` or `published`.
 - [ ] The final answer is easy to find.
 - [ ] A 2BAC PC/SVT student can follow the reasoning.
 
+## Exercise checklist
+
+- [ ] The exercise uses `type: exercise`.
+- [ ] The file is under the unit `exercises/` folder.
+- [ ] The filename follows `{unit_code}-ex-###.md`.
+- [ ] The ID follows `2bac-pcsvt-{unit_code}-ex-###`.
+- [ ] `exercise_role`, `estimated_time_min`, `requires_graph`, `has_hints`, `has_common_mistakes`, `has_verification`, `design_status`, `statement_status`, and `solution_status` are filled.
+- [ ] `skills` contains precise skill IDs.
+- [ ] The exercise answers what ability it builds, what decision it trains, what mistake it prevents, where it sits in the progression, and how the solution teaches the method.
+- [ ] The statement is clear and unambiguous.
+- [ ] The difficulty is honest.
+- [ ] The exercise role is meaningful; difficulty alone is not used as the design explanation.
+- [ ] The exercise has a real decision point unless intentionally marked as `warm-up`.
+- [ ] The hints form a recognition, method, and first-step ladder.
+- [ ] The solution checks theorem conditions, domains, and algebraic steps explicitly.
+- [ ] The final result uses a `[!success]` callout.
+- [ ] Substantial exercises include at least one `[!warning]` common mistake block with recovery.
+- [ ] `Vérification rapide` gives a useful check and does not merely repeat the solution.
+- [ ] Unsupported official or exam claims are avoided.
+- [ ] The exercise can be reviewed using `_guides/exercises/exercise-quality-rubric.md`.
+
 ## Standalone quiz checklist
 
 - [ ] The quiz uses `type: quiz`.
@@ -128,6 +149,8 @@ For full lesson review, use `_guides/lessons/lesson-quality-rubric.md`.
 - [ ] The unit `_index.md` has curated exercise design cards.
 - [ ] The unit-level exercise plan has balance notes or card statuses from `content/_prompts/workflows/exercises/03-check-unit-balance.md` when several clusters exist.
 - [ ] Exercise files are one exercise per file and were created in a small batch unless explicitly requested otherwise.
+- [ ] Exercise files pass quality review through `content/_prompts/workflows/exercises/05-review-exercise-quality.md`.
+- [ ] Exercise solutions pass solution review through `content/_prompts/workflows/exercises/06-review-solutions.md`.
 - [ ] The unit `_index.md` has quiz series planning when standalone quizzes are needed.
 - [ ] The unit `_index.md` has raw quiz dumps or quiz design cards before final quiz files are created.
 - [ ] Quiz files are created in small batches, usually one at a time.

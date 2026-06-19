@@ -78,7 +78,7 @@ Then read only the relevant guides:
 
 - Unit planning: `content/_guides/units/unit-workflow.md`, `content/_guides/units/golden-unit-standard.md`, `content/_guides/schema/frontmatter-schema.md`, `content/_guides/schema/id-and-naming.md`
 - Lessons: `content/_guides/lessons/lesson-editorial-pipeline.md`, `content/_guides/lessons/lesson-structure.md`, `content/_guides/lessons/lesson-voice.md`, `content/_guides/lessons/lesson-quality-rubric.md`, `content/_guides/schema/math-notation.md`, `content/_guides/core/source-policy.md`
-- Exercises: `content/_guides/exercises/exercise-structure.md`, `content/_guides/exercises/solution-style.md`, `content/_guides/schema/math-notation.md`, `content/_guides/core/source-policy.md`
+- Exercises: `content/_guides/exercises/exercise-quality-rubric.md`, `content/_guides/exercises/exercise-design-guide.md`, `content/_guides/exercises/exercise-structure.md`, `content/_guides/exercises/solution-style.md`, `content/_guides/schema/math-notation.md`, `content/_guides/core/source-policy.md`
 - Quizzes: `content/_guides/quizzes/quiz-structure.md`, `content/_guides/schema/math-notation.md`, `content/_guides/schema/id-and-naming.md`, `content/_guides/core/source-policy.md`
 - Media or diagrams: `content/_guides/media/diagram-guidelines.md`
 - General review: `content/_guides/core/style-guide.md`, `content/_guides/core/verification-checklist.md`, `content/_guides/core/obsidian-conventions.md`
@@ -188,9 +188,15 @@ Focus on clarity, flow, voice, motivation, intuition, formal precision, examples
 
 ### Exercises
 
-Use exercise guides.
+Use exercise guides: exercise-quality-rubric, exercise-design-guide, exercise-structure, and solution-style.
 
-Focus on mathematical correctness, progression, difficulty, exam realism, solution steps, hidden hints or explanations, blueprint/design-card alignment when present, and avoiding mechanical low-value exercises.
+Content studio supports exercise modes across `diagnose`, `propose`, `patch`, and `patch-and-review`.
+
+Focus on target skill precision, worth-existing value, student decision point, exercise role, progression, difficulty honesty, exam/source claim safety, solution steps, hints, common mistake recovery, verification usefulness, design-card alignment when present, and avoiding mechanical low-value exercises.
+
+When the active file or selection is inside an exercise file, infer the target unit from the path when possible, then use frontmatter and the parent unit `_index.md` to confirm.
+
+Do not mark `solution_status: reviewed` during a general patch unless the request explicitly includes solution review criteria. Do not mark `design_status` or `statement_status` reviewed unless the patch-and-review pass checks the quality rubric.
 
 ### Quizzes
 

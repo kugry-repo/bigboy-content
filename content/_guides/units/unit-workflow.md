@@ -193,6 +193,7 @@ Every initialized or published unit `_index.md` contains this dashboard:
 - Design cards: not-started
 - Balance review: not-started
 - Exercise files: not-started
+- Quality review: not-started
 - Solution review: not-started
 - Sets: not-started
 
@@ -291,11 +292,14 @@ content/_prompts/workflows/exercises/01-generate-raw-seeds.md
 content/_prompts/workflows/exercises/02-curate-design-cards.md
 content/_prompts/workflows/exercises/03-check-unit-balance.md
 content/_prompts/workflows/exercises/04-create-batch.md
-content/_prompts/workflows/exercises/05-review-solutions.md
-content/_prompts/workflows/exercises/06-create-sets.md
+content/_prompts/workflows/exercises/05-review-exercise-quality.md
+content/_prompts/workflows/exercises/06-review-solutions.md
+content/_prompts/workflows/exercises/07-create-sets.md
 ```
 
 Raw seeds are exploratory material, not final exercises. Design cards are the curated bridge between rough ideas and final exercise files. Create exercise files in small batches, usually 3 to 5 files, unless explicitly requested otherwise.
+
+Exercise quality review checks statement/design/progression/hints/mistakes/learner experience. Solution review checks mathematical correctness and solution pedagogy. Keep `design_status`, `statement_status`, and `solution_status` separate.
 
 ### Quizzes
 

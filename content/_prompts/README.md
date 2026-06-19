@@ -55,8 +55,9 @@ Exercise workflow:
 - `workflows/exercises/02-curate-design-cards.md`
 - `workflows/exercises/03-check-unit-balance.md`
 - `workflows/exercises/04-create-batch.md`
-- `workflows/exercises/05-review-solutions.md`
-- `workflows/exercises/06-create-sets.md`
+- `workflows/exercises/05-review-exercise-quality.md`
+- `workflows/exercises/06-review-solutions.md`
+- `workflows/exercises/07-create-sets.md`
 
 Quiz workflow:
 

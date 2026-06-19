@@ -18,7 +18,7 @@ Use the command prompts when you need to decide, manage, or change direction:
 Use workflow prompts when you already know what you are producing:
 
 - `workflows/lessons/`
-- `workflows/exercises/`
+- `workflows/exercises/` - exercise seeds, design cards, balance, batch creation, quality review, solution review, and sets.
 - `workflows/quizzes/`
 - `workflows/unit/`
 

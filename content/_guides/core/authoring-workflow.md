@@ -77,6 +77,8 @@ Use:
 
 ## Exercises
 
+Exercises are the main ability-building engine.
+
 Exercise planning is cluster-based for substantial units:
 
 ```text
@@ -84,11 +86,14 @@ raw exercise seeds
 -> rich exercise design cards
 -> unit balance
 -> final exercise files in small batches
+-> exercise quality review
 -> solution review
 -> exercise sets
 ```
 
 Exercise design cards are the source of truth for final exercise creation. A table-only exercise summary is not enough to create an exercise.
+
+Quality review checks statement/design/progression/hints/mistakes/learner experience. Solution review checks mathematical correctness and solution pedagogy.
 
 Each exercise lives in its own Markdown file under `exercises/`.
 

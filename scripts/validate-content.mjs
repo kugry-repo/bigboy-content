@@ -10,6 +10,7 @@ const PROGRAM_DIR = path.join(CONTENT_DIR, "2bac-pc-svt");
 const TOPICS_DIR = path.join(PROGRAM_DIR, "topics");
 const PROMPTS_DIR = path.join(CONTENT_DIR, "_prompts");
 const LESSON_WORKFLOW_DIR = path.join(PROMPTS_DIR, "workflows", "lessons");
+const EXERCISE_WORKFLOW_DIR = path.join(PROMPTS_DIR, "workflows", "exercises");
 const PROMPT_COMMANDS_DIR = path.join(PROMPTS_DIR, "commands");
 
 const REQUIRED_BASE_DIRS = [
@@ -151,6 +152,100 @@ const ALLOWED_LESSON_SHAPES = new Set([
   "recap",
 ]);
 
+const ALLOWED_EXERCISE_DIFFICULTIES = new Set([
+  "decouverte",
+  "application-directe",
+  "application-guidee",
+  "probleme-type",
+  "approfondissement",
+]);
+
+const ALLOWED_EXERCISE_TYPES = new Set([
+  "calcul",
+  "preuve",
+  "lecture-graphique",
+  "etude-fonction",
+  "modelisation",
+  "probleme",
+  "extrait-examen",
+  "original",
+]);
+
+const ALLOWED_EXERCISE_ROLES = new Set([
+  "warm-up",
+  "core-skill",
+  "method-choice",
+  "trap-recovery",
+  "exam-pattern",
+  "synthesis",
+  "challenge",
+  "revision",
+]);
+
+const ALLOWED_EXAM_RELEVANCE = new Set(["low", "medium", "high"]);
+
+const ALLOWED_CALCULATOR_VALUES = new Set([
+  "not-needed",
+  "allowed",
+  "required",
+  "forbidden",
+]);
+
+const ALLOWED_DESIGN_STATUSES = new Set([
+  "draft",
+  "reviewed",
+  "needs-redesign",
+]);
+
+const ALLOWED_STATEMENT_STATUSES = new Set([
+  "draft",
+  "reviewed",
+  "needs-rewrite",
+]);
+
+const ALLOWED_SOLUTION_STATUSES = new Set([
+  "draft",
+  "reviewed",
+  "needs-correction",
+]);
+
+const REQUIRED_EXERCISE_FIELDS = [
+  "difficulty",
+  "exercise_type",
+  "exercise_role",
+  "estimated_time_min",
+  "exam_relevance",
+  "calculator",
+  "requires_graph",
+  "has_hints",
+  "has_common_mistakes",
+  "has_verification",
+  "design_status",
+  "statement_status",
+  "solution_status",
+];
+
+const REQUIRED_EXERCISE_H2 = [
+  "Énoncé",
+  "Ce que cet exercice entraîne",
+  "Avant de commencer",
+  "Indices progressifs",
+  "Solution détaillée",
+  "Pourquoi cette méthode marche",
+  "Erreurs fréquentes",
+  "Vérification rapide",
+  "Variantes",
+  "Notes auteur",
+];
+
+const BANNED_SOLUTION_WORDS = [
+  "clairement",
+  "évidemment",
+  "trivialement",
+  "il suffit de voir",
+  "on obtient directement",
+];
+
 const DISALLOWED_FRONTMATTER_FIELDS = [
   "chapter",
   "chapter_code",
@@ -247,6 +342,7 @@ const REQUIRED_DASHBOARD = [
       "Design cards",
       "Balance review",
       "Exercise files",
+      "Quality review",
       "Solution review",
       "Sets",
     ],
@@ -289,6 +385,8 @@ const REQUIRED_GUIDE_FILES = [
   "content/_guides/lessons/lesson-structure.md",
   "content/_guides/lessons/lesson-voice.md",
   "content/_guides/lessons/lesson-quality-rubric.md",
+  "content/_guides/exercises/exercise-design-guide.md",
+  "content/_guides/exercises/exercise-quality-rubric.md",
   "content/_guides/exercises/exercise-structure.md",
   "content/_guides/exercises/solution-style.md",
   "content/_guides/quizzes/quiz-structure.md",
@@ -358,6 +456,16 @@ const REQUIRED_LESSON_WORKFLOW_PROMPTS = [
   "content/_prompts/workflows/lessons/07-verify-finalize.md",
 ];
 
+const REQUIRED_EXERCISE_WORKFLOW_PROMPTS = [
+  "content/_prompts/workflows/exercises/01-generate-raw-seeds.md",
+  "content/_prompts/workflows/exercises/02-curate-design-cards.md",
+  "content/_prompts/workflows/exercises/03-check-unit-balance.md",
+  "content/_prompts/workflows/exercises/04-create-batch.md",
+  "content/_prompts/workflows/exercises/05-review-exercise-quality.md",
+  "content/_prompts/workflows/exercises/06-review-solutions.md",
+  "content/_prompts/workflows/exercises/07-create-sets.md",
+];
+
 const REQUIRED_CONTENT_STUDIO_COMMAND =
   "content/_prompts/commands/content-studio.md";
 
@@ -372,7 +480,17 @@ const OBSOLETE_LESSON_WORKFLOW_PROMPTS = [
   "content/_prompts/workflows/lessons/09-review-existing.md",
 ];
 
+const OBSOLETE_EXERCISE_WORKFLOW_PROMPTS = [
+  "content/_prompts/workflows/exercises/05-review-solutions.md",
+  "content/_prompts/workflows/exercises/06-create-sets.md",
+];
+
 const ALLOWED_OBSOLETE_LESSON_REFERENCE_FILES = new Set([
+  "scripts/validate-content.mjs",
+  "content/_guides/core/content-validation.md",
+]);
+
+const ALLOWED_OBSOLETE_EXERCISE_REFERENCE_FILES = new Set([
   "scripts/validate-content.mjs",
   "content/_guides/core/content-validation.md",
 ]);
@@ -609,6 +727,48 @@ function isFalse(value) {
 
 function isTrue(value) {
   return value === true || value === "true";
+}
+
+function isEmptyValue(value) {
+  return (
+    value === null ||
+    value === undefined ||
+    value === "" ||
+    (Array.isArray(value) && value.length === 0)
+  );
+}
+
+function checkAllowedValue(filePath, data, field, allowedValues) {
+  if (!Object.hasOwn(data, field) || isEmptyValue(data[field])) return;
+
+  if (!allowedValues.has(data[field])) {
+    addError(
+      filePath,
+      `frontmatter "${field}" has invalid value "${data[field]}"; expected one of ${[...allowedValues].join(", ")}`,
+    );
+  }
+}
+
+function checkAllowedArrayValues(filePath, data, field, allowedValues) {
+  if (!Object.hasOwn(data, field) || isEmptyValue(data[field])) return;
+
+  const values = Array.isArray(data[field]) ? data[field] : [data[field]];
+  for (const value of values) {
+    if (!allowedValues.has(value)) {
+      addError(
+        filePath,
+        `frontmatter "${field}" has invalid value "${value}"; expected one of ${[...allowedValues].join(", ")}`,
+      );
+    }
+  }
+}
+
+function checkBooleanField(filePath, data, field) {
+  if (!Object.hasOwn(data, field) || isEmptyValue(data[field])) return;
+
+  if (typeof data[field] !== "boolean") {
+    addError(filePath, `frontmatter "${field}" must be a boolean`);
+  }
 }
 
 function getHeadings(body) {
@@ -1208,10 +1368,134 @@ function checkExerciseFile(unit, filePath) {
     }
   }
 
-  for (const field of ["solution_status", "exercise_type", "difficulty"]) {
-    if (!Object.hasOwn(data, field)) {
-      addError(filePath, `missing frontmatter field "${field}"`);
+  requireFields(filePath, data, REQUIRED_EXERCISE_FIELDS);
+
+  checkAllowedValue(filePath, data, "difficulty", ALLOWED_EXERCISE_DIFFICULTIES);
+  checkAllowedArrayValues(filePath, data, "exercise_type", ALLOWED_EXERCISE_TYPES);
+  checkAllowedValue(filePath, data, "exercise_role", ALLOWED_EXERCISE_ROLES);
+  checkAllowedValue(filePath, data, "exam_relevance", ALLOWED_EXAM_RELEVANCE);
+  checkAllowedValue(filePath, data, "calculator", ALLOWED_CALCULATOR_VALUES);
+  checkAllowedValue(filePath, data, "design_status", ALLOWED_DESIGN_STATUSES);
+  checkAllowedValue(filePath, data, "statement_status", ALLOWED_STATEMENT_STATUSES);
+  checkAllowedValue(filePath, data, "solution_status", ALLOWED_SOLUTION_STATUSES);
+
+  for (const field of ["requires_graph", "has_hints", "has_common_mistakes", "has_verification"]) {
+    checkBooleanField(filePath, data, field);
+  }
+
+  if (
+    Object.hasOwn(data, "estimated_time_min") &&
+    (!Number.isFinite(data.estimated_time_min) || data.estimated_time_min <= 0)
+  ) {
+    addError(filePath, 'frontmatter "estimated_time_min" must be a positive number');
+  }
+
+  const h2Headings = new Set(getH2Headings(parsed.body));
+  for (const heading of REQUIRED_EXERCISE_H2) {
+    if (!h2Headings.has(heading)) {
+      addWarning(filePath, `missing exercise section "## ${heading}"`);
     }
+  }
+
+  if (isEmptyValue(data.skills)) {
+    addWarning(filePath, 'frontmatter "skills" is empty');
+  }
+
+  const hasHintCallout = /\[!hint\]/i.test(text);
+  if (isTrue(data.has_hints) && !hasHintCallout) {
+    addWarning(filePath, 'frontmatter "has_hints: true" but no [!hint] callout exists');
+  }
+
+  const hasResultCallout = /\[!success\]/i.test(text);
+  if (!hasResultCallout) {
+    addWarning(filePath, "missing [!success] result callout");
+  }
+
+  const hasWarningCallout = /\[!warning\]/i.test(text);
+  if (isTrue(data.has_common_mistakes) && !hasWarningCallout) {
+    addWarning(
+      filePath,
+      'frontmatter "has_common_mistakes: true" but no [!warning] common mistake callout exists',
+    );
+  }
+
+  const verificationSection = getSection(parsed.body, 2, "Vérification rapide");
+  if (isTrue(data.has_verification) && !verificationSection.trim()) {
+    addWarning(
+      filePath,
+      'frontmatter "has_verification: true" but "## Vérification rapide" is empty',
+    );
+  }
+
+  const solutionSection =
+    getSection(parsed.body, 2, "Solution détaillée") || parsed.body;
+  const normalizedSolution = normalizeForSearch(solutionSection);
+  for (const bannedWord of BANNED_SOLUTION_WORDS) {
+    if (normalizedSolution.includes(normalizeForSearch(bannedWord))) {
+      addWarning(filePath, `solution contains banned vague wording "${bannedWord}"`);
+    }
+  }
+
+  const exerciseClaimsReviewed =
+    data.status === "reviewed" ||
+    data.status === "published" ||
+    data.design_status === "reviewed" ||
+    data.statement_status === "reviewed" ||
+    data.solution_status === "reviewed";
+
+  if (exerciseClaimsReviewed && /\bTODO\b/.test(text)) {
+    addWarning(filePath, "reviewed exercise status is present but file still contains TODO");
+  }
+
+  if (data.source_type && data.source_type !== "original" && isEmptyValue(data.source_ref)) {
+    addWarning(
+      filePath,
+      'frontmatter "source_type" is not "original" but "source_ref" is empty',
+    );
+  }
+
+  const hasSource =
+    data.source_type &&
+    data.source_type !== "original" &&
+    !isEmptyValue(data.source_ref);
+  const hasExplicitExamPatternNote =
+    data.exercise_role === "exam-pattern" ||
+    hasAnyNormalizedText(text, [
+      "exam-pattern",
+      "style examen",
+      "pattern examen",
+      "note examen",
+      "source/exam claim",
+      "claim risk",
+    ]);
+
+  if (data.exam_relevance === "high" && !hasSource && !hasExplicitExamPatternNote) {
+    addWarning(
+      filePath,
+      'frontmatter "exam_relevance: high" needs a source or explicit exam-pattern note',
+    );
+  }
+
+  const reviewStatuses = [
+    data.design_status,
+    data.statement_status,
+    data.solution_status,
+  ];
+  if (
+    (data.status === "reviewed" || data.status === "published") &&
+    reviewStatuses.some((status) => status !== "reviewed")
+  ) {
+    addWarning(
+      filePath,
+      'frontmatter "status" claims reviewed/published while design_status, statement_status, or solution_status is not reviewed',
+    );
+  }
+
+  if (data.solution_status === "reviewed" && !hasResultCallout) {
+    addWarning(
+      filePath,
+      'frontmatter "solution_status: reviewed" but no [!success] result callout exists',
+    );
   }
 
   if (data.status === "published" && /\bTODO\b/.test(text)) {
@@ -1640,6 +1924,51 @@ function checkLessonPromptFamily() {
   }
 }
 
+function checkExercisePromptFamily() {
+  const expectedBasenames = REQUIRED_EXERCISE_WORKFLOW_PROMPTS.map((repoPath) =>
+    repoPath.split("/").at(-1),
+  );
+  const expectedBasenameSet = new Set(expectedBasenames);
+
+  for (const repoPath of REQUIRED_EXERCISE_WORKFLOW_PROMPTS) {
+    const fullPath = fullPathFromRepoPath(repoPath);
+    if (!isFile(fullPath)) {
+      addError(fullPath, "missing required canonical exercise workflow prompt");
+    }
+  }
+
+  for (const repoPath of OBSOLETE_EXERCISE_WORKFLOW_PROMPTS) {
+    const fullPath = fullPathFromRepoPath(repoPath);
+    if (isFile(fullPath)) {
+      addError(fullPath, "removed exercise workflow prompt must not exist");
+    }
+  }
+
+  const actualNumberedExercisePrompts = readDir(EXERCISE_WORKFLOW_DIR)
+    .filter((entry) => entry.isFile())
+    .filter((entry) => /^\d{2}-.*\.md$/.test(entry.name))
+    .map((entry) => entry.name)
+    .sort();
+
+  for (const basename of actualNumberedExercisePrompts) {
+    if (!expectedBasenameSet.has(basename)) {
+      addError(
+        path.join(EXERCISE_WORKFLOW_DIR, basename),
+        "unexpected numbered exercise workflow prompt",
+      );
+    }
+  }
+
+  for (const basename of expectedBasenames) {
+    if (!actualNumberedExercisePrompts.includes(basename)) {
+      addError(
+        path.join(EXERCISE_WORKFLOW_DIR, basename),
+        "missing numbered exercise workflow prompt",
+      );
+    }
+  }
+}
+
 function repositoryTextFilesForObsoletePromptScan() {
   const rootMarkdownFiles = ["AGENTS.md", "README.md"]
     .map((repoPath) => fullPathFromRepoPath(repoPath))
@@ -1669,6 +1998,27 @@ function checkObsoleteLessonPromptReferences() {
         addError(
           filePath,
           `references obsolete lesson prompt name "${obsoleteName}"`,
+        );
+      }
+    }
+  }
+}
+
+function checkObsoleteExercisePromptReferences() {
+  const obsoleteNames = OBSOLETE_EXERCISE_WORKFLOW_PROMPTS.map((repoPath) =>
+    repoPath.split("/").at(-1),
+  );
+
+  for (const filePath of repositoryTextFilesForObsoletePromptScan()) {
+    const relative = rel(filePath);
+    if (ALLOWED_OBSOLETE_EXERCISE_REFERENCE_FILES.has(relative)) continue;
+
+    const text = fs.readFileSync(filePath, "utf8");
+    for (const obsoleteName of obsoleteNames) {
+      if (text.includes(obsoleteName)) {
+        addError(
+          filePath,
+          `references obsolete exercise prompt name "${obsoleteName}"`,
         );
       }
     }
@@ -1843,7 +2193,9 @@ function main() {
   checkCatalogs();
   checkPromptLayout();
   checkLessonPromptFamily();
+  checkExercisePromptFamily();
   checkObsoleteLessonPromptReferences();
+  checkObsoleteExercisePromptReferences();
   checkRemovedGuideText();
   checkLegacyGlobalProductionReferences();
   collectIdsAndWarnings();

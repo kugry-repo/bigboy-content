@@ -19,12 +19,6 @@ TARGET_EXERCISE_CLUSTER: <cluster-id-or-title>
 
 If no explicit target is provided, read `_workflow/current-unit.md`.
 
-Expected local file format:
-
-```text
-TARGET_UNIT: <unit-folder-or-path-or-code>
-```
-
 If neither an explicit target nor local current-unit state exists, stop and ask the user to set a current unit by running:
 
 ```text
@@ -39,37 +33,31 @@ Before doing any work:
 2. If no explicit target exists, read `_workflow/current-unit.md`.
 3. Resolve the unit by scanning all unit indexes:
    - official units under `content/2bac-pc-svt/*/_index.md`;
-   - unofficial units under `content/2bac-pc-svt/topics/*/_index.md`.
-4. Match only against:
-   - `unit_code`;
-   - `unit_slug`;
-   - `unit_folder`;
-   - `title`;
-   - resolved folder path.
-5. Derive `TARGET_UNIT_FOLDER` as the resolved folder.
-6. Derive `TARGET_UNIT_INDEX` as `<resolved-folder>/_index.md`.
-7. Read `TARGET_UNIT_INDEX`.
-8. Require `type: unit-index`.
-9. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM` from the unit index frontmatter.
-10. Use this prompt file as the source of truth for this workflow step or review behavior. Do not ask for a global production marker.
-11. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
+   - unofficial topics under `content/2bac-pc-svt/topics/*/_index.md`.
+4. Match only against `unit_code`, `unit_slug`, `unit_folder`, `title`, and resolved folder path.
+5. Derive `TARGET_UNIT_FOLDER` and `TARGET_UNIT_INDEX`.
+6. Read `TARGET_UNIT_INDEX` and require `type: unit-index`.
+7. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM`.
+8. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
 ## Stub Unit Rule
 
 If `TARGET_UNIT_INDEX` has `planning_state: stub`, stop before changing unit planning or creating lessons, exercises, quizzes, or sets. Recommend `content/_prompts/commands/initialize-unit.md` first. Continue only after the unit is initialized.
 
-
-## Read first
+## Read First
 
 - `AGENTS.md`
 - `content/AGENTS.md`
 - `content/_guides/units/unit-workflow.md`
 - `content/_guides/schema/frontmatter-schema.md`
 - `content/_guides/schema/id-and-naming.md`
-- `content/_guides/exercises/exercise-structure.md`
-- `content/_guides/exercises/solution-style.md`
 - `content/_guides/schema/math-notation.md`
+- `content/_guides/exercises/exercise-structure.md`
+- `content/_guides/exercises/exercise-design-guide.md`
+- `content/_guides/exercises/exercise-quality-rubric.md`
+- `content/_guides/exercises/solution-style.md`
 - `content/_guides/core/source-policy.md`
+- `content/_references/exercise-patterns.md`
 - `content/_references/official-sources.md`
 - `content/_references/misconception-map.md`
 - `content/_references/concept-dependencies.md`
@@ -79,7 +67,7 @@ If `TARGET_UNIT_INDEX` has `planning_state: stub`, stop before changing unit pla
 - existing curated design cards, if any
 - relevant mini-lesson files under `TARGET_UNIT_FOLDER/lessons/`
 
-## Cluster selection
+## Cluster Selection
 
 This step works on one cluster by default.
 
@@ -95,13 +83,25 @@ If no `TARGET_EXERCISE_CLUSTER` is provided:
 
 If no raw seed dump exists for the selected cluster, stop and recommend `workflows/exercises/01-generate-raw-seeds.md`.
 
+## Worth-Existing Filter
+
+Reject or merge a seed if:
+
+- it repeats the same calculation with different numbers;
+- the target skill is vague;
+- the trap is fake;
+- the method is obvious in an unhelpful way;
+- the statement is too artificial;
+- the solution would be identical to another exercise;
+- the exercise only exists because "we need more exercises."
+
 ## Task
 
 Curate the selected cluster's raw exercise seeds into rich exercise design cards in `TARGET_UNIT_INDEX`.
 
 This is the design-card curation step only.
 
-The main output is the exercise design cards. Do not create or maintain a separate planned-exercise summary table.
+The main output is exercise design cards. Do not create or maintain a separate planned-exercise summary table.
 
 Do not create:
 
@@ -111,108 +111,120 @@ Do not create:
 - full polished solutions;
 - frontend or app code.
 
-Use the raw seeds as options, not as a list to preserve. Select, merge, reject, defer, and improve them.
+Use raw seeds as options, not as a list to preserve. Select, merge, reject, defer, and improve them.
 
 Default target:
 
 - 3 to 6 planned exercise design cards per cluster, depending on cluster importance.
 
-Avoid forcing one exercise per mini-lesson when that creates artificial repetition. Prefer coherent skill progression and useful variety.
+Every curated card must include:
 
-The curated cards should:
+- target ability;
+- student decision point;
+- why this exercise deserves to exist;
+- main traps with why tempting, why wrong, and how corrected;
+- hint ladder;
+- verification strategy;
+- potential sets;
+- keep/reject decision.
 
-- balance difficulty within the cluster;
-- identify the exact target skill;
-- explain the exercise role in progression;
-- capture intended method, traps, hints, MCQ opportunities, and verification risks;
-- include parameter and domain constraints;
-- preserve source safety by preferring original or clearly exam-inspired material;
-- mark official curriculum or exam-frame claims as needing verification unless documented in `content/_references/official-sources.md`.
+## Canonical Design Card Format
 
-Use only these `Difficulty` / `Niveau` values:
-
-- `decouverte`
-- `application-directe`
-- `application-guidee`
-- `probleme-type`
-- `approfondissement`
-
-Do not use `technique` as a frontmatter `difficulty` value. If technical practice is needed, use a valid difficulty and describe the technical theme in `Type`, `Objectif`, or `Target skill`.
-
-## Exercise design card format
-
-Use this richer design card format for every planned exercise:
+Use the rich design card format from `content/_guides/exercises/exercise-design-guide.md`:
 
 ```md
-### <planned-exercise-id> - <working title>
+### <planned-exercise-id> — <working title>
 
-Status: planned
-Cluster: <cluster id/title>
-Planned file: `exercises/<planned-file>.md`
-Difficulty: `decouverte | application-directe | application-guidee | probleme-type | approfondissement`
-Type: <calculation | proof | guided application | exam-style | synthesis | conceptual | mixed>
-Mini-lessons linked:
+Status: planned | ready-for-exercise-batch | needs-redesign | needs-verification | rejected
+
+Cluster:
+- <cluster id/title>
+
+Planned file:
+- `exercises/<planned-file>.md`
+
+Difficulty:
+- decouverte | application-directe | application-guidee | probleme-type | approfondissement
+
+Exercise role:
+- warm-up | core-skill | method-choice | trap-recovery | exam-pattern | synthesis | challenge | revision
+
+Exercise type:
+- calcul | preuve | lecture-graphique | etude-fonction | modelisation | probleme | extrait-examen | original
+
+Linked skills:
+- <skill id>
+
+Linked mini-lessons:
 - `<lesson-file-or-title>`
 
-Target skill:
-- <the exact skill this exercise is meant to build/test>
+Target ability:
+- After this exercise, the student should be able to...
 
-Exercise role in progression:
-- <why this exercise exists at this point in the unit>
+Student decision point:
+- The student must notice/choose...
+
+Why this exercise deserves to exist:
+- ...
 
 Student-facing exercise shape:
-- <rough statement shape; not final polished wording unless very short>
+- Rough statement shape, not final polished text.
 
-Parameter constraints:
-- <values/conditions required so the exercise is valid, clean, and pedagogically useful>
+Parameter/design constraints:
+- Values, domains, intervals, signs, or assumptions required so the exercise works cleanly.
 
 Expected method:
-1. <main step>
-2. <main step>
-3. <main step>
+1. ...
+2. ...
+3. ...
 
-Main traps / misconceptions:
-- <trap 1>
-- <trap 2>
+Main traps/misconceptions:
+- Trap:
+  - Why it is tempting:
+  - Why it is wrong:
+  - How the solution should correct it:
 
-Hint opportunities:
-- <hint idea 1>
-- <hint idea 2>
-
-MCQ opportunities:
-- <optional compact MCQ idea for hint/checkpoint/quiz use>
+Hint ladder:
+- Hint 1: recognition nudge
+- Hint 2: method nudge
+- Hint 3: first-step nudge
 
 Solution feasibility sketch:
-- <short sketch only; enough to verify the exercise works>
-- <do not write the full polished solution here>
+- Short sketch only, enough to verify the exercise works.
+
+Verification strategy:
+- How the student or reviewer can check the result.
 
 Variants:
-- Easier: <optional>
-- Harder: <optional>
-- Exam-style: <optional>
+- Easier:
+- Parallel:
+- Harder:
+- Exam-style:
 
-Verification risks:
-- <domain restrictions, notation risks, hidden assumptions, official-source claims, ambiguity, or possible mismath>
+Estimated time:
+- 3 min | 5 min | 8 min | 12 min | 20 min
 
-Keep rationale:
-- <why this deserves to become a real exercise file>
+Potential sets:
+- ...
+
+Review notes:
+- Math risk:
+- Pedagogy risk:
+- Source/exam claim risk:
+
+Keep/reject decision:
+- Keep because...
 ```
 
-If a design card is not ready for exercise batch creation, set or update its status to one of:
+Cards that are ready for batch creation should use `Status: ready-for-exercise-batch`. Use `needs-redesign`, `needs-verification`, or `rejected` honestly when the seed is not ready.
 
-- `deferred`
-- `rejected`
-- `needs-verification`
-
-After `workflows/exercises/03-check-unit-balance.md`, cards that are ready can be marked:
-
-- `ready-for-exercise-batch`
+Mark unsupported official curriculum or exam-frame claims as needing verification unless documented in `content/_references/official-sources.md`.
 
 Finish by summarizing:
 
 - selected cluster;
 - number of design cards created or updated;
-- design cards kept, merged, rejected, deferred, or marked needs-verification;
+- design cards kept, merged, rejected, or marked needs-redesign/needs-verification;
 - coverage by skill and mini-lesson;
 - missing areas or verification needs;
 - recommended next prompt: `workflows/exercises/03-check-unit-balance.md` when cluster cards are ready for whole-unit balance.

@@ -2,16 +2,19 @@
 
 Use this prompt only for very small/simple units or a user-explicit direct blueprint request.
 
-For substantial units, use the preferred cluster-based workflow:
+Direct blueprint is not preferred for substantial units. For substantial units, use the preferred cluster-based workflow:
 
 ```text
 content/_prompts/workflows/exercises/01-generate-raw-seeds.md for one cluster's raw exercise seeds
 -> content/_prompts/workflows/exercises/02-curate-design-cards.md for that cluster's exercise design cards
 -> content/_prompts/workflows/exercises/03-check-unit-balance.md
 -> content/_prompts/workflows/exercises/04-create-batch.md in batches of 3 to 5 final exercise files
+-> content/_prompts/workflows/exercises/05-review-exercise-quality.md
+-> content/_prompts/workflows/exercises/06-review-solutions.md
+-> content/_prompts/workflows/exercises/07-create-sets.md
 ```
 
-The direct blueprint route is allowed only when:
+The direct route is allowed only when:
 
 - the unit is small or simple enough that cluster raw seeds would add little value;
 - raw seeds and design cards already exist and only a small sync is needed;
@@ -19,7 +22,9 @@ The direct blueprint route is allowed only when:
 
 If the unit is substantial and no cluster raw seeds exist, stop and recommend `content/_prompts/workflows/exercises/01-generate-raw-seeds.md` instead of inventing the whole exercise plan directly.
 
-This direct route must produce the same rich exercise design cards used by `workflows/exercises/02-curate-design-cards.md`.
+If used, the direct blueprint must still satisfy the same worth-existing and skill-ladder standards as the curated workflow.
+
+No final exercise files are created by this shortcut.
 
 ## Target
 
@@ -33,12 +38,6 @@ TARGET_EXERCISE_CLUSTER: <cluster-id-or-title>
 ```
 
 If no explicit target is provided, read `_workflow/current-unit.md`.
-
-Expected local file format:
-
-```text
-TARGET_UNIT: <unit-folder-or-path-or-code>
-```
 
 If neither an explicit target nor local current-unit state exists, stop and ask the user to set a current unit by running:
 
@@ -54,37 +53,32 @@ Before doing any work:
 2. If no explicit target exists, read `_workflow/current-unit.md`.
 3. Resolve the unit by scanning all unit indexes:
    - official units under `content/2bac-pc-svt/*/_index.md`;
-   - unofficial units under `content/2bac-pc-svt/topics/*/_index.md`.
-4. Match only against:
-   - `unit_code`;
-   - `unit_slug`;
-   - `unit_folder`;
-   - `title`;
-   - resolved folder path.
-5. Derive `TARGET_UNIT_FOLDER` as the resolved folder.
-6. Derive `TARGET_UNIT_INDEX` as `<resolved-folder>/_index.md`.
-7. Read `TARGET_UNIT_INDEX`.
-8. Require `type: unit-index`.
-9. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM` from the unit index frontmatter.
-10. Use this prompt file as the source of truth for this workflow step or review behavior. Do not ask for a global production marker.
-11. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
+   - unofficial topics under `content/2bac-pc-svt/topics/*/_index.md`.
+4. Match only against `unit_code`, `unit_slug`, `unit_folder`, `title`, and resolved folder path.
+5. Derive `TARGET_UNIT_FOLDER` and `TARGET_UNIT_INDEX`.
+6. Read `TARGET_UNIT_INDEX` and require `type: unit-index`.
+7. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM`.
+8. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
 ## Stub Unit Rule
 
 If `TARGET_UNIT_INDEX` has `planning_state: stub`, stop before changing unit planning or creating lessons, exercises, quizzes, or sets. Recommend `content/_prompts/commands/initialize-unit.md` first. Continue only after the unit is initialized.
 
-
-## Read first
+## Read First
 
 - `AGENTS.md`
 - `content/AGENTS.md`
 - `content/_guides/units/unit-workflow.md`
+- `content/_guides/units/golden-unit-standard.md`
 - `content/_guides/schema/frontmatter-schema.md`
 - `content/_guides/schema/id-and-naming.md`
+- `content/_guides/schema/math-notation.md`
 - `content/_guides/exercises/exercise-structure.md`
+- `content/_guides/exercises/exercise-design-guide.md`
+- `content/_guides/exercises/exercise-quality-rubric.md`
 - `content/_guides/exercises/solution-style.md`
-- `content/_guides/units/golden-unit-standard.md`
 - `content/_guides/core/source-policy.md`
+- `content/_references/exercise-patterns.md`
 - `content/_references/official-sources.md`
 - `TARGET_UNIT_INDEX`
 - relevant mini-lesson files under `TARGET_UNIT_FOLDER/lessons/`
@@ -106,76 +100,106 @@ Do not create:
 
 If a cluster is specified, create direct design cards only for that cluster. If no cluster is specified and the unit is small enough for this route, derive a compact cluster map first so the plan still records why the exercise cards exist.
 
-Add rich exercise design cards using the normal design-card format:
+Apply the worth-existing filter:
+
+- reject repeated calculations with different numbers;
+- reject vague target skills;
+- reject fake traps;
+- reject artificial statements;
+- reject ideas whose solution is identical to another exercise;
+- reject exercises that only exist because "we need more exercises."
+
+Add rich exercise design cards using the canonical design-card format:
 
 ```md
-### <planned-exercise-id> - <working title>
+### <planned-exercise-id> — <working title>
 
-Status: planned
-Cluster: <cluster id/title>
-Planned file: `exercises/<planned-file>.md`
-Difficulty: `decouverte | application-directe | application-guidee | probleme-type | approfondissement`
-Type: <calculation | proof | guided application | exam-style | synthesis | conceptual | mixed>
-Mini-lessons linked:
+Status: planned | ready-for-exercise-batch | needs-redesign | needs-verification | rejected
+
+Cluster:
+- <cluster id/title>
+
+Planned file:
+- `exercises/<planned-file>.md`
+
+Difficulty:
+- decouverte | application-directe | application-guidee | probleme-type | approfondissement
+
+Exercise role:
+- warm-up | core-skill | method-choice | trap-recovery | exam-pattern | synthesis | challenge | revision
+
+Exercise type:
+- calcul | preuve | lecture-graphique | etude-fonction | modelisation | probleme | extrait-examen | original
+
+Linked skills:
+- <skill id>
+
+Linked mini-lessons:
 - `<lesson-file-or-title>`
 
-Target skill:
-- <the exact skill this exercise is meant to build/test>
+Target ability:
+- After this exercise, the student should be able to...
 
-Exercise role in progression:
-- <why this exercise exists at this point in the unit>
+Student decision point:
+- The student must notice/choose...
+
+Why this exercise deserves to exist:
+- ...
 
 Student-facing exercise shape:
-- <rough statement shape; not final polished wording unless very short>
+- Rough statement shape, not final polished text.
 
-Parameter constraints:
-- <values/conditions required so the exercise is valid, clean, and pedagogically useful>
+Parameter/design constraints:
+- Values, domains, intervals, signs, or assumptions required so the exercise works cleanly.
 
 Expected method:
-1. <main step>
-2. <main step>
-3. <main step>
+1. ...
+2. ...
+3. ...
 
-Main traps / misconceptions:
-- <trap 1>
-- <trap 2>
+Main traps/misconceptions:
+- Trap:
+  - Why it is tempting:
+  - Why it is wrong:
+  - How the solution should correct it:
 
-Hint opportunities:
-- <hint idea 1>
-- <hint idea 2>
-
-MCQ opportunities:
-- <optional compact MCQ idea for hint/checkpoint/quiz use>
+Hint ladder:
+- Hint 1: recognition nudge
+- Hint 2: method nudge
+- Hint 3: first-step nudge
 
 Solution feasibility sketch:
-- <short sketch only; enough to verify the exercise works>
-- <do not write the full polished solution here>
+- Short sketch only, enough to verify the exercise works.
+
+Verification strategy:
+- How the student or reviewer can check the result.
 
 Variants:
-- Easier: <optional>
-- Harder: <optional>
-- Exam-style: <optional>
+- Easier:
+- Parallel:
+- Harder:
+- Exam-style:
 
-Verification risks:
-- <domain restrictions, notation risks, hidden assumptions, official-source claims, ambiguity, or possible mismath>
+Estimated time:
+- 3 min | 5 min | 8 min | 12 min | 20 min
 
-Keep rationale:
-- <why this deserves to become a real exercise file>
+Potential sets:
+- ...
+
+Review notes:
+- Math risk:
+- Pedagogy risk:
+- Source/exam claim risk:
+
+Keep/reject decision:
+- Keep because...
 ```
 
 Use exercise IDs and file paths derived from `TARGET_UNIT_CODE` and `TARGET_UNIT_FOLDER`.
 
-Use only these `difficulty` values:
+Use only valid difficulty, exercise role, and exercise type values from the schema guide.
 
-- `decouverte`
-- `application-directe`
-- `application-guidee`
-- `probleme-type`
-- `approfondissement`
-
-Do not use `technique` as a frontmatter `difficulty` value. If technical practice is needed, use a valid difficulty and describe the technical theme in the objective or type.
-
-Mark official curriculum or exam-frame claims as needing verification unless they are already documented in `content/_references/official-sources.md`.
+Mark official curriculum or exam-frame claims as needing verification unless documented in `content/_references/official-sources.md`.
 
 Each exercise must live in its own Markdown file when exercise batch creation creates it. Exercise batch creation usually creates exercise files in small batches of 3 to 5, not a full unit exercise library at once.
 
@@ -184,7 +208,7 @@ Finish by summarizing:
 - why the direct route was justified;
 - planned exercise count;
 - clusters represented;
-- skill coverage;
+- skill-ladder coverage;
 - missing areas;
 - verification risks;
 - next recommended workstream action.

@@ -32,9 +32,18 @@ updated: YYYY-MM-DD
 
 TODO.
 
+## Logique de progression
+
+- Skill ladder :
+- Exercise roles :
+- Difficulty range :
+- Estimated time :
+- Prerequisites :
+- Revision value :
+
 ## Exercices
 
-1. TODO.
+1. [[UNIT_CODE-ex-001]] — TODO.
 
 ## Progression conseillée
 

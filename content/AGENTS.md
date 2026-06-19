@@ -54,6 +54,8 @@ Before creating or editing exercises:
 - Read `_guides/schema/math-notation.md`.
 - Read `_guides/schema/frontmatter-schema.md`.
 - Read `_guides/exercises/exercise-structure.md`.
+- Read `_guides/exercises/exercise-design-guide.md`.
+- Read `_guides/exercises/exercise-quality-rubric.md`.
 - Read `_guides/exercises/solution-style.md`.
 - Read `_guides/core/verification-checklist.md`.
 
@@ -95,7 +97,7 @@ When doing unit-level work:
 11. Update `## Production dashboard` and `## Journal de production` after initialized-unit changes when appropriate.
 12. Do not create lessons, exercises, quizzes, or sets unless the current task asks for them.
 
-Exercises may be created from the unit map, skill map, official curriculum notes, misconception map, exam patterns, exercise cluster map, raw seeds, exercise design cards, or existing lessons when available. Existing lessons are useful references, not a universal prerequisite.
+Exercises may be created from the unit map, skill map, official curriculum notes, misconception map, exam patterns, exercise cluster map, raw seeds, exercise design cards, or existing lessons when available. Existing lessons are useful references, not a universal prerequisite. Exercises are ability-building devices; batch-created exercises still need exercise quality review and solution review before reviewed status.
 
 Quizzes may be created from quiz intent, skill targets, misconceptions, lessons, exercises, exam patterns, raw quiz material, or quiz design cards. Lessons and exercises are optional remediation references unless the specific quiz intent depends on them.
 

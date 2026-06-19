@@ -2,7 +2,7 @@
 
 Use this prompt to create a small batch of final exercise files from curated exercise design cards.
 
-Exercise batch creation outputs final exercise files under `exercises/`. These files still start as draft/unreviewed content and must pass solution review later.
+Exercise batch creation outputs final exercise files under `exercises/`. These files start as draft/unreviewed content and must pass exercise quality review and solution review later.
 
 ## Target
 
@@ -13,15 +13,10 @@ TARGET_UNIT: <unit-folder-or-path-or-code>
 
 Optional selectors:
 TARGET_EXERCISE_CLUSTER: <cluster-id-or-title>
+TARGET_EXERCISE_IDS: <planned-id-list>
 ```
 
 If no explicit target is provided, read `_workflow/current-unit.md`.
-
-Expected local file format:
-
-```text
-TARGET_UNIT: <unit-folder-or-path-or-code>
-```
 
 If neither an explicit target nor local current-unit state exists, stop and ask the user to set a current unit by running:
 
@@ -37,36 +32,29 @@ Before doing any work:
 2. If no explicit target exists, read `_workflow/current-unit.md`.
 3. Resolve the unit by scanning all unit indexes:
    - official units under `content/2bac-pc-svt/*/_index.md`;
-   - unofficial units under `content/2bac-pc-svt/topics/*/_index.md`.
-4. Match only against:
-   - `unit_code`;
-   - `unit_slug`;
-   - `unit_folder`;
-   - `title`;
-   - resolved folder path.
-5. Derive `TARGET_UNIT_FOLDER` as the resolved folder.
-6. Derive `TARGET_UNIT_INDEX` as `<resolved-folder>/_index.md`.
-7. Read `TARGET_UNIT_INDEX`.
-8. Require `type: unit-index`.
-9. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM` from the unit index frontmatter.
-10. Use this prompt file as the source of truth for this workflow step or review behavior. Do not ask for a global production marker.
-11. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
+   - unofficial topics under `content/2bac-pc-svt/topics/*/_index.md`.
+4. Match only against `unit_code`, `unit_slug`, `unit_folder`, `title`, and resolved folder path.
+5. Derive `TARGET_UNIT_FOLDER` and `TARGET_UNIT_INDEX`.
+6. Read `TARGET_UNIT_INDEX` and require `type: unit-index`.
+7. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM`.
+8. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
 ## Stub Unit Rule
 
 If `TARGET_UNIT_INDEX` has `planning_state: stub`, stop before changing unit planning or creating lessons, exercises, quizzes, or sets. Recommend `content/_prompts/commands/initialize-unit.md` first. Continue only after the unit is initialized.
 
-
-## Read first
+## Read First
 
 - `AGENTS.md`
 - `content/AGENTS.md`
 - `content/_guides/units/unit-workflow.md`
 - `content/_guides/schema/frontmatter-schema.md`
 - `content/_guides/schema/id-and-naming.md`
-- `content/_guides/exercises/exercise-structure.md`
-- `content/_guides/exercises/solution-style.md`
 - `content/_guides/schema/math-notation.md`
+- `content/_guides/exercises/exercise-structure.md`
+- `content/_guides/exercises/exercise-design-guide.md`
+- `content/_guides/exercises/exercise-quality-rubric.md`
+- `content/_guides/exercises/solution-style.md`
 - `content/_guides/core/source-policy.md`
 - `content/_templates/exercise.template.md`
 - `TARGET_UNIT_INDEX`
@@ -75,11 +63,17 @@ If `TARGET_UNIT_INDEX` has `planning_state: stub`, stop before changing unit pla
 
 ## Task
 
-Create the requested exercise file(s) under `TARGET_UNIT_FOLDER/exercises/`.
+Create only 3 to 5 exercise files by default under `TARGET_UNIT_FOLDER/exercises/`.
 
 This is exercise batch creation only.
 
-Use rich exercise design cards as the source of truth.
+Use only design cards with:
+
+```text
+Status: ready-for-exercise-batch
+```
+
+Do not invent the pedagogical design from scratch. The mathematical goal, target ability, student decision point, method, traps, hint ladder, verification strategy, variants, and risks must come from the design card.
 
 If a selected exercise lacks a canonical design card in `TARGET_UNIT_INDEX`, stop with this actionable error:
 
@@ -88,20 +82,16 @@ Cannot create <planned-exercise-id>: no canonical exercise design card found in 
 Run content/_prompts/workflows/exercises/02-curate-design-cards.md for the selected cluster before exercise batch creation.
 ```
 
-Do not create an exercise from a table-only planning row or incomplete old planning data.
+If a selected design card is missing critical information such as target ability, linked skills, student decision point, intended method, parameter constraints, traps, hint ladder, or verification strategy, stop or mark that card as needing redesign. Do not patch the design silently inside the final file.
 
-If a selected design card is missing critical information such as target skill, intended method, parameter constraints, traps, or verification risks, pause that card or mark the created draft clearly as needing review in `## Notes auteur`. Prefer returning to `workflows/exercises/02-curate-design-cards.md` when the missing information would determine the exercise's mathematical shape.
-
-## Batch selection
+## Batch Selection
 
 If the user named specific planned IDs, file paths, a cluster, or a small range, create only those items.
 
 If no selection is provided:
 
-- choose the first missing exercise files whose design cards are `planned` or `ready-for-exercise-batch`;
+- choose the first missing exercise files whose design cards are `ready-for-exercise-batch`;
 - create only a small batch of 3 to 5 files.
-
-Do not create every carded exercise in one pass unless explicitly requested.
 
 Do not create:
 
@@ -113,64 +103,48 @@ Do not create:
 
 Each planned exercise gets its own Markdown file. Do not combine multiple unrelated exercises in one file.
 
-## Carry over from the design card
+## Exercise File Requirements
 
-Carry over and respect:
+Use `content/_templates/exercise.template.md`.
 
-- target skill;
-- intended method;
-- exercise role in progression;
-- traps and misconceptions;
-- hint opportunities;
-- MCQ opportunities when relevant;
-- verification risks;
-- parameter and domain constraints;
-- variants, when useful for `## Variantes`;
-- source-safety notes.
-
-The final exercise statement and solution should be polished for learners, but the mathematical goal, method, traps, and verification concerns should come from the design card.
-
-## Exercise file requirements
-
-Each exercise must follow the existing exercise structure and include:
-
-- frontmatter;
-- statement;
-- pedagogical objective;
-- hints;
-- detailed solution;
-- common mistakes;
-- verification;
-- variants;
-- author notes.
-
-Use only these `difficulty` values:
-
-- `decouverte`
-- `application-directe`
-- `application-guidee`
-- `probleme-type`
-- `approfondissement`
-
-Do not use `technique` as a frontmatter `difficulty` value.
-
-Use frontmatter values derived from `TARGET_UNIT_INDEX`, including the resolved unit code, title, program, unit folder, order, domain, tracks, and language. Do not hardcode prototype values.
-
-Use:
+Fill all required frontmatter fields, including:
 
 ```yaml
 status: draft
+design_status: draft
+statement_status: draft
 solution_status: draft
+exercise_role: <from design card>
+estimated_time_min: <from design card>
+requires_graph: false
+has_hints: true
+has_common_mistakes: true
+has_verification: true
 ```
 
-Solutions written during exercise batch creation are draft solutions. They must still pass solution review before being treated as reviewed.
+Do not mark anything reviewed unless the prompt explicitly says to mark something reviewed after review.
 
-After creating the files, update the production dashboard only for the created batch. Update the exercise-file dashboard row honestly; use `partial` unless all intended exercise files for the current unit target exist.
+Every final exercise must include:
+
+- student-facing objective;
+- progressive hints;
+- detailed solution;
+- success result callout;
+- common mistake block for substantial exercises;
+- verification;
+- variants;
+- author notes linking back to the design card.
+
+Use French for learner-facing prose. Use frontmatter values derived from `TARGET_UNIT_INDEX`, including the resolved unit code, program, unit folder, order, domain, tracks, and language.
+
+Use valid `difficulty`, `exercise_type`, `exercise_role`, `exam_relevance`, and `calculator` values from the schema guide.
+
+After creating the files, update the production dashboard only for the created batch. Use `partial` unless all intended exercise files for the current unit target exist.
 
 Finish by summarizing:
 
 - files created;
 - design cards used;
-- skills covered;
+- skills and roles covered;
 - any uncertainty or verification needs;
-- suggested solution-review prompt: `workflows/exercises/05-review-solutions.md`.
+- suggested next prompt: `workflows/exercises/05-review-exercise-quality.md`.

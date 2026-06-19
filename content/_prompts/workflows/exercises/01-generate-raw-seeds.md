@@ -2,11 +2,19 @@
 
 Use this prompt to generate raw exercise seeds for ONE exercise cluster in one target unit.
 
-Raw exercise seed generation does not produce final exercises, final polished statements, full polished solutions, or final exercise files.
+Raw seed generation does not produce final exercises, final polished statements, full polished solutions, design cards, set files, or app/frontend work.
 
-For substantial units, do not plan the whole unit in one giant pass. The default planning unit is an exercise cluster derived from the unit plan, mini-lessons, skills, official program notes, and exam patterns.
+Core philosophy:
 
-Do not hardcode cluster names. Derive them from the current unit.
+```text
+Lesson explains.
+Exercise builds ability.
+Quiz diagnoses.
+Set creates progression.
+```
+
+Do not preserve a seed just because it is mathematically valid.
+Preserve it only if it improves the exercise ladder.
 
 ## Target
 
@@ -20,12 +28,6 @@ TARGET_EXERCISE_CLUSTER: <cluster-id-or-title>
 ```
 
 If no explicit target is provided, read `_workflow/current-unit.md`.
-
-Expected local file format:
-
-```text
-TARGET_UNIT: <unit-folder-or-path-or-code>
-```
 
 If neither an explicit target nor local current-unit state exists, stop and ask the user to set a current unit by running:
 
@@ -41,37 +43,31 @@ Before doing any work:
 2. If no explicit target exists, read `_workflow/current-unit.md`.
 3. Resolve the unit by scanning all unit indexes:
    - official units under `content/2bac-pc-svt/*/_index.md`;
-   - unofficial units under `content/2bac-pc-svt/topics/*/_index.md`.
-4. Match only against:
-   - `unit_code`;
-   - `unit_slug`;
-   - `unit_folder`;
-   - `title`;
-   - resolved folder path.
-5. Derive `TARGET_UNIT_FOLDER` as the resolved folder.
-6. Derive `TARGET_UNIT_INDEX` as `<resolved-folder>/_index.md`.
-7. Read `TARGET_UNIT_INDEX`.
-8. Require `type: unit-index`.
-9. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM` from the unit index frontmatter.
-10. Use this prompt file as the source of truth for this workflow step or review behavior. Do not ask for a global production marker.
-11. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
+   - unofficial topics under `content/2bac-pc-svt/topics/*/_index.md`.
+4. Match only against `unit_code`, `unit_slug`, `unit_folder`, `title`, and resolved folder path.
+5. Derive `TARGET_UNIT_FOLDER` and `TARGET_UNIT_INDEX`.
+6. Read `TARGET_UNIT_INDEX` and require `type: unit-index`.
+7. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM`.
+8. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
 ## Stub Unit Rule
 
 If `TARGET_UNIT_INDEX` has `planning_state: stub`, stop before changing unit planning or creating lessons, exercises, quizzes, or sets. Recommend `content/_prompts/commands/initialize-unit.md` first. Continue only after the unit is initialized.
 
-
-## Read first
+## Read First
 
 - `AGENTS.md`
 - `content/AGENTS.md`
 - `content/_guides/units/unit-workflow.md`
 - `content/_guides/schema/frontmatter-schema.md`
 - `content/_guides/schema/id-and-naming.md`
-- `content/_guides/exercises/exercise-structure.md`
-- `content/_guides/exercises/solution-style.md`
 - `content/_guides/schema/math-notation.md`
+- `content/_guides/exercises/exercise-structure.md`
+- `content/_guides/exercises/exercise-design-guide.md`
+- `content/_guides/exercises/exercise-quality-rubric.md`
+- `content/_guides/exercises/solution-style.md`
 - `content/_guides/core/source-policy.md`
+- `content/_references/exercise-patterns.md`
 - `content/_references/official-sources.md`
 - `content/_references/misconception-map.md`
 - `content/_references/concept-dependencies.md`
@@ -79,14 +75,14 @@ If `TARGET_UNIT_INDEX` has `planning_state: stub`, stop before changing unit pla
 - `TARGET_UNIT_INDEX`
 - relevant mini-lesson files under `TARGET_UNIT_FOLDER/lessons/`
 
-## Cluster selection
+## Cluster Selection
 
 Raw exercise seed work uses one cluster by default.
 
 If `TARGET_EXERCISE_CLUSTER` is provided:
 
 - create or update the raw seed dump only for that cluster;
-- do not generate seed dumps for the other clusters.
+- do not generate seed dumps for other clusters.
 
 If no `TARGET_EXERCISE_CLUSTER` is provided:
 
@@ -97,15 +93,9 @@ If no `TARGET_EXERCISE_CLUSTER` is provided:
 
 Do not generate all cluster dumps at once unless the user explicitly asks for all clusters.
 
-A cluster is usually based on a mini-lesson group, a skill family, a recurring method, or an exam-style pattern.
-
 ## Task
 
 Create or update raw exercise seeds for the selected cluster in `TARGET_UNIT_INDEX`.
-
-This is raw exercise seed work only.
-
-The output is a raw exercise seed dump, not a curated exercise design card set and not a final exercise library.
 
 Default amount:
 
@@ -123,38 +113,38 @@ Do not create:
 - new mini-lessons;
 - frontend or app code.
 
-Do not update final production dashboard rows directly except where the project convention requires a scratch note in the unit `_index.md`. Do not mark later exercise workflow rows complete.
+Do not update later production dashboard rows. Do not mark design cards, balance review, exercise files, quality review, solution review, or sets complete during raw seed work.
 
-## Output sections
+## Output Sections
 
 If needed, add or update a cluster map:
 
 ```md
-## Carte des clusters d'exercices
+### Carte des clusters d'exercices
 
-| Cluster | Base de derivation | Mini-lecons liees | Competences | Importance | Statut seeds | Statut design cards | Notes |
+| Cluster | Base de dérivation | Mini-leçons liées | Compétences | Importance | Statut seeds | Statut design cards | Notes |
 |---|---|---|---|---|---|---|---|
-| TODO | TODO | TODO | TODO | TODO | TODO | TODO | TODO |
+| <cluster> | <base> | <mini-leçons> | <compétences> | <importance> | <statut seeds> | <statut design cards> | <notes> |
 ```
 
 Then add or update only the selected cluster dump:
 
 ```md
-## Seeds bruts des exercices
+### Seeds bruts des exercices
 
 Raw exercise seeds - one cluster at a time, not final exercises.
 
 ### Cluster: <cluster id/title>
 ```
 
-Use "rough exercise shape" or "statement idea" language. Do not describe raw seed output as final exercises.
-
-Use this raw exercise seed card format for every seed:
+Use this canonical raw seed card format for every seed:
 
 ```md
-### Seed <provisional-id> - <short idea name>
+### Seed <provisional-id> — <short idea name>
 
-Cluster: <cluster id/title>
+Cluster:
+- <cluster id/title>
+
 Mini-lesson links:
 - <lesson path or title>
 
@@ -164,45 +154,51 @@ Skill tested:
 Exercise shape:
 - <rough form of the exercise, not polished final wording>
 
+Student action trained:
+- The student must...
+
+Likely wrong move:
+- ...
+
 Difficulty direction:
 - decouverte | application-directe | application-guidee | probleme-type | approfondissement
 
-Why this seed is useful:
-- <pedagogical reason>
+Potential exercise role:
+- warm-up | core-skill | method-choice | trap-recovery | exam-pattern | synthesis | challenge | revision
+
+Why this seed may be useful:
+- ...
 
 Expected method:
-- <short method outline>
+- ...
 
 Main trap:
-- <common mistake or misconception>
+- ...
 
 Parameter / domain constraints:
-- <conditions needed so the exercise works>
+- ...
 
 Feasibility sketch:
-- <max 2-4 bullets; enough to verify the idea, not a full solution>
+- Max 2-4 bullets; enough to verify the idea, not a full solution.
 
-Hint / MCQ opportunities:
-- <possible hint or MCQ angles>
+Hint opportunities:
+- recognition nudge:
+- method nudge:
+- first-step nudge:
 
 Verification risks:
-- <math, notation, domain, official-source, ambiguity, or mismath risks>
+- math, notation, domain, source, ambiguity, or mismath risks.
 
 Curation note:
-- keep | merge | reject | defer | needs verification
+- keep | merge | reject | defer | needs-verification
+
+Reason:
+- ...
 ```
 
 Every seed must include `Verification risks`. If no obvious risk is found, write a short note such as "low risk, still verify arithmetic/domain during design-card curation."
 
-Use only these difficulty values:
-
-- `decouverte`
-- `application-directe`
-- `application-guidee`
-- `probleme-type`
-- `approfondissement`
-
-Do not use `technique` as a frontmatter `difficulty` value. If technical practice is needed, describe it as a theme in `Exercise shape`, `Skill tested`, or `Why this seed is useful`.
+Use only valid difficulty and exercise-role values from the exercise guides.
 
 Mark unsupported official curriculum or exam-frame claims as needing verification unless they are already documented in `content/_references/official-sources.md`.
 

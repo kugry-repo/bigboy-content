@@ -1,6 +1,8 @@
 # Prompt - Create Exercise Sets
 
-Use this prompt after exercises exist or have been explicitly planned in exercise design cards.
+Use this prompt after reviewed exercises exist or after precise reviewed design cards make a future set plan safe.
+
+Exercise sets organize existing reviewed exercises into learner paths. They should link to exercises, not duplicate content.
 
 ## Target
 
@@ -11,12 +13,6 @@ TARGET_UNIT: <unit-folder-or-path-or-code>
 ```
 
 If no explicit target is provided, read `_workflow/current-unit.md`.
-
-Expected local file format:
-
-```text
-TARGET_UNIT: <unit-folder-or-path-or-code>
-```
 
 If neither an explicit target nor local current-unit state exists, stop and ask the user to set a current unit by running:
 
@@ -32,27 +28,18 @@ Before doing any work:
 2. If no explicit target exists, read `_workflow/current-unit.md`.
 3. Resolve the unit by scanning all unit indexes:
    - official units under `content/2bac-pc-svt/*/_index.md`;
-   - unofficial units under `content/2bac-pc-svt/topics/*/_index.md`.
-4. Match only against:
-   - `unit_code`;
-   - `unit_slug`;
-   - `unit_folder`;
-   - `title`;
-   - resolved folder path.
-5. Derive `TARGET_UNIT_FOLDER` as the resolved folder.
-6. Derive `TARGET_UNIT_INDEX` as `<resolved-folder>/_index.md`.
-7. Read `TARGET_UNIT_INDEX`.
-8. Require `type: unit-index`.
-9. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM` from the unit index frontmatter.
-10. Use this prompt file as the source of truth for this workflow step or review behavior. Do not ask for a global production marker.
-11. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
+   - unofficial topics under `content/2bac-pc-svt/topics/*/_index.md`.
+4. Match only against `unit_code`, `unit_slug`, `unit_folder`, `title`, and resolved folder path.
+5. Derive `TARGET_UNIT_FOLDER` and `TARGET_UNIT_INDEX`.
+6. Read `TARGET_UNIT_INDEX` and require `type: unit-index`.
+7. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM`.
+8. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
 ## Stub Unit Rule
 
 If `TARGET_UNIT_INDEX` has `planning_state: stub`, stop before changing unit planning or creating lessons, exercises, quizzes, or sets. Recommend `content/_prompts/commands/initialize-unit.md` first. Continue only after the unit is initialized.
 
-
-## Read first
+## Read First
 
 - `AGENTS.md`
 - `content/AGENTS.md`
@@ -60,6 +47,8 @@ If `TARGET_UNIT_INDEX` has `planning_state: stub`, stop before changing unit pla
 - `content/_guides/schema/frontmatter-schema.md`
 - `content/_guides/schema/id-and-naming.md`
 - `content/_guides/exercises/exercise-structure.md`
+- `content/_guides/exercises/exercise-design-guide.md`
+- `content/_guides/exercises/exercise-quality-rubric.md`
 - `content/_guides/core/source-policy.md`
 - `content/_templates/exercise-set.template.md`
 - `TARGET_UNIT_INDEX`
@@ -72,7 +61,7 @@ Create or update exercise set files under `TARGET_UNIT_FOLDER/sets/`.
 
 This is exercise-set assembly work only.
 
-Exercise sets must organize existing exercises, or canonical exercise design cards when the set is clearly a future planning artifact. They should link to exercise files instead of duplicating full exercise content.
+Exercise sets should organize existing exercises, preferably exercises whose design, statement, and solution statuses are reviewed. If using planned design cards, the set must be clearly marked as future planning and must not pretend linked exercise files exist.
 
 Do not create:
 
@@ -81,15 +70,28 @@ Do not create:
 - substantive lesson or exercise content;
 - frontend or app code.
 
-Possible sets:
+Set logic must use:
 
-- discovery;
-- application-directe;
-- techniques, as a descriptive theme only;
-- examen-standard;
-- synthese.
+- exercise role;
+- difficulty;
+- estimated time;
+- skill ladder;
+- prerequisites;
+- revision value.
 
-Use frontmatter values derived from `TARGET_UNIT_INDEX`, including the resolved unit code, title, program, unit folder, order, domain, tracks, and language.
+Sets should link to exercises, not duplicate full statements, hints, or solutions.
+
+Possible set types:
+
+- warm-up path;
+- core-skill path;
+- trap-recovery path;
+- method-choice path;
+- exam-pattern path;
+- synthesis path;
+- revision path.
+
+Use frontmatter values derived from `TARGET_UNIT_INDEX`, including the resolved unit code, program, unit folder, order, domain, tracks, and language.
 
 If no exercises exist and the design cards are not specific enough to build sets safely, stop and ask for clarification.
 
