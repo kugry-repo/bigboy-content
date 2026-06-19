@@ -6,6 +6,12 @@ This file maps the Moroccan 2BAC PC/SVT mathematics frame into an authoring stru
 
 This map is a working authoring map. It should be verified against the latest official reference before publication.
 
+## Authority
+
+This file is the canonical official curriculum structure for this program. It owns the official unit list, order, folder, slug, title, domain, code, and official curriculum presence.
+
+Program `_index.md` catalog rows and official unit `_index.md` identity fields are derived from this map and must match it.
+
 ## Baseline Reference
 
 Baseline used for this scaffold:
@@ -31,18 +37,18 @@ This is the preferred teaching order for this vault. Student-facing French may s
 
 | Order | Unit folder | Unit slug | Title | Domain | Unit code |
 |---:|---|---|---|---|---|
-| 1 | `01-limites-continuite` | `limites-continuite` | Limites et continuite | analyse | lc |
-| 2 | `02-derivabilite-etude-fonctions` | `derivabilite-etude-fonctions` | Derivabilite et etude des fonctions | analyse | def |
-| 3 | `03-suites-numeriques` | `suites-numeriques` | Suites numeriques | analyse | sn |
+| 1 | `01-limites-continuite` | `limites-continuite` | Limites et continuité | analyse | lc |
+| 2 | `02-derivabilite-etude-fonctions` | `derivabilite-etude-fonctions` | Dérivabilité et étude des fonctions | analyse | def |
+| 3 | `03-suites-numeriques` | `suites-numeriques` | Suites numériques | analyse | sn |
 | 4 | `04-fonctions-primitives` | `fonctions-primitives` | Fonctions primitives | analyse | fp |
 | 5 | `05-fonction-logarithme` | `fonction-logarithme` | La fonction logarithme | analyse | fl |
-| 6 | `06-nombres-complexes-partie-1` | `nombres-complexes-partie-1` | Les nombres complexes - Partie 1 | algebre-geometrie | nc1 |
+| 6 | `06-nombres-complexes-partie-1` | `nombres-complexes-partie-1` | Les nombres complexes — Partie 1 | algebre-geometrie | nc1 |
 | 7 | `07-fonction-exponentielle` | `fonction-exponentielle` | La fonction exponentielle | analyse | fe |
-| 8 | `08-nombres-complexes-partie-2` | `nombres-complexes-partie-2` | Les nombres complexes - Partie 2 | algebre-geometrie | nc2 |
-| 9 | `09-calcul-integral` | `calcul-integral` | Calcul integral | analyse | ci |
-| 10 | `10-equations-differentielles` | `equations-differentielles` | Equations differentielles | analyse | ed |
-| 11 | `11-geometrie-espace` | `geometrie-espace` | Geometrie dans l'espace | algebre-geometrie | ge |
-| 12 | `12-denombrement-probabilites` | `denombrement-probabilites` | Denombrement et probabilites | probabilites | dp |
+| 8 | `08-nombres-complexes-partie-2` | `nombres-complexes-partie-2` | Les nombres complexes — Partie 2 | algebre-geometrie | nc2 |
+| 9 | `09-calcul-integral` | `calcul-integral` | Calcul intégral | analyse | ci |
+| 10 | `10-equations-differentielles` | `equations-differentielles` | Équations différentielles | analyse | ed |
+| 11 | `11-geometrie-espace` | `geometrie-espace` | Géométrie dans l’espace | algebre-geometrie | ge |
+| 12 | `12-denombrement-probabilites` | `denombrement-probabilites` | Dénombrement et probabilités | probabilites | dp |
 
 ## Main Exam Domains
 

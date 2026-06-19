@@ -42,6 +42,8 @@ content/programs/<program_id>/<ordered-unit-folder>/
 
 Create `topics/_index.md`.
 
+Write the official unit list, order, folders, slugs, titles, domains, and codes into `_curriculum-map.md` first. Official unit stubs and program-index navigation rows are derived from that map.
+
 For each official unit folder, create only a stub `_index.md` and empty artifact folders:
 
 ```text

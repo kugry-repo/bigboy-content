@@ -26,6 +26,14 @@ topics/
 
 Do not model a full program as a track inside another program. For example, `ma-2bac-sma` is a separate program, not a track under `ma-2bac-pc-svt`.
 
+## Official Unit Authority
+
+For official curriculum units, the owning program's `_curriculum-map.md` is the canonical structure file. It owns the official unit list, order, code, folder, slug, title, domain, and official curriculum presence.
+
+Program `_index.md` files are overview/navigation dashboards. Unit `_index.md` files are unit-local planning dashboards. If either repeats official identity fields, those fields are derived copies and must match `_curriculum-map.md`.
+
+Unofficial topics do not belong in `_curriculum-map.md`. Their canonical registration is the topic unit `_index.md`; `topics/_index.md` and any program-index topic tables are derived navigation views.
+
 ## Program ID Prefix
 
 Every program index defines `id_prefix`. All stable IDs inside that program start with this prefix.
@@ -165,7 +173,7 @@ Corrections:
 
 ## Unit Code Tables
 
-Official unit codes are program-specific. Store the canonical official unit order and codes in the owning program's `_curriculum-map.md`.
+Official unit codes are program-specific. Store the canonical official unit order, folders, slugs, titles, domains, and codes in the owning program's `_curriculum-map.md`.
 
 Global guides may include explicitly labeled examples, but they must not make the PC/SVT unit list the system default.
 
@@ -191,4 +199,4 @@ Shared conceptual skills may use a concept prefix when they are intentionally re
 
 Do not rename IDs after publication.
 
-When a program, unit, or artifact is renamed during system buildout, update paths, frontmatter, catalogs, links, examples, prompts, guides, and validation rules in the same destructive change. Do not keep aliases, fallback paths, or duplicate old/new naming systems.
+When a program, unit, or artifact is renamed during system buildout, update paths, frontmatter, derived catalogs, links, examples, prompts, guides, and validation rules in the same destructive change. Do not keep aliases, fallback paths, or duplicate old/new naming systems.

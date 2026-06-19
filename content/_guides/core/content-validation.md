@@ -27,6 +27,7 @@ The validator checks:
 - required base folders;
 - dynamic program discovery under `content/programs/*`;
 - each program's `_index.md`, `_curriculum-map.md`, metadata, `id_prefix`, and `topics/` folder;
+- `_curriculum-map.md` as the official-unit authority for official unit list, order, folder, slug, title, domain, and code;
 - official units directly under `content/programs/<program_id>/`;
 - unofficial topics under `content/programs/<program_id>/topics/`;
 - catalog indexes distinguished from content-unit indexes;
@@ -61,7 +62,8 @@ The validator checks:
 - absence of obsolete lesson workflow prompt filenames in live Markdown and script files;
 - required quiz frontmatter fields, allowed quiz values, required quiz headings, review-status conflicts, and quality-signal warnings;
 - required production dashboard sections, rows, and allowed dashboard status values;
-- catalog references against unit frontmatter inside the owning program.
+- official-unit frontmatter and program-index catalog rows against the owning curriculum map;
+- topic catalog references against topic unit frontmatter inside the owning program.
 
 ## Scaffold warnings
 

@@ -82,6 +82,8 @@ A content unit can be:
 
 Official curriculum units remain the canonical curriculum spine. Unofficial topics are curated learning paths, revision units, synthesis units, or method units. They must not pretend to be official curriculum units.
 
+For official curriculum units, the owning program's `_curriculum-map.md` is the canonical source for unit list, order, code, folder, slug, title, and domain. Program `_index.md` files are navigation/dashboard views, and unit `_index.md` files own unit-local planning and content state.
+
 When doing unit-level work:
 
 1. Read `_guides/units/unit-workflow.md`.
@@ -127,7 +129,7 @@ content/programs/ma-2bac-pc-svt/topics/etudier-une-fonction/lessons/ef-lesson-00
 content/programs/ma-2bac-pc-svt/topics/etudier-une-fonction/exercises/ef-ex-001.md
 ```
 
-Do not create domain folders under `content/programs/<program_id>/`. Keep `domain` as frontmatter metadata only. For the canonical official unit order, use the target program's `_curriculum-map.md`.
+Do not create domain folders under `content/programs/<program_id>/`. Keep `domain` as frontmatter metadata only. For canonical official unit structure, use the target program's `_curriculum-map.md`.
 
 ## Lesson voice rule
 

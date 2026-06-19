@@ -815,6 +815,136 @@ function countMatches(text, regex) {
   return [...text.matchAll(regex)].length;
 }
 
+function cleanTableCell(value) {
+  return String(value ?? "")
+    .trim()
+    .replace(/`/g, "")
+    .trim();
+}
+
+function normalizeTableHeader(value) {
+  return normalizeForSearch(cleanTableCell(value))
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function isMarkdownSeparatorRow(cells) {
+  return cells.every((cell) => /^:?-{3,}:?$/.test(cleanTableCell(cell)));
+}
+
+function parseCurriculumMap(filePath) {
+  const text = fs.readFileSync(filePath, "utf8");
+  const lines = text.split(/\r?\n/);
+  const emptyResult = { units: [], byFolder: new Map() };
+
+  let headerLineIndex = -1;
+  let columns = null;
+
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index];
+    if (!/^\|/.test(line)) continue;
+
+    const cells = splitMarkdownTableRow(line);
+    const headers = cells.map(normalizeTableHeader);
+    const candidateColumns = {
+      order: headers.indexOf("order"),
+      folder: headers.indexOf("unit-folder"),
+      slug: headers.indexOf("unit-slug"),
+      title: headers.indexOf("title"),
+      domain: headers.indexOf("domain"),
+      code: headers.indexOf("unit-code"),
+    };
+
+    if (Object.values(candidateColumns).every((column) => column >= 0)) {
+      headerLineIndex = index;
+      columns = candidateColumns;
+      break;
+    }
+  }
+
+  if (!columns) {
+    addError(
+      filePath,
+      'missing official unit table with columns "Order", "Unit folder", "Unit slug", "Title", "Domain", and "Unit code"',
+    );
+    return emptyResult;
+  }
+
+  const units = [];
+
+  for (let index = headerLineIndex + 1; index < lines.length; index += 1) {
+    const line = lines[index];
+    if (!/^\|/.test(line)) break;
+
+    const cells = splitMarkdownTableRow(line);
+    if (isMarkdownSeparatorRow(cells)) continue;
+
+    const entry = {
+      order: Number(cleanTableCell(cells[columns.order])),
+      folder: cleanTableCell(cells[columns.folder]),
+      slug: cleanTableCell(cells[columns.slug]),
+      title: cleanTableCell(cells[columns.title]),
+      domain: cleanTableCell(cells[columns.domain]),
+      code: cleanTableCell(cells[columns.code]),
+    };
+
+    if (
+      !entry.folder &&
+      !entry.slug &&
+      !entry.title &&
+      !entry.domain &&
+      !entry.code
+    ) {
+      continue;
+    }
+
+    const rowLabel = `official unit table row ${units.length + 1}`;
+
+    if (!Number.isFinite(entry.order)) {
+      addError(filePath, `${rowLabel} has invalid Order "${cells[columns.order] ?? ""}"`);
+    }
+
+    for (const field of ["folder", "slug", "title", "domain", "code"]) {
+      if (!entry[field]) {
+        addError(filePath, `${rowLabel} is missing ${field}`);
+      }
+    }
+
+    if (entry.folder.startsWith("topics/")) {
+      addError(filePath, `${rowLabel} must not register unofficial topic folder "${entry.folder}"`);
+    }
+
+    units.push(entry);
+  }
+
+  if (units.length === 0) {
+    addError(filePath, "official unit table must contain at least one unit row");
+  }
+
+  for (const field of ["order", "folder", "slug", "code"]) {
+    const seen = new Map();
+    for (const unit of units) {
+      const value = unit[field];
+      if (isEmptyValue(value) || (field === "order" && !Number.isFinite(value))) continue;
+      const key = String(value);
+      const previous = seen.get(key);
+      if (previous) {
+        addError(
+          filePath,
+          `duplicate curriculum-map ${field} "${value}" for "${unit.folder}" also used by "${previous}"`,
+        );
+      } else {
+        seen.set(key, unit.folder);
+      }
+    }
+  }
+
+  return {
+    units,
+    byFolder: new Map(units.map((unit) => [unit.folder, unit])),
+  };
+}
+
 function isGuidePromptOrReference(filePath) {
   return /^content\/_(guides|prompts|references)\//.test(rel(filePath));
 }
@@ -1117,13 +1247,22 @@ function checkProgramIndex(programDir) {
   }
 
   const curriculumMap = data.curriculum_map || "_curriculum-map.md";
+  let curriculumMapPath = null;
+  let parsedCurriculumMap = { units: [], byFolder: new Map() };
+
   if (path.isAbsolute(curriculumMap) || curriculumMap.includes("..")) {
     addError(indexPath, 'frontmatter "curriculum_map" must be a program-relative path');
-  } else if (!isFile(path.join(programDir, curriculumMap))) {
+  } else {
+    curriculumMapPath = path.join(programDir, curriculumMap);
+  }
+
+  if (curriculumMapPath && !isFile(curriculumMapPath)) {
     addError(
-      path.join(programDir, curriculumMap),
+      curriculumMapPath,
       'missing program curriculum map referenced by "curriculum_map"',
     );
+  } else if (curriculumMapPath) {
+    parsedCurriculumMap = parseCurriculumMap(curriculumMapPath);
   }
 
   if (!isDirectory(path.join(programDir, "topics"))) {
@@ -1138,6 +1277,9 @@ function checkProgramIndex(programDir) {
     data,
     idPrefix: data.id_prefix,
     text,
+    curriculumMapPath,
+    curriculumUnits: parsedCurriculumMap.units,
+    curriculumUnitsByFolder: parsedCurriculumMap.byFolder,
   };
 }
 
@@ -1466,8 +1608,28 @@ function checkRequiredContentFields(filePath, data, unit) {
     addError(filePath, `frontmatter "unit_folder" must be "${unit.folder}"`);
   }
 
+  if (data.unit_slug !== unit.data.unit_slug) {
+    addError(filePath, `frontmatter "unit_slug" must be "${unit.data.unit_slug}"`);
+  }
+
+  if (Number(data.unit_order) !== Number(unit.data.unit_order)) {
+    addError(filePath, `frontmatter "unit_order" must be "${unit.data.unit_order}"`);
+  }
+
   if (data.unit_kind !== unit.kind) {
     addError(filePath, `frontmatter "unit_kind" must be "${unit.kind}"`);
+  }
+
+  if (isTrue(data.official) !== isTrue(unit.data.official)) {
+    addError(filePath, `frontmatter "official" must be "${unit.data.official}"`);
+  }
+
+  if (data.content_scope !== unit.data.content_scope) {
+    addError(filePath, `frontmatter "content_scope" must be "${unit.data.content_scope}"`);
+  }
+
+  if (data.domain !== unit.data.domain) {
+    addError(filePath, `frontmatter "domain" must be "${unit.data.domain}"`);
   }
 
   if (data.program !== unit.program.id) {
@@ -2134,6 +2296,93 @@ function checkUnitUniqueness() {
   }
 }
 
+function checkCurriculumMapUnitField(unit, mapEntry, field, actualValue, expectedValue) {
+  if (actualValue !== expectedValue) {
+    addError(
+      unit.indexPath,
+      `frontmatter "${field}" is "${actualValue}", but curriculum map has "${expectedValue}" for "${mapEntry.folder}"`,
+    );
+  }
+}
+
+function checkCurriculumMapAlignmentForProgram(program) {
+  const officialUnits = units.filter(
+    (unit) => unit.program.id === program.id && unit.group === "official",
+  );
+  const officialUnitsByFolder = new Map(
+    officialUnits.map((unit) => [unit.folder, unit]),
+  );
+
+  for (const unit of officialUnits) {
+    const mapEntry = program.curriculumUnitsByFolder.get(unit.folder);
+    if (!mapEntry) {
+      addError(
+        unit.indexPath,
+        `official unit "${unit.folder}" is not registered in canonical curriculum map`,
+      );
+      continue;
+    }
+
+    checkCurriculumMapUnitField(
+      unit,
+      mapEntry,
+      "unit_order",
+      Number(unit.data.unit_order),
+      mapEntry.order,
+    );
+    checkCurriculumMapUnitField(
+      unit,
+      mapEntry,
+      "unit_code",
+      unit.data.unit_code,
+      mapEntry.code,
+    );
+    checkCurriculumMapUnitField(
+      unit,
+      mapEntry,
+      "unit_folder",
+      unit.data.unit_folder,
+      mapEntry.folder,
+    );
+    checkCurriculumMapUnitField(
+      unit,
+      mapEntry,
+      "unit_slug",
+      unit.data.unit_slug,
+      mapEntry.slug,
+    );
+    checkCurriculumMapUnitField(
+      unit,
+      mapEntry,
+      "title",
+      unit.data.title,
+      mapEntry.title,
+    );
+    checkCurriculumMapUnitField(
+      unit,
+      mapEntry,
+      "domain",
+      unit.data.domain,
+      mapEntry.domain,
+    );
+  }
+
+  for (const mapEntry of program.curriculumUnits) {
+    if (!officialUnitsByFolder.has(mapEntry.folder)) {
+      addError(
+        program.curriculumMapPath,
+        `curriculum-map official unit "${mapEntry.folder}" has no matching official unit _index.md`,
+      );
+    }
+  }
+}
+
+function checkCurriculumMapAlignment() {
+  for (const program of programs) {
+    checkCurriculumMapAlignmentForProgram(program);
+  }
+}
+
 function unitByFolder(program) {
   return new Map(
     units
@@ -2205,7 +2454,13 @@ function splitMarkdownTableRow(line) {
   return cells.slice(1, -1);
 }
 
-function checkCatalogRow(filePath, row, catalogKind, unitsByFolder) {
+function checkCatalogRow(
+  filePath,
+  row,
+  catalogKind,
+  unitsByFolder,
+  curriculumUnitsByFolder = new Map(),
+) {
   const linkMatch = row.join("|").match(/\[\[([^|\]]+)_index\|([^\]]+)\]\]/);
   if (!linkMatch) return;
 
@@ -2216,8 +2471,38 @@ function checkCatalogRow(filePath, row, catalogKind, unitsByFolder) {
     return;
   }
 
-  const order = Number(row[0]);
-  const code = row[2]?.replace(/`/g, "");
+  const order = Number(cleanTableCell(row[0]));
+  const code = cleanTableCell(row[2]);
+
+  if (catalogKind === "official") {
+    const mapEntry = curriculumUnitsByFolder.get(folder);
+
+    if (!mapEntry) {
+      addError(filePath, `official catalog references unit "${folder}" that is not registered in curriculum map`);
+      return;
+    }
+
+    const title = cleanTableCell(linkMatch[2]);
+    const domain = cleanTableCell(row[3]);
+
+    if (Number.isFinite(order) && order !== mapEntry.order) {
+      addError(filePath, `official catalog order for "${folder}" is ${order}, but curriculum map order is ${mapEntry.order}`);
+    }
+
+    if (code && code !== mapEntry.code) {
+      addError(filePath, `official catalog code for "${folder}" is "${code}", but curriculum map code is "${mapEntry.code}"`);
+    }
+
+    if (title && title !== mapEntry.title) {
+      addError(filePath, `official catalog title for "${folder}" is "${title}", but curriculum map title is "${mapEntry.title}"`);
+    }
+
+    if (domain && domain !== mapEntry.domain) {
+      addError(filePath, `official catalog domain for "${folder}" is "${domain}", but curriculum map domain is "${mapEntry.domain}"`);
+    }
+
+    return;
+  }
 
   if (Number.isFinite(order) && order !== unit.order) {
     addError(filePath, `catalog order for "${folder}" is ${order}, but unit_order is ${unit.order}`);
@@ -2228,9 +2513,9 @@ function checkCatalogRow(filePath, row, catalogKind, unitsByFolder) {
   }
 
   if (catalogKind === "topic") {
-    const catalogFolder = row[3]?.replace(/`/g, "");
-    const scope = row[4]?.replace(/`/g, "");
-    const status = row[7]?.replace(/`/g, "");
+    const catalogFolder = cleanTableCell(row[3]);
+    const scope = cleanTableCell(row[4]);
+    const status = cleanTableCell(row[7]);
 
     if (catalogFolder && catalogFolder !== unit.folder) {
       addError(filePath, `topic catalog folder for "${folder}" is "${catalogFolder}", but unit_folder is "${unit.folder}"`);
@@ -2289,6 +2574,7 @@ function checkCatalogsForProgram(program) {
         row,
         isTopic ? "program-topic" : "official",
         unitsByFolder,
+        program.curriculumUnitsByFolder,
       );
     }
   }
@@ -2317,13 +2603,9 @@ function checkCatalogsForProgram(program) {
     }
   }
 
-  for (const unit of units) {
-    if (
-      unit.program.id === program.id &&
-      unit.group === "official" &&
-      !officialLinked.has(unit.folder)
-    ) {
-      addError(programIndexPath, `missing official catalog entry for "${unit.folder}"`);
+  for (const mapEntry of program.curriculumUnits) {
+    if (!officialLinked.has(mapEntry.folder)) {
+      addError(programIndexPath, `missing official catalog entry for "${mapEntry.folder}"`);
     }
   }
 
@@ -2745,6 +3027,7 @@ function main() {
     checkProgramFolderShape(program);
   }
   discoverAndCheckUnits();
+  checkCurriculumMapAlignment();
   checkUnitUniqueness();
   checkCatalogs();
   checkPromptLayout();

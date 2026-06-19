@@ -4,11 +4,15 @@ Every generated content file and index file starts with YAML frontmatter.
 
 The schema is program-aware. Program metadata is defined once in `content/programs/<program_id>/_index.md`, then copied into units and artifacts where validation needs local context.
 
+Official curriculum structure is defined once in `content/programs/<program_id>/_curriculum-map.md`. For official units, repeated fields such as `unit_order`, `unit_code`, `unit_folder`, `unit_slug`, `title`, and `domain` are derived copies and must match that curriculum map.
+
 Guides, prompts, and references may be metadata-free. Validator output for metadata-free guide, prompt, or reference files should be warnings at most unless the project later decides to enforce frontmatter everywhere.
 
 ## Program Index
 
 Each program root must contain `_index.md`.
+
+The program index owns program-level metadata, overview text, navigation, and dashboards. It does not own the official unit list, official order, official unit codes, official folders/slugs, official titles, or official domains when `_curriculum-map.md` exists.
 
 ```yaml
 ---
@@ -84,6 +88,8 @@ updated: YYYY-MM-DD
 topics/etudier-une-fonction
 ```
 
+For official curriculum units, `unit_order`, `unit_code`, `unit_folder`, `unit_slug`, `title`, `official`, `content_scope`, and `domain` must match the owning program's `_curriculum-map.md` and official-unit rules. For unofficial topics, the topic unit `_index.md` is the canonical registration record.
+
 ## Unit Index
 
 Canonical template:
@@ -146,6 +152,8 @@ Both unit kinds use the same unit index lifecycle, production dashboard rules af
 ## Topic Catalog
 
 The topic catalog is not itself a content unit.
+
+It is a derived navigation view for unofficial topics. Topic identity and planning state live in each topic unit `_index.md`.
 
 ```yaml
 ---

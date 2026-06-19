@@ -7,7 +7,7 @@ It supports:
 ```text
 ACTION: create
 ACTION: rename
-ACTION: modify
+ACTION: metadata-only
 ACTION: delete
 ACTION: split
 ACTION: merge
@@ -20,18 +20,23 @@ It works for:
 - official curriculum units;
 - unofficial topics.
 
-Both are content units. The difference is metadata, folder location, and catalog placement.
+Both are content units. The difference is authority, metadata, folder location, and catalog placement.
+
+For official curriculum units, `content/programs/<TARGET_PROGRAM>/_curriculum-map.md` is the canonical structure file. It owns official unit list, order, code, folder, slug, title, domain, and official curriculum presence. Program `_index.md` official-unit tables and unit `_index.md` identity fields are derived copies.
+
+For unofficial topics, do not edit `_curriculum-map.md`. The canonical registration is the topic unit `_index.md`; `topics/_index.md` and any program-index topic table are derived navigation views.
 
 Unit management operations can affect:
 
 - folder paths;
+- the program `_curriculum-map.md` for official units;
 - unit frontmatter;
 - filenames;
 - IDs;
 - frontmatter slugs;
 - Obsidian links;
-- program indexes;
-- topic catalog indexes;
+- derived program-index navigation tables;
+- derived topic catalog indexes;
 - unit dashboards and status notes;
 - guides;
 - prompt examples;
@@ -84,7 +89,10 @@ For actions that operate on an existing unit:
    - `TARGET_UNIT_KIND`;
    - `TARGET_UNIT_CODE`;
    - `TARGET_UNIT_TITLE`.
-9. Stop if missing or ambiguous.
+9. Read `TARGET_CURRICULUM_MAP`.
+10. If the target is an official curriculum unit, treat the curriculum-map row as canonical and verify the unit `_index.md` repeated identity fields against it.
+11. If the target is an unofficial topic, treat the topic unit `_index.md` as canonical registration and verify derived catalog rows against it.
+12. Stop if missing or ambiguous.
 
 ## ACTION: create
 
@@ -106,41 +114,46 @@ UNIT_FOLDER
 Rules:
 
 1. Require or infer `TARGET_PROGRAM`.
-2. If `UNIT_KIND` is `official-curriculum-unit`, create the folder directly under `content/programs/<TARGET_PROGRAM>/`, normally with a numeric prefix.
-3. If `UNIT_KIND` is `unofficial-topic`, create the folder under `content/programs/<TARGET_PROGRAM>/topics/`.
-4. Use `content/_templates/unit-index-stub.template.md` unless the user explicitly asks to initialize the unit immediately.
-5. Create:
+2. If `UNIT_KIND` is `official-curriculum-unit`, add the new unit to `content/programs/<TARGET_PROGRAM>/_curriculum-map.md` first. That row is the canonical registration for `UNIT_ORDER`, `UNIT_FOLDER`, `UNIT_SLUG`, `UNIT_TITLE`, `DOMAIN`, and `UNIT_CODE`.
+3. If `UNIT_KIND` is `official-curriculum-unit`, create the folder directly under `content/programs/<TARGET_PROGRAM>/`, normally with the numeric prefix recorded in the curriculum map.
+4. If `UNIT_KIND` is `unofficial-topic`, create the folder under `content/programs/<TARGET_PROGRAM>/topics/` and do not add it to `_curriculum-map.md`.
+5. Use `content/_templates/unit-index-stub.template.md` unless the user explicitly asks to initialize the unit immediately.
+6. Create:
    - `_index.md`;
    - `lessons/.gitkeep`;
    - `exercises/.gitkeep`;
    - `quizzes/.gitkeep`;
    - `sets/.gitkeep`.
-6. Add or update the unit in:
-   - `content/programs/<TARGET_PROGRAM>/_index.md`;
-   - `content/programs/<TARGET_PROGRAM>/topics/_index.md` if it is an unofficial topic;
+7. For official units, copy identity fields from the curriculum map into the unit `_index.md`, then update derived navigation in `content/programs/<TARGET_PROGRAM>/_index.md`.
+8. For unofficial topics, make the topic unit `_index.md` the registration record, then update derived navigation in:
+   - `content/programs/<TARGET_PROGRAM>/topics/_index.md`;
+   - `content/programs/<TARGET_PROGRAM>/_index.md` if it contains topic rows.
+9. Update only examples that explicitly list affected unit codes or folders:
    - `content/_guides/schema/id-and-naming.md`;
    - any other guide or prompt example that lists unit codes or folders.
-7. Run validation.
+10. Run validation.
 
 ## ACTION: rename
 
 1. Resolve the existing unit by folder, code, title, or path.
-2. Move the folder if `unit_folder` changes.
-3. Update `_index.md` frontmatter.
-4. Update titles/headings if requested.
-5. If `unit_code` changes, rename lesson, exercise, quiz, and set files and update their IDs/frontmatter.
-6. Search the repo for old references and update them.
-7. Do not leave aliases or duplicate entries.
-8. Leave `planning_state: stub` for a normal newly registered unit.
+2. If it is an official unit, update the canonical row in `_curriculum-map.md` first for changed title, slug, folder, code, order, or domain.
+3. If it is an unofficial topic, update the topic unit `_index.md` as the canonical registration and do not add it to `_curriculum-map.md`.
+4. Move the folder if `unit_folder` changes.
+5. Update derived unit `_index.md` frontmatter, headings, program-index navigation, and topic catalog rows as appropriate.
+6. If `unit_code` changes, rename lesson, exercise, quiz, and set files and update their IDs/frontmatter.
+7. Search the repo for old references and update them.
+8. Do not leave aliases or duplicate entries.
 9. Run validation.
 
-## ACTION: modify
+## ACTION: metadata-only
 
 1. Resolve the unit.
-2. Modify only the requested metadata or catalog information.
-3. Keep frontmatter, index rows, guides, and prompt examples synchronized.
-4. Search for stale references if the modified field affects links, IDs, folders, titles, ordering, or codes.
-5. Run validation.
+2. Classify the requested metadata as official structure, topic registration, or unit-local planning/content state.
+3. For official structure fields (`unit_order`, `unit_code`, `unit_folder`, `unit_slug`, `title`, `domain`, or official curriculum presence), update `_curriculum-map.md` first, then update derived unit frontmatter, program-index navigation rows, filenames, IDs, links, and examples.
+4. For official unit-local fields (`planning_state`, `status`, `sync_status`, `skills`, `related_units`, dashboard rows, journal notes, or author notes), update the unit `_index.md` and any affected artifacts only; do not change `_curriculum-map.md`.
+5. For unofficial topic identity fields, update the topic unit `_index.md` first, then update `topics/_index.md`, program-index topic rows, filenames, IDs, links, and examples as needed.
+6. Search for stale references if the modified field affects links, IDs, folders, titles, ordering, or codes.
+7. Run validation.
 
 ## ACTION: delete
 
@@ -148,15 +161,17 @@ Rules:
 2. Inspect whether the unit contains real content under `lessons/`, `exercises/`, `quizzes/`, or `sets/`.
 3. If it only contains `_index.md` and `.gitkeep` placeholders, delete it directly.
 4. If it contains real authored content, delete only when the user explicitly says to delete the unit and its contents.
-5. Remove the unit from:
+5. If it is an official unit, remove the canonical row from `content/programs/<TARGET_PROGRAM>/_curriculum-map.md`.
+6. Remove derived navigation rows from:
    - `content/programs/<TARGET_PROGRAM>/_index.md`;
    - `content/programs/<TARGET_PROGRAM>/topics/_index.md` if relevant;
+7. Update only examples that explicitly mention the deleted unit:
    - `content/_guides/schema/id-and-naming.md`;
    - any guide or prompt example that mentions it.
-6. If `_workflow/current-unit.md` points to the deleted unit, clear it or update it to a safe state.
-7. Search the repo for old references and remove or update them.
-8. Do not leave dead Obsidian links.
-9. Run validation.
+8. If `_workflow/current-unit.md` points to the deleted unit, clear it or update it to a safe state.
+9. Search the repo for old references and remove or update them.
+10. Do not leave dead Obsidian links.
+11. Run validation.
 
 ## ACTION: split
 
@@ -182,37 +197,42 @@ SHIFT_FOLLOWING_OFFICIAL_UNITS: yes
 Split behavior:
 
 1. Resolve the old unit.
-2. Create the new unit folders and indexes.
-3. Move existing lessons, exercises, quizzes, and sets only if they can be classified confidently.
-4. If classification is unclear, do not invent placement. Produce a clear needs-human-decision list.
-5. Update filenames, IDs, frontmatter, Obsidian links, tables, guides, and prompt examples.
-6. If official unit order changes, shift later official unit folder prefixes and `unit_order` values consistently.
-7. Delete the old unit folder only after its content has been moved or explicitly discarded.
-8. Run validation.
+2. If the old unit is official, replace its canonical `_curriculum-map.md` row with the new official unit rows before creating derived stubs.
+3. If the old unit is an unofficial topic, create the new topic unit `_index.md` registrations and do not add them to `_curriculum-map.md`.
+4. Create the new unit folders and indexes.
+5. Move existing lessons, exercises, quizzes, and sets only if they can be classified confidently.
+6. If classification is unclear, do not invent placement. Produce a clear needs-human-decision list.
+7. Update filenames, IDs, frontmatter, Obsidian links, derived catalog/navigation tables, guides, and prompt examples.
+8. If official unit order changes, shift later official unit folder prefixes and `unit_order` values in `_curriculum-map.md` first, then update derived copies consistently.
+9. Delete the old unit folder only after its content has been moved or explicitly discarded.
+10. Run validation.
 
 ## ACTION: merge
 
 1. Resolve all source units.
 2. Create or resolve the destination unit.
-3. Move content into the destination unit.
-4. Rename files and IDs to the destination `unit_code` if needed.
-5. Update references, tables, guides, and prompt examples.
-6. Delete old source unit folders only after content is moved or explicitly discarded.
-7. Run validation.
+3. For official destination/source units, update `_curriculum-map.md` first so it contains the destination official unit row and no stale source rows.
+4. For unofficial topic destination/source units, update the destination topic unit `_index.md` registration and derived topic catalogs; do not use `_curriculum-map.md`.
+5. Move content into the destination unit.
+6. Rename files and IDs to the destination `unit_code` if needed.
+7. Update references, derived tables, guides, and prompt examples.
+8. Delete old source unit folders only after content is moved or explicitly discarded.
+9. Run validation.
 
 ## ACTION: reorder
 
 Use this action when a unit stays in the same official/topic section but its order changes.
 
 1. Resolve the unit or units being reordered.
-2. Update `unit_order` and folder prefixes when official curriculum folder order changes.
-3. Update:
+2. For official units, update order and folder prefixes in `_curriculum-map.md` first.
+3. For unofficial topics, update `unit_order` and `unit_folder` in the topic unit `_index.md` first.
+4. Update derived copies:
    - `content/programs/<TARGET_PROGRAM>/_index.md`;
    - `content/programs/<TARGET_PROGRAM>/topics/_index.md` if relevant;
    - frontmatter `unit_folder` values;
    - links, unit dashboards, prompt examples, and guide examples that mention old ordered paths.
-4. If folder prefixes change, move folders with `git mv` and update all references.
-5. Run validation.
+5. If folder prefixes change, move folders with `git mv` and update all references.
+6. Run validation.
 
 ## ACTION: move
 
@@ -226,9 +246,11 @@ Use this action when a unit moves between sections, for example from an unoffici
    - `UNIT_ORDER`;
    - `UNIT_FOLDER`.
 3. Move the folder with `git mv`.
-4. Update `_index.md` frontmatter, folder paths, IDs if `unit_code` changes, catalog rows, links, unit dashboards, guides, prompts, generated content references, and validation assumptions.
-5. Do not keep the old section entry, alias, or duplicate unit folder.
-6. Run validation.
+4. If moving into official curriculum, add the canonical row to `_curriculum-map.md` before updating derived files.
+5. If moving out of official curriculum, remove the canonical row from `_curriculum-map.md` before updating derived files.
+6. Update `_index.md` frontmatter, folder paths, IDs if `unit_code` changes, derived catalog/navigation rows, links, unit dashboards, guides, prompts, generated content references, and validation assumptions.
+7. Do not keep the old section entry, alias, or duplicate unit folder.
+8. Run validation.
 
 ## Examples
 
@@ -302,6 +324,15 @@ NEW_UNITS:
     UNIT_ORDER: 2
     UNIT_FOLDER: 02-continuite
 SHIFT_FOLLOWING_OFFICIAL_UNITS: yes
+```
+
+Example 6:
+
+```text
+ACTION: metadata-only
+TARGET_UNIT: 07-fonction-exponentielle
+FIELDS_TO_CHANGE:
+  DOMAIN: analyse
 ```
 
 ## Final Response

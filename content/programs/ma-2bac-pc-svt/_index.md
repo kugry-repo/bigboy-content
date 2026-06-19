@@ -37,22 +37,26 @@ Both unit groups use unit metadata, not hardcoded separate official/topic schema
 
 ## Official Curriculum Units
 
-| Ordre | Unite officielle | Code | Domaine |
+Derived navigation summary. The canonical official unit list, order, folders, slugs, titles, domains, and codes live in `_curriculum-map.md`.
+
+| Ordre | Unite officielle | Code | Domain |
 |---:|---|---|---|
-| 1 | [[01-limites-continuite/_index|Limites et continuite]] | lc | Analyse |
-| 2 | [[02-derivabilite-etude-fonctions/_index|Derivabilite et etude des fonctions]] | def | Analyse |
-| 3 | [[03-suites-numeriques/_index|Suites numeriques]] | sn | Analyse |
-| 4 | [[04-fonctions-primitives/_index|Fonctions primitives]] | fp | Analyse |
-| 5 | [[05-fonction-logarithme/_index|La fonction logarithme]] | fl | Analyse |
-| 6 | [[06-nombres-complexes-partie-1/_index|Les nombres complexes - Partie 1]] | nc1 | Algebre et geometrie |
-| 7 | [[07-fonction-exponentielle/_index|La fonction exponentielle]] | fe | Analyse |
-| 8 | [[08-nombres-complexes-partie-2/_index|Les nombres complexes - Partie 2]] | nc2 | Algebre et geometrie |
-| 9 | [[09-calcul-integral/_index|Calcul integral]] | ci | Analyse |
-| 10 | [[10-equations-differentielles/_index|Equations differentielles]] | ed | Analyse |
-| 11 | [[11-geometrie-espace/_index|Geometrie dans l'espace]] | ge | Algebre et geometrie |
-| 12 | [[12-denombrement-probabilites/_index|Denombrement et probabilites]] | dp | Probabilites |
+| 1 | [[01-limites-continuite/_index|Limites et continuité]] | lc | analyse |
+| 2 | [[02-derivabilite-etude-fonctions/_index|Dérivabilité et étude des fonctions]] | def | analyse |
+| 3 | [[03-suites-numeriques/_index|Suites numériques]] | sn | analyse |
+| 4 | [[04-fonctions-primitives/_index|Fonctions primitives]] | fp | analyse |
+| 5 | [[05-fonction-logarithme/_index|La fonction logarithme]] | fl | analyse |
+| 6 | [[06-nombres-complexes-partie-1/_index|Les nombres complexes — Partie 1]] | nc1 | algebre-geometrie |
+| 7 | [[07-fonction-exponentielle/_index|La fonction exponentielle]] | fe | analyse |
+| 8 | [[08-nombres-complexes-partie-2/_index|Les nombres complexes — Partie 2]] | nc2 | algebre-geometrie |
+| 9 | [[09-calcul-integral/_index|Calcul intégral]] | ci | analyse |
+| 10 | [[10-equations-differentielles/_index|Équations différentielles]] | ed | analyse |
+| 11 | [[11-geometrie-espace/_index|Géométrie dans l’espace]] | ge | algebre-geometrie |
+| 12 | [[12-denombrement-probabilites/_index|Dénombrement et probabilités]] | dp | probabilites |
 
 ## Unofficial Topic Units
+
+Derived navigation summary. Canonical topic registration lives in each topic unit `_index.md`; topics do not belong in `_curriculum-map.md`.
 
 | Ordre | Unite topic | Code | Scope | Role |
 |---:|---|---|---|---|

@@ -23,7 +23,7 @@ These are unofficial content units. They share the same unit schema, production 
 
 Official curriculum units remain the main program spine. Topic units organize transversal learning, revision, synthesis, exam preparation, or methods without replacing the official progression.
 
-The system uses unit metadata discovered from `_index.md` files, not hardcoded separate official/topic lists.
+Canonical topic registration lives in each topic unit `_index.md`. This catalog is a derived navigation view and must not be edited as an independent authority.
 
 | Ordre | Unite topic | Code | Dossier | Scope | Role | Unites liees | Statut |
 |---:|---|---|---|---|---|---|---|

@@ -15,6 +15,16 @@ Each unit belongs to exactly one program. Program metadata comes from `content/p
 
 There is no canonical global unit sequence. Do not invent numbered unit ladders, extra global gates, or split labels such as `5a` and `5b`. Numbered prompt files inside a workflow folder are local operating procedures for that workstream only.
 
+## Authority model
+
+Official curriculum structure is owned by the program `_curriculum-map.md`. It is the source of truth for the official unit list, order, code, folder, slug, title, domain, and official curriculum presence.
+
+The program `_index.md` is an overview, navigation page, and dashboard. Official-unit catalog rows in it are derived from `_curriculum-map.md`.
+
+The unit `_index.md` owns unit-local planning and content state: `planning_state`, dashboard rows, production notes, local maps, design cards, status, and related authoring decisions. Official identity fields repeated in unit frontmatter are derived copies and must match the curriculum map.
+
+Unofficial topics are not part of the official curriculum map. Their canonical registration is the topic unit `_index.md`; `topics/_index.md` and any topic rows in the program index are derived navigation views.
+
 ## Core rule
 
 The unit `_index.md` is the only unit-planning artifact, but it has a lifecycle.
@@ -115,12 +125,13 @@ Resolution order:
 
 ## Source of truth
 
-Use four layers of state:
+Use five layers of state:
 
 1. `content/_guides/units/unit-workflow.md` defines lifecycle and dashboard semantics.
-2. Unit-index frontmatter `planning_state` defines whether the unit is a stub, initialized dashboard, or published dashboard.
-3. The initialized or published unit `_index.md` tracks unit-specific progress through `## Production dashboard`.
-4. File frontmatter tracks file-level status.
+2. Program `_curriculum-map.md` defines official curriculum structure for official units.
+3. Unit-index frontmatter `planning_state` defines whether the unit is a stub, initialized dashboard, or published dashboard.
+4. The initialized or published unit `_index.md` tracks unit-specific progress through `## Production dashboard`.
+5. File frontmatter tracks file-level status.
 
 `status` means content maturity. `sync_status` means alignment/freshness against current upstream plans, templates, and guides. `## Journal de production` is a historical log, not a current-state tracker.
 

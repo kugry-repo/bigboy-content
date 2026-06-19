@@ -54,13 +54,14 @@ The shared authoring system remains global:
 Program-specific files own:
 
 - official curriculum map;
-- official unit order;
-- program index;
+- official unit list, order, codes, folders, slugs, titles, domains, and official curriculum presence in `_curriculum-map.md`;
+- program metadata, `id_prefix`, overview, navigation, and dashboard summaries in `_index.md`;
 - track list;
 - exam alignment notes;
 - source/reference notes;
-- ID prefix;
-- program homepage/catalog metadata.
+- program homepage/display metadata.
+
+Program `_index.md` catalog tables are derived navigation summaries. Do not edit them as independent official curriculum authority.
 
 ## Program Index Metadata
 
@@ -125,6 +126,8 @@ Do not create lessons, exercises, quizzes, or sets during program creation unles
 
 Creating `ma-2bac-sma` is not a copy-paste clone of `ma-2bac-pc-svt`. It may reuse the authoring tools and pedagogical ideas, but it must own its curriculum map, official unit order, tracks, source notes, and ID prefix.
 
+The new program's `_curriculum-map.md` must be populated before official unit stubs are treated as registered. Official unit stub frontmatter may repeat `unit_order`, `unit_code`, `unit_folder`, `unit_slug`, `title`, and `domain`, but those values are derived from the curriculum map and must match it.
+
 ## Initialize Units
 
 Official unit creation registers stubs. A stub unit stays lightweight until initialized.
@@ -155,7 +158,7 @@ Rename behavior is destructive:
 2. Update program index frontmatter.
 3. Update `program` in all unit, topic, lesson, exercise, quiz, set, and correction frontmatter.
 4. Update `id_prefix` and all IDs if the prefix changes.
-5. Update links, prompts, examples, catalogs, workflow state, and docs that name the old program.
+5. Update links, prompts, examples, derived catalogs, workflow state, and docs that name the old program.
 6. Remove all old path references.
 7. Run validation.
 
@@ -170,10 +173,10 @@ Delete behavior:
 1. Inspect whether the program contains authored lessons, exercises, quizzes, sets, or corrections.
 2. If it only contains stubs and placeholders, delete directly when requested.
 3. If it contains real authored content, delete only when the user explicitly confirms deletion of the program and its contents.
-4. Remove references from guides, prompts, catalogs, workflow state, and examples.
+4. Remove references from guides, prompts, derived catalogs, workflow state, and examples.
 5. Run validation.
 
-Do not leave the program index, topics catalog, or old path references behind.
+Do not leave the program index, derived topics catalog, or old path references behind.
 
 ## Modify Program Metadata
 
@@ -234,6 +237,6 @@ Not allowed:
 Use:
 
 - `content/_prompts/commands/manage-program.md` for program create, rename, delete, modify, split, and adapt operations.
-- `content/_prompts/commands/manage-unit.md` for official unit and unofficial topic create, rename, delete, split, merge, reorder, and move operations.
+- `content/_prompts/commands/manage-unit.md` for official unit and unofficial topic create, rename, metadata-only, delete, split, merge, reorder, and move operations.
 
 Both prompts are destructive by design. They update references and validation together instead of supporting old and new systems in parallel.

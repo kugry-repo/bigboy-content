@@ -64,6 +64,8 @@ quizzes/.gitkeep
 sets/.gitkeep
 ```
 
+Populate `_curriculum-map.md` before treating official unit stubs as registered. The map owns the official unit list, order, folders, slugs, titles, domains, and codes. Unit stubs and program-index official-unit tables are derived copies and must match it.
+
 Do not create lessons, exercises, quizzes, sets, or full initialized dashboards unless explicitly requested.
 
 Use the new program's `id_prefix` for all unit IDs:
@@ -74,7 +76,7 @@ Use the new program's `id_prefix` for all unit IDs:
 
 Create a `topics/_index.md` catalog even if no topics exist yet.
 
-Update shared docs, prompt examples, catalogs, and workflow state only where they need to mention the new program explicitly.
+Update shared docs, prompt examples, derived catalogs, and workflow state only where they need to mention the new program explicitly.
 
 Run `npm run validate`.
 
@@ -93,10 +95,10 @@ Behavior:
 
 1. Move `content/programs/<OLD_PROGRAM>/` to `content/programs/<NEW_PROGRAM>/`.
 2. Update `_index.md`.
-3. Update `_curriculum-map.md` references if needed.
+3. Update `_curriculum-map.md` references if needed; keep it as the official-unit structure authority.
 4. Update `program` in all descendant frontmatter.
 5. If `id_prefix` changes, update every descendant ID and ID reference.
-6. Update guides, prompts, examples, catalogs, and workflow state.
+6. Update guides, prompts, examples, derived catalogs, and workflow state.
 7. Search the repository for old program IDs, old ID prefixes, and old paths.
 8. Delete stale references.
 9. Run `npm run validate`.
@@ -133,7 +135,7 @@ Behavior:
 1. Inspect descendant lessons, exercises, quizzes, sets, and corrections.
 2. If authored content exists and `DELETE_CONTENT` is not `yes`, stop and report what would be deleted.
 3. Remove `content/programs/<TARGET_PROGRAM>/`.
-4. Remove references from guides, prompts, examples, catalogs, and workflow state.
+4. Remove references from guides, prompts, examples, derived catalogs, and workflow state.
 5. Run `npm run validate`.
 
 ## ACTION: split
@@ -152,7 +154,7 @@ Behavior:
 
 1. Create each destination program root with its own `_index.md` and `_curriculum-map.md`.
 2. Move units only when their destination is clear.
-3. Update program frontmatter, ID prefixes, links, catalogs, and workflow state.
+3. Update program frontmatter, ID prefixes, curriculum maps, links, derived catalogs, and workflow state.
 4. If unit classification is unclear, stop with a human-decision list.
 5. Remove the old mixed-context program only after content is moved or explicitly discarded.
 6. Run `npm run validate`.
@@ -174,6 +176,7 @@ Rules:
 
 - Reuse authoring tools, not curriculum assumptions.
 - Give the new program its own official unit order.
+- Record that order in the new program's `_curriculum-map.md`.
 - Give the new program its own `id_prefix`.
 - Do not copy IDs.
 - Do not claim official alignment without sources.

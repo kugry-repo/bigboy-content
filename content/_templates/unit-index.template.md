@@ -7,6 +7,7 @@ level: "{{level}}"
 tracks: "{{tracks}}"
 language: "{{language}}"
 unit_kind: "{{unit_kind}}"
+# For official units, these identity fields are copied from the program _curriculum-map.md and must match it.
 unit_code: "{{unit_code}}"
 unit_slug: "{{unit_slug}}"
 unit_folder: "{{unit_folder}}"
