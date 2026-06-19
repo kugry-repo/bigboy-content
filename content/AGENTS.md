@@ -44,10 +44,9 @@ Before creating or editing mini-lessons:
 
 Before reviewing lessons:
 - Read `_prompts/workflows/lessons/05-coherence-pass.md`.
-- Read `_prompts/workflows/lessons/06-voice-pass.md`.
-- Read `_prompts/workflows/lessons/07-compression-pass.md`.
-- Read `_prompts/workflows/lessons/08-verify-finalize.md`.
-- For a single combined review of an existing mini-lesson, read `_prompts/workflows/lessons/09-review-existing.md`.
+- Read `_prompts/workflows/lessons/06-compression-pass.md`.
+- Read `_prompts/workflows/lessons/07-verify-finalize.md`.
+- For review or repair of an already existing mini-lesson, read `_prompts/commands/review-existing-lesson.md`.
 - Read `_guides/lesson-quality-rubric.md`.
 
 Before creating or editing exercises:

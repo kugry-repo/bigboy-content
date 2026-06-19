@@ -2,6 +2,8 @@
 
 Use this prompt after a mini-lesson has been assembled from curated material.
 
+This prompt owns structural and pedagogical coherence only.
+
 ## Target
 
 Input:
@@ -47,7 +49,7 @@ Before doing any work:
 7. Read `TARGET_UNIT_INDEX`.
 8. Require `type: unit-index`.
 9. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM` from the unit index frontmatter.
-10. Use this prompt file as the source of truth for this stage or review behavior. Do not ask for or fill `TARGET_STAGE`.
+10. Use this prompt file as the source of truth for this stage behavior. Do not ask for or fill `TARGET_STAGE`.
 11. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
 ## Read first
@@ -62,20 +64,30 @@ Before doing any work:
 - `TARGET_UNIT_INDEX`
 - `TARGET_MINI_LESSON_FILE`
 
+## Preconditions
+
+Before reviewing, confirm that the selected mini-lesson file exists and was assembled from curated material. If the draft does not exist, stop and recommend:
+
+```text
+content/_prompts/workflows/lessons/04-create-draft.md
+```
+
 ## Task
 
 Review and edit the selected mini-lesson for coherence.
 
-Do not add new raw-dump material unless the curation note clearly selected it.
-
 Check:
 
-- flow;
-- transitions;
-- repeated ideas;
+- conceptual order;
+- prerequisite flow;
+- local transitions;
 - notation consistency;
+- example placement;
 - whether examples match the explanation;
-- whether headings fit the actual lesson shape;
+- explanation completeness;
+- duplication and contradictions;
+- alignment with the unit plan and curation decisions;
+- whether diagrams or visual aids are introduced at the right moment;
 - whether the lesson reads like one unified piece rather than stitched fragments.
 
 Make targeted edits.
@@ -85,11 +97,17 @@ Do not:
 - create new mini-lessons;
 - add exercises;
 - force missing optional blocks;
-- rewrite the whole file when a smaller coherence edit is enough.
+- add new raw-dump material unless the curation note clearly selected it;
+- perform a broad voice rewrite;
+- perform compression/taste cleanup beyond what is needed for coherence;
+- run final mathematical verification except when a coherence issue exposes a blocking error.
+
+After editing, update the canonical workflow state and production journal honestly.
 
 Finish with:
 
 - file reviewed;
 - coherence edits made;
-- unresolved flow or notation issues;
-- recommended next prompt: `workflows/lessons/06-voice-pass.md`.
+- unresolved flow, diagram, or notation issues;
+- workflow or journal updates;
+- successful next action: `content/_prompts/workflows/lessons/06-compression-pass.md`.

@@ -26,7 +26,7 @@ source / target
 -> human curation / chop
 -> assembled lesson
 -> coherence pass
--> compression / taste pass
+-> compression / taste / voice pass
 -> verification pass
 -> final student lesson
 ```
@@ -117,9 +117,9 @@ Check:
 - whether the chosen order helps the student;
 - whether the lesson feels like one mini-lesson, not stitched fragments.
 
-## 6. Compression / Taste Pass
+## 6. Compression / Taste / Voice Pass
 
-The compression pass removes ceremony and bloat.
+The compression, taste, and voice pass removes ceremony and bloat while preserving the learner-facing mentor voice.
 
 Remove or shorten:
 
@@ -127,12 +127,15 @@ Remove or shorten:
 - repetitive headings;
 - AI-sounding structure;
 - over-explanation;
+- bloated transitions;
 - weak analogies;
 - bloated exam notes;
 - redundant summaries;
 - anything that does not help learning.
 
-The final lesson should feel lean, strategic, and varied.
+Also check that the lesson keeps direct French, `tu`, warmth without chatter, precise mathematics, useful mistake recovery, honest exam guidance, and preferred heading conventions.
+
+The final lesson should feel lean, strategic, human, and varied.
 
 ## 7. Verification Pass
 

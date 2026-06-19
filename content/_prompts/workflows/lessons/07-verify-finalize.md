@@ -1,6 +1,8 @@
 # Prompt - Verify And Finalize Mini-Lesson
 
-Use this prompt after coherence and compression/taste passes.
+Use this prompt after coherence and compression/taste/voice review are complete.
+
+This prompt owns final verification and final workflow updates.
 
 ## Target
 
@@ -47,13 +49,14 @@ Before doing any work:
 7. Read `TARGET_UNIT_INDEX`.
 8. Require `type: unit-index`.
 9. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM` from the unit index frontmatter.
-10. Use this prompt file as the source of truth for this stage or review behavior. Do not ask for or fill `TARGET_STAGE`.
+10. Use this prompt file as the source of truth for this stage behavior. Do not ask for or fill `TARGET_STAGE`.
 11. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
 ## Read first
 
 - `AGENTS.md`
 - `content/AGENTS.md`
+- `content/_guides/unit-workflow.md`
 - `content/_guides/lesson-editorial-pipeline.md`
 - `content/_guides/lesson-structure.md`
 - `content/_guides/lesson-voice.md`
@@ -61,10 +64,24 @@ Before doing any work:
 - `content/_guides/math-notation.md`
 - `content/_guides/verification-checklist.md`
 - `content/_guides/curriculum-map-2bac-pc-svt.md`
+- `content/_guides/source-policy.md`
 - `content/_references/official-sources.md`
 - `content/_references/notation-decisions.md`
 - `TARGET_UNIT_INDEX`
 - `TARGET_MINI_LESSON_FILE`
+
+## Preconditions
+
+Before final verification, require evidence that:
+
+- the selected mini-lesson file exists;
+- source preparation, raw dump, curation, and draft assembly are complete;
+- coherence review is complete;
+- compression/taste/voice review is complete.
+
+If coherence is missing, stop and recommend `content/_prompts/workflows/lessons/05-coherence-pass.md`.
+
+If compression/taste/voice review is missing, stop and recommend `content/_prompts/workflows/lessons/06-compression-pass.md`.
 
 ## Task
 
@@ -72,30 +89,48 @@ Verify the selected mini-lesson and finalize it as far as the evidence allows.
 
 Check:
 
-- math correctness;
+- mathematical correctness;
+- theorem, property, method, and shortcut conditions;
+- domain restrictions and notation consistency;
 - curriculum alignment for 2BAC PC/SVT Morocco;
 - official-program consistency where applicable;
-- no fake exam claims;
-- correct notation;
+- no fake official or exam claims;
 - examples solved correctly;
-- prerequisites respected;
 - checkpoint answers and next paths clear;
-- source type and source reference are accurate;
-- no unresolved TODOs in finalized student-facing text;
-- author notes record remaining uncertainty.
+- prerequisite assumptions respected;
+- frontmatter completeness;
+- identifier, filename, unit code, unit folder, and lesson number consistency;
+- links and references;
+- diagram and interaction references;
+- source type and source reference accuracy;
+- source-policy compliance;
+- formatting and Markdown validity;
+- Obsidian callouts and LaTeX syntax by visual/manual review where needed;
+- absence of unresolved placeholders forbidden by the lesson's claimed status;
+- author notes record any remaining uncertainty.
 
 Rules:
 
+- Do not repeat full coherence or compression rewrites unless verification discovers a blocking defect.
 - If correctness or curriculum alignment is uncertain, keep `status: needs-review` and record the issue in `## Notes auteur`.
 - Use `reviewed` only when the file genuinely meets the rubric.
 - Do not mark as `published` unless the user explicitly asks.
 - Do not add unsupported official claims.
 - Do not force optional blocks during finalization.
+- Run the repository validator from the repository root after edits:
+
+```bash
+npm run validate
+```
+
+After verification, update final workflow state and the production journal honestly.
 
 Finish with:
 
 - file verified;
 - status decision;
-- math or curriculum uncertainties;
-- source/official-claim notes;
-- remaining human review needs.
+- math, notation, curriculum, source, or official-claim uncertainties;
+- frontmatter/link/formatting fixes;
+- workflow or journal updates;
+- validation result;
+- next action through `content/_prompts/commands/next-action.md`, unless the user asked for a specific downstream unit, exercise, quiz, or diagnostic prompt.

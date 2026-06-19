@@ -106,6 +106,35 @@ Distinguish:
 
 Do not always recommend the next unchecked creation stage when targeted revision is safer.
 
+## Lesson-state diagnosis
+
+When the next work is lesson creation or lesson repair, diagnose the selected or first incomplete mini-lesson at the prompt-step level.
+
+Use only these canonical lesson creation prompts:
+
+```text
+content/_prompts/workflows/lessons/01-prepare-source.md
+content/_prompts/workflows/lessons/02-generate-raw-dump.md
+content/_prompts/workflows/lessons/03-curate-material.md
+content/_prompts/workflows/lessons/04-create-draft.md
+content/_prompts/workflows/lessons/05-coherence-pass.md
+content/_prompts/workflows/lessons/06-compression-pass.md
+content/_prompts/workflows/lessons/07-verify-finalize.md
+```
+
+Choose the next lesson action with this order:
+
+1. If source and target preparation is missing or incomplete, recommend `content/_prompts/workflows/lessons/01-prepare-source.md`.
+2. If source and target preparation is ready but the raw dump is missing or too thin, recommend `content/_prompts/workflows/lessons/02-generate-raw-dump.md`.
+3. If the raw dump is ready but curation is incomplete, recommend `content/_prompts/workflows/lessons/03-curate-material.md`.
+4. If curation is ready but the lesson draft file is missing, recommend `content/_prompts/workflows/lessons/04-create-draft.md`.
+5. If the draft exists but coherence review is incomplete or stale, recommend `content/_prompts/workflows/lessons/05-coherence-pass.md`.
+6. If coherence is complete but compression/taste/voice review is incomplete or stale, recommend `content/_prompts/workflows/lessons/06-compression-pass.md`.
+7. If compression/taste/voice review is complete but verification/finalization is incomplete or stale, recommend `content/_prompts/workflows/lessons/07-verify-finalize.md`.
+8. If the lesson is complete, proceed according to the remaining unit state: exercise workflow, quiz workflow, set creation, unit review, final cleanup, or a targeted command.
+
+For repair of an already authored lesson, recommend `content/_prompts/commands/review-existing-lesson.md` when the issue is a targeted quality, stale-review, or repair problem rather than simply the next incomplete creation step.
+
 ## Report
 
 Use exactly this output format:

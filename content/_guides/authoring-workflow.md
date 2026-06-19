@@ -53,6 +53,18 @@ Mini-lessons are prepared in the unit `_index.md`, then created as separate file
 
 The visible lesson shape is flexible. Motivation, intuition, formal statements, examples, method boxes, mistakes, exam notes, summaries, diagrams, and checkpoints are reusable blocks, not mandatory sections.
 
+Canonical lesson creation uses this sequence:
+
+```text
+01 prepare source and target
+02 generate raw dump
+03 curate material
+04 create lesson draft
+05 coherence pass
+06 compression, taste, and voice pass
+07 verification and finalization
+```
+
 Use:
 
 - `content/_guides/lesson-editorial-pipeline.md`

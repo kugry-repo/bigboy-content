@@ -2,7 +2,7 @@
 
 Use this prompt after a raw dump exists for one mini-lesson.
 
-This step is explicitly human-driven.
+This prompt owns curation and selection only.
 
 ## Target
 
@@ -49,7 +49,7 @@ Before doing any work:
 7. Read `TARGET_UNIT_INDEX`.
 8. Require `type: unit-index`.
 9. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM` from the unit index frontmatter.
-10. Use this prompt file as the source of truth for this stage or review behavior. Do not ask for or fill `TARGET_STAGE`.
+10. Use this prompt file as the source of truth for this stage behavior. Do not ask for or fill `TARGET_STAGE`.
 11. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
 ## Read first
@@ -64,13 +64,32 @@ Before doing any work:
 - `TARGET_UNIT_INDEX`
 - the selected raw dump
 
+## Preconditions
+
+Before curating, confirm that the selected mini-lesson entry has:
+
+- adequate source and target preparation;
+- a raw dump clearly marked as non-final.
+
+If the source plan is inadequate, stop and recommend:
+
+```text
+content/_prompts/workflows/lessons/01-prepare-source.md
+```
+
+If the raw dump is missing or too thin to curate, stop and recommend:
+
+```text
+content/_prompts/workflows/lessons/02-generate-raw-dump.md
+```
+
 ## Task
 
-Help the human author curate the raw dump.
+Inspect the raw dump and curate it into explicit author decisions in `TARGET_UNIT_INDEX`.
 
-Do not assemble the final lesson yet.
+Do not assemble the final lesson.
 
-Create or update a curation note that marks material as:
+Create or update curation notes that mark material as:
 
 - keep;
 - delete;
@@ -84,23 +103,27 @@ Create or update a curation note that marks material as:
 
 Also record:
 
-- the intended student-facing spine;
+- required content versus optional enrichment;
+- the intended student-facing explanation sequence;
 - possible `lesson_shape` as a diagnostic label after curation, if useful;
 - blocks that should not be re-added later;
 - verification questions;
-- material that should move to exercises, author notes, diagrams, or future lessons.
+- material that should move to exercises, author notes, diagrams, quiz seeds, or future lessons;
+- explicit human decisions and any assumptions made because the human did not specify a choice.
 
 Rules:
 
 - Human curation decisions override the raw dump.
 - Do not preserve a block just because it was generated.
-- Do not force motivation, intuition, method, examples, mistakes, exam note, or summary if the lesson does not need them.
+- Do not force motivation, intuition, method, examples, mistakes, exam note, summary, or checkpoint if the lesson does not need them.
 - Small concepts may become short lessons.
 - Big foundational concepts may keep more ceremony when it helps.
+- If curation cannot be completed because source or raw material is inadequate, stop instead of writing a draft.
 
 Finish by summarizing:
 
 - curation decisions recorded;
 - selected lesson spine;
 - material explicitly excluded;
-- recommended next prompt: `workflows/lessons/04-create-draft.md`.
+- unresolved decisions;
+- successful next action: `content/_prompts/workflows/lessons/04-create-draft.md`.

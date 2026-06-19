@@ -103,7 +103,7 @@ source / target
 -> human curation / chop
 -> assembled lesson
 -> coherence pass
--> compression / taste pass
+-> compression / taste / voice pass
 -> verification pass
 -> final student lesson
 ```
@@ -1029,5 +1029,5 @@ Before considering a lesson good, ask:
 12. Is there a checkpoint, practice direction, or next step when appropriate?
 13. Is exam strategy included only when useful and without fake official claims?
 14. Are shortcuts clearly labeled?
-15. Has the compression/taste pass removed ceremony, repetition, weak analogies, and bloat?
+15. Has the compression/taste/voice pass removed ceremony, repetition, weak analogies, robotic phrasing, and bloat?
 16. Are math, curriculum, source claims, examples, and checkpoint answers verified?

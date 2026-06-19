@@ -42,6 +42,8 @@ Start with:
 
 Create final files only through the appropriate workflow prompts and in small batches. Do not create whole units, full exercise libraries, quiz libraries, or app/frontend work unless explicitly requested.
 
+Mini-lessons use the canonical seven-step lesson workflow under `content/_prompts/workflows/lessons/`, from source preparation through verification. Existing-lesson repair is handled by `content/_prompts/commands/review-existing-lesson.md`.
+
 ## Validation
 
 Run from the repository root:

@@ -16,7 +16,7 @@ source / target
 -> human curation / chop
 -> assembled lesson
 -> coherence pass
--> compression / taste pass
+-> compression / taste / voice pass
 -> verification pass
 -> final student lesson
 ```

@@ -14,7 +14,7 @@ A strong lesson should combine:
 - learner-friendly explanation;
 - useful examples, checks, mistakes, methods, or exam notes when they serve the lesson;
 - coherence;
-- compression and taste;
+- compression, taste, and voice;
 - verification.
 
 The authoring pipeline is:
@@ -25,7 +25,7 @@ source / target
 -> human curation / chop
 -> assembled lesson
 -> coherence pass
--> compression / taste pass
+-> compression / taste / voice pass
 -> verification pass
 -> final student lesson
 ```
@@ -77,7 +77,7 @@ Critical criteria:
 | Memory and review | 1-5 | Are memory hooks or spaced-review prompts included when useful? |
 | Readability | 1-5 | Are paragraphs short, clear, and well-paced? |
 | Voice consistency | 1-5 | Does the lesson feel like a friendly mentor, not a dry handout? |
-| Compression / taste | 1-5 | Has ceremony, repetition, weak analogy, and bloat been removed? |
+| Compression / taste / voice | 1-5 | Has ceremony, repetition, weak analogy, bloat, and robotic phrasing been removed while preserving the learner-facing voice? |
 | Coherence | 1-5 | Do transitions, examples, notation, and headings read as one unified piece? |
 | Verification | 1-5 | Are math, curriculum, source claims, examples, and checkpoints checked? |
 | Visual thinking | 1-5 | Are diagrams, graphs, or visual ideas suggested when useful? |
@@ -106,7 +106,7 @@ Before marking a lesson as `reviewed`, ask:
 15. Are exam reflexes included only when useful and without exaggeration?
 16. Are shortcuts clearly labeled?
 17. Does the lesson use `tu` in student-facing text?
-18. Has the compression/taste pass removed ceremony, repetition, weak analogies, and bloat?
+18. Has the compression/taste/voice pass removed ceremony, repetition, weak analogies, robotic phrasing, and bloat?
 19. Are math, examples, notation, curriculum claims, and checkpoint answers verified?
 20. Are author notes separated from student-facing content?
 21. Would a student likely say: "I understand the idea and I know what to do next"?

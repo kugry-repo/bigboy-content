@@ -9,6 +9,8 @@ const CONTENT_DIR = path.join(ROOT, "content");
 const PROGRAM_DIR = path.join(CONTENT_DIR, "2bac-pc-svt");
 const TOPICS_DIR = path.join(PROGRAM_DIR, "topics");
 const PROMPTS_DIR = path.join(CONTENT_DIR, "_prompts");
+const LESSON_WORKFLOW_DIR = path.join(PROMPTS_DIR, "workflows", "lessons");
+const PROMPT_COMMANDS_DIR = path.join(PROMPTS_DIR, "commands");
 
 const REQUIRED_BASE_DIRS = [
   "content",
@@ -189,23 +191,55 @@ const REQUIRED_QUIZ_H3 = [
   "Design cards des quiz",
 ];
 
-const CANONICAL_WORKFLOW_ITEMS = [
-  "Stage 1 - Unit plan",
-  "Stage 2 - Lesson source, raw material, and curation",
-  "Stage 3 - Lesson assembly",
-  "Stage 4 - Lesson review and finalization",
-  "Stage 5a - Exercise seed generation",
-  "Stage 5b - Exercise-card curation and balance",
-  "Stage 6 - Exercise creation",
-  "Stage 7 - Solution review",
-  "Stage 8 - Exercise sets",
-  "Quiz workflow 01 - Raw quiz material",
-  "Quiz workflow 02 - Quiz-card curation and balance",
-  "Quiz workflow 03 - Quiz creation",
-  "Quiz workflow 04 - Quiz review",
-  "Stage 9 - Unit review",
-  "Stage 10 - Final cleanup",
+const CANONICAL_WORKFLOW_LINES = [
+  "- [ ] Stage 1 - Unit plan",
+  "- [ ] Stage 2 - Lesson source, raw material, and curation",
+  "  - [ ] Lesson workflow 01 - Prepare source and target",
+  "  - [ ] Lesson workflow 02 - Generate raw dump",
+  "  - [ ] Lesson workflow 03 - Curate material",
+  "- [ ] Stage 3 - Lesson assembly",
+  "  - [ ] Lesson workflow 04 - Create lesson draft",
+  "- [ ] Stage 4 - Lesson review and finalization",
+  "  - [ ] Lesson workflow 05 - Coherence pass",
+  "  - [ ] Lesson workflow 06 - Compression, taste, and voice pass",
+  "  - [ ] Lesson workflow 07 - Verification and finalization",
+  "- [ ] Stage 5a - Exercise seed generation",
+  "- [ ] Stage 5b - Exercise-card curation and balance",
+  "- [ ] Stage 6 - Exercise creation",
+  "- [ ] Stage 7 - Solution review",
+  "- [ ] Stage 8 - Exercise sets",
+  "- [ ] Quiz workflow 01 - Raw quiz material",
+  "- [ ] Quiz workflow 02 - Quiz-card curation and balance",
+  "- [ ] Quiz workflow 03 - Quiz creation",
+  "- [ ] Quiz workflow 04 - Quiz review",
+  "- [ ] Stage 9 - Unit review",
+  "- [ ] Stage 10 - Final cleanup",
 ];
+
+const REQUIRED_LESSON_WORKFLOW_PROMPTS = [
+  "content/_prompts/workflows/lessons/01-prepare-source.md",
+  "content/_prompts/workflows/lessons/02-generate-raw-dump.md",
+  "content/_prompts/workflows/lessons/03-curate-material.md",
+  "content/_prompts/workflows/lessons/04-create-draft.md",
+  "content/_prompts/workflows/lessons/05-coherence-pass.md",
+  "content/_prompts/workflows/lessons/06-compression-pass.md",
+  "content/_prompts/workflows/lessons/07-verify-finalize.md",
+];
+
+const OBSOLETE_LESSON_WORKFLOW_PROMPTS = [
+  "content/_prompts/workflows/lessons/06-voice-pass.md",
+  "content/_prompts/workflows/lessons/07-compression-pass.md",
+  "content/_prompts/workflows/lessons/08-verify-finalize.md",
+  "content/_prompts/workflows/lessons/09-review-existing.md",
+];
+
+const REQUIRED_LESSON_REPAIR_COMMAND =
+  "content/_prompts/commands/review-existing-lesson.md";
+
+const ALLOWED_OBSOLETE_LESSON_REFERENCE_FILES = new Set([
+  "scripts/validate-content.mjs",
+  "content/_guides/content-validation.md",
+]);
 
 const REMOVED_ACTIVE_TEXT = [
   /author-designated planning note/i,
@@ -337,6 +371,25 @@ function walkMarkdownFiles(dirPath) {
     }
 
     if (entry.isFile() && entry.name.endsWith(".md")) {
+      files.push(fullPath);
+    }
+  }
+
+  return files;
+}
+
+function walkFiles(dirPath, includeFile) {
+  const files = [];
+
+  for (const entry of readDir(dirPath)) {
+    const fullPath = path.join(dirPath, entry.name);
+
+    if (entry.isDirectory()) {
+      files.push(...walkFiles(fullPath, includeFile));
+      continue;
+    }
+
+    if (entry.isFile() && includeFile(fullPath)) {
       files.push(fullPath);
     }
   }
@@ -476,6 +529,14 @@ function compareLists(filePath, label, actual, expected) {
     filePath,
     `${label} must be exactly: ${expected.map((item) => `"${item}"`).join(", ")}`,
   );
+}
+
+function fullPathFromRepoPath(repoPath) {
+  return path.join(ROOT, ...repoPath.split("/"));
+}
+
+function normalizeWorkflowLine(line) {
+  return line.replace(/\[[ xX]\]/, "[ ]").replace(/\s+$/u, "");
 }
 
 function checkBaseFolders() {
@@ -697,10 +758,21 @@ function checkCanonicalUnitBody(indexPath, body, data) {
   }
 
   const workflowSection = getSection(body, 2, "Workflow");
-  const workflowItems = [...workflowSection.matchAll(/^- \[[ xX]\] (.+)$/gm)].map(
-    (match) => match[1].trim(),
-  );
-  compareLists(indexPath, "unit workflow items", workflowItems, CANONICAL_WORKFLOW_ITEMS);
+  const workflowLines = workflowSection
+    .split(/\r?\n/u)
+    .filter((line) => /^\s*- \[[ xX]\] /.test(line))
+    .map(normalizeWorkflowLine);
+  compareLists(indexPath, "unit workflow checklist", workflowLines, CANONICAL_WORKFLOW_LINES);
+
+  const obsoleteLessonWorkflowSequence =
+    /Lesson workflow 06\s+-\s+Voice\b/i.test(workflowSection) ||
+    /Lesson workflow 07\s+-\s+Compression\b/i.test(workflowSection) ||
+    /Lesson workflow 08\s+-\s+Verify\b/i.test(workflowSection) ||
+    /Lesson workflow 09\s+-\s+Review\b/i.test(workflowSection) ||
+    /0[6789]-(voice-pass|compression-pass|verify-finalize|review-existing)\.md/i.test(workflowSection);
+  if (obsoleteLessonWorkflowSequence) {
+    addError(indexPath, "unit workflow uses an obsolete lesson prompt sequence");
+  }
 
   if (!getSection(body, 2, "Journal de production").trim()) {
     addError(indexPath, 'missing body content under "## Journal de production"');
@@ -1270,6 +1342,101 @@ function checkCatalogs() {
   }
 }
 
+function checkLessonPromptFamily() {
+  const expectedBasenames = REQUIRED_LESSON_WORKFLOW_PROMPTS.map((repoPath) =>
+    repoPath.split("/").at(-1),
+  );
+  const expectedBasenameSet = new Set(expectedBasenames);
+
+  for (const repoPath of REQUIRED_LESSON_WORKFLOW_PROMPTS) {
+    const fullPath = fullPathFromRepoPath(repoPath);
+    if (!isFile(fullPath)) {
+      addError(fullPath, "missing required canonical lesson workflow prompt");
+    }
+  }
+
+  for (const repoPath of OBSOLETE_LESSON_WORKFLOW_PROMPTS) {
+    const fullPath = fullPathFromRepoPath(repoPath);
+    if (isFile(fullPath)) {
+      addError(fullPath, "removed lesson workflow prompt must not exist");
+    }
+  }
+
+  const actualNumberedLessonPrompts = readDir(LESSON_WORKFLOW_DIR)
+    .filter((entry) => entry.isFile())
+    .filter((entry) => /^\d{2}-.*\.md$/.test(entry.name))
+    .map((entry) => entry.name)
+    .sort();
+
+  for (const basename of actualNumberedLessonPrompts) {
+    if (!expectedBasenameSet.has(basename)) {
+      addError(
+        path.join(LESSON_WORKFLOW_DIR, basename),
+        "unexpected numbered lesson workflow prompt",
+      );
+    }
+  }
+
+  for (const basename of expectedBasenames) {
+    if (!actualNumberedLessonPrompts.includes(basename)) {
+      addError(
+        path.join(LESSON_WORKFLOW_DIR, basename),
+        "missing numbered lesson workflow prompt",
+      );
+    }
+  }
+
+  const repairCommandPath = fullPathFromRepoPath(REQUIRED_LESSON_REPAIR_COMMAND);
+  if (!isFile(repairCommandPath)) {
+    addError(repairCommandPath, "missing existing-lesson review command");
+  }
+
+  const misplacedRepairCommand = path.join(
+    LESSON_WORKFLOW_DIR,
+    "review-existing-lesson.md",
+  );
+  if (isFile(misplacedRepairCommand)) {
+    addError(
+      misplacedRepairCommand,
+      "existing-lesson review belongs under content/_prompts/commands/",
+    );
+  }
+}
+
+function repositoryTextFilesForObsoletePromptScan() {
+  const rootMarkdownFiles = ["AGENTS.md", "README.md"]
+    .map((repoPath) => fullPathFromRepoPath(repoPath))
+    .filter(isFile);
+
+  const contentMarkdownFiles = walkMarkdownFiles(CONTENT_DIR);
+  const scriptFiles = walkFiles(path.join(ROOT, "scripts"), (filePath) =>
+    /\.(?:cjs|js|mjs)$/i.test(filePath),
+  );
+
+  return [...new Set([...rootMarkdownFiles, ...contentMarkdownFiles, ...scriptFiles])];
+}
+
+function checkObsoleteLessonPromptReferences() {
+  const obsoleteNames = OBSOLETE_LESSON_WORKFLOW_PROMPTS.map((repoPath) =>
+    repoPath.split("/").at(-1),
+  );
+
+  for (const filePath of repositoryTextFilesForObsoletePromptScan()) {
+    const relative = rel(filePath);
+    if (ALLOWED_OBSOLETE_LESSON_REFERENCE_FILES.has(relative)) continue;
+
+    const text = fs.readFileSync(filePath, "utf8");
+    for (const obsoleteName of obsoleteNames) {
+      if (text.includes(obsoleteName)) {
+        addError(
+          filePath,
+          `references obsolete lesson prompt name "${obsoleteName}"`,
+        );
+      }
+    }
+  }
+}
+
 function checkPromptLayout() {
   for (const filePath of walkMarkdownFiles(PROMPTS_DIR)) {
     const relative = rel(filePath);
@@ -1407,6 +1574,8 @@ function main() {
   checkUnitUniqueness();
   checkCatalogs();
   checkPromptLayout();
+  checkLessonPromptFamily();
+  checkObsoleteLessonPromptReferences();
   checkRemovedGuideText();
   collectIdsAndWarnings();
   printResults();

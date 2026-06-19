@@ -49,6 +49,10 @@ The validator checks:
 - required canonical fields on generated content files, including `unit_code`;
 - unit identity consistency between frontmatter and containing folder;
 - prompt-folder layout so old flat prompt systems cannot return;
+- canonical seven-step lesson prompt family under `content/_prompts/workflows/lessons/`;
+- existing-lesson repair command under `content/_prompts/commands/review-existing-lesson.md`;
+- absence of obsolete lesson workflow prompt filenames in live Markdown and script files;
+- canonical unit workflow lesson substeps, including the merged compression/taste/voice pass;
 - catalog references against unit frontmatter.
 
 ## Scaffold warnings
@@ -76,4 +80,23 @@ Serious structural problems are errors.
 
 Content-completeness gaps in planned/draft scaffolds are warnings.
 
-The validator enforces one canonical content-unit system. It does not accept older unit-index structures, table-only exercise or quiz planning, alternate planning notes, old prompt layouts, or old folder schemes.
+The validator enforces one canonical content-unit system. It does not accept older unit-index structures, table-only exercise or quiz planning, alternate planning notes, old prompt layouts, obsolete lesson prompt names, or old folder schemes.
+
+## Lesson prompt canonicalization
+
+Validation fails if the lesson workflow prompt directory is missing any canonical prompt, contains unexpected numbered lesson workflow prompts, or brings back obsolete lesson prompt names such as:
+
+```text
+06-voice-pass.md
+07-compression-pass.md
+08-verify-finalize.md
+09-review-existing.md
+```
+
+The repair path for existing mini-lessons is a command:
+
+```text
+content/_prompts/commands/review-existing-lesson.md
+```
+
+The obsolete names above are mentioned here only because the validator rejects them.

@@ -40,10 +40,12 @@ Lesson workflow:
 - `workflows/lessons/03-curate-material.md`
 - `workflows/lessons/04-create-draft.md`
 - `workflows/lessons/05-coherence-pass.md`
-- `workflows/lessons/06-voice-pass.md`
-- `workflows/lessons/07-compression-pass.md`
-- `workflows/lessons/08-verify-finalize.md`
-- `workflows/lessons/09-review-existing.md`
+- `workflows/lessons/06-compression-pass.md`
+- `workflows/lessons/07-verify-finalize.md`
+
+Existing-lesson review and repair:
+
+- `commands/review-existing-lesson.md`
 
 Exercise workflow:
 

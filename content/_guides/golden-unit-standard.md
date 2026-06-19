@@ -40,7 +40,7 @@ source / target
 -> human curation / chop
 -> assembled lesson
 -> coherence pass
--> compression / taste pass
+-> compression / taste / voice pass
 -> verification pass
 -> final student lesson
 ```
@@ -70,7 +70,7 @@ A golden unit should include:
 - at least 3 exercise sets;
 - full mathematical review;
 - full pedagogical review;
-- lesson voice review;
+- compression, taste, and voice review;
 - skill coverage review;
 - no major unresolved TODOs.
 

@@ -114,6 +114,7 @@ For full lesson review, use `_guides/lesson-quality-rubric.md`.
 - [ ] Exam reflexes are included but do not dominate.
 - [ ] Diagram or interaction notes are included when useful.
 - [ ] Optional advanced blocks are omitted when they would bloat the lesson.
+- [ ] Coherence review and compression/taste/voice review are complete before final verification.
 - [ ] Repetitive headings, ceremony, weak analogies, and redundant summaries are removed.
 - [ ] Math and curriculum verification notes are recorded when needed.
 - [ ] Author notes are separated from student-facing content.

@@ -232,8 +232,15 @@ TODO.
 
 - [ ] Stage 1 - Unit plan
 - [ ] Stage 2 - Lesson source, raw material, and curation
+  - [ ] Lesson workflow 01 - Prepare source and target
+  - [ ] Lesson workflow 02 - Generate raw dump
+  - [ ] Lesson workflow 03 - Curate material
 - [ ] Stage 3 - Lesson assembly
+  - [ ] Lesson workflow 04 - Create lesson draft
 - [ ] Stage 4 - Lesson review and finalization
+  - [ ] Lesson workflow 05 - Coherence pass
+  - [ ] Lesson workflow 06 - Compression, taste, and voice pass
+  - [ ] Lesson workflow 07 - Verification and finalization
 - [ ] Stage 5a - Exercise seed generation
 - [ ] Stage 5b - Exercise-card curation and balance
 - [ ] Stage 6 - Exercise creation

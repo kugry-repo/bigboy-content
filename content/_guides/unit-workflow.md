@@ -146,17 +146,39 @@ Prepare one mini-lesson inside the unit `_index.md`.
 
 Record the planned lesson ID/path, source/target notes, prerequisite blockers, concrete learning outcome, raw material, curation decisions, possible shape, and verification questions.
 
+Use the lesson prompts in this order:
+
+```text
+content/_prompts/workflows/lessons/01-prepare-source.md
+content/_prompts/workflows/lessons/02-generate-raw-dump.md
+content/_prompts/workflows/lessons/03-curate-material.md
+```
+
 Do not create the mini-lesson file during Stage 2.
 
 ### Stage 3 - Lesson assembly
 
 Create one focused mini-lesson under `lessons/` from the curated material and `content/_templates/mini-lesson.template.md`.
 
+Use:
+
+```text
+content/_prompts/workflows/lessons/04-create-draft.md
+```
+
 Do not blindly re-add raw-dump material that was excluded during curation.
 
 ### Stage 4 - Lesson review and finalization
 
-Review the mini-lesson for coherence, lesson voice, compression/taste, mathematical correctness, notation, source safety, and readiness for downstream exercise/quiz planning.
+Review the mini-lesson for coherence, compression/taste/voice, mathematical correctness, notation, source safety, and readiness for downstream exercise/quiz planning.
+
+Use the lesson prompts in this order:
+
+```text
+content/_prompts/workflows/lessons/05-coherence-pass.md
+content/_prompts/workflows/lessons/06-compression-pass.md
+content/_prompts/workflows/lessons/07-verify-finalize.md
+```
 
 Do not mark a file `published` unless explicitly requested.
 
@@ -234,8 +256,15 @@ Every unit `_index.md` contains this authoritative tracker:
 
 - [ ] Stage 1 - Unit plan
 - [ ] Stage 2 - Lesson source, raw material, and curation
+  - [ ] Lesson workflow 01 - Prepare source and target
+  - [ ] Lesson workflow 02 - Generate raw dump
+  - [ ] Lesson workflow 03 - Curate material
 - [ ] Stage 3 - Lesson assembly
+  - [ ] Lesson workflow 04 - Create lesson draft
 - [ ] Stage 4 - Lesson review and finalization
+  - [ ] Lesson workflow 05 - Coherence pass
+  - [ ] Lesson workflow 06 - Compression, taste, and voice pass
+  - [ ] Lesson workflow 07 - Verification and finalization
 - [ ] Stage 5a - Exercise seed generation
 - [ ] Stage 5b - Exercise-card curation and balance
 - [ ] Stage 6 - Exercise creation

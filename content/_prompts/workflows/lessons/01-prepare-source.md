@@ -1,6 +1,8 @@
-# Prompt - Prepare Mini-Lesson Source, Dump, And Curation
+# Prompt - Prepare Mini-Lesson Source And Target
 
-Use this prompt before writing a mini-lesson file.
+Use this prompt before generating raw material for one mini-lesson.
+
+This prompt owns source and target preparation only.
 
 ## Target
 
@@ -8,6 +10,9 @@ Input:
 
 ```text
 TARGET_UNIT: <unit-folder-or-path-or-code>
+
+Optional selectors:
+TARGET_MINI_LESSON: <planned lesson id, title, or file>
 ```
 
 If no explicit target is provided, read `_workflow/current-unit.md`.
@@ -44,7 +49,7 @@ Before doing any work:
 7. Read `TARGET_UNIT_INDEX`.
 8. Require `type: unit-index`.
 9. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM` from the unit index frontmatter.
-10. Use this prompt file as the source of truth for this stage or review behavior. Do not ask for or fill `TARGET_STAGE`.
+10. Use this prompt file as the source of truth for this stage behavior. Do not ask for or fill `TARGET_STAGE`.
 11. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
 ## Read first
@@ -53,60 +58,64 @@ Before doing any work:
 - `content/AGENTS.md`
 - `content/_guides/unit-workflow.md`
 - `content/_guides/golden-unit-standard.md`
-- `content/_guides/lesson-editorial-pipeline.md`
-- `content/_guides/lesson-structure.md`
-- `content/_guides/lesson-voice.md`
-- `content/_guides/lesson-quality-rubric.md`
+- `content/_guides/authoring-workflow.md`
 - `content/_guides/frontmatter-schema.md`
 - `content/_guides/id-and-naming.md`
-- `content/_templates/mini-lesson.template.md`
+- `content/_guides/source-policy.md`
+- `content/_guides/curriculum-map-2bac-pc-svt.md`
+- `content/_references/official-sources.md`
+- `content/_references/concept-dependencies.md`
+- `content/_references/notation-decisions.md`
 - `TARGET_UNIT_INDEX`
 
 ## Task
 
-Create or update the source/target notes, raw dump, and curation area for one mini-lesson inside `TARGET_UNIT_INDEX`.
+Prepare the source and target plan for one mini-lesson inside `TARGET_UNIT_INDEX`.
 
-This is Stage 2 only.
+This is Stage 2 preparation work only. Update the canonical mini-lesson planning area in the unit `_index.md`, normally the selected row under `## Plan des mini-leçons`.
 
 If the user named a specific mini-lesson ID, title, or planned file, use that item. Otherwise, choose the first missing or least-developed mini-lesson preparation entry in the unit dashboard. If more than one item is equally plausible, stop and ask.
-
-Update the unit `_index.md` only.
 
 Do not create:
 
 - mini-lesson files;
+- raw lesson dumps;
+- curation notes;
+- assembled lesson prose;
+- coherence, compression, voice, or verification reviews;
 - exercises;
 - quizzes;
 - exercise sets;
 - frontend or app code.
 
-The preparation must specify:
+Establish or update:
 
 - mini-lesson ID using `TARGET_UNIT_CODE`;
 - planned file path under `TARGET_UNIT_FOLDER/lessons/`;
-- purpose of the mini-lesson;
-- source / target notes;
-- prerequisite ideas and blockers;
-- concrete learning outcome;
-- curriculum and official-source constraints;
-- raw dump of possible material;
-- curation area for human decisions;
-- possible lesson shape after curation, if useful;
-- verification questions and official claims needing confirmation.
+- intended lesson or mini-lesson title;
+- exact concept, method, misconception, comparison, recap, or exam pattern;
+- scope boundaries: what belongs here and what belongs elsewhere;
+- prerequisite knowledge and blockers;
+- concrete learning target;
+- target student difficulty;
+- source needs and usable references;
+- official-source and source-policy constraints;
+- unsupported curriculum or exam claims that need verification;
+- factual, pedagogical, diagram, or notation questions that must be answered before raw generation;
+- whether preparation is sufficient to proceed.
 
-The raw dump may include possible motivations, intuitions, explanations, formal statements, method boxes, examples, counterexamples, mistakes, recovery ideas, exam patterns, diagram ideas, analogies, checkpoints, mini-quiz ideas, possible splits, and notes about what may be unnecessary or too heavy.
+Rules:
 
-Clearly state that the dump is not the final lesson.
-
-The curation area must support human marks: keep, delete, merge, split, reorder, optional, future exercise, too much, useful but not student-facing.
-
-Do not plan every optional block automatically. Blocks are options for curation, not required sections.
-
-Use the completed golden unit as a reference if one exists, but do not require it and do not copy from it.
+- Store only source and target preparation in this step.
+- Do not fill the raw dump with candidate explanations, examples, analogies, checkpoints, mistakes, or lesson blocks.
+- Do not decide final curation choices.
+- If the source/target preparation is inadequate, record what is missing and stop.
+- If the preparation is adequate, make that readiness visible in the selected planning entry.
 
 Finish by summarizing:
 
 - preparation updated;
 - exact section changed in `TARGET_UNIT_INDEX`;
-- assumptions or unresolved choices;
-- next recommended prompt: `workflows/lessons/02-generate-raw-dump.md` or `workflows/lessons/03-curate-material.md`, depending on what remains.
+- assumptions or unresolved source questions;
+- whether the lesson is ready for raw generation;
+- successful next action: `content/_prompts/workflows/lessons/02-generate-raw-dump.md`.

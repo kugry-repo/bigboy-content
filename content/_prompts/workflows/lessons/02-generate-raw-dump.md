@@ -1,6 +1,8 @@
 # Prompt - Generate Mini-Lesson Raw Dump
 
-Use this prompt to generate abundant possible material for one future mini-lesson.
+Use this prompt after source and target preparation is adequate for one mini-lesson.
+
+This prompt owns expansive raw lesson generation only.
 
 The dump is not the final lesson.
 
@@ -49,7 +51,7 @@ Before doing any work:
 7. Read `TARGET_UNIT_INDEX`.
 8. Require `type: unit-index`.
 9. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM` from the unit index frontmatter.
-10. Use this prompt file as the source of truth for this stage or review behavior. Do not ask for or fill `TARGET_STAGE`.
+10. Use this prompt file as the source of truth for this stage behavior. Do not ask for or fill `TARGET_STAGE`.
 11. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
 ## Read first
@@ -62,17 +64,37 @@ Before doing any work:
 - `content/_guides/lesson-voice.md`
 - `content/_guides/curriculum-map-2bac-pc-svt.md`
 - `content/_guides/frontmatter-schema.md`
+- `content/_guides/source-policy.md`
 - `content/_references/official-sources.md`
 - `content/_references/misconception-map.md`
 - `content/_references/concept-dependencies.md`
 - `content/_references/notation-decisions.md`
 - `TARGET_UNIT_INDEX`
 
+## Preconditions
+
+Before generating material, confirm that the selected mini-lesson entry in `TARGET_UNIT_INDEX` has adequate source and target preparation:
+
+- planned ID and file path;
+- scope and boundaries;
+- prerequisite notes;
+- learning target;
+- source needs or usable references;
+- source-policy and official-claim constraints.
+
+If preparation is missing or unclear, stop and recommend:
+
+```text
+content/_prompts/workflows/lessons/01-prepare-source.md
+```
+
 ## Task
 
-Create or update the raw dump for the selected mini-lesson in `TARGET_UNIT_INDEX`.
+Generate or expand the raw dump for the selected mini-lesson in `TARGET_UNIT_INDEX`.
 
 This is Stage 2 raw-material work only.
+
+Store the raw material only in the canonical planning area of the unit `_index.md`, normally the selected mini-lesson entry under `## Plan des mini-leçons`. Do not create a separate planning file.
 
 Do not create:
 
@@ -81,11 +103,11 @@ Do not create:
 - quizzes;
 - exercise sets;
 - final student-facing lesson prose;
+- curation decisions;
 - frontend or app code.
 
-The dump should be abundant. Include possible material when relevant:
+The dump should prioritize coverage and useful possibilities over polish. Include possible material when relevant:
 
-- source / target notes;
 - possible motivations;
 - multiple intuitions;
 - multiple explanations;
@@ -94,7 +116,7 @@ The dump should be abundant. Include possible material when relevant:
 - worked examples;
 - counterexamples;
 - common mistakes;
-- mistake recovery;
+- mistake recovery ideas;
 - exam-style patterns without unsupported official claims;
 - visual or diagram ideas;
 - analogies;
@@ -105,15 +127,17 @@ The dump should be abundant. Include possible material when relevant:
 
 Rules:
 
-- Mark unsupported official curriculum or exam claims as needing verification.
+- Clearly label the section or entry: `Raw dump - not final lesson`.
+- It is acceptable for the dump to be redundant, uneven, and too large.
+- Do not silently perform human curation.
+- Do not mark material as final.
+- Mark unresolved factual, pedagogical, diagram, notation, source, or official-claim questions.
 - Prefer original material.
 - Do not copy copyrighted third-party lesson content.
-- It is acceptable for the dump to be redundant, uneven, and too large.
-- Clearly label the section: `Raw dump — not final lesson`.
 
 Finish by summarizing:
 
 - where the raw dump was recorded;
 - what the dump covers;
-- major verification needs;
-- recommended next prompt: `workflows/lessons/03-curate-material.md`.
+- major unresolved questions;
+- successful next action: `content/_prompts/workflows/lessons/03-curate-material.md`.
