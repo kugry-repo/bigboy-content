@@ -19,55 +19,55 @@ The Markdown content system is not a frozen production format yet. For guides, p
 ## Must-read guides before content work
 
 Before content-unit planning or unit-level edits:
-- Read `_guides/authoring-workflow.md`.
-- Read `_guides/unit-workflow.md`.
-- Read `_guides/golden-unit-standard.md`.
-- Read `_guides/frontmatter-schema.md`.
-- Read `_guides/id-and-naming.md`.
+- Read `_guides/core/authoring-workflow.md`.
+- Read `_guides/units/unit-workflow.md`.
+- Read `_guides/units/golden-unit-standard.md`.
+- Read `_guides/schema/frontmatter-schema.md`.
+- Read `_guides/schema/id-and-naming.md`.
 - Read `_references/misconception-map.md`.
 - Read `_references/concept-dependencies.md`.
 - Read `_references/notation-decisions.md`.
 
 Before creating or editing mini-lessons:
-- Read `_guides/style-guide.md`.
-- Read `_guides/lesson-voice.md`.
-- Read `_guides/lesson-editorial-pipeline.md`.
-- Read `_guides/lesson-quality-rubric.md`.
-- Read `_guides/math-notation.md`.
-- Read `_guides/frontmatter-schema.md`.
-- Read `_guides/lesson-structure.md`.
-- Read `_guides/curriculum-map-2bac-pc-svt.md`.
+- Read `_guides/core/style-guide.md`.
+- Read `_guides/lessons/lesson-voice.md`.
+- Read `_guides/lessons/lesson-editorial-pipeline.md`.
+- Read `_guides/lessons/lesson-quality-rubric.md`.
+- Read `_guides/schema/math-notation.md`.
+- Read `_guides/schema/frontmatter-schema.md`.
+- Read `_guides/lessons/lesson-structure.md`.
+- Read `_guides/units/curriculum-map-2bac-pc-svt.md`.
 - Read `_templates/mini-lesson.template.md`.
 - Read `_examples/golden-lesson-slice-limites.md`.
 - Read `_examples/motivation-examples.md`.
-- Read `_guides/diagram-guidelines.md`.
+- Read `_guides/media/diagram-guidelines.md`.
 
 Before reviewing lessons:
 - Read `_prompts/workflows/lessons/05-coherence-pass.md`.
 - Read `_prompts/workflows/lessons/06-compression-pass.md`.
 - Read `_prompts/workflows/lessons/07-verify-finalize.md`.
-- For review or repair of an already existing mini-lesson, read `_prompts/commands/review-existing-lesson.md`.
-- Read `_guides/lesson-quality-rubric.md`.
+- For conversational review, critique, repair, or targeted patching of an existing lesson, read `_prompts/commands/content-studio.md`.
+- Read `_guides/lessons/lesson-quality-rubric.md`.
 
 Before creating or editing exercises:
-- Read `_guides/style-guide.md`.
-- Read `_guides/math-notation.md`.
-- Read `_guides/frontmatter-schema.md`.
-- Read `_guides/exercise-structure.md`.
-- Read `_guides/solution-style.md`.
-- Read `_guides/verification-checklist.md`.
+- Read `_guides/core/style-guide.md`.
+- Read `_guides/schema/math-notation.md`.
+- Read `_guides/schema/frontmatter-schema.md`.
+- Read `_guides/exercises/exercise-structure.md`.
+- Read `_guides/exercises/solution-style.md`.
+- Read `_guides/core/verification-checklist.md`.
 
 Before creating or editing standalone quizzes:
-- Read `_guides/quiz-structure.md`.
-- Read `_guides/math-notation.md`.
-- Read `_guides/frontmatter-schema.md`.
-- Read `_guides/id-and-naming.md`.
-- Read `_guides/verification-checklist.md`.
+- Read `_guides/quizzes/quiz-structure.md`.
+- Read `_guides/schema/math-notation.md`.
+- Read `_guides/schema/frontmatter-schema.md`.
+- Read `_guides/schema/id-and-naming.md`.
+- Read `_guides/core/verification-checklist.md`.
 - Read `_references/misconception-map.md`.
 - Read `_templates/quiz.template.md`.
 
 Before adapting material from exams or other sources:
-- Read `_guides/source-policy.md`.
+- Read `_guides/core/source-policy.md`.
 
 ## Content unit workflow rule
 
@@ -82,22 +82,26 @@ Official curriculum units remain the canonical curriculum spine. Unofficial topi
 
 When doing unit-level work:
 
-1. Read `_guides/unit-workflow.md`.
+1. Read `_guides/units/unit-workflow.md`.
 2. Read the unit `_index.md`.
-3. Identify the requested artifact or workstream: unit map, lessons, exercises, exercise sets, quizzes, unit review, metadata/link cleanup, or targeted revision.
-4. If the user explicitly names a workflow prompt or workstream, use that route.
-5. If the user asks "what next?", inspect `## Production dashboard`, existing files, blockers, and the likely user goal before recommending the smallest valuable next action.
-6. Do not force a lesson -> exercise -> quiz order.
-7. Required inputs are local to the artifact being created. Optional references should improve quality but must not become hidden blockers.
-8. If required inputs are missing, create the smallest missing prerequisite when the request allows it, or report the exact missing artifact that blocks the work.
-9. Update `## Production dashboard` and `## Journal de production` after unit changes when appropriate.
-10. Do not create lessons, exercises, quizzes, or sets unless the current task asks for them.
+3. Check `planning_state`.
+4. If `planning_state: stub`, do not create lessons, exercises, quizzes, sets, or full planning sections. Run `_prompts/commands/initialize-unit.md` first, unless the task is only to inspect or modify the stub itself.
+5. Identify the requested artifact or workstream: unit map, lessons, exercises, exercise sets, quizzes, unit review, metadata/link cleanup, targeted revision, or conversational studio work.
+6. If the user explicitly names a workflow prompt or workstream, use that route.
+7. If the user asks "what next?", inspect `planning_state`; if initialized, inspect `## Production dashboard`, existing files, blockers, and the likely user goal before recommending the smallest valuable next action.
+8. Do not force a lesson -> exercise -> quiz order.
+9. Required inputs are local to the artifact being created. Optional references should improve quality but must not become hidden blockers.
+10. If required inputs are missing, create the smallest missing prerequisite when the request allows it, or report the exact missing artifact that blocks the work.
+11. Update `## Production dashboard` and `## Journal de production` after initialized-unit changes when appropriate.
+12. Do not create lessons, exercises, quizzes, or sets unless the current task asks for them.
 
 Exercises may be created from the unit map, skill map, official curriculum notes, misconception map, exam patterns, exercise cluster map, raw seeds, exercise design cards, or existing lessons when available. Existing lessons are useful references, not a universal prerequisite.
 
 Quizzes may be created from quiz intent, skill targets, misconceptions, lessons, exercises, exam patterns, raw quiz material, or quiz design cards. Lessons and exercises are optional remediation references unless the specific quiz intent depends on them.
 
 When revising existing content, syncing stale files, or responding to an upstream plan/template/guide change, use `_prompts/commands/change-existing-content.md`. Discover the blast radius and patch only affected files or produce an impact plan.
+
+When polishing, critiquing, diagnosing, grilling, proposing alternatives, or making targeted patches while authoring content, use `_prompts/commands/content-studio.md`. The studio command should infer the target from selected text, active file, path, and frontmatter whenever possible.
 
 ## Unit folder rule
 
@@ -121,11 +125,11 @@ content/2bac-pc-svt/topics/etudier-une-fonction/lessons/ef-lesson-001.md
 content/2bac-pc-svt/topics/etudier-une-fonction/exercises/ef-ex-001.md
 ```
 
-Do not create domain folders under `content/2bac-pc-svt/`. Keep `domain` as frontmatter metadata only. For the canonical official unit order, use `_guides/curriculum-map-2bac-pc-svt.md`.
+Do not create domain folders under `content/2bac-pc-svt/`. Keep `domain` as frontmatter metadata only. For the canonical official unit order, use `_guides/units/curriculum-map-2bac-pc-svt.md`.
 
 ## Lesson voice rule
 
-Lesson files should follow `_guides/lesson-voice.md`. This voice guide applies mainly to lessons, not to exercises or corrections.
+Lesson files should follow `_guides/lessons/lesson-voice.md`. This voice guide applies mainly to lessons, not to exercises or corrections.
 
 When creating or reviewing lessons, use `content/_examples/golden-lesson-slice-limites.md` as a voice calibration example. Do not copy it directly; follow its rhythm and clarity.
 
@@ -135,7 +139,7 @@ Do not create one huge `lesson.md` for a content unit unless explicitly requeste
 
 Student-facing lesson content should be split into focused mini-lesson files under the unit `lessons/` folder.
 
-The unit `_index.md` is the planning dashboard.
+An initialized or published unit `_index.md` is the planning dashboard. A stub `_index.md` is only a registration record until `_prompts/commands/initialize-unit.md` expands it.
 
 Mini-lesson files are the actual lesson units.
 

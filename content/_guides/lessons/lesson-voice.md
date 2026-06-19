@@ -95,7 +95,7 @@ Humor should be rare and should never replace explanation.
 
 The visible flow is flexible.
 
-Use the editorial pipeline from `_guides/lesson-editorial-pipeline.md`:
+Use the editorial pipeline from `_guides/lessons/lesson-editorial-pipeline.md`:
 
 ```text
 source / target
@@ -565,8 +565,8 @@ If a mini-lesson becomes too long, split it into two files and update the unit `
 Useful related files:
 
 - `_examples/motivation-examples.md`
-- `_guides/diagram-guidelines.md`
-- `_guides/lesson-quality-rubric.md`
+- `_guides/media/diagram-guidelines.md`
+- `_guides/lessons/lesson-quality-rubric.md`
 
 ## Start quickly with an example
 
@@ -664,7 +664,7 @@ It shows the desired rhythm:
 
 Future lessons should not copy its exact content, order, or section set.
 
-New lessons should learn from its voice, clarity, and rhythm, then use the editorial pipeline from `_guides/lesson-editorial-pipeline.md` to choose only the blocks that serve the current concept.
+New lessons should learn from its voice, clarity, and rhythm, then use the editorial pipeline from `_guides/lessons/lesson-editorial-pipeline.md` to choose only the blocks that serve the current concept.
 
 ## Before / after examples
 
@@ -1005,7 +1005,7 @@ Avoid phrases like:
 
 ## Lesson quality review
 
-Use `_guides/lesson-quality-rubric.md` when reviewing a lesson.
+Use `_guides/lessons/lesson-quality-rubric.md` when reviewing a lesson.
 
 A lesson should not be considered strong only because it is mathematically correct.
 

@@ -2,7 +2,7 @@
 
 This guide gives the conceptual overview for creating content without losing consistency.
 
-For the authoritative dashboard model, workstream meanings, and unit `_index.md` body schema, use `content/_guides/unit-workflow.md`.
+For the authoritative unit lifecycle, dashboard model, workstream meanings, and unit `_index.md` body schema, use `content/_guides/units/unit-workflow.md`.
 
 ## Core idea
 
@@ -24,7 +24,7 @@ Official curriculum units live directly under `content/2bac-pc-svt/`. Unofficial
 
 Both unit kinds use:
 
-- one unit `_index.md` schema;
+- one unit `_index.md` lifecycle;
 - one dashboard guide;
 - one prompt system;
 - one validator;
@@ -36,7 +36,9 @@ Unofficial topics may contain topic-native content and links to official-unit co
 
 The unit `_index.md` is the only unit-planning artifact.
 
-Use it for:
+Unstarted units should remain lightweight stubs with `planning_state: stub`. Use `content/_prompts/commands/initialize-unit.md` to expand one unit into an initialized dashboard before planning lessons, exercises, quizzes, or sets.
+
+After initialization, use it for:
 
 - mini-lesson source/target notes, raw material, and curation;
 - exercise cluster maps, raw exercise seeds, and exercise design cards;
@@ -46,6 +48,8 @@ Use it for:
 - production dashboard state and production journal.
 
 Do not move unit planning into a separate note.
+
+Do not expand every unit index just because the planning dashboard shape changed.
 
 ## Lessons
 
@@ -67,9 +71,9 @@ Canonical lesson creation uses this sequence:
 
 Use:
 
-- `content/_guides/lesson-editorial-pipeline.md`
-- `content/_guides/lesson-structure.md`
-- `content/_guides/lesson-voice.md`
+- `content/_guides/lessons/lesson-editorial-pipeline.md`
+- `content/_guides/lessons/lesson-structure.md`
+- `content/_guides/lessons/lesson-voice.md`
 
 ## Exercises
 
@@ -117,6 +121,14 @@ content/_prompts/commands/change-existing-content.md
 ```
 
 Structural changes must migrate affected existing source files to the new schema, heading names, filenames, folder rules, and prompt paths in the same change.
+
+For conversational critique, diagnosis, proposals, grilling, or targeted patches while writing, use:
+
+```text
+content/_prompts/commands/content-studio.md
+```
+
+The studio command is not a generation pipeline. It should infer the target from selected text, active file, path, and frontmatter when possible.
 
 ## Good Codex task size
 

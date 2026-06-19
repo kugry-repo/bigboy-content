@@ -172,7 +172,7 @@ Do not mark a unit as golden if any major file is only a raw draft.
 
 ## Golden Unit Tracking
 
-A candidate golden unit uses the same canonical `## Production dashboard` tracker and `## Journal de production` log as every other content unit.
+A candidate golden unit must be initialized and uses the same canonical `## Production dashboard` tracker and `## Journal de production` log as every other initialized or published content unit.
 
 Golden-unit readiness is a review judgment, not a separate unit-index tracker.
 

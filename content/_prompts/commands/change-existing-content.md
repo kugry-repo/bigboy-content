@@ -37,19 +37,21 @@ Use only `TARGET_UNIT` for unit-level scope.
 4. If the scope is still unclear, stop and ask.
 5. Derive affected files from the requested change, not from the creation checklist alone.
 
+If a resolved unit has `planning_state: stub`, do not create lesson, exercise, quiz, set, or full dashboard content inside it. For unit-level content work, recommend `content/_prompts/commands/initialize-unit.md` first. For global schema, prompt, guide, validator, or template migrations, it is valid to patch stub frontmatter or stub body shape directly when the lifecycle changes.
+
 ## Required reading
 
 Always read:
 
 - `AGENTS.md`
 - `content/AGENTS.md`
-- `content/_guides/authoring-workflow.md`
-- `content/_guides/unit-workflow.md`
-- `content/_guides/frontmatter-schema.md`
+- `content/_guides/core/authoring-workflow.md`
+- `content/_guides/units/unit-workflow.md`
+- `content/_guides/schema/frontmatter-schema.md`
 
 For lesson voice, ceremony, coherence, compression, or lesson shape changes, also read:
 
-- `content/_guides/lesson-editorial-pipeline.md`
+- `content/_guides/lessons/lesson-editorial-pipeline.md`
 - relevant lesson/style/quality guides if the request needs them
 - `content/_templates/mini-lesson.template.md` if creating or reshaping lesson files
 
@@ -60,7 +62,7 @@ For exercise or solution changes, also read:
 
 For standalone quiz changes, also read:
 
-- `content/_guides/quiz-structure.md`
+- `content/_guides/quizzes/quiz-structure.md`
 - relevant math notation, source policy, and verification guides
 - `content/_templates/quiz.template.md` if creating or reshaping quiz files
 

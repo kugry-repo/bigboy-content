@@ -57,7 +57,9 @@ This project is still in the system-design/buildout phase. The priority is a cle
 - Treat `content/` as the canonical source for educational material.
 - Before editing anything under `content/`, read `content/AGENTS.md`.
 - Before creating or modifying lessons, exercises, standalone quizzes, or solutions, read the relevant files in `content/_guides/`.
-- For content work, the mini-lesson architecture is defined under `content/AGENTS.md` and `content/_guides/unit-workflow.md`; that workflow applies to every content unit, whether it is an official curriculum unit or an unofficial topic.
+- For content work, the mini-lesson architecture is defined under `content/AGENTS.md` and `content/_guides/units/unit-workflow.md`; that workflow applies to every content unit, whether it is an official curriculum unit or an unofficial topic.
+- Unit `_index.md` files use `planning_state`. Do not create lessons, exercises, quizzes, sets, or full planning sections in a `planning_state: stub` unit; initialize it first with `content/_prompts/commands/initialize-unit.md`.
+- Use `content/_prompts/commands/content-studio.md` for conversational polishing, critique, diagnosis, proposals, and targeted patches across existing content artifacts.
 - Do not create one huge lesson file unless explicitly requested.
 - Each exercise lives in its own file, but exercise files are usually created in small batches of 3 to 5 unless explicitly requested otherwise.
 - Standalone quizzes live under the target unit `quizzes/` folder and are created through raw dumps, quiz design cards, small-batch quiz creation, and feedback review.
@@ -73,10 +75,11 @@ This project is still in the system-design/buildout phase. The priority is a cle
 For content tasks:
 1. Confirm the target content unit and file type.
 2. Read the content guide files.
-3. Use the appropriate template from `content/_templates/`.
-4. Generate only the requested files.
-5. Preserve YAML frontmatter.
-6. End with a summary of changed files and any uncertain items.
+3. Check whether the target unit is a stub and initialize it before content creation when needed.
+4. Use the appropriate template from `content/_templates/`.
+5. Generate only the requested files.
+6. Preserve YAML frontmatter.
+7. End with a summary of changed files and any uncertain items.
 
 ## Validation
 

@@ -4,7 +4,11 @@ Markdown-first source for Moroccan 2BAC PC/SVT mathematics content: content-unit
 
 The canonical human entrypoint is `content/_prompts/START-HERE.md`. The canonical state-aware prompt is `content/_prompts/commands/next-action.md`.
 
-The canonical dashboard guide is `content/_guides/unit-workflow.md`. Unit `_index.md` files are the only unit-planning artifacts, and rich exercise/quiz design cards are the source of truth for final file creation.
+The guide library is categorized under `content/_guides/`; start with `content/_guides/README.md`.
+
+The canonical unit lifecycle and dashboard guide is `content/_guides/units/unit-workflow.md`. Unit `_index.md` files are the only unit-planning artifacts. Unstarted units stay as `planning_state: stub`; initialize one unit with `content/_prompts/commands/initialize-unit.md` before building its full dashboard.
+
+Use `content/_prompts/commands/content-studio.md` for conversational polishing, critique, diagnosis, proposals, and targeted patches. Use workflow prompts for canonical generation pipelines.
 
 Run validation from the repository root:
 

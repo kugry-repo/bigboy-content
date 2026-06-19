@@ -31,9 +31,9 @@ A good mini-lesson should help a 2BAC PC/SVT student know:
 - what to do next, when a next action is useful;
 - how it appears in exam-style problems when that is honest and useful.
 
-For the full pipeline, read `_guides/lesson-editorial-pipeline.md`.
+For the full pipeline, read `_guides/lessons/lesson-editorial-pipeline.md`.
 
-For lesson tone and voice, also read `_guides/lesson-voice.md`.
+For lesson tone and voice, also read `_guides/lessons/lesson-voice.md`.
 
 ## Mini-Lesson File Architecture
 
@@ -65,7 +65,7 @@ The stable part is the learning contract:
 
 The flexible part is the visible shape. A final lesson may be intuition-first, method-first, mistake-first, exam-first, comparison-based, micro, recap, or another natural shape chosen after curation.
 
-Use `_guides/lesson-editorial-pipeline.md` before assembling or revising a mini-lesson.
+Use `_guides/lessons/lesson-editorial-pipeline.md` before assembling or revising a mini-lesson.
 
 ## Flexible Block Menu
 

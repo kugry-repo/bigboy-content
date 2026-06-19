@@ -26,5 +26,6 @@ For prompt-system edits, also check:
 - no `q01-*` quiz prompt naming remains;
 - no letter suffix prompt naming such as `02a-*` or `02b-*` remains;
 - the lesson workflow directory contains only the seven canonical numbered creation prompts;
-- existing-lesson repair is under `content/_prompts/commands/review-existing-lesson.md`;
+- general content studio is under `content/_prompts/commands/content-studio.md`;
+- the old lesson-only review command is absent;
 - validation scripts still accept nested prompt files.

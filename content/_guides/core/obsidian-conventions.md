@@ -103,7 +103,7 @@ Voir aussi : [[lc-ex-001]]
 Preferred for guide references:
 
 ```md
-See `_guides/math-notation.md`.
+See `_guides/schema/math-notation.md`.
 ```
 
 ## Headings

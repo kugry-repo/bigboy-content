@@ -1,19 +1,19 @@
 ---
 type: unit-index
-id: 2bac-pcsvt-ci-index
-title: "Calcul intégral"
+id: 2bac-pcsvt-UNIT_CODE-index
+title: "UNIT_TITLE"
 program: 2bac-pc-svt
 level: 2bac
 tracks: [pc, svt]
 language: fr
-unit_kind: official-curriculum-unit
-unit_code: ci
-unit_slug: calcul-integral
-unit_folder: 09-calcul-integral
-unit_order: 9
-official: true
-content_scope: official-curriculum
-domain: analyse
+unit_kind: UNIT_KIND
+unit_code: UNIT_CODE
+unit_slug: UNIT_SLUG
+unit_folder: UNIT_FOLDER
+unit_order: UNIT_ORDER
+official: OFFICIAL
+content_scope: CONTENT_SCOPE
+domain: DOMAIN_SLUG
 related_units: []
 skills: []
 status: planned
@@ -21,13 +21,13 @@ planning_state: stub
 sync_status: current
 sync_reason: null
 version: 0.1.0
-source_type: original
-source_ref: null
+source_type: SOURCE_TYPE
+source_ref: SOURCE_REF
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
 ---
 
-# Calcul intégral
+# UNIT_TITLE
 
 This unit is registered but not initialized yet.
 

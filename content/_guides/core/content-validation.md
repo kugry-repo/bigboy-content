@@ -31,15 +31,16 @@ The validator checks:
 - maintained YAML parsing for frontmatter;
 - duplicate frontmatter IDs;
 - canonical unit-index frontmatter fields;
+- unit-index `planning_state` values: `stub`, `initialized`, and `published`;
+- stub unit indexes as lightweight registered units without dashboards;
 - permitted unit kinds and content scopes;
 - folder/frontmatter consistency;
 - numeric prefixes for official unit folders as errors;
 - required artifact folders: `lessons/`, `exercises/`, `quizzes/`, and `sets/`;
-- exact canonical unit `_index.md` top-level heading order;
+- exact canonical initialized/published unit `_index.md` top-level heading order;
 - required exercise cluster, raw-seed, and design-card areas;
-- required exercise-set planning area;
 - required quiz raw-material and design-card areas;
-- `## Production dashboard` as the authoritative unit workstream tracker;
+- `## Production dashboard` as the authoritative initialized/published unit workstream tracker;
 - `## Journal de production` as the historical log;
 - absence of removed duplicate tracker headings;
 - absence of old planned-exercise or planned-quiz table sections;
@@ -50,7 +51,8 @@ The validator checks:
 - unit identity consistency between frontmatter and containing folder;
 - prompt-folder layout so old flat prompt systems cannot return;
 - canonical seven-step lesson prompt family under `content/_prompts/workflows/lessons/`;
-- existing-lesson repair command under `content/_prompts/commands/review-existing-lesson.md`;
+- general content studio command under `content/_prompts/commands/content-studio.md`;
+- absence of the old lesson-only review command;
 - absence of obsolete lesson workflow prompt filenames in live Markdown and script files;
 - required production dashboard sections, rows, and allowed dashboard status values;
 - catalog references against unit frontmatter.
@@ -80,7 +82,7 @@ Serious structural problems are errors.
 
 Content-completeness gaps in planned/draft scaffolds are warnings.
 
-The validator enforces one canonical content-unit system. It does not accept older unit-index structures, table-only exercise or quiz planning, alternate planning notes, old prompt layouts, obsolete lesson prompt names, or old folder schemes.
+The validator enforces one canonical content-unit system. It accepts stub unit indexes only in the new lightweight lifecycle shape and accepts full dashboards only for initialized or published units. It does not accept older unit-index structures, table-only exercise or quiz planning, alternate planning notes, old prompt layouts, obsolete lesson prompt names, or old folder schemes.
 
 ## Lesson prompt canonicalization
 
@@ -93,10 +95,10 @@ Validation fails if the lesson workflow prompt directory is missing any canonica
 09-review-existing.md
 ```
 
-The repair path for existing mini-lessons is a command:
+Conversational review and repair across content artifacts is handled by:
 
 ```text
-content/_prompts/commands/review-existing-lesson.md
+content/_prompts/commands/content-studio.md
 ```
 
 The obsolete names above are mentioned here only because the validator rejects them.

@@ -23,6 +23,8 @@ Do not add new `00-*` control prompts, `q01-*` quiz prompts, or letter suffix pr
 - `commands/next-action.md` diagnoses the current state and recommends the next exact action.
 - `commands/set-current-unit.md` sets or changes `_workflow/current-unit.md`.
 - `commands/manage-unit.md` creates, renames, splits, merges, deletes, reorders, or moves official/unofficial units.
+- `commands/initialize-unit.md` expands one `planning_state: stub` unit into an initialized planning dashboard.
+- `commands/content-studio.md` supports conversational critique, diagnosis, proposals, grilling, and targeted patches across content artifacts.
 - `commands/change-existing-content.md` handles targeted revision, stale-file sync, and workflow/template/schema changes.
 
 ## Local Prompt Workflows
@@ -43,9 +45,9 @@ Lesson workflow:
 - `workflows/lessons/06-compression-pass.md`
 - `workflows/lessons/07-verify-finalize.md`
 
-Existing-lesson review and repair:
+Conversational studio:
 
-- `commands/review-existing-lesson.md`
+- `commands/content-studio.md`
 
 Exercise workflow:
 

@@ -47,21 +47,26 @@ Before doing any work:
 10. Use this prompt file as the source of truth for this workflow step or review behavior. Do not ask for a global production marker.
 11. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
+## Stub Unit Rule
+
+If `TARGET_UNIT_INDEX` has `planning_state: stub`, stop before changing unit planning or creating lessons, exercises, quizzes, or sets. Recommend `content/_prompts/commands/initialize-unit.md` first. Continue only after the unit is initialized.
+
+
 ## Read first
 
 - `AGENTS.md`
 - `content/AGENTS.md`
-- `content/_guides/unit-workflow.md`
-- `content/_guides/golden-unit-standard.md`
-- `content/_guides/frontmatter-schema.md`
-- `content/_guides/id-and-naming.md`
-- `content/_guides/lesson-editorial-pipeline.md`
-- `content/_guides/lesson-structure.md`
-- `content/_guides/exercise-structure.md`
-- `content/_guides/quiz-structure.md`
-- `content/_guides/verification-checklist.md`
-- `content/_guides/lesson-quality-rubric.md`
-- `content/_guides/source-policy.md`
+- `content/_guides/units/unit-workflow.md`
+- `content/_guides/units/golden-unit-standard.md`
+- `content/_guides/schema/frontmatter-schema.md`
+- `content/_guides/schema/id-and-naming.md`
+- `content/_guides/lessons/lesson-editorial-pipeline.md`
+- `content/_guides/lessons/lesson-structure.md`
+- `content/_guides/exercises/exercise-structure.md`
+- `content/_guides/quizzes/quiz-structure.md`
+- `content/_guides/core/verification-checklist.md`
+- `content/_guides/lessons/lesson-quality-rubric.md`
+- `content/_guides/core/source-policy.md`
 - `content/_tracking/skill-coverage.md`
 - `TARGET_UNIT_INDEX`
 - all mini-lessons under `TARGET_UNIT_FOLDER/lessons/`

@@ -57,7 +57,7 @@ Use this checklist before marking a file as `reviewed` or `published`.
 
 ## Lesson voice checklist
 
-For full lesson review, use `_guides/lesson-quality-rubric.md`.
+For full lesson review, use `_guides/lessons/lesson-quality-rubric.md`.
 
 - [ ] The lesson was assembled from curated material, not blindly from the raw dump.
 - [ ] The lesson shape fits the concept and does not feel like a rigid template.
@@ -89,7 +89,7 @@ For full lesson review, use `_guides/lesson-quality-rubric.md`.
 - [ ] Redundant summaries, bloated exam notes, weak analogies, and repetitive headings have been removed.
 - [ ] Math, curriculum alignment, examples, notation, and checkpoint answers are verified.
 - [ ] Author-only notes are separated in `Notes auteur`.
-- [ ] The lesson can be reviewed using `_guides/lesson-quality-rubric.md`.
+- [ ] The lesson can be reviewed using `_guides/lessons/lesson-quality-rubric.md`.
 
 ## Mini-lesson checklist
 
@@ -118,7 +118,7 @@ For full lesson review, use `_guides/lesson-quality-rubric.md`.
 - [ ] Repetitive headings, ceremony, weak analogies, and redundant summaries are removed.
 - [ ] Math and curriculum verification notes are recorded when needed.
 - [ ] Author notes are separated from student-facing content.
-- [ ] The mini-lesson can be reviewed using `_guides/lesson-quality-rubric.md`.
+- [ ] The mini-lesson can be reviewed using `_guides/lessons/lesson-quality-rubric.md`.
 
 ## Unit coverage checklist
 

@@ -6,7 +6,7 @@ This file records notation choices when multiple conventions exist.
 
 Use this file to keep lessons, exercises, and solutions consistent.
 
-For general notation rules, see `_guides/math-notation.md`.
+For general notation rules, see `_guides/schema/math-notation.md`.
 
 ## Entry template
 

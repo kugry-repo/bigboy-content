@@ -4,7 +4,7 @@ All prompts in this folder follow the current folder-based prompt system. Do not
 
 ## Target Resolution
 
-Prompts that operate on a content unit should accept:
+Workflow prompts that operate on a content unit should accept:
 
 ```text
 TARGET_UNIT: <unit-folder-or-path-or-code>
@@ -35,6 +35,13 @@ After resolving, derive:
 - `TARGET_PROGRAM`
 
 If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
+
+After resolving a unit, read its `_index.md` and check `planning_state`.
+
+- If `planning_state: stub`, do not create lessons, exercises, quizzes, sets, or full planning sections. Run `content/_prompts/commands/initialize-unit.md` first unless the current command is only inspecting the stub or explicitly initializing it.
+- If `planning_state: initialized` or `planning_state: published`, use the full dashboard and artifact workflows normally.
+
+`content/_prompts/commands/content-studio.md` is inference-first. It should use selected text, active file, path, and frontmatter before asking for explicit fields such as `TARGET_UNIT`, `TARGET_FILE`, or `MODE`.
 
 ## Behavior
 

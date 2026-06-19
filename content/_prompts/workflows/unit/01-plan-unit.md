@@ -47,19 +47,24 @@ Before doing any work:
 10. Use this prompt file as the source of truth for this workflow step or review behavior. Do not ask for a global production marker.
 11. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
+## Stub Unit Rule
+
+If `TARGET_UNIT_INDEX` has `planning_state: stub`, stop before changing unit planning or creating lessons, exercises, quizzes, or sets. Recommend `content/_prompts/commands/initialize-unit.md` first. Continue only after the unit is initialized.
+
+
 ## Read first
 
 - `AGENTS.md`
 - `content/AGENTS.md`
-- `content/_guides/unit-workflow.md`
-- `content/_guides/golden-unit-standard.md`
-- `content/_guides/curriculum-map-2bac-pc-svt.md`
-- `content/_guides/frontmatter-schema.md`
-- `content/_guides/id-and-naming.md`
-- `content/_guides/quiz-structure.md`
-- `content/_guides/lesson-editorial-pipeline.md`
-- `content/_guides/lesson-structure.md`
-- `content/_guides/lesson-voice.md`
+- `content/_guides/units/unit-workflow.md`
+- `content/_guides/units/golden-unit-standard.md`
+- `content/_guides/units/curriculum-map-2bac-pc-svt.md`
+- `content/_guides/schema/frontmatter-schema.md`
+- `content/_guides/schema/id-and-naming.md`
+- `content/_guides/quizzes/quiz-structure.md`
+- `content/_guides/lessons/lesson-editorial-pipeline.md`
+- `content/_guides/lessons/lesson-structure.md`
+- `content/_guides/lessons/lesson-voice.md`
 - `content/_references/misconception-map.md`
 - `content/_references/concept-dependencies.md`
 - `content/_references/notation-decisions.md`
@@ -95,9 +100,9 @@ The unit plan must include:
 11. Planned examples, counterexamples, or exercise candidates.
 12. Misconceptions to treat, including recovery plans for major traps.
 13. Planned checkpoints and practice progression.
-14. Exercise planning placeholders: exercise cluster map, raw seed area, and rich design-card area.
+14. Exercise planning areas: exercise cluster map, raw seed area, and rich design-card area when there are real decisions to record.
 15. Exercise-set planning under `sets/`.
-16. Quiz planning placeholders: raw quiz material area and rich quiz design-card area.
+16. Quiz planning areas: raw quiz material area and rich quiz design-card area when there are real decisions to record.
 17. Planned quiz progression for diagnostic or mastery checkpoints inside quiz design cards.
 18. Planned diagrams and future interactions.
 19. Exam-style patterns, with unsupported official claims marked for verification.

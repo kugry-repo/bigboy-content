@@ -17,6 +17,7 @@ domain: DOMAIN_SLUG
 related_units: []
 skills: []
 status: planned
+planning_state: initialized
 sync_status: current
 sync_reason: null
 version: 0.1.0
@@ -30,191 +31,67 @@ updated: YYYY-MM-DD
 
 ## Place dans le programme
 
-TODO.
+No unit-specific placement notes recorded yet.
 
 ## Objectifs et plan de l'unité
 
-TODO.
+No unit objectives recorded yet.
 
 ## Prérequis
 
-TODO.
+No prerequisite decisions recorded yet.
 
 ## Compétences
 
-TODO.
+No skill map recorded yet.
 
 ## Plan des mini-leçons
 
-| ID prévu | Fichier prévu | Titre | Source / cible | Résultat attendu | Dump brut | Curation humaine | Forme possible | À garder | À supprimer / trop lourd | Vérifications |
-|---|---|---|---|---|---|---|---|---|---|---|
-| 2bac-pcsvt-UNIT_CODE-lesson-001 | `lessons/UNIT_CODE-lesson-001.md` | TODO | TODO | TODO | TODO | TODO | TODO | TODO | TODO | TODO |
+No mini-lesson plan recorded yet.
 
 ## Misconceptions à traiter
 
-| Confusion | Pourquoi elle arrive | Comment la leçon doit la corriger | Où la traiter |
-|---|---|---|---|
-| TODO | TODO | TODO | TODO |
+No unit-specific misconceptions recorded yet.
 
 ## Leçons
 
-- TODO: `lessons/UNIT_CODE-lesson-001.md`
+No lesson files created yet.
 
 ## Planification des exercices
 
 ### Carte des clusters d'exercices
 
-| Cluster | Base de dérivation | Mini-leçons liées | Compétences | Importance | Statut seeds | Statut design cards | Notes |
-|---|---|---|---|---|---|---|---|
-| TODO | TODO | TODO | TODO | TODO | TODO | TODO | TODO |
+No exercise cluster map recorded yet.
 
 ### Seeds bruts des exercices
 
-Raw exercise seeds - one cluster at a time, not final exercises.
-
-À compléter avec `workflows/exercises/01-generate-raw-seeds.md`.
+No raw exercise seeds recorded yet.
 
 ### Design cards des exercices
 
-Les design cards d'exercices sont la source de vérité pour la création des fichiers d'exercices. Une table de planification seule n'est pas une source valide pour créer un exercice.
-
-#### 2bac-pcsvt-UNIT_CODE-ex-001 - TODO
-
-Status: planned
-Cluster: TODO
-Planned file: `exercises/UNIT_CODE-ex-001.md`
-Difficulty: `decouverte | application-directe | application-guidee | probleme-type | approfondissement`
-Type: TODO
-Mini-lessons linked:
-- TODO
-
-Target skill:
-- TODO
-
-Exercise role in progression:
-- TODO
-
-Student-facing exercise shape:
-- TODO
-
-Parameter constraints:
-- TODO
-
-Expected method:
-1. TODO
-
-Main traps / misconceptions:
-- TODO
-
-Hint opportunities:
-- TODO
-
-MCQ opportunities:
-- TODO
-
-Solution feasibility sketch:
-- TODO
-
-Variants:
-- Easier: TODO
-- Harder: TODO
-- Exam-style: TODO
-
-Verification risks:
-- TODO
-
-Keep rationale:
-- TODO
+No exercise design cards recorded yet.
 
 ## Planification des séries d'exercices
 
-TODO: planifier les fichiers sous `sets/` uniquement à partir d'exercices existants ou de design cards d'exercices suffisamment précises.
+No exercise-set plan recorded yet.
 
 ## Planification des quiz
 
 ### Matériel brut des quiz
 
-Raw quiz material - one quiz series or target skill area at a time, not final quizzes.
-
-À compléter avec `workflows/quizzes/01-generate-raw-dump.md`.
+No raw quiz material recorded yet.
 
 ### Design cards des quiz
 
-Les design cards de quiz sont la source de vérité pour `workflows/quizzes/03-create-batch.md`. Une table de planification seule n'est pas une source valide pour créer un quiz.
-
-#### 2bac-pcsvt-UNIT_CODE-quiz-001 - TODO
-
-Status: planned
-Planned file: `quizzes/UNIT_CODE-quiz-001.md`
-Quiz series: TODO
-Quiz number: 1
-Quiz kind: `prerequisite | skill | method-choice | error-clinic | fluency | mixed-review | exam-readiness`
-Difficulty: `decouverte | application-directe | application-guidee | probleme-type | approfondissement`
-Estimated time: TODO
-Mastery threshold: TODO
-Linked mini-lessons:
-- TODO
-Linked exercises:
-- TODO
-
-Target skills:
-- TODO
-
-Quiz role in progression:
-- TODO
-
-What this quiz checks:
-- TODO
-
-What passing means:
-- TODO
-
-What failing means:
-- TODO
-
-Item mix:
-- multiple-choice: TODO
-- multiple-response: TODO
-- true-false: TODO
-- fill-blank: TODO
-- match: TODO
-- sequence: TODO
-- hotspot: TODO
-
-Cognitive mix:
-- recognition: TODO
-- method-choice: TODO
-- micro-calculation: TODO
-- error-diagnosis: TODO
-- missing-step: TODO
-- representation: TODO
-- transfer: TODO
-
-Misconceptions targeted:
-- TODO
-
-Feedback policy:
-- Answer-specific feedback required.
-- Wrong choices should map to real misconceptions.
-
-Item design cards:
-- TODO
-
-Verification and mismath risks:
-- TODO
-
-Keep rationale:
-- TODO
+No quiz design cards recorded yet.
 
 ## Diagrammes et interactions à prévoir
 
-| ID | Type | Où | Objectif pédagogique | Statut |
-|---|---|---|---|---|
-| TODO | diagramme | TODO | TODO | planned |
+No diagram or interaction decisions recorded yet.
 
 ## Notes d'alignement examen
 
-TODO.
+No exam-alignment notes recorded yet.
 
 ## Production dashboard
 
@@ -258,8 +135,8 @@ TODO.
 
 | Date | Changement | Notes |
 |---|---|---|
-| YYYY-MM-DD | Initialisation du suivi | TODO |
+| YYYY-MM-DD | Unit initialized | Stub expanded into the current planning dashboard. |
 
 ## Notes auteur
 
-TODO.
+No author notes recorded yet.

@@ -51,7 +51,7 @@ Before doing any work:
 6. Derive `TARGET_UNIT_INDEX` as `<resolved-folder>/_index.md`.
 7. Read `TARGET_UNIT_INDEX`.
 8. Require `type: unit-index`.
-9. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM` from the unit index frontmatter.
+9. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, `TARGET_PROGRAM`, and `TARGET_PLANNING_STATE` from the unit index frontmatter.
 10. Use this prompt file as the source of truth for this diagnostic behavior. Do not ask for a global production marker.
 11. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
 
@@ -61,13 +61,14 @@ Read:
 
 - `AGENTS.md`
 - `content/AGENTS.md`
-- `content/_guides/unit-workflow.md`
+- `content/_guides/units/unit-workflow.md`
 - `TARGET_UNIT_INDEX`
 
 Inspect, without editing:
 
-- the complete canonical unit index body;
-- `## Production dashboard`;
+- the unit `planning_state`;
+- the complete unit index body;
+- `## Production dashboard` only when `planning_state` is `initialized` or `published`;
 - `TARGET_UNIT_FOLDER/lessons/`;
 - `TARGET_UNIT_FOLDER/exercises/`;
 - `TARGET_UNIT_FOLDER/quizzes/`;
@@ -87,7 +88,9 @@ Do not:
 - create exercise sets;
 - build frontend or app code.
 
-Use `## Production dashboard` as the main current-state view. Compare dashboard rows with actual files on disk and note mismatches.
+For initialized or published units, use `## Production dashboard` as the main current-state view. Compare dashboard rows with actual files on disk and note mismatches.
+
+If `TARGET_PLANNING_STATE` is `stub`, do not expect a dashboard. Recommend `content/_prompts/commands/initialize-unit.md` as the next action unless the user's request is only to manage, rename, delete, or inspect the stub.
 
 Identify the requested artifact/workstream when present:
 
@@ -120,6 +123,7 @@ Routing rules:
 - If the user wants review, route to unit review or a targeted review command.
 - If the user wants cleanup, route to cleanup for existing artifacts and report gaps.
 - If the user wants targeted revision or stale-file sync, recommend `content/_prompts/commands/change-existing-content.md`.
+- If the user wants conversational critique, diagnosis, proposals, grilling, or targeted patching of existing content, recommend `content/_prompts/commands/content-studio.md`.
 
 ## Lesson diagnosis
 
@@ -147,7 +151,7 @@ Choose the next lesson action with this local order:
 6. If coherence is complete but compression/taste/voice review is incomplete or stale, recommend `content/_prompts/workflows/lessons/06-compression-pass.md`.
 7. If compression/taste/voice review is complete but verification/finalization is incomplete or stale, recommend `content/_prompts/workflows/lessons/07-verify-finalize.md`.
 
-For repair of an already authored lesson, recommend `content/_prompts/commands/review-existing-lesson.md` when the issue is targeted quality, stale review, or repair rather than ordinary creation.
+For repair or critique of already authored lesson text, recommend `content/_prompts/commands/content-studio.md` when the issue is targeted quality, stale review, or repair rather than ordinary creation.
 
 ## Exercise diagnosis
 
@@ -178,7 +182,7 @@ Use exactly this output format:
 
 ## Resolved target
 
-Report the current unit, resolved folder, index path, program, unit code, title, and relevant frontmatter metadata.
+Report the current unit, resolved folder, index path, program, unit code, title, `planning_state`, and relevant frontmatter metadata.
 
 ## Target source
 
@@ -190,7 +194,7 @@ State the requested artifact/workstream if one was present. If the request was o
 
 ## Dashboard snapshot
 
-Summarize the visible `## Production dashboard` rows and the files that exist under `lessons/`, `exercises/`, `quizzes/`, and `sets/`.
+If the unit is a stub, say that no dashboard exists yet and summarize artifact folder contents. If the unit is initialized or published, summarize the visible `## Production dashboard` rows and the files that exist under `lessons/`, `exercises/`, `quizzes/`, and `sets/`.
 
 ## Ready or complete work
 
@@ -206,7 +210,7 @@ List files expected by the dashboard or planning areas that are missing, plus fi
 
 ## Recommended next action
 
-Give one exact next action. If the user asked for a specific artifact, stay inside that workstream unless a required local input is missing. If the user asked to revise existing content or stale/inconsistent downstream files are the main issue, recommend `commands/change-existing-content.md`.
+Give one exact next action. If the unit is a stub and the user wants content or dashboard work, recommend `commands/initialize-unit.md`. If the user asked for a specific artifact, stay inside that workstream unless a required local input is missing. If the user asked to revise existing content or stale/inconsistent downstream files are the main issue, recommend `commands/change-existing-content.md`. If the user wants conversational polishing or targeted patching, recommend `commands/content-studio.md`.
 
 ## Prompt to run next
 

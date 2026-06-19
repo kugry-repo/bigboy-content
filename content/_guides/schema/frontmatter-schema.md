@@ -39,6 +39,7 @@ content_scope: official-curriculum | cross-chapter-method | global-revision | sy
 domain: analyse | algebre-geometrie | probabilites | transversal
 skills: []
 status: planned
+planning_state: stub | initialized | published
 sync_status: current
 sync_reason: null
 version: 0.1.0
@@ -94,6 +95,7 @@ domain: analyse | algebre-geometrie | probabilites | transversal
 related_units: []
 skills: []
 status: planned
+planning_state: stub | initialized | published
 sync_status: current
 sync_reason: null
 version: 0.1.0
@@ -104,7 +106,23 @@ updated: YYYY-MM-DD
 ---
 ```
 
-The body of every unit `_index.md` must follow `content/_templates/unit-index.template.md` exactly at the top level. Required H2 headings, in order:
+Unit indexes have a lifecycle controlled by `planning_state`:
+
+- `stub`: the unit is registered but not initialized. The body is a lightweight stub with no H2 planning dashboard.
+- `initialized`: the full planning dashboard exists and can be developed.
+- `published`: the full planning dashboard exists and the unit is complete enough to be considered real content.
+
+Stub body:
+
+```md
+# UNIT_TITLE
+
+This unit is registered but not initialized yet.
+
+Run `content/_prompts/commands/initialize-unit.md` before planning lessons, exercises, quizzes, sets, or the full unit dashboard.
+```
+
+Initialized or published unit bodies must follow `content/_templates/unit-index.template.md` at the top level. Required H2 headings, in order:
 
 ```md
 ## Place dans le programme
@@ -124,7 +142,7 @@ The body of every unit `_index.md` must follow `content/_templates/unit-index.te
 ## Notes auteur
 ```
 
-`## Production dashboard` is the authoritative current-state tracker for unit workstreams. `status` remains content maturity metadata. `sync_status` remains freshness metadata when used. `## Journal de production` records historical changes only.
+`## Production dashboard` is the authoritative current-state tracker for initialized and published unit workstreams. `status` remains content maturity metadata. `planning_state` remains the unit-index lifecycle. `sync_status` remains freshness metadata when used. `## Journal de production` records historical changes only.
 
 Official curriculum unit example:
 
@@ -145,6 +163,7 @@ official: true
 content_scope: official-curriculum
 domain: analyse
 related_units: []
+planning_state: stub
 ```
 
 Unofficial topic example:
@@ -168,6 +187,7 @@ domain: transversal
 related_units:
   - 01-limites-continuite
   - 02-derivabilite-etude-fonctions
+planning_state: stub
 ```
 
 ## Unit Rules
@@ -188,7 +208,7 @@ Unofficial topics:
 - live under `content/2bac-pc-svt/topics/`;
 - are extra learning, revision, method, synthesis, or exam-prep units.
 
-Both unit kinds use the same unit index schema, production dashboard, artifact workflow prompts, subfolders, naming rules, ID rules, and validator logic.
+Both unit kinds use the same unit index lifecycle, production dashboard rules after initialization, artifact workflow prompts, subfolders, naming rules, ID rules, and validator logic.
 
 ## Topic Catalog Frontmatter
 
@@ -242,6 +262,18 @@ Allowed values for `status`:
 - `needs-review`
 - `reviewed`
 - `published`
+
+## Planning State Values
+
+`planning_state` means unit-index lifecycle.
+
+Allowed values for `planning_state`:
+
+- `stub`
+- `initialized`
+- `published`
+
+Do not use `planning_state` on lessons, exercises, quizzes, sets, or corrections.
 
 ## Sync And Freshness Values
 

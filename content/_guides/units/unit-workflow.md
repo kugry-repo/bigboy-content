@@ -9,13 +9,15 @@ A content unit can be:
 - an official curriculum unit under `content/2bac-pc-svt/`;
 - an unofficial topic under `content/2bac-pc-svt/topics/`.
 
-Both unit kinds use the same unit `_index.md` body schema, artifact folders, production dashboard, prompt system, and validation rules. Official curriculum units remain the program spine. Unofficial topics are extra learning, revision, method, synthesis, or exam-prep units and must not present themselves as official curriculum units.
+Both unit kinds use the same unit `_index.md` lifecycle, artifact folders, production dashboard rules, prompt system, and validation rules. Official curriculum units remain the program spine. Unofficial topics are extra learning, revision, method, synthesis, or exam-prep units and must not present themselves as official curriculum units.
 
 There is no canonical global unit sequence. Do not invent numbered unit ladders, extra global gates, or split labels such as `5a` and `5b`. Numbered prompt files inside a workflow folder are local operating procedures for that workstream only.
 
 ## Core rule
 
-The unit `_index.md` is the only unit-planning artifact.
+The unit `_index.md` is the only unit-planning artifact, but it has a lifecycle.
+
+A registered unit may start as a lightweight stub. Full planning sections belong only in initialized or published unit indexes.
 
 All unit-level planning belongs in the unit `_index.md`, including:
 
@@ -31,7 +33,31 @@ All unit-level planning belongs in the unit `_index.md`, including:
 - production dashboard state;
 - production journal entries.
 
-Do not create or use a second planning-note convention.
+Do not create or use a second planning-note convention. Do not preemptively expand every stub when the dashboard shape changes.
+
+## Unit index lifecycle
+
+Use `planning_state` in unit-index frontmatter:
+
+- `stub`: the unit is registered but not initialized. The body stays tiny and has no planning dashboard.
+- `initialized`: the full planning dashboard exists and can be developed.
+- `published`: the unit dashboard exists and the unit is complete enough to be considered real content.
+
+`status` remains content maturity. `planning_state` is the shape and lifecycle of the unit index itself.
+
+Stub body:
+
+```md
+# UNIT_TITLE
+
+This unit is registered but not initialized yet.
+
+Run `content/_prompts/commands/initialize-unit.md` before planning lessons, exercises, quizzes, sets, or the full unit dashboard.
+```
+
+Use `content/_prompts/commands/initialize-unit.md` to expand one stub into the current initialized dashboard. Initialization must preserve the unit identity fields and set `planning_state: initialized`.
+
+Content creation workflows must not create lessons, exercises, quizzes, sets, or full planning sections inside a stub. They must stop and ask for unit initialization first, or initialize the target only when the user explicitly asked for initialization.
 
 ## Canonical artifact folders
 
@@ -50,7 +76,7 @@ Do not create a root-level `lesson.md`.
 
 ## Target resolution
 
-Prompts use `TARGET_UNIT` only.
+Workflow prompts use `TARGET_UNIT` as the advanced explicit target. Studio-style commands may infer the target from selected text, active file, path, and frontmatter.
 
 Resolution order:
 
@@ -72,21 +98,23 @@ Resolution order:
    - `TARGET_UNIT_CODE`;
    - `TARGET_UNIT_TITLE`;
    - `TARGET_PROGRAM`.
-6. Stop if the target is missing or ambiguous.
+6. Read the unit `_index.md` and check `planning_state`.
+7. Stop if the target is missing or ambiguous.
 
 ## Source of truth
 
-Use three layers of state:
+Use four layers of state:
 
-1. `content/_guides/unit-workflow.md` defines dashboard semantics.
-2. The unit `_index.md` tracks unit-specific progress through `## Production dashboard`.
-3. File frontmatter tracks file-level status.
+1. `content/_guides/units/unit-workflow.md` defines lifecycle and dashboard semantics.
+2. Unit-index frontmatter `planning_state` defines whether the unit is a stub, initialized dashboard, or published dashboard.
+3. The initialized or published unit `_index.md` tracks unit-specific progress through `## Production dashboard`.
+4. File frontmatter tracks file-level status.
 
 `status` means content maturity. `sync_status` means alignment/freshness against current upstream plans, templates, and guides. `## Journal de production` is a historical log, not a current-state tracker.
 
-## Canonical unit index body
+## Canonical initialized unit index body
 
-Every unit `_index.md` uses these top-level body headings in this exact order:
+Every initialized or published unit `_index.md` uses these top-level body headings in this exact order:
 
 ```md
 ## Place dans le programme
@@ -121,7 +149,7 @@ Every unit `_index.md` uses these top-level body headings in this exact order:
 ### Design cards des quiz
 ```
 
-The template `content/_templates/unit-index.template.md` is the canonical scaffold for this schema.
+The template `content/_templates/unit-index.template.md` is the canonical initialized scaffold. New registered units should use `content/_templates/unit-index-stub.template.md` unless the user explicitly asks to initialize the unit immediately.
 
 ## Production dashboard
 
@@ -139,7 +167,7 @@ Allowed dashboard statuses:
 
 Use the smallest honest status. Do not mark a workstream complete just because an unrelated workstream is complete.
 
-Every unit `_index.md` contains this dashboard:
+Every initialized or published unit `_index.md` contains this dashboard:
 
 ```md
 ## Production dashboard
@@ -232,7 +260,9 @@ If a selected exercise or quiz lacks a canonical design card, stop and run the r
 
 ### Unit map
 
-Use `content/_prompts/workflows/unit/01-plan-unit.md` to create or improve the unit map. This workstream updates the unit blueprint, prerequisite map, skill map, mini-lesson plan, misconception map, exercise/quiz planning placeholders, diagram notes, exam-alignment notes, production dashboard, journal, and author notes.
+Use `content/_prompts/commands/initialize-unit.md` before unit map work when `planning_state: stub`.
+
+Use `content/_prompts/workflows/unit/01-plan-unit.md` to create or improve the unit map after initialization. This workstream updates the unit blueprint, prerequisite map, skill map, mini-lesson plan, misconception map, exercise/quiz planning decisions, diagram notes, exam-alignment notes, production dashboard, journal, and author notes.
 
 Do not create lesson, exercise, quiz, or set files during unit map work unless the user explicitly asks for them.
 
@@ -310,16 +340,20 @@ Structural changes must migrate affected existing files to the new source of tru
 
 Targeted revision should patch only the affected files and any directly impacted links, metadata, dashboard rows, or journal notes.
 
+### Content studio
+
+Use `content/_prompts/commands/content-studio.md` for conversational critique, diagnosis, proposals, grilling, and targeted patches across lessons, exercises, quizzes, and unit planning sections. It is not a generation pipeline and should infer the target from editor context when possible.
+
 ## Production journal
 
-Every unit `_index.md` also contains:
+Every initialized or published unit `_index.md` also contains:
 
 ```md
 ## Journal de production
 
 | Date | Changement | Notes |
 |---|---|---|
-| YYYY-MM-DD | Initialisation du suivi | TODO |
+| YYYY-MM-DD | Unit initialized | Stub expanded into the current planning dashboard. |
 ```
 
 Use the journal for historical authoring notes, not as a current-state tracker.

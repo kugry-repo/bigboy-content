@@ -15,6 +15,13 @@ const PROMPT_COMMANDS_DIR = path.join(PROMPTS_DIR, "commands");
 const REQUIRED_BASE_DIRS = [
   "content",
   "content/_guides",
+  "content/_guides/core",
+  "content/_guides/schema",
+  "content/_guides/units",
+  "content/_guides/lessons",
+  "content/_guides/exercises",
+  "content/_guides/quizzes",
+  "content/_guides/media",
   "content/_templates",
   "content/_prompts",
   "content/_references",
@@ -51,6 +58,7 @@ const REQUIRED_UNIT_FIELDS = [
   "related_units",
   "skills",
   "status",
+  "planning_state",
   "sync_status",
   "sync_reason",
   "version",
@@ -106,6 +114,12 @@ const ALLOWED_STATUS_VALUES = new Set([
   "draft",
   "needs-review",
   "reviewed",
+  "published",
+]);
+
+const ALLOWED_PLANNING_STATES = new Set([
+  "stub",
+  "initialized",
   "published",
 ]);
 
@@ -257,6 +271,30 @@ const REQUIRED_DASHBOARD = [
   },
 ];
 
+const REQUIRED_GUIDE_FILES = [
+  "content/_guides/README.md",
+  "content/_guides/core/authoring-workflow.md",
+  "content/_guides/core/style-guide.md",
+  "content/_guides/core/source-policy.md",
+  "content/_guides/core/obsidian-conventions.md",
+  "content/_guides/core/content-validation.md",
+  "content/_guides/core/verification-checklist.md",
+  "content/_guides/schema/frontmatter-schema.md",
+  "content/_guides/schema/id-and-naming.md",
+  "content/_guides/schema/math-notation.md",
+  "content/_guides/units/unit-workflow.md",
+  "content/_guides/units/curriculum-map-2bac-pc-svt.md",
+  "content/_guides/units/golden-unit-standard.md",
+  "content/_guides/lessons/lesson-editorial-pipeline.md",
+  "content/_guides/lessons/lesson-structure.md",
+  "content/_guides/lessons/lesson-voice.md",
+  "content/_guides/lessons/lesson-quality-rubric.md",
+  "content/_guides/exercises/exercise-structure.md",
+  "content/_guides/exercises/solution-style.md",
+  "content/_guides/quizzes/quiz-structure.md",
+  "content/_guides/media/diagram-guidelines.md",
+];
+
 const LEGACY_STAGE_WORD = `${"Sta"}${"ge"}`;
 const LEGACY_STAGE_WORD_LOWER = `${"sta"}${"ge"}`;
 const LEGACY_GLOBAL_PATTERNS = [
@@ -320,6 +358,13 @@ const REQUIRED_LESSON_WORKFLOW_PROMPTS = [
   "content/_prompts/workflows/lessons/07-verify-finalize.md",
 ];
 
+const REQUIRED_CONTENT_STUDIO_COMMAND =
+  "content/_prompts/commands/content-studio.md";
+
+const OBSOLETE_COMMAND_PROMPTS = [
+  `content/_prompts/commands/${"review"}-${"existing"}-${"lesson"}.md`,
+];
+
 const OBSOLETE_LESSON_WORKFLOW_PROMPTS = [
   "content/_prompts/workflows/lessons/06-voice-pass.md",
   "content/_prompts/workflows/lessons/07-compression-pass.md",
@@ -327,12 +372,9 @@ const OBSOLETE_LESSON_WORKFLOW_PROMPTS = [
   "content/_prompts/workflows/lessons/09-review-existing.md",
 ];
 
-const REQUIRED_LESSON_REPAIR_COMMAND =
-  "content/_prompts/commands/review-existing-lesson.md";
-
 const ALLOWED_OBSOLETE_LESSON_REFERENCE_FILES = new Set([
   "scripts/validate-content.mjs",
-  "content/_guides/content-validation.md",
+  "content/_guides/core/content-validation.md",
 ]);
 
 const REMOVED_ACTIVE_TEXT = [
@@ -543,6 +585,10 @@ function isGuidePromptReferenceOrTracking(filePath) {
   return /^content\/_(guides|prompts|references|tracking)\//.test(rel(filePath));
 }
 
+function isTemplatePlaceholderId(filePath, id) {
+  return rel(filePath).startsWith("content/_templates/") && /\b[A-Z_]+\b/.test(id);
+}
+
 function requireFrontmatter(filePath, parsed, label) {
   if (parsed.hasFrontmatter) return true;
   addError(filePath, `${label} must have YAML frontmatter`);
@@ -697,6 +743,27 @@ function checkBaseFolders() {
   }
 }
 
+function checkGuideTaxonomy() {
+  for (const repoPath of REQUIRED_GUIDE_FILES) {
+    const fullPath = fullPathFromRepoPath(repoPath);
+    if (!isFile(fullPath)) {
+      addError(fullPath, "missing required guide file");
+    }
+  }
+
+  const guideRoot = path.join(CONTENT_DIR, "_guides");
+  for (const entry of readDir(guideRoot)) {
+    if (!entry.isFile()) continue;
+    if (entry.name === "README.md") continue;
+    if (entry.name.endsWith(".md")) {
+      addError(
+        path.join(guideRoot, entry.name),
+        "guide files must live in a categorized _guides/ subfolder",
+      );
+    }
+  }
+}
+
 function checkProgramFolderShape() {
   if (!isDirectory(PROGRAM_DIR)) return;
 
@@ -777,6 +844,23 @@ function checkUnitFrontmatter(indexPath, unitDir, expectedGroup, data) {
   }
 
   if (
+    Object.hasOwn(data, "planning_state") &&
+    !ALLOWED_PLANNING_STATES.has(data.planning_state)
+  ) {
+    addError(
+      indexPath,
+      `frontmatter "planning_state" must be one of ${[...ALLOWED_PLANNING_STATES].join(", ")}`,
+    );
+  }
+
+  if (data.planning_state === "published" && data.status !== "published") {
+    addWarning(
+      indexPath,
+      'frontmatter "planning_state: published" usually requires "status: published"',
+    );
+  }
+
+  if (
     Object.hasOwn(data, "sync_status") &&
     !ALLOWED_SYNC_STATUSES.has(data.sync_status)
   ) {
@@ -844,7 +928,45 @@ function checkUnitFrontmatter(indexPath, unitDir, expectedGroup, data) {
   }
 }
 
+function checkStubUnitBody(indexPath, body) {
+  const headings = getHeadings(body);
+  const h1Headings = headings.filter((heading) => heading.level === 1);
+
+  if (h1Headings.length !== 1) {
+    addError(indexPath, "stub unit index must contain exactly one H1 title");
+  }
+
+  const h2Headings = headings.filter((heading) => heading.level === 2);
+  if (h2Headings.length > 0) {
+    addError(
+      indexPath,
+      "stub unit index must not contain planning dashboard H2 sections; initialize the unit first",
+    );
+  }
+
+  if (!hasAnyNormalizedText(body, ["registered but not initialized"])) {
+    addError(
+      indexPath,
+      'stub unit index body must state that the unit is registered but not initialized',
+    );
+  }
+
+  if (!body.includes("content/_prompts/commands/initialize-unit.md")) {
+    addError(
+      indexPath,
+      "stub unit index must point to content/_prompts/commands/initialize-unit.md",
+    );
+  }
+
+  checkLegacyGlobalProductionText(indexPath, body);
+}
+
 function checkCanonicalUnitBody(indexPath, body, data) {
+  if (data.planning_state === "stub") {
+    checkStubUnitBody(indexPath, body);
+    return;
+  }
+
   compareLists(indexPath, "unit _index.md H2 headings", getH2Headings(body), CANONICAL_UNIT_H2);
 
   const headings = getHeadings(body);
@@ -872,38 +994,6 @@ function checkCanonicalUnitBody(indexPath, body, data) {
         `missing quiz planning area "### ${requiredHeading}" under "## Planification des quiz"`,
       );
     }
-  }
-
-  const exerciseCardSection = getSection(exerciseSection, 3, "Design cards des exercices");
-  if (!/####\s+2bac-pcsvt-[a-z0-9]+-ex-\d{3}\b/.test(exerciseCardSection)) {
-    addError(
-      indexPath,
-      'missing canonical exercise design card heading like "#### 2bac-pcsvt-UNIT-ex-001 - ..."',
-    );
-  }
-
-  if (!/Target skill:\s*\n-\s+/i.test(exerciseCardSection)) {
-    addError(indexPath, 'exercise design cards must include "Target skill"');
-  }
-
-  if (!/Verification risks:\s*\n-\s+/i.test(exerciseCardSection)) {
-    addError(indexPath, 'exercise design cards must include "Verification risks"');
-  }
-
-  const quizCardSection = getSection(quizSection, 3, "Design cards des quiz");
-  if (!/####\s+2bac-pcsvt-[a-z0-9]+-quiz-\d{3}\b/.test(quizCardSection)) {
-    addError(
-      indexPath,
-      'missing canonical quiz design card heading like "#### 2bac-pcsvt-UNIT-quiz-001 - ..."',
-    );
-  }
-
-  if (!/Item design cards:\s*\n-\s+/i.test(quizCardSection)) {
-    addError(indexPath, 'quiz design cards must include "Item design cards"');
-  }
-
-  if (!/Verification and mismath risks:\s*\n-\s+/i.test(quizCardSection)) {
-    addError(indexPath, 'quiz design cards must include "Verification and mismath risks"');
   }
 
   const dashboardSection = getSection(body, 2, DASHBOARD_HEADING);
@@ -949,6 +1039,7 @@ function checkUnitIndex(unitDir, expectedGroup) {
     order: Number(parsed.data.unit_order),
     id: parsed.data.id,
     kind: parsed.data.unit_kind,
+    planningState: parsed.data.planning_state,
     data: parsed.data,
   };
 }
@@ -1228,6 +1319,20 @@ function checkSetFile(unit, filePath) {
 }
 
 function checkUnitContentFiles(unit) {
+  const artifactMarkdownFiles = REQUIRED_UNIT_SUBFOLDERS.flatMap((subdir) =>
+    walkMarkdownFiles(path.join(unit.dir, subdir)),
+  );
+
+  if (unit.planningState === "stub") {
+    for (const filePath of artifactMarkdownFiles) {
+      addError(
+        filePath,
+        "stub unit cannot contain lesson, exercise, quiz, or set Markdown files; initialize the unit first",
+      );
+    }
+    return;
+  }
+
   for (const filePath of walkMarkdownFiles(path.join(unit.dir, "lessons"))) {
     checkLessonFile(unit, filePath);
   }
@@ -1522,20 +1627,16 @@ function checkLessonPromptFamily() {
     }
   }
 
-  const repairCommandPath = fullPathFromRepoPath(REQUIRED_LESSON_REPAIR_COMMAND);
-  if (!isFile(repairCommandPath)) {
-    addError(repairCommandPath, "missing existing-lesson review command");
+  const studioCommandPath = fullPathFromRepoPath(REQUIRED_CONTENT_STUDIO_COMMAND);
+  if (!isFile(studioCommandPath)) {
+    addError(studioCommandPath, "missing general content studio command");
   }
 
-  const misplacedRepairCommand = path.join(
-    LESSON_WORKFLOW_DIR,
-    "review-existing-lesson.md",
-  );
-  if (isFile(misplacedRepairCommand)) {
-    addError(
-      misplacedRepairCommand,
-      "existing-lesson review belongs under content/_prompts/commands/",
-    );
+  for (const repoPath of OBSOLETE_COMMAND_PROMPTS) {
+    const fullPath = fullPathFromRepoPath(repoPath);
+    if (isFile(fullPath)) {
+      addError(fullPath, "obsolete lesson-only command must not exist");
+    }
   }
 }
 
@@ -1553,9 +1654,10 @@ function repositoryTextFilesForObsoletePromptScan() {
 }
 
 function checkObsoleteLessonPromptReferences() {
-  const obsoleteNames = OBSOLETE_LESSON_WORKFLOW_PROMPTS.map((repoPath) =>
-    repoPath.split("/").at(-1),
-  );
+  const obsoleteNames = [
+    ...OBSOLETE_LESSON_WORKFLOW_PROMPTS,
+    ...OBSOLETE_COMMAND_PROMPTS,
+  ].map((repoPath) => repoPath.split("/").at(-1));
 
   for (const filePath of repositoryTextFilesForObsoletePromptScan()) {
     const relative = rel(filePath);
@@ -1690,6 +1792,7 @@ function collectIdsAndWarnings() {
     }
 
     if (!parsed.data.id) continue;
+    if (isTemplatePlaceholderId(filePath, String(parsed.data.id))) continue;
 
     const previousFile = ids.get(parsed.data.id);
     if (previousFile) {
@@ -1733,6 +1836,7 @@ function printResults() {
 
 function main() {
   checkBaseFolders();
+  checkGuideTaxonomy();
   checkProgramFolderShape();
   discoverAndCheckUnits();
   checkUnitUniqueness();

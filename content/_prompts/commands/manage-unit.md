@@ -46,10 +46,11 @@ Do not leave duplicate entries, stale links, old names, or alternate schemas beh
 
 - `AGENTS.md`
 - `content/AGENTS.md`
-- `content/_guides/unit-workflow.md`
-- `content/_guides/frontmatter-schema.md`
-- `content/_guides/id-and-naming.md`
-- `content/_guides/content-validation.md`
+- `content/_guides/units/unit-workflow.md`
+- `content/_guides/schema/frontmatter-schema.md`
+- `content/_guides/schema/id-and-naming.md`
+- `content/_guides/core/content-validation.md`
+- `content/_templates/unit-index-stub.template.md`
 - `content/_templates/unit-index.template.md`
 
 ## Target Resolution
@@ -97,7 +98,7 @@ Rules:
 
 1. If `UNIT_KIND` is `official-curriculum-unit`, create the folder directly under `content/2bac-pc-svt/`, normally with a numeric prefix.
 2. If `UNIT_KIND` is `unofficial-topic`, create the folder under `content/2bac-pc-svt/topics/`.
-3. Use `content/_templates/unit-index.template.md`.
+3. Use `content/_templates/unit-index-stub.template.md` unless the user explicitly asks to initialize the unit immediately.
 4. Create:
    - `_index.md`;
    - `lessons/.gitkeep`;
@@ -107,7 +108,7 @@ Rules:
 5. Add or update the unit in:
    - `content/2bac-pc-svt/_index.md`;
    - `content/2bac-pc-svt/topics/_index.md` if it is an unofficial topic;
-   - `content/_guides/id-and-naming.md`;
+   - `content/_guides/schema/id-and-naming.md`;
    - any other guide or prompt example that lists unit codes or folders.
 6. Run validation.
 
@@ -120,7 +121,8 @@ Rules:
 5. If `unit_code` changes, rename lesson, exercise, quiz, and set files and update their IDs/frontmatter.
 6. Search the repo for old references and update them.
 7. Do not leave aliases or duplicate entries.
-8. Run validation.
+8. Leave `planning_state: stub` for a normal newly registered unit.
+9. Run validation.
 
 ## ACTION: modify
 
@@ -139,7 +141,7 @@ Rules:
 5. Remove the unit from:
    - `content/2bac-pc-svt/_index.md`;
    - `content/2bac-pc-svt/topics/_index.md` if relevant;
-   - `content/_guides/id-and-naming.md`;
+   - `content/_guides/schema/id-and-naming.md`;
    - any guide or prompt example that mentions it.
 6. If `_workflow/current-unit.md` points to the deleted unit, clear it or update it to a safe state.
 7. Search the repo for old references and remove or update them.
