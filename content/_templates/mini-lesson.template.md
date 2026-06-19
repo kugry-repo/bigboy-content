@@ -1,20 +1,20 @@
 ---
 type: lesson
 lesson_kind: mini-lesson
-id: 2bac-pcsvt-UNIT_CODE-lesson-001
+id: "{{id_prefix}}-{{unit_code}}-lesson-001"
 title: "MINI_LESSON_TITLE"
-program: 2bac-pc-svt
-level: 2bac
-tracks: [pc, svt]
-language: fr
-unit_kind: UNIT_KIND
-unit_code: UNIT_CODE
-unit_slug: UNIT_SLUG
-unit_folder: UNIT_FOLDER
-unit_order: UNIT_ORDER
-official: OFFICIAL
-content_scope: CONTENT_SCOPE
-domain: DOMAIN_SLUG
+program: "{{program}}"
+level: "{{level}}"
+tracks: "{{tracks}}"
+language: "{{language}}"
+unit_kind: "{{unit_kind}}"
+unit_code: "{{unit_code}}"
+unit_slug: "{{unit_slug}}"
+unit_folder: "{{unit_folder}}"
+unit_order: "{{unit_order}}"
+official: "{{official}}"
+content_scope: "{{content_scope}}"
+domain: "{{domain}}"
 lesson_number: 1
 skills: []
 difficulty: decouverte

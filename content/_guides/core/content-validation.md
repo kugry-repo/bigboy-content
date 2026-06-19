@@ -25,8 +25,10 @@ node scripts/validate-content.mjs
 The validator checks:
 
 - required base folders;
-- official units directly under `content/2bac-pc-svt/`;
-- unofficial topics under `content/2bac-pc-svt/topics/`;
+- dynamic program discovery under `content/programs/*`;
+- each program's `_index.md`, `_curriculum-map.md`, metadata, `id_prefix`, and `topics/` folder;
+- official units directly under `content/programs/<program_id>/`;
+- unofficial topics under `content/programs/<program_id>/topics/`;
 - catalog indexes distinguished from content-unit indexes;
 - maintained YAML parsing for frontmatter;
 - duplicate frontmatter IDs;
@@ -46,7 +48,7 @@ The validator checks:
 - absence of old planned-exercise or planned-quiz table sections;
 - absence of old `chapter_*` and `topic_*` frontmatter fields;
 - absence of old domain-folder structures;
-- lesson, exercise, quiz, and set filename and ID consistency;
+- lesson, exercise, quiz, and set filename and program-aware ID consistency;
 - required canonical fields on generated content files, including `unit_code`;
 - required exercise frontmatter fields, allowed exercise values, required exercise headings, and quality-signal warnings;
 - unit identity consistency between frontmatter and containing folder;
@@ -59,7 +61,7 @@ The validator checks:
 - absence of obsolete lesson workflow prompt filenames in live Markdown and script files;
 - required quiz frontmatter fields, allowed quiz values, required quiz headings, review-status conflicts, and quality-signal warnings;
 - required production dashboard sections, rows, and allowed dashboard status values;
-- catalog references against unit frontmatter.
+- catalog references against unit frontmatter inside the owning program.
 
 ## Scaffold warnings
 
@@ -86,7 +88,7 @@ Serious structural problems are errors.
 
 Content-completeness gaps in planned/draft scaffolds are warnings.
 
-The validator enforces one canonical content-unit system. It accepts stub unit indexes only in the new lightweight lifecycle shape and accepts full dashboards only for initialized or published units. It does not accept older unit-index structures, table-only exercise or quiz planning, alternate planning notes, old prompt layouts, obsolete lesson prompt names, or old folder schemes.
+The validator enforces one canonical multi-program content system. It accepts stub unit indexes only in the new lightweight lifecycle shape and accepts full dashboards only for initialized or published units. It does not accept older unit-index structures, table-only exercise or quiz planning, alternate planning notes, old prompt layouts, obsolete lesson prompt names, old single-program roots, or old folder schemes.
 
 ## Lesson prompt canonicalization
 

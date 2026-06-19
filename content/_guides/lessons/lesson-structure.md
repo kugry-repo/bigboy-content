@@ -21,7 +21,7 @@ source / target
 -> final student lesson
 ```
 
-A good mini-lesson should help a 2BAC PC/SVT student know:
+A good mini-lesson should help a learner in the target program know:
 
 - what the concept means or what method is being used;
 - why this piece of learning matters;
@@ -56,7 +56,7 @@ Do not force every mini-lesson to contain the same visible structure.
 The stable part is the learning contract:
 
 - the lesson has a clear purpose;
-- the mathematics is precise enough for 2BAC PC/SVT;
+- the mathematics is precise enough for the target program;
 - conditions and notation are correct;
 - examples, checks, practice directions, or next actions appear when they help;
 - misconceptions are treated when they are the main obstacle;

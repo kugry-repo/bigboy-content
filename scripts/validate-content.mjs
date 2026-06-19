@@ -6,8 +6,7 @@ import { parse as parseYaml } from "yaml";
 
 const ROOT = process.cwd();
 const CONTENT_DIR = path.join(ROOT, "content");
-const PROGRAM_DIR = path.join(CONTENT_DIR, "2bac-pc-svt");
-const TOPICS_DIR = path.join(PROGRAM_DIR, "topics");
+const PROGRAMS_DIR = path.join(CONTENT_DIR, "programs");
 const PROMPTS_DIR = path.join(CONTENT_DIR, "_prompts");
 const LESSON_WORKFLOW_DIR = path.join(PROMPTS_DIR, "workflows", "lessons");
 const EXERCISE_WORKFLOW_DIR = path.join(PROMPTS_DIR, "workflows", "exercises");
@@ -29,8 +28,7 @@ const REQUIRED_BASE_DIRS = [
   "content/_references",
   "content/_examples",
   "content/_tracking",
-  "content/2bac-pc-svt",
-  "content/2bac-pc-svt/topics",
+  "content/programs",
 ];
 
 const FORBIDDEN_DOMAIN_FOLDERS = new Set([
@@ -40,6 +38,21 @@ const FORBIDDEN_DOMAIN_FOLDERS = new Set([
 ]);
 
 const REQUIRED_UNIT_SUBFOLDERS = ["lessons", "exercises", "quizzes", "sets"];
+
+const REQUIRED_PROGRAM_FIELDS = [
+  "type",
+  "id",
+  "program",
+  "program_slug",
+  "country",
+  "level",
+  "subject",
+  "tracks",
+  "language",
+  "id_prefix",
+  "curriculum_map",
+  "status",
+];
 
 const REQUIRED_UNIT_FIELDS = [
   "type",
@@ -117,6 +130,12 @@ const ALLOWED_STATUS_VALUES = new Set([
   "needs-review",
   "reviewed",
   "published",
+]);
+
+const ALLOWED_PROGRAM_STATUS_VALUES = new Set([
+  "planned",
+  "active",
+  "archived",
 ]);
 
 const ALLOWED_PLANNING_STATES = new Set([
@@ -450,8 +469,8 @@ const REQUIRED_GUIDE_FILES = [
   "content/_guides/schema/frontmatter-schema.md",
   "content/_guides/schema/id-and-naming.md",
   "content/_guides/schema/math-notation.md",
+  "content/_guides/programs/program-lifecycle.md",
   "content/_guides/units/unit-workflow.md",
-  "content/_guides/units/curriculum-map-2bac-pc-svt.md",
   "content/_guides/units/golden-unit-standard.md",
   "content/_guides/lessons/lesson-editorial-pipeline.md",
   "content/_guides/lessons/lesson-structure.md",
@@ -677,6 +696,7 @@ const LESSON_QUALITY_SIGNAL_CHECKS = [
 const errors = [];
 const warnings = [];
 const ids = new Map();
+const programs = [];
 const units = [];
 let checkedOfficialUnits = 0;
 let checkedUnofficialUnits = 0;
@@ -801,7 +821,10 @@ function isGuidePromptReferenceOrTracking(filePath) {
 }
 
 function isTemplatePlaceholderId(filePath, id) {
-  return rel(filePath).startsWith("content/_templates/") && /\b[A-Z_]+\b/.test(id);
+  return (
+    rel(filePath).startsWith("content/_templates/") &&
+    (/\{\{[^}]+\}\}/.test(id) || /\b[A-Z_]+\b/.test(id))
+  );
 }
 
 function requireFrontmatter(filePath, parsed, label) {
@@ -832,6 +855,15 @@ function isEmptyValue(value) {
     value === undefined ||
     value === "" ||
     (Array.isArray(value) && value.length === 0)
+  );
+}
+
+function arraysEqual(left, right) {
+  return (
+    Array.isArray(left) &&
+    Array.isArray(right) &&
+    left.length === right.length &&
+    left.every((value, index) => value === right[index])
   );
 }
 
@@ -998,6 +1030,14 @@ function checkBaseFolders() {
       errors.push(`${requiredDir}/: missing required base folder`);
     }
   }
+
+  const oldSingleProgramPath = path.join(CONTENT_DIR, "2bac-pc-svt");
+  if (isDirectory(oldSingleProgramPath)) {
+    addError(
+      oldSingleProgramPath,
+      "old single-program root must not exist; use content/programs/<program_id>/",
+    );
+  }
 }
 
 function checkGuideTaxonomy() {
@@ -1021,44 +1061,137 @@ function checkGuideTaxonomy() {
   }
 }
 
-function checkProgramFolderShape() {
-  if (!isDirectory(PROGRAM_DIR)) return;
+function discoverProgramDirs() {
+  if (!isDirectory(PROGRAMS_DIR)) return [];
 
-  for (const entry of readDir(PROGRAM_DIR)) {
+  return readDir(PROGRAMS_DIR)
+    .filter((entry) => entry.isDirectory())
+    .filter((entry) => !entry.name.startsWith(".") && !entry.name.startsWith("_"))
+    .map((entry) => path.join(PROGRAMS_DIR, entry.name))
+    .sort();
+}
+
+function checkProgramIndex(programDir) {
+  const indexPath = path.join(programDir, "_index.md");
+  const programId = path.basename(programDir);
+
+  if (!isFile(indexPath)) {
+    addError(indexPath, "missing program index");
+    return null;
+  }
+
+  const text = fs.readFileSync(indexPath, "utf8");
+  const parsed = parseFrontmatter(indexPath, text);
+  if (!requireFrontmatter(indexPath, parsed, "program _index.md")) {
+    return null;
+  }
+
+  const { data } = parsed;
+  requireFields(indexPath, data, REQUIRED_PROGRAM_FIELDS);
+
+  if (data.type !== "program-index") {
+    addError(indexPath, 'frontmatter "type" must be "program-index"');
+  }
+
+  if (data.program !== programId) {
+    addError(indexPath, `frontmatter "program" must match directory name "${programId}"`);
+  }
+
+  if (isEmptyValue(data.id_prefix)) {
+    addError(indexPath, 'frontmatter "id_prefix" is required');
+  } else if (data.id !== `${data.id_prefix}-index`) {
+    addError(indexPath, `frontmatter "id" must be "${data.id_prefix}-index"`);
+  }
+
+  for (const field of ["program_slug", "country", "level", "subject", "language"]) {
+    if (isEmptyValue(data[field])) {
+      addError(indexPath, `frontmatter "${field}" is required`);
+    }
+  }
+
+  if (!Array.isArray(data.tracks) || data.tracks.length === 0) {
+    addError(indexPath, 'frontmatter "tracks" must be a non-empty array');
+  }
+
+  if (data.status && !ALLOWED_PROGRAM_STATUS_VALUES.has(data.status)) {
+    addError(indexPath, `frontmatter "status" has invalid value "${data.status}"`);
+  }
+
+  const curriculumMap = data.curriculum_map || "_curriculum-map.md";
+  if (path.isAbsolute(curriculumMap) || curriculumMap.includes("..")) {
+    addError(indexPath, 'frontmatter "curriculum_map" must be a program-relative path');
+  } else if (!isFile(path.join(programDir, curriculumMap))) {
+    addError(
+      path.join(programDir, curriculumMap),
+      'missing program curriculum map referenced by "curriculum_map"',
+    );
+  }
+
+  if (!isDirectory(path.join(programDir, "topics"))) {
+    addError(path.join(programDir, "topics"), "missing program topics folder");
+  }
+
+  return {
+    id: programId,
+    dir: programDir,
+    topicsDir: path.join(programDir, "topics"),
+    indexPath,
+    data,
+    idPrefix: data.id_prefix,
+    text,
+  };
+}
+
+function discoverAndCheckPrograms() {
+  const programDirs = discoverProgramDirs();
+  if (programDirs.length === 0) {
+    addError(PROGRAMS_DIR, "must contain at least one program directory");
+  }
+
+  for (const programDir of programDirs) {
+    const program = checkProgramIndex(programDir);
+    if (program) programs.push(program);
+  }
+}
+
+function checkProgramFolderShape(program) {
+  if (!isDirectory(program.dir)) return;
+
+  for (const entry of readDir(program.dir)) {
     if (!entry.isDirectory()) continue;
     if (entry.name === "topics") continue;
     if (entry.name.startsWith(".") || entry.name.startsWith("_")) continue;
 
     if (FORBIDDEN_DOMAIN_FOLDERS.has(entry.name)) {
       errors.push(
-        `content/2bac-pc-svt/${entry.name}/: old domain folders are not allowed here`,
+        `${rel(path.join(program.dir, entry.name))}/: old domain folders are not allowed here`,
       );
     }
   }
 }
 
-function discoverOfficialUnitDirs() {
-  if (!isDirectory(PROGRAM_DIR)) return [];
+function discoverOfficialUnitDirs(program) {
+  if (!isDirectory(program.dir)) return [];
 
-  return readDir(PROGRAM_DIR)
+  return readDir(program.dir)
     .filter((entry) => entry.isDirectory())
     .filter((entry) => entry.name !== "topics")
     .filter((entry) => !entry.name.startsWith(".") && !entry.name.startsWith("_"))
-    .map((entry) => path.join(PROGRAM_DIR, entry.name))
+    .map((entry) => path.join(program.dir, entry.name))
     .sort();
 }
 
-function discoverTopicUnitDirs() {
-  if (!isDirectory(TOPICS_DIR)) return [];
+function discoverTopicUnitDirs(program) {
+  if (!isDirectory(program.topicsDir)) return [];
 
-  return readDir(TOPICS_DIR)
+  return readDir(program.topicsDir)
     .filter((entry) => entry.isDirectory())
     .filter((entry) => !entry.name.startsWith(".") && !entry.name.startsWith("_"))
-    .map((entry) => path.join(TOPICS_DIR, entry.name))
+    .map((entry) => path.join(program.topicsDir, entry.name))
     .sort();
 }
 
-function checkUnitFrontmatter(indexPath, unitDir, expectedGroup, data) {
+function checkUnitFrontmatter(indexPath, unitDir, expectedGroup, data, program) {
   const expectedUnitFolder =
     expectedGroup === "official"
       ? path.basename(unitDir)
@@ -1070,16 +1203,23 @@ function checkUnitFrontmatter(indexPath, unitDir, expectedGroup, data) {
     addError(indexPath, 'frontmatter "type" must be "unit-index"');
   }
 
-  if (data.program !== "2bac-pc-svt") {
-    addError(indexPath, 'frontmatter "program" must be "2bac-pc-svt"');
+  if (data.program !== program.id) {
+    addError(indexPath, `frontmatter "program" must be "${program.id}"`);
   }
 
-  if (data.level !== "2bac") {
-    addError(indexPath, 'frontmatter "level" must be "2bac"');
+  if (data.level !== program.data.level) {
+    addError(indexPath, `frontmatter "level" must be "${program.data.level}"`);
   }
 
-  if (data.language !== "fr") {
-    addError(indexPath, 'frontmatter "language" must be "fr"');
+  if (data.language !== program.data.language) {
+    addError(indexPath, `frontmatter "language" must be "${program.data.language}"`);
+  }
+
+  if (!arraysEqual(data.tracks, program.data.tracks)) {
+    addError(
+      indexPath,
+      `frontmatter "tracks" must match program tracks [${program.data.tracks.join(", ")}]`,
+    );
   }
 
   if (data.unit_kind && !ALLOWED_UNIT_KINDS.has(data.unit_kind)) {
@@ -1139,7 +1279,7 @@ function checkUnitFrontmatter(indexPath, unitDir, expectedGroup, data) {
   }
 
   if (data.unit_code) {
-    const expectedId = `2bac-pcsvt-${data.unit_code}-index`;
+    const expectedId = `${program.idPrefix}-${data.unit_code}-index`;
     if (data.id !== expectedId) {
       addError(indexPath, `frontmatter "id" must be "${expectedId}"`);
     }
@@ -1269,7 +1409,7 @@ function checkCanonicalUnitBody(indexPath, body, data) {
   }
 }
 
-function checkUnitIndex(unitDir, expectedGroup) {
+function checkUnitIndex(unitDir, expectedGroup, program) {
   const indexPath = path.join(unitDir, "_index.md");
 
   if (!isFile(indexPath)) {
@@ -1284,12 +1424,13 @@ function checkUnitIndex(unitDir, expectedGroup) {
     return null;
   }
 
-  checkUnitFrontmatter(indexPath, unitDir, expectedGroup, parsed.data);
+  checkUnitFrontmatter(indexPath, unitDir, expectedGroup, parsed.data, program);
   checkCanonicalUnitBody(indexPath, parsed.body, parsed.data);
 
   return {
     indexPath,
     dir: unitDir,
+    program,
     group: expectedGroup,
     code: parsed.data.unit_code,
     folder: parsed.data.unit_folder,
@@ -1330,8 +1471,23 @@ function checkRequiredContentFields(filePath, data, unit) {
     addError(filePath, `frontmatter "unit_kind" must be "${unit.kind}"`);
   }
 
-  if (data.program !== "2bac-pc-svt") {
-    addError(filePath, 'frontmatter "program" must be "2bac-pc-svt"');
+  if (data.program !== unit.program.id) {
+    addError(filePath, `frontmatter "program" must be "${unit.program.id}"`);
+  }
+
+  if (data.level !== unit.program.data.level) {
+    addError(filePath, `frontmatter "level" must be "${unit.program.data.level}"`);
+  }
+
+  if (data.language !== unit.program.data.language) {
+    addError(filePath, `frontmatter "language" must be "${unit.program.data.language}"`);
+  }
+
+  if (!arraysEqual(data.tracks, unit.program.data.tracks)) {
+    addError(
+      filePath,
+      `frontmatter "tracks" must match program tracks [${unit.program.data.tracks.join(", ")}]`,
+    );
   }
 
   if (data.status && !ALLOWED_STATUS_VALUES.has(data.status)) {
@@ -1418,7 +1574,7 @@ function checkLessonFile(unit, filePath) {
   }
 
   if (nameMatch) {
-    const expectedId = `2bac-pcsvt-${unit.code}-lesson-${nameMatch[1]}`;
+    const expectedId = `${unit.program.idPrefix}-${unit.code}-lesson-${nameMatch[1]}`;
     if (data.id !== expectedId) {
       addError(filePath, `frontmatter "id" must be "${expectedId}"`);
     }
@@ -1459,7 +1615,7 @@ function checkExerciseFile(unit, filePath) {
   }
 
   if (nameMatch) {
-    const expectedId = `2bac-pcsvt-${unit.code}-ex-${nameMatch[1]}`;
+    const expectedId = `${unit.program.idPrefix}-${unit.code}-ex-${nameMatch[1]}`;
     if (data.id !== expectedId) {
       addError(filePath, `frontmatter "id" must be "${expectedId}"`);
     }
@@ -1619,7 +1775,7 @@ function checkQuizFile(unit, filePath) {
   }
 
   if (nameMatch) {
-    const expectedId = `2bac-pcsvt-${unit.code}-quiz-${nameMatch[1]}`;
+    const expectedId = `${unit.program.idPrefix}-${unit.code}-quiz-${nameMatch[1]}`;
     if (data.id !== expectedId) {
       addError(filePath, `frontmatter "id" must be "${expectedId}"`);
     }
@@ -1872,7 +2028,7 @@ function checkSetFile(unit, filePath) {
   }
 
   if (nameMatch) {
-    const expectedId = `2bac-pcsvt-${unit.code}-set-${nameMatch[1]}`;
+    const expectedId = `${unit.program.idPrefix}-${unit.code}-set-${nameMatch[1]}`;
     if (data.id !== expectedId) {
       addError(filePath, `frontmatter "id" must be "${expectedId}"`);
     }
@@ -1918,22 +2074,24 @@ function checkUnitContentFiles(unit) {
 }
 
 function discoverAndCheckUnits() {
-  for (const unitDir of discoverOfficialUnitDirs()) {
-    checkedOfficialUnits += 1;
-    const unit = checkUnitIndex(unitDir, "official");
-    if (!unit) continue;
-    units.push(unit);
-    checkUnitSubfolders(unit);
-    checkUnitContentFiles(unit);
-  }
+  for (const program of programs) {
+    for (const unitDir of discoverOfficialUnitDirs(program)) {
+      checkedOfficialUnits += 1;
+      const unit = checkUnitIndex(unitDir, "official", program);
+      if (!unit) continue;
+      units.push(unit);
+      checkUnitSubfolders(unit);
+      checkUnitContentFiles(unit);
+    }
 
-  for (const unitDir of discoverTopicUnitDirs()) {
-    checkedUnofficialUnits += 1;
-    const unit = checkUnitIndex(unitDir, "topic");
-    if (!unit) continue;
-    units.push(unit);
-    checkUnitSubfolders(unit);
-    checkUnitContentFiles(unit);
+    for (const unitDir of discoverTopicUnitDirs(program)) {
+      checkedUnofficialUnits += 1;
+      const unit = checkUnitIndex(unitDir, "topic", program);
+      if (!unit) continue;
+      units.push(unit);
+      checkUnitSubfolders(unit);
+      checkUnitContentFiles(unit);
+    }
   }
 }
 
@@ -1945,37 +2103,44 @@ function checkUnitUniqueness() {
 
   for (const unit of units) {
     if (unit.code) {
-      const previous = byCode.get(unit.code);
+      const codeKey = `${unit.program.id}:${unit.code}`;
+      const previous = byCode.get(codeKey);
       if (previous) {
         addError(unit.indexPath, `duplicate unit_code "${unit.code}" also used in ${previous}`);
       } else {
-        byCode.set(unit.code, rel(unit.indexPath));
+        byCode.set(codeKey, rel(unit.indexPath));
       }
     }
 
     if (unit.folder) {
-      const previous = byFolder.get(unit.folder);
+      const folderKey = `${unit.program.id}:${unit.folder}`;
+      const previous = byFolder.get(folderKey);
       if (previous) {
         addError(unit.indexPath, `duplicate unit_folder "${unit.folder}" also used in ${previous}`);
       } else {
-        byFolder.set(unit.folder, rel(unit.indexPath));
+        byFolder.set(folderKey, rel(unit.indexPath));
       }
     }
 
+    const orderKey = `${unit.program.id}:${unit.group}:${unit.order}`;
     const orderMap = unit.group === "official" ? officialOrders : topicOrders;
     if (Number.isFinite(unit.order)) {
-      const previous = orderMap.get(unit.order);
+      const previous = orderMap.get(orderKey);
       if (previous) {
         addError(unit.indexPath, `duplicate ${unit.group} unit_order ${unit.order} also used in ${previous}`);
       } else {
-        orderMap.set(unit.order, rel(unit.indexPath));
+        orderMap.set(orderKey, rel(unit.indexPath));
       }
     }
   }
 }
 
-function unitByFolder() {
-  return new Map(units.map((unit) => [unit.folder, unit]));
+function unitByFolder(program) {
+  return new Map(
+    units
+      .filter((unit) => unit.program.id === program.id)
+      .map((unit) => [unit.folder, unit]),
+  );
 }
 
 function checkCatalogFile(filePath, expectedType) {
@@ -2082,22 +2247,46 @@ function checkCatalogRow(filePath, row, catalogKind, unitsByFolder) {
   }
 }
 
-function checkCatalogs() {
-  const unitsByFolder = unitByFolder();
+function checkCatalogProgramMetadata(filePath, data, program) {
+  if (data.program !== program.id) {
+    addError(filePath, `frontmatter "program" must be "${program.id}"`);
+  }
+
+  if (Object.hasOwn(data, "level") && data.level !== program.data.level) {
+    addError(filePath, `frontmatter "level" must be "${program.data.level}"`);
+  }
+
+  if (Object.hasOwn(data, "language") && data.language !== program.data.language) {
+    addError(filePath, `frontmatter "language" must be "${program.data.language}"`);
+  }
+
+  if (Object.hasOwn(data, "tracks") && !arraysEqual(data.tracks, program.data.tracks)) {
+    addError(
+      filePath,
+      `frontmatter "tracks" must match program tracks [${program.data.tracks.join(", ")}]`,
+    );
+  }
+}
+
+function checkCatalogsForProgram(program) {
+  const unitsByFolder = unitByFolder(program);
+  const programIndexPath = path.join(program.dir, "_index.md");
+  const topicsIndexPath = path.join(program.topicsDir, "_index.md");
   const programCatalog = checkCatalogFile(
-    path.join(PROGRAM_DIR, "_index.md"),
+    programIndexPath,
     "program-index",
   );
   const topicCatalog = checkCatalogFile(
-    path.join(TOPICS_DIR, "_index.md"),
+    topicsIndexPath,
     "topic-catalog",
   );
 
   if (programCatalog) {
+    checkCatalogProgramMetadata(programIndexPath, programCatalog.parsed.data, program);
     for (const row of parseCatalogRows(programCatalog.text)) {
       const isTopic = /\[\[topics\//.test(row.join("|"));
       checkCatalogRow(
-        path.join(PROGRAM_DIR, "_index.md"),
+        programIndexPath,
         row,
         isTopic ? "program-topic" : "official",
         unitsByFolder,
@@ -2106,12 +2295,13 @@ function checkCatalogs() {
   }
 
   if (topicCatalog) {
+    checkCatalogProgramMetadata(topicsIndexPath, topicCatalog.parsed.data, program);
     if (!isFalse(topicCatalog.parsed.data.official)) {
-      addError(path.join(TOPICS_DIR, "_index.md"), 'frontmatter "official" must be false');
+      addError(topicsIndexPath, 'frontmatter "official" must be false');
     }
 
     for (const row of parseCatalogRows(topicCatalog.text)) {
-      checkCatalogRow(path.join(TOPICS_DIR, "_index.md"), row, "topic", unitsByFolder);
+      checkCatalogRow(topicsIndexPath, row, "topic", unitsByFolder);
     }
   }
 
@@ -2129,8 +2319,12 @@ function checkCatalogs() {
   }
 
   for (const unit of units) {
-    if (unit.group === "official" && !officialLinked.has(unit.folder)) {
-      addError(path.join(PROGRAM_DIR, "_index.md"), `missing official catalog entry for "${unit.folder}"`);
+    if (
+      unit.program.id === program.id &&
+      unit.group === "official" &&
+      !officialLinked.has(unit.folder)
+    ) {
+      addError(programIndexPath, `missing official catalog entry for "${unit.folder}"`);
     }
   }
 
@@ -2143,10 +2337,20 @@ function checkCatalogs() {
     );
 
     for (const unit of units) {
-      if (unit.group === "topic" && !topicCatalogLinked.has(unit.folder)) {
-        addError(path.join(TOPICS_DIR, "_index.md"), `missing topic catalog entry for "${unit.folder}"`);
+      if (
+        unit.program.id === program.id &&
+        unit.group === "topic" &&
+        !topicCatalogLinked.has(unit.folder)
+      ) {
+        addError(topicsIndexPath, `missing topic catalog entry for "${unit.folder}"`);
       }
     }
+  }
+}
+
+function checkCatalogs() {
+  for (const program of programs) {
+    checkCatalogsForProgram(program);
   }
 }
 
@@ -2508,6 +2712,7 @@ function printResults() {
   console.log("==================");
   console.log(`Errors: ${errors.length}`);
   console.log(`Warnings: ${warnings.length}`);
+  console.log(`Checked programs: ${programs.length}`);
   console.log(`Checked official units: ${checkedOfficialUnits}`);
   console.log(`Checked unofficial units: ${checkedUnofficialUnits}`);
   console.log(`Checked total units: ${units.length}`);
@@ -2536,7 +2741,10 @@ function printResults() {
 function main() {
   checkBaseFolders();
   checkGuideTaxonomy();
-  checkProgramFolderShape();
+  discoverAndCheckPrograms();
+  for (const program of programs) {
+    checkProgramFolderShape(program);
+  }
   discoverAndCheckUnits();
   checkUnitUniqueness();
   checkCatalogs();

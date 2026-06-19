@@ -8,7 +8,7 @@ It applies mainly to mini-lesson files under unit `lessons/` folders.
 
 Exercises and solutions may borrow some of the tone, but the full storytelling and mentor style is mainly for lessons.
 
-The goal is to make lessons feel different from normal school handouts: clearer, warmer, more memorable, more intuitive, and more motivating, while staying mathematically correct and useful for Moroccan 2BAC PC/SVT exam preparation.
+The goal is to make lessons feel different from normal school handouts: clearer, warmer, more memorable, more intuitive, and more motivating, while staying mathematically correct and useful for the target Moroccan program.
 
 ## Core lesson personality
 

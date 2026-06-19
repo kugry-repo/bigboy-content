@@ -14,9 +14,9 @@ This is an example/reference file only. It is not real unit content.
 
 ```yaml
 type: quiz
-id: 2bac-pcsvt-lc-quiz-001
+id: ma-2bac-pcsvt-lc-quiz-001
 title: "Reconnaître une forme indéterminée"
-program: 2bac-pc-svt
+program: ma-2bac-pc-svt
 level: 2bac
 tracks: [pc, svt]
 language: fr

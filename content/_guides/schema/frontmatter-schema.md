@@ -1,39 +1,67 @@
 # Frontmatter Schema
 
-Every content file should start with YAML frontmatter.
+Every generated content file and index file starts with YAML frontmatter.
 
-The schema should be stable enough for future app rendering but simple enough for human editing. The canonical authoring target is a generic content unit. Official curriculum units and unofficial topics are both units; the difference is metadata.
+The schema is program-aware. Program metadata is defined once in `content/programs/<program_id>/_index.md`, then copied into units and artifacts where validation needs local context.
 
-## Frontmatter Enforcement Scope
+Guides, prompts, references, and tracking documents may be metadata-free. Validator output for metadata-free guide, prompt, reference, or tracking files should be warnings at most unless the project later decides to enforce frontmatter everywhere.
 
-Strict YAML frontmatter is required for generated content files and index files, including:
+## Program Index
 
-- program indexes;
-- topic catalogs;
-- unit indexes;
-- mini-lessons;
-- exercises;
-- standalone quizzes;
-- exercise sets;
-- corrections;
-- templates where this schema defines frontmatter.
+Each program root must contain `_index.md`.
 
-Guides, prompts, references, and tracking documents may currently be metadata-free. Validator output for metadata-free guide, prompt, reference, or tracking files should be warnings at most unless the project later decides to enforce frontmatter everywhere.
+```yaml
+---
+type: program-index
+id: "{{id_prefix}}-index"
+title: "PROGRAM_TITLE"
+program: "{{program_id}}"
+program_slug: "{{program_slug}}"
+country: ma
+level: "{{level}}"
+subject: mathematiques
+tracks: "{{tracks}}"
+language: fr
+id_prefix: "{{id_prefix}}"
+curriculum_map: _curriculum-map.md
+status: active
+version: 0.1.0
+source_type: official-reference
+source_ref: "_references/official-sources.md"
+created: YYYY-MM-DD
+updated: YYYY-MM-DD
+---
+```
+
+Example program: `ma-2bac-pc-svt`
+
+```yaml
+program: ma-2bac-pc-svt
+program_slug: 2bac-pc-svt
+country: ma
+level: 2bac
+subject: mathematiques
+tracks: [pc, svt]
+language: fr
+id_prefix: ma-2bac-pcsvt
+```
+
+`status` on program indexes uses program lifecycle values such as `planned`, `active`, or `archived`.
 
 ## Common Unit Fields
 
 Use these fields on unit indexes and copy the relevant unit metadata into lesson, exercise, quiz, set, and correction files:
 
 ```yaml
-program: 2bac-pc-svt
-level: 2bac
-tracks: [pc, svt]
-language: fr
+program: "{{program}}"
+level: "{{level}}"
+tracks: "{{tracks}}"
+language: "{{language}}"
 unit_kind: official-curriculum-unit | unofficial-topic
-unit_code: UNIT_CODE
-unit_slug: UNIT_SLUG
-unit_folder: UNIT_FOLDER
-unit_order: UNIT_ORDER
+unit_code: "{{unit_code}}"
+unit_slug: "{{unit_slug}}"
+unit_folder: "{{unit_folder}}"
+unit_order: "{{unit_order}}"
 official: true | false
 content_scope: official-curriculum | cross-chapter-method | global-revision | synthesis | exam-prep | custom
 domain: analyse | algebre-geometrie | probabilites | transversal
@@ -49,49 +77,34 @@ created: YYYY-MM-DD
 updated: YYYY-MM-DD
 ```
 
-`unit_folder` is the real path relative to `content/2bac-pc-svt/`.
-
-Examples:
+`unit_folder` is the real path relative to the owning program root, for example:
 
 ```text
 01-limites-continuite
 topics/etudier-une-fonction
 ```
 
-`unit_slug` is the stable slug without numeric order when useful.
-
-Examples:
-
-```text
-limites-continuite
-etudier-une-fonction
-```
-
-`unit_order` is the display or curriculum order inside its unit group: official curriculum units are ordered among official units, and unofficial topics are ordered among topics.
-
-`related_units` is the canonical relationship field for unit indexes.
-
-## Unit Index Frontmatter
+## Unit Index
 
 Canonical template:
 
 ```yaml
 ---
 type: unit-index
-id: 2bac-pcsvt-UNIT_CODE-index
-title: "UNIT_TITLE"
-program: 2bac-pc-svt
-level: 2bac
-tracks: [pc, svt]
-language: fr
-unit_kind: official-curriculum-unit | unofficial-topic
-unit_code: UNIT_CODE
-unit_slug: UNIT_SLUG
-unit_folder: UNIT_FOLDER
-unit_order: UNIT_ORDER
-official: true | false
-content_scope: official-curriculum | cross-chapter-method | global-revision | synthesis | exam-prep | custom
-domain: analyse | algebre-geometrie | probabilites | transversal
+id: "{{id_prefix}}-{{unit_code}}-index"
+title: "{{unit_title}}"
+program: "{{program}}"
+level: "{{level}}"
+tracks: "{{tracks}}"
+language: "{{language}}"
+unit_kind: "{{unit_kind}}"
+unit_code: "{{unit_code}}"
+unit_slug: "{{unit_slug}}"
+unit_folder: "{{unit_folder}}"
+unit_order: "{{unit_order}}"
+official: "{{official}}"
+content_scope: "{{content_scope}}"
+domain: "{{domain}}"
 related_units: []
 skills: []
 status: planned
@@ -99,8 +112,8 @@ planning_state: stub | initialized | published
 sync_status: current
 sync_reason: null
 version: 0.1.0
-source_type: original | official-reference
-source_ref: null
+source_type: "{{source_type}}"
+source_ref: "{{source_ref}}"
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
 ---
@@ -112,117 +125,37 @@ Unit indexes have a lifecycle controlled by `planning_state`:
 - `initialized`: the full planning dashboard exists and can be developed.
 - `published`: the full planning dashboard exists and the unit is complete enough to be considered real content.
 
-Stub body:
-
-```md
-# UNIT_TITLE
-
-This unit is registered but not initialized yet.
-
-Run `content/_prompts/commands/initialize-unit.md` before planning lessons, exercises, quizzes, sets, or the full unit dashboard.
-```
-
-Initialized or published unit bodies must follow `content/_templates/unit-index.template.md` at the top level. Required H2 headings, in order:
-
-```md
-## Place dans le programme
-## Objectifs et plan de l'unité
-## Prérequis
-## Compétences
-## Plan des mini-leçons
-## Misconceptions à traiter
-## Leçons
-## Planification des exercices
-## Planification des séries d'exercices
-## Planification des quiz
-## Diagrammes et interactions à prévoir
-## Notes d'alignement examen
-## Production dashboard
-## Journal de production
-## Notes auteur
-```
-
-`## Production dashboard` is the authoritative current-state tracker for initialized and published unit workstreams. `status` remains content maturity metadata. `planning_state` remains the unit-index lifecycle. `sync_status` remains freshness metadata when used. `## Journal de production` records historical changes only.
-
-Official curriculum unit example:
-
-```yaml
-type: unit-index
-id: 2bac-pcsvt-lc-index
-title: "Limites et continuite"
-program: 2bac-pc-svt
-level: 2bac
-tracks: [pc, svt]
-language: fr
-unit_kind: official-curriculum-unit
-unit_code: lc
-unit_slug: limites-continuite
-unit_folder: 01-limites-continuite
-unit_order: 1
-official: true
-content_scope: official-curriculum
-domain: analyse
-related_units: []
-planning_state: stub
-```
-
-Unofficial topic example:
-
-```yaml
-type: unit-index
-id: 2bac-pcsvt-ef-index
-title: "Etudier une fonction"
-program: 2bac-pc-svt
-level: 2bac
-tracks: [pc, svt]
-language: fr
-unit_kind: unofficial-topic
-unit_code: ef
-unit_slug: etudier-une-fonction
-unit_folder: topics/etudier-une-fonction
-unit_order: 3
-official: false
-content_scope: cross-chapter-method
-domain: transversal
-related_units:
-  - 01-limites-continuite
-  - 02-derivabilite-etude-fonctions
-planning_state: stub
-```
-
-## Unit Rules
-
 Official curriculum units:
 
 - use `official: true`;
 - use `unit_kind: official-curriculum-unit`;
 - use `content_scope: official-curriculum`;
-- live directly under `content/2bac-pc-svt/`;
-- form the main curriculum spine.
+- live directly under `content/programs/<program_id>/`;
+- form the main curriculum spine for their owning program.
 
 Unofficial topics:
 
 - use `official: false`;
 - use `unit_kind: unofficial-topic`;
 - use `content_scope: cross-chapter-method`, `global-revision`, `synthesis`, `exam-prep`, or `custom`;
-- live under `content/2bac-pc-svt/topics/`;
+- live under `content/programs/<program_id>/topics/`;
 - are extra learning, revision, method, synthesis, or exam-prep units.
 
 Both unit kinds use the same unit index lifecycle, production dashboard rules after initialization, artifact workflow prompts, subfolders, naming rules, ID rules, and validator logic.
 
-## Topic Catalog Frontmatter
+## Topic Catalog
 
 The topic catalog is not itself a content unit.
 
 ```yaml
 ---
 type: topic-catalog
-id: 2bac-pcsvt-topics-index
+id: "{{id_prefix}}-topics-index"
 title: "Topics non officiels"
-program: 2bac-pc-svt
-level: 2bac
-tracks: [pc, svt]
-language: fr
+program: "{{program}}"
+level: "{{level}}"
+tracks: "{{tracks}}"
+language: "{{language}}"
 official: false
 status: planned
 sync_status: current
@@ -251,11 +184,11 @@ Allowed values for `type`:
 - `guide`
 - `template`
 
-## Status Values
+## Content Status Values
 
-`status` means production maturity.
+`status` on content files means production maturity.
 
-Allowed values for `status`:
+Allowed values:
 
 - `planned`
 - `draft`
@@ -263,85 +196,28 @@ Allowed values for `status`:
 - `reviewed`
 - `published`
 
-## Planning State Values
-
-`planning_state` means unit-index lifecycle.
-
-Allowed values for `planning_state`:
-
-- `stub`
-- `initialized`
-- `published`
-
-Do not use `planning_state` on lessons, exercises, quizzes, sets, or corrections.
-
-## Sync And Freshness Values
-
-Use this distinction:
-
-```yaml
-status: draft
-sync_status: current
-sync_reason: null
-```
-
-`status` means production maturity.
-
-`sync_status` means whether the file is still aligned with upstream plans, templates, and guides:
-
-- `current`: aligned with the current upstream plan/guides.
-- `needs-sync`: probably affected by an upstream change and needs patching.
-- `needs-review`: patched or changed but needs targeted review.
-- `stale`: known to conflict with the current upstream plan/guides.
-
-`sync_reason` is a short human-readable note explaining why the sync status changed.
-
-## Source Type Values
-
-Allowed values for `source_type`:
-
-- `original`
-- `official-reference`
-- `national-exam`
-- `exam-inspired`
-- `teacher-note`
-- `textbook`
-- `third-party`
-- `unknown`
-
-If `source_type` is not `original`, fill `source_ref`.
-
-## Mini-Lesson Frontmatter
+## Mini-Lesson
 
 Mini-lesson files live under the unit `lessons/` folder and use the unit code.
-
-Example path and ID:
-
-```text
-content/2bac-pc-svt/01-limites-continuite/lessons/lc-lesson-001.md
-2bac-pcsvt-lc-lesson-001
-```
-
-Template:
 
 ```yaml
 ---
 type: lesson
 lesson_kind: mini-lesson
-id: 2bac-pcsvt-UNIT_CODE-lesson-001
+id: "{{id_prefix}}-{{unit_code}}-lesson-001"
 title: "LESSON_TITLE"
-program: 2bac-pc-svt
-level: 2bac
-tracks: [pc, svt]
-language: fr
-unit_kind: UNIT_KIND
-unit_code: UNIT_CODE
-unit_slug: UNIT_SLUG
-unit_folder: UNIT_FOLDER
-unit_order: UNIT_ORDER
-official: OFFICIAL
-content_scope: CONTENT_SCOPE
-domain: DOMAIN_SLUG
+program: "{{program}}"
+level: "{{level}}"
+tracks: "{{tracks}}"
+language: "{{language}}"
+unit_kind: "{{unit_kind}}"
+unit_code: "{{unit_code}}"
+unit_slug: "{{unit_slug}}"
+unit_folder: "{{unit_folder}}"
+unit_order: "{{unit_order}}"
+official: "{{official}}"
+content_scope: "{{content_scope}}"
+domain: "{{domain}}"
 lesson_number: 1
 skills: []
 difficulty: decouverte
@@ -358,39 +234,25 @@ updated: YYYY-MM-DD
 
 Optional `lesson_shape` may be added after the lesson exists as a diagnostic label only.
 
-Allowed examples:
-
-- `intuition-first`
-- `method-first`
-- `mistake-first`
-- `exam-first`
-- `comparison`
-- `micro`
-- `recap`
-
-Do not use `lesson_shape` as a template selector, and do not make it required.
-
-Author-only planning notes belong in the body section `## Notes auteur`, not in a competing frontmatter field.
-
-## Exercise Frontmatter
+## Exercise
 
 ```yaml
 ---
 type: exercise
-id: 2bac-pcsvt-UNIT_CODE-ex-001
+id: "{{id_prefix}}-{{unit_code}}-ex-001"
 title: "EXERCISE_TITLE"
-program: 2bac-pc-svt
-level: 2bac
-tracks: [pc, svt]
-language: fr
-unit_kind: UNIT_KIND
-unit_code: UNIT_CODE
-unit_slug: UNIT_SLUG
-unit_folder: UNIT_FOLDER
-unit_order: UNIT_ORDER
-official: OFFICIAL
-content_scope: CONTENT_SCOPE
-domain: DOMAIN_SLUG
+program: "{{program}}"
+level: "{{level}}"
+tracks: "{{tracks}}"
+language: "{{language}}"
+unit_kind: "{{unit_kind}}"
+unit_code: "{{unit_code}}"
+unit_slug: "{{unit_slug}}"
+unit_folder: "{{unit_folder}}"
+unit_order: "{{unit_order}}"
+official: "{{official}}"
+content_scope: "{{content_scope}}"
+domain: "{{domain}}"
 skills: []
 difficulty: application-directe
 exercise_type: [calcul]
@@ -416,100 +278,27 @@ updated: YYYY-MM-DD
 ---
 ```
 
-Use only these `difficulty` values for exercises:
-
-- `decouverte`
-- `application-directe`
-- `application-guidee`
-- `probleme-type`
-- `approfondissement`
-
-Do not use `technique` as a frontmatter `difficulty` value. Use it only as a descriptive theme in prose when needed.
-
-Use only these `exercise_type` values:
-
-- `calcul`
-- `preuve`
-- `lecture-graphique`
-- `etude-fonction`
-- `modelisation`
-- `probleme`
-- `extrait-examen`
-- `original`
-
-Use only these `exercise_role` values:
-
-- `warm-up`
-- `core-skill`
-- `method-choice`
-- `trap-recovery`
-- `exam-pattern`
-- `synthesis`
-- `challenge`
-- `revision`
-
-Use only these `exam_relevance` values:
-
-- `low`
-- `medium`
-- `high`
-
-Use only these `calculator` values:
-
-- `not-needed`
-- `allowed`
-- `required`
-- `forbidden`
-
-Required exercise quality fields:
-
-```yaml
-exercise_role: warm-up | core-skill | method-choice | trap-recovery | exam-pattern | synthesis | challenge | revision
-estimated_time_min: number
-requires_graph: boolean
-has_hints: boolean
-has_common_mistakes: boolean
-has_verification: boolean
-design_status: draft | reviewed | needs-redesign
-statement_status: draft | reviewed | needs-rewrite
-solution_status: draft | reviewed | needs-correction
-```
-
-`design_status` is about whether the exercise deserves to exist and fits the progression.
-
-`statement_status` is about clarity, validity, and ambiguity.
-
-`solution_status` is about mathematical correctness and pedagogical solution quality.
-
-These statuses are separate on purpose. A solution can be mathematically reviewed while the exercise design still needs redesign, or the statement can be clear while the solution still needs correction.
-
-Allowed exercise status combinations:
-
-- New exercise files normally start with `status: draft`, `design_status: draft`, `statement_status: draft`, and `solution_status: draft`.
-- Do not set `status: published` unless `design_status`, `statement_status`, and `solution_status` are all `reviewed`.
-- Do not set `solution_status: reviewed` without a visible final result callout and reviewed mathematics.
-
-## Quiz Frontmatter
+## Quiz
 
 Standalone quiz files use `type: quiz` and live under the unit `quizzes/` folder.
 
 ```yaml
 ---
 type: quiz
-id: 2bac-pcsvt-UNIT_CODE-quiz-001
+id: "{{id_prefix}}-{{unit_code}}-quiz-001"
 title: "QUIZ_TITLE"
-program: 2bac-pc-svt
-level: 2bac
-tracks: [pc, svt]
-language: fr
-unit_kind: UNIT_KIND
-unit_code: UNIT_CODE
-unit_slug: UNIT_SLUG
-unit_folder: UNIT_FOLDER
-unit_order: UNIT_ORDER
-official: OFFICIAL
-content_scope: CONTENT_SCOPE
-domain: DOMAIN_SLUG
+program: "{{program}}"
+level: "{{level}}"
+tracks: "{{tracks}}"
+language: "{{language}}"
+unit_kind: "{{unit_kind}}"
+unit_code: "{{unit_code}}"
+unit_slug: "{{unit_slug}}"
+unit_folder: "{{unit_folder}}"
+unit_order: "{{unit_order}}"
+official: "{{official}}"
+content_scope: "{{content_scope}}"
+domain: "{{domain}}"
 quiz_number: 1
 quiz_series: "diagnostic"
 quiz_kind: skill
@@ -535,114 +324,25 @@ updated: YYYY-MM-DD
 ---
 ```
 
-Allowed `quiz_kind` values:
-
-- `prerequisite`
-- `skill`
-- `method-choice`
-- `error-clinic`
-- `fluency`
-- `mixed-review`
-- `exam-readiness`
-
-Allowed quiz item types:
-
-- `multiple-choice`
-- `multiple-response`
-- `true-false`
-- `fill-blank`
-- `match`
-- `sequence`
-- `hotspot`
-
-Allowed quiz cognitive roles:
-
-- `recognition`
-- `method-choice`
-- `micro-calculation`
-- `error-diagnosis`
-- `missing-step`
-- `representation`
-- `transfer`
-- `theorem-condition`
-- `graph-reading`
-- `proof-order`
-
-Required quiz quality fields:
-
-```yaml
-quiz_kind: prerequisite | skill | method-choice | error-clinic | fluency | mixed-review | exam-readiness
-item_types:
-  - multiple-choice
-  - multiple-response
-  - true-false
-  - fill-blank
-  - match
-  - sequence
-  - hotspot
-cognitive_roles:
-  - recognition
-  - method-choice
-  - micro-calculation
-  - error-diagnosis
-  - missing-step
-  - representation
-  - transfer
-  - theorem-condition
-  - graph-reading
-  - proof-order
-question_count: number
-mastery_threshold: number
-estimated_time_minutes: number
-item_quality_status: draft | needs-review | reviewed | needs-correction
-answer_key_status: draft | needs-review | reviewed | needs-correction
-feedback_status: draft | needs-review | reviewed | needs-correction
-remediation_status: draft | needs-review | reviewed | needs-correction
-```
-
-`item_quality_status` is about item purpose, clarity, diagnostic value, distractor quality, and item-type fit.
-
-`answer_key_status` is about mathematical correctness and accepted answers.
-
-`feedback_status` is about answer-specific teaching quality.
-
-`remediation_status` is about next-step routing.
-
-These statuses are separate on purpose. A quiz can have a mathematically reviewed answer key while still needing stronger distractors, feedback, or remediation paths.
-
-Allowed quiz status combinations:
-
-- New quiz files normally start with `status: draft`, `item_quality_status: draft`, `answer_key_status: draft`, `feedback_status: draft`, and `remediation_status: draft`.
-- Do not set `status: published` unless `item_quality_status`, `answer_key_status`, `feedback_status`, and `remediation_status` are all `reviewed`.
-- Do not set any quiz review status to `reviewed` while its reviewed section still contains unresolved TODO placeholders.
-
-Use only the standard exercise difficulty values if `difficulty` is present on a quiz:
-
-- `decouverte`
-- `application-directe`
-- `application-guidee`
-- `probleme-type`
-- `approfondissement`
-
-## Exercise Set Frontmatter
+## Exercise Set
 
 ```yaml
 ---
 type: exercise-set
-id: 2bac-pcsvt-UNIT_CODE-set-application-directe
+id: "{{id_prefix}}-{{unit_code}}-set-application-directe"
 title: "SET_TITLE"
-program: 2bac-pc-svt
-level: 2bac
-tracks: [pc, svt]
-language: fr
-unit_kind: UNIT_KIND
-unit_code: UNIT_CODE
-unit_slug: UNIT_SLUG
-unit_folder: UNIT_FOLDER
-unit_order: UNIT_ORDER
-official: OFFICIAL
-content_scope: CONTENT_SCOPE
-domain: DOMAIN_SLUG
+program: "{{program}}"
+level: "{{level}}"
+tracks: "{{tracks}}"
+language: "{{language}}"
+unit_kind: "{{unit_kind}}"
+unit_code: "{{unit_code}}"
+unit_slug: "{{unit_slug}}"
+unit_folder: "{{unit_folder}}"
+unit_order: "{{unit_order}}"
+official: "{{official}}"
+content_scope: "{{content_scope}}"
+domain: "{{domain}}"
 difficulty_range: [decouverte, application-directe]
 exercise_ids: []
 status: draft
@@ -660,27 +360,24 @@ updated: YYYY-MM-DD
 
 IDs must be:
 
-- Stable.
-- Lowercase.
-- ASCII only.
-- Unique.
-- Never reused after deletion.
+- stable;
+- lowercase;
+- ASCII only;
+- unique;
+- never reused after deletion.
 
 Use the pattern:
 
 ```text
-2bac-pcsvt-{unit_code}-{kind}-{number-or-slug}
+{id_prefix}-{unit_code}-{kind}-{number-or-slug}
 ```
 
 Examples:
 
 ```text
-2bac-pcsvt-lc-lesson-001
-2bac-pcsvt-lc-ex-001
-2bac-pcsvt-lc-quiz-001
-2bac-pcsvt-nc1-lesson-001
-2bac-pcsvt-nc2-ex-001
-2bac-pcsvt-dp-set-examen-standard
+ma-2bac-pcsvt-lc-lesson-001
+ma-2bac-sma-lc-lesson-001
+ma-1bac-pcsvt-trig-lesson-001
 ```
 
 ## Dates
@@ -691,6 +388,4 @@ Use ISO format:
 YYYY-MM-DD
 ```
 
-When creating a template, keep the placeholder.
-
-When creating a real file, use the current date if known.
+When creating a template, keep the placeholder. When creating a real file, use the current date if known.

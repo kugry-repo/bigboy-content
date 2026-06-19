@@ -1,19 +1,19 @@
 ---
 type: unit-index
-id: 2bac-pcsvt-UNIT_CODE-index
+id: "{{id_prefix}}-{{unit_code}}-index"
 title: "UNIT_TITLE"
-program: 2bac-pc-svt
-level: 2bac
-tracks: [pc, svt]
-language: fr
-unit_kind: UNIT_KIND
-unit_code: UNIT_CODE
-unit_slug: UNIT_SLUG
-unit_folder: UNIT_FOLDER
-unit_order: UNIT_ORDER
-official: OFFICIAL
-content_scope: CONTENT_SCOPE
-domain: DOMAIN_SLUG
+program: "{{program}}"
+level: "{{level}}"
+tracks: "{{tracks}}"
+language: "{{language}}"
+unit_kind: "{{unit_kind}}"
+unit_code: "{{unit_code}}"
+unit_slug: "{{unit_slug}}"
+unit_folder: "{{unit_folder}}"
+unit_order: "{{unit_order}}"
+official: "{{official}}"
+content_scope: "{{content_scope}}"
+domain: "{{domain}}"
 related_units: []
 skills: []
 status: planned
@@ -21,8 +21,8 @@ planning_state: initialized
 sync_status: current
 sync_reason: null
 version: 0.1.0
-source_type: SOURCE_TYPE
-source_ref: SOURCE_REF
+source_type: "{{source_type}}"
+source_ref: "{{source_ref}}"
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
 ---

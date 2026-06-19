@@ -14,9 +14,9 @@ This is an example/reference file only. It is not real unit content.
 
 ```yaml
 type: exercise-set
-id: 2bac-pcsvt-lc-set-formes-indeterminees
+id: ma-2bac-pcsvt-lc-set-formes-indeterminees
 title: "Formes indéterminées - choisir la transformation"
-program: 2bac-pc-svt
+program: ma-2bac-pc-svt
 level: 2bac
 tracks: [pc, svt]
 language: fr
@@ -30,10 +30,10 @@ content_scope: official-curriculum
 domain: analyse
 difficulty_range: [application-directe, probleme-type]
 exercise_ids:
-  - 2bac-pcsvt-lc-ex-011
-  - 2bac-pcsvt-lc-ex-012
-  - 2bac-pcsvt-lc-ex-014
-  - 2bac-pcsvt-lc-ex-018
+  - ma-2bac-pcsvt-lc-ex-011
+  - ma-2bac-pcsvt-lc-ex-012
+  - ma-2bac-pcsvt-lc-ex-014
+  - ma-2bac-pcsvt-lc-ex-018
 status: draft
 sync_status: current
 sync_reason: null

@@ -59,25 +59,32 @@ Do not leave duplicate entries, stale links, old names, or alternate schemas beh
 
 For actions that operate on an existing unit:
 
-1. Look for explicit `TARGET_UNIT`.
-2. If missing, read `_workflow/current-unit.md`.
-3. Resolve the unit by scanning all unit indexes:
-   - official units under `content/2bac-pc-svt/*/_index.md`;
-   - unofficial units under `content/2bac-pc-svt/topics/*/_index.md`.
-4. Match only against:
+1. Look for explicit `TARGET_PROGRAM`.
+2. If missing, infer `TARGET_PROGRAM` from a path under `content/programs/<program_id>/`, active file frontmatter, selected file frontmatter, or `_workflow/current-unit.md`.
+3. If `TARGET_PROGRAM` cannot be inferred, stop and ask. Do not default to any program.
+4. Look for explicit `TARGET_UNIT`.
+5. If missing, read `_workflow/current-unit.md`.
+6. Resolve the unit by scanning unit indexes inside `TARGET_PROGRAM` only:
+   - official units under `content/programs/<TARGET_PROGRAM>/*/_index.md`;
+   - unofficial units under `content/programs/<TARGET_PROGRAM>/topics/*/_index.md`.
+7. Match only against:
    - `unit_code`;
    - `unit_slug`;
    - `unit_folder`;
    - `title`;
    - resolved folder path.
-5. Derive:
+8. Derive:
+   - `TARGET_PROGRAM`;
+   - `TARGET_PROGRAM_ROOT`;
+   - `TARGET_PROGRAM_INDEX`;
+   - `TARGET_CURRICULUM_MAP`;
+   - `TARGET_ID_PREFIX`;
    - `TARGET_UNIT_FOLDER`;
    - `TARGET_UNIT_INDEX`;
    - `TARGET_UNIT_KIND`;
    - `TARGET_UNIT_CODE`;
-   - `TARGET_UNIT_TITLE`;
-   - `TARGET_PROGRAM`.
-6. Stop if missing or ambiguous.
+   - `TARGET_UNIT_TITLE`.
+9. Stop if missing or ambiguous.
 
 ## ACTION: create
 
@@ -98,21 +105,22 @@ UNIT_FOLDER
 
 Rules:
 
-1. If `UNIT_KIND` is `official-curriculum-unit`, create the folder directly under `content/2bac-pc-svt/`, normally with a numeric prefix.
-2. If `UNIT_KIND` is `unofficial-topic`, create the folder under `content/2bac-pc-svt/topics/`.
-3. Use `content/_templates/unit-index-stub.template.md` unless the user explicitly asks to initialize the unit immediately.
-4. Create:
+1. Require or infer `TARGET_PROGRAM`.
+2. If `UNIT_KIND` is `official-curriculum-unit`, create the folder directly under `content/programs/<TARGET_PROGRAM>/`, normally with a numeric prefix.
+3. If `UNIT_KIND` is `unofficial-topic`, create the folder under `content/programs/<TARGET_PROGRAM>/topics/`.
+4. Use `content/_templates/unit-index-stub.template.md` unless the user explicitly asks to initialize the unit immediately.
+5. Create:
    - `_index.md`;
    - `lessons/.gitkeep`;
    - `exercises/.gitkeep`;
    - `quizzes/.gitkeep`;
    - `sets/.gitkeep`.
-5. Add or update the unit in:
-   - `content/2bac-pc-svt/_index.md`;
-   - `content/2bac-pc-svt/topics/_index.md` if it is an unofficial topic;
+6. Add or update the unit in:
+   - `content/programs/<TARGET_PROGRAM>/_index.md`;
+   - `content/programs/<TARGET_PROGRAM>/topics/_index.md` if it is an unofficial topic;
    - `content/_guides/schema/id-and-naming.md`;
    - any other guide or prompt example that lists unit codes or folders.
-6. Run validation.
+7. Run validation.
 
 ## ACTION: rename
 
@@ -141,8 +149,8 @@ Rules:
 3. If it only contains `_index.md` and `.gitkeep` placeholders, delete it directly.
 4. If it contains real authored content, delete only when the user explicitly says to delete the unit and its contents.
 5. Remove the unit from:
-   - `content/2bac-pc-svt/_index.md`;
-   - `content/2bac-pc-svt/topics/_index.md` if relevant;
+   - `content/programs/<TARGET_PROGRAM>/_index.md`;
+   - `content/programs/<TARGET_PROGRAM>/topics/_index.md` if relevant;
    - `content/_guides/schema/id-and-naming.md`;
    - any guide or prompt example that mentions it.
 6. If `_workflow/current-unit.md` points to the deleted unit, clear it or update it to a safe state.
@@ -199,8 +207,8 @@ Use this action when a unit stays in the same official/topic section but its ord
 1. Resolve the unit or units being reordered.
 2. Update `unit_order` and folder prefixes when official curriculum folder order changes.
 3. Update:
-   - `content/2bac-pc-svt/_index.md`;
-   - `content/2bac-pc-svt/topics/_index.md` if relevant;
+   - `content/programs/<TARGET_PROGRAM>/_index.md`;
+   - `content/programs/<TARGET_PROGRAM>/topics/_index.md` if relevant;
    - frontmatter `unit_folder` values;
    - links, trackers, prompt examples, and guide examples that mention old ordered paths.
 4. If folder prefixes change, move folders with `git mv` and update all references.

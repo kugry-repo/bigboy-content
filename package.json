@@ -2,7 +2,7 @@
   "name": "bigboy-content",
   "version": "0.0.0",
   "private": true,
-  "description": "Markdown-first authoring content for Moroccan 2BAC PC/SVT mathematics.",
+  "description": "Markdown-first authoring content for Moroccan mathematics programs.",
   "scripts": {
     "validate": "node scripts/validate-content.mjs",
     "zip": "node scripts/package-chatgpt-source.mjs",

@@ -11,6 +11,7 @@ Do not build frontend or app code.
 Input:
 
 ```text
+TARGET_PROGRAM: <program_id>
 TARGET_UNIT: <unit-folder-or-path-or-code>
 TARGET_QUIZ_INTENT: <intent-title-or-planned-file>
 ```

@@ -6,10 +6,12 @@ This guide defines the production dashboard model for one content unit.
 
 A content unit can be:
 
-- an official curriculum unit under `content/2bac-pc-svt/`;
-- an unofficial topic under `content/2bac-pc-svt/topics/`.
+- an official curriculum unit under `content/programs/<program_id>/`;
+- an unofficial topic under `content/programs/<program_id>/topics/`.
 
-Both unit kinds use the same unit `_index.md` lifecycle, artifact folders, production dashboard rules, prompt system, and validation rules. Official curriculum units remain the program spine. Unofficial topics are extra learning, revision, method, synthesis, or exam-prep units and must not present themselves as official curriculum units.
+Both unit kinds use the same unit `_index.md` lifecycle, artifact folders, production dashboard rules, prompt system, and validation rules. Official curriculum units remain the spine of their owning program. Unofficial topics are extra learning, revision, method, synthesis, or exam-prep units and must not present themselves as official curriculum units.
+
+Each unit belongs to exactly one program. Program metadata comes from `content/programs/<program_id>/_index.md`; the official curriculum map comes from that program's `_curriculum-map.md`.
 
 There is no canonical global unit sequence. Do not invent numbered unit ladders, extra global gates, or split labels such as `5a` and `5b`. Numbered prompt files inside a workflow folder are local operating procedures for that workstream only.
 
@@ -77,30 +79,37 @@ Do not create a root-level `lesson.md`.
 
 ## Target resolution
 
-Workflow prompts use `TARGET_UNIT` as the advanced explicit target. Studio-style commands may infer the target from selected text, active file, path, and frontmatter.
+Workflow prompts use `TARGET_PROGRAM` and `TARGET_UNIT` as advanced explicit targets. Studio-style commands may infer both from selected text, active file, path, and frontmatter.
 
 Resolution order:
 
-1. Look for explicit `TARGET_UNIT`.
-2. If missing, read `_workflow/current-unit.md`.
-3. Resolve the unit by scanning all unit indexes:
-   - official units under `content/2bac-pc-svt/*/_index.md`;
-   - unofficial topics under `content/2bac-pc-svt/topics/*/_index.md`.
-4. Match only against:
+1. Look for explicit `TARGET_PROGRAM`.
+2. If missing, infer `TARGET_PROGRAM` from a target path under `content/programs/<program_id>/`, active file frontmatter, selected file frontmatter, or `_workflow/current-unit.md`.
+3. If the program cannot be inferred, stop and ask for it. Do not default to any program.
+4. Look for explicit `TARGET_UNIT`.
+5. If missing, read `_workflow/current-unit.md`.
+6. Resolve the unit by scanning unit indexes inside the selected program only:
+   - official units under `content/programs/<TARGET_PROGRAM>/*/_index.md`;
+   - unofficial topics under `content/programs/<TARGET_PROGRAM>/topics/*/_index.md`.
+7. Match only against:
    - `unit_code`;
    - `unit_slug`;
    - `unit_folder`;
    - `title`;
    - resolved folder path.
-5. Derive:
+8. Derive:
+   - `TARGET_PROGRAM`;
+   - `TARGET_PROGRAM_ROOT`;
+   - `TARGET_PROGRAM_INDEX`;
+   - `TARGET_CURRICULUM_MAP`;
+   - `TARGET_ID_PREFIX`;
    - `TARGET_UNIT_FOLDER`;
    - `TARGET_UNIT_INDEX`;
    - `TARGET_UNIT_KIND`;
    - `TARGET_UNIT_CODE`;
    - `TARGET_UNIT_TITLE`;
-   - `TARGET_PROGRAM`.
-6. Read the unit `_index.md` and check `planning_state`.
-7. Stop if the target is missing or ambiguous.
+9. Read the unit `_index.md` and check `planning_state`.
+10. Stop if the target is missing or ambiguous.
 
 ## Source of truth
 

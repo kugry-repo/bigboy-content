@@ -7,8 +7,8 @@ Use this checklist before marking a file as `reviewed` or `published`.
 - [ ] YAML frontmatter exists.
 - [ ] `type` is correct.
 - [ ] `id` is stable and unique.
-- [ ] `program` is `2bac-pc-svt`.
-- [ ] `tracks` includes `pc` and/or `svt`.
+- [ ] `program` matches the owning `content/programs/<program_id>/` directory.
+- [ ] `level`, `tracks`, `language`, and `id_prefix` match the owning program index.
 - [ ] `domain` and unit metadata are correct.
 - [ ] `skills` are filled.
 - [ ] `status` is realistic.
@@ -35,14 +35,14 @@ Use this checklist before marking a file as `reviewed` or `published`.
 - [ ] Examples progress from simple to harder.
 - [ ] Common mistakes are included.
 - [ ] The final answer is easy to find.
-- [ ] A 2BAC PC/SVT student can follow the reasoning.
+- [ ] A learner in the target program can follow the reasoning.
 
 ## Exercise checklist
 
 - [ ] The exercise uses `type: exercise`.
 - [ ] The file is under the unit `exercises/` folder.
 - [ ] The filename follows `{unit_code}-ex-###.md`.
-- [ ] The ID follows `2bac-pcsvt-{unit_code}-ex-###`.
+- [ ] The ID follows `{id_prefix}-{unit_code}-ex-###`.
 - [ ] `exercise_role`, `estimated_time_min`, `requires_graph`, `has_hints`, `has_common_mistakes`, `has_verification`, `design_status`, `statement_status`, and `solution_status` are filled.
 - [ ] `skills` contains precise skill IDs.
 - [ ] The exercise answers what ability it builds, what decision it trains, what mistake it prevents, where it sits in the progression, and how the solution teaches the method.
@@ -63,7 +63,7 @@ Use this checklist before marking a file as `reviewed` or `published`.
 - [ ] The quiz uses `type: quiz`.
 - [ ] The file is under the unit `quizzes/` folder.
 - [ ] The filename follows `{unit_code}-quiz-###.md`.
-- [ ] The ID follows `2bac-pcsvt-{unit_code}-quiz-###`.
+- [ ] The ID follows `{id_prefix}-{unit_code}-quiz-###`.
 - [ ] `quiz_kind`, `quiz_series`, `item_types`, `cognitive_roles`, `question_count`, `mastery_threshold`, `estimated_time_minutes`, `item_quality_status`, `answer_key_status`, `feedback_status`, and `remediation_status` are filled.
 - [ ] The quiz is standalone and not dependent on hidden lesson text.
 - [ ] The quiz is a diagnostic instrument, not a short exercise sheet.

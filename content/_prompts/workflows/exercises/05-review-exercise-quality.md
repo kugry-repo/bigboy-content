@@ -11,6 +11,7 @@ It does not mark `solution_status: reviewed`; that belongs to `06-review-solutio
 Input:
 
 ```text
+TARGET_PROGRAM: <program_id>
 TARGET_UNIT: <unit-folder-or-path-or-code>
 
 Optional selectors:
@@ -30,11 +31,13 @@ content/_prompts/commands/set-current-unit.md
 
 Before doing any work:
 
-1. Look for explicit `TARGET_UNIT`.
-2. If no explicit target exists, read `_workflow/current-unit.md`.
-3. Resolve the unit by scanning all unit indexes:
-   - official units under `content/2bac-pc-svt/*/_index.md`;
-   - unofficial topics under `content/2bac-pc-svt/topics/*/_index.md`.
+1. Look for explicit `TARGET_PROGRAM`; otherwise infer it from a path under `content/programs/<program_id>/`, frontmatter, or `_workflow/current-unit.md`.
+2. If `TARGET_PROGRAM` cannot be inferred, stop and ask. Do not default to PC/SVT.
+3. Look for explicit `TARGET_UNIT`.
+4. If no explicit target exists, read `_workflow/current-unit.md`.
+5. Resolve the unit by scanning unit indexes inside `TARGET_PROGRAM`:
+   - official units under `content/programs/<TARGET_PROGRAM>/*/_index.md`;
+   - unofficial topics under `content/programs/<TARGET_PROGRAM>/topics/*/_index.md`.
 4. Match only against `unit_code`, `unit_slug`, `unit_folder`, `title`, and resolved folder path.
 5. Derive `TARGET_UNIT_FOLDER` and `TARGET_UNIT_INDEX`.
 6. Read `TARGET_UNIT_INDEX` and require `type: unit-index`.

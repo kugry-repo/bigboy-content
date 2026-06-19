@@ -9,6 +9,7 @@ This prompt owns compression, taste, clarity, and editorial voice in one pass.
 Input:
 
 ```text
+TARGET_PROGRAM: <program_id>
 TARGET_UNIT: <unit-folder-or-path-or-code>
 
 Optional selectors:
@@ -20,6 +21,7 @@ If no explicit target is provided, read `_workflow/current-unit.md`.
 Expected local file format:
 
 ```text
+TARGET_PROGRAM: <program_id>
 TARGET_UNIT: <unit-folder-or-path-or-code>
 ```
 
@@ -33,11 +35,13 @@ content/_prompts/commands/set-current-unit.md
 
 Before doing any work:
 
-1. Look for explicit `TARGET_UNIT`.
-2. If no explicit target exists, read `_workflow/current-unit.md`.
-3. Resolve the unit by scanning all unit indexes:
-   - official units under `content/2bac-pc-svt/*/_index.md`;
-   - unofficial units under `content/2bac-pc-svt/topics/*/_index.md`.
+1. Look for explicit `TARGET_PROGRAM`; otherwise infer it from a path under `content/programs/<program_id>/`, frontmatter, or `_workflow/current-unit.md`.
+2. If `TARGET_PROGRAM` cannot be inferred, stop and ask. Do not default to PC/SVT.
+3. Look for explicit `TARGET_UNIT`.
+4. If no explicit target exists, read `_workflow/current-unit.md`.
+5. Resolve the unit by scanning unit indexes inside `TARGET_PROGRAM`:
+   - official units under `content/programs/<TARGET_PROGRAM>/*/_index.md`;
+   - unofficial units under `content/programs/<TARGET_PROGRAM>/topics/*/_index.md`.
 4. Match only against:
    - `unit_code`;
    - `unit_slug`;
@@ -96,7 +100,7 @@ Check and improve:
 - human meaning before heavy formalism when the concept needs it;
 - mathematical precision, theorem conditions, and method conditions;
 - decision guidance when a method or recognition pattern is taught;
-- paragraphs short enough for a 2BAC PC/SVT learner;
+- paragraphs short enough for a target-program learner;
 - rhythm that alternates explanation, example, question, formal statement, warning, method, or checkpoint when useful;
 - analogies that clarify and reconnect to the math;
 - likely confusions, direct mistakes, and recovery guidance when central;

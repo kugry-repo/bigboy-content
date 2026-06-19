@@ -37,13 +37,14 @@ Overrides are optional escape hatches. Do not require them for normal use.
 ```text
 CONTENT_STUDIO
 
-TARGET_FILE: content/2bac-pc-svt/01-limites-continuite/quizzes/lc-quiz-001.md
+TARGET_PROGRAM: ma-2bac-pc-svt
+TARGET_FILE: content/programs/ma-2bac-pc-svt/01-limites-continuite/quizzes/lc-quiz-001.md
 SCOPE: selected | whole-file | section:wrong-answer-feedback
 MODE: patch-and-review
 AUTHOR_NOTE: Improve the feedback for wrong answers. Do not change the correct answer.
 ```
 
-Do not require `TARGET_UNIT`, `TARGET_FILE`, `MODE`, or similar fields when the target can be inferred.
+Do not require `TARGET_PROGRAM`, `TARGET_UNIT`, `TARGET_FILE`, `MODE`, or similar fields when the target can be inferred.
 
 ## Target Inference
 
@@ -57,11 +58,11 @@ Infer the target in this order:
    - `quizzes/` -> quiz
    - `sets/` -> exercise set
    - `_index.md` -> unit planning/dashboard
-4. Infer unit from the path, for example `content/2bac-pc-svt/01-limites-continuite/...`.
-5. Confirm with frontmatter fields such as `unit_code`, `unit_slug`, `unit_folder`, `type`, and `title`.
+4. Infer `TARGET_PROGRAM` from the path, for example `content/programs/ma-2bac-pc-svt/01-limites-continuite/...`, or from frontmatter `program`.
+5. Infer unit from the path and confirm with frontmatter fields such as `unit_code`, `unit_slug`, `unit_folder`, `type`, and `title`.
 6. Read the parent unit `_index.md`.
 7. Read the relevant guides and templates for that artifact type.
-8. Ask the user only if the target is still ambiguous after inspection.
+8. Ask the user only if the target program or artifact is still ambiguous after inspection.
 
 If the target unit `_index.md` has `planning_state: stub`, do not create or patch lesson, exercise, quiz, set, or full planning content. Recommend `content/_prompts/commands/initialize-unit.md` first, unless the user is only asking to diagnose the stub itself.
 

@@ -24,6 +24,8 @@ Use them to understand:
 
 Do not treat these examples as official curriculum content.
 
+Some examples use `ma-2bac-pc-svt` IDs because PC/SVT is the seed program. Treat those IDs as example data, not as the default for new programs.
+
 ## Files
 
 - `golden-lesson-slice-limites.md` - lesson voice calibration.

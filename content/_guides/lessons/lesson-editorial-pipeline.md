@@ -144,7 +144,7 @@ The verification pass checks correctness and safety.
 Check:
 
 - mathematical correctness;
-- curriculum alignment for Moroccan 2BAC PC/SVT;
+- curriculum alignment for the target Moroccan program;
 - official-program consistency where applicable;
 - no fake exam claims;
 - correct notation;

@@ -2,7 +2,7 @@
 
 ## Project purpose
 
-This repository is for building a Markdown-first authoring system for Moroccan 2BAC PC/SVT mathematics content: lessons, exercises, standalone quizzes, hints, and detailed solutions.
+This repository is for building a shared Markdown-first authoring system for Moroccan mathematics programs: lessons, exercises, standalone quizzes, hints, and detailed solutions.
 
 The current priority is a clean authoring system and strong content structure. Do not build frontend rendering, app logic, or deployment unless explicitly requested.
 
@@ -91,7 +91,7 @@ This project is still in the system-design/buildout phase. The priority is a cle
 - Each exercise lives in its own file, but exercise files are usually created in small batches of 3 to 5 unless explicitly requested otherwise.
 - Standalone quizzes live under the target unit `quizzes/` folder and are created through quiz intent cards, raw item pools, curated item design cards, one-file quiz creation, item-quality review, answer-key review, and feedback/remediation review.
 - Do not mass-generate units unless explicitly asked.
-- Do not treat unofficial topics as official curriculum units. They are curated revision, synthesis, or method units under `content/2bac-pc-svt/topics/`.
+- Do not treat unofficial topics as official curriculum units. They are curated revision, synthesis, or method units under `content/programs/<program_id>/topics/`.
 - Prefer small, reviewable changes.
 - Do not invent official curriculum claims. If a claim depends on the official Moroccan exam frame, mark it as needing verification unless it is already documented in `content/_references/official-sources.md`.
 - Do not paste copyrighted third-party course content into this repo.

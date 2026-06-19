@@ -13,20 +13,19 @@ Do not mass-generate other units until at least one golden unit exists and has b
 A golden unit uses this structure:
 
 ```text
-content/2bac-pc-svt/01-limites-continuite/
+content/programs/<program_id>/<unit-folder>/
   _index.md
   lessons/
-    lc-lesson-001.md
-    lc-lesson-002.md
-    lc-lesson-003.md
+    <unit_code>-lesson-001.md
   exercises/
-    lc-ex-001.md
-    lc-ex-002.md
+    <unit_code>-ex-001.md
   quizzes/
-    lc-quiz-001.md
+    <unit_code>-quiz-001.md
   sets/
-    lc-set-application-directe.md
+    <unit_code>-set-application-directe.md
 ```
+
+Example seed program: `content/programs/ma-2bac-pc-svt/01-limites-continuite/`.
 
 Each mini-lesson is its own Markdown file.
 

@@ -9,6 +9,8 @@ Most of the time, run:
 Use the command prompts when you need to decide, manage, or change direction:
 
 - `commands/next-action.md` - diagnose current state and recommend the next exact action.
+- `commands/create-program.md` - initialize a new program root without creating lesson/exercise/quiz content.
+- `commands/manage-program.md` - create, rename, delete, modify, split, or adapt full programs.
 - `commands/set-current-unit.md` - set or change the active unit/topic.
 - `commands/manage-unit.md` - create, rename, split, merge, delete, reorder, or move official/unofficial units and topics.
 - `commands/initialize-unit.md` - expand one registered `planning_state: stub` unit into an initialized planning dashboard.

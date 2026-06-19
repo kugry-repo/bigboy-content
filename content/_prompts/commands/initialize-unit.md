@@ -13,7 +13,8 @@ Optional override:
 ```text
 INITIALIZE_UNIT
 
-TARGET_UNIT: content/2bac-pc-svt/01-limites-continuite
+TARGET_PROGRAM: ma-2bac-pc-svt
+TARGET_UNIT: content/programs/ma-2bac-pc-svt/01-limites-continuite
 ```
 
 `TARGET_UNIT` may be a unit folder, unit `_index.md`, unit code, unit slug, unit title, or `unit_folder` value.
@@ -22,16 +23,18 @@ TARGET_UNIT: content/2bac-pc-svt/01-limites-continuite
 
 Resolve the target in this order:
 
-1. Use the active file if it is a unit `_index.md`.
-2. Use the active file path to infer the parent unit folder.
-3. Use selected text or an explicit path if the user highlighted one.
-4. Use explicit `TARGET_UNIT` only as an override.
-5. If still missing, read `_workflow/current-unit.md`.
-6. Resolve against all unit indexes:
-   - official units under `content/2bac-pc-svt/*/_index.md`;
-   - unofficial topics under `content/2bac-pc-svt/topics/*/_index.md`.
-7. Match against `unit_code`, `unit_slug`, `unit_folder`, `title`, and resolved folder path.
-8. Ask only if the target remains missing or ambiguous.
+1. Infer `TARGET_PROGRAM` from the active file path, active file frontmatter, selected path, explicit `TARGET_PROGRAM`, or `_workflow/current-unit.md`.
+2. If `TARGET_PROGRAM` cannot be inferred, stop and ask for the program. Do not default to PC/SVT.
+3. Use the active file if it is a unit `_index.md`.
+4. Use the active file path to infer the parent unit folder.
+5. Use selected text or an explicit path if the user highlighted one.
+6. Use explicit `TARGET_UNIT` only as an override.
+7. If still missing, read `_workflow/current-unit.md`.
+8. Resolve against unit indexes inside `TARGET_PROGRAM`:
+   - official units under `content/programs/<TARGET_PROGRAM>/*/_index.md`;
+   - unofficial topics under `content/programs/<TARGET_PROGRAM>/topics/*/_index.md`.
+9. Match against `unit_code`, `unit_slug`, `unit_folder`, `title`, and resolved folder path.
+10. Ask only if the target remains missing or ambiguous.
 
 ## Read First
 

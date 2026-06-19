@@ -21,9 +21,9 @@ Use:
 ## Coverage table template
 
 ```md
-| Skill ID | Unit | Mini-lessons | Exercises | Quizzes | Sets | Status | Notes |
-|---|---|---|---:|---:|---|---|---|
-| TODO | TODO | TODO | 0 | 0 | TODO | planned | TODO |
+| Program | Skill ID | Unit | Mini-lessons | Exercises | Quizzes | Sets | Status | Notes |
+|---|---|---|---|---:|---:|---|---|---|
+| PROGRAM_ID | SKILL_ID | UNIT_SLUG | planned | 0 | 0 | planned | planned | note |
 ```
 
 ## Limites et continuité draft coverage
@@ -33,23 +33,23 @@ Limit skill ID note:
 - `lc-limite-infinie`: infinite limit value, such as a limit equal to `+infty` or `-infty`.
 - `lc-limite-en-infini`: limit as the variable tends to `+infty` or `-infty`.
 
-| Skill ID | Unit | Mini-lessons | Exercises | Quizzes | Sets | Status | Notes |
-|---|---|---|---:|---:|---|---|---|
-| lc-limite-finie | limites-continuite | planned | 0 | 0 | planned | planned | TODO |
-| lc-limite-infinie | limites-continuite | planned | 0 | 0 | planned | planned | Limit value is infinite |
-| lc-limite-en-infini | limites-continuite | planned | 0 | 0 | planned | planned | Variable tends to infinity |
-| lc-forme-indeterminee | limites-continuite | planned | 0 | 0 | planned | planned | TODO |
-| lc-factorisation | limites-continuite | planned | 0 | 0 | planned | planned | TODO |
-| lc-quantite-conjuguee | limites-continuite | planned | 0 | 0 | planned | planned | TODO |
-| lc-comparaison | limites-continuite | planned | 0 | 0 | planned | planned | TODO |
-| lc-limites-reference | limites-continuite | planned | 0 | 0 | planned | planned | TODO |
-| lc-continuite-point | limites-continuite | planned | 0 | 0 | planned | planned | TODO |
-| lc-continuite-intervalle | limites-continuite | planned | 0 | 0 | planned | planned | TODO |
-| lc-prolongement-continuite | limites-continuite | planned | 0 | 0 | planned | planned | TODO |
-| lc-tvi-existence | limites-continuite | planned | 0 | 0 | planned | planned | TODO |
-| lc-tvi-unicite | limites-continuite | planned | 0 | 0 | planned | planned | TODO |
-| lc-equation-fx-k | limites-continuite | planned | 0 | 0 | planned | planned | TODO |
-| lc-encadrement-solution | limites-continuite | planned | 0 | 0 | planned | planned | TODO |
+| Program | Skill ID | Unit | Mini-lessons | Exercises | Quizzes | Sets | Status | Notes |
+|---|---|---|---|---:|---:|---|---|---|
+| ma-2bac-pc-svt | lc-limite-finie | limites-continuite | planned | 0 | 0 | planned | planned | TODO |
+| ma-2bac-pc-svt | lc-limite-infinie | limites-continuite | planned | 0 | 0 | planned | planned | Limit value is infinite |
+| ma-2bac-pc-svt | lc-limite-en-infini | limites-continuite | planned | 0 | 0 | planned | planned | Variable tends to infinity |
+| ma-2bac-pc-svt | lc-forme-indeterminee | limites-continuite | planned | 0 | 0 | planned | planned | TODO |
+| ma-2bac-pc-svt | lc-factorisation | limites-continuite | planned | 0 | 0 | planned | planned | TODO |
+| ma-2bac-pc-svt | lc-quantite-conjuguee | limites-continuite | planned | 0 | 0 | planned | planned | TODO |
+| ma-2bac-pc-svt | lc-comparaison | limites-continuite | planned | 0 | 0 | planned | planned | TODO |
+| ma-2bac-pc-svt | lc-limites-reference | limites-continuite | planned | 0 | 0 | planned | planned | TODO |
+| ma-2bac-pc-svt | lc-continuite-point | limites-continuite | planned | 0 | 0 | planned | planned | TODO |
+| ma-2bac-pc-svt | lc-continuite-intervalle | limites-continuite | planned | 0 | 0 | planned | planned | TODO |
+| ma-2bac-pc-svt | lc-prolongement-continuite | limites-continuite | planned | 0 | 0 | planned | planned | TODO |
+| ma-2bac-pc-svt | lc-tvi-existence | limites-continuite | planned | 0 | 0 | planned | planned | TODO |
+| ma-2bac-pc-svt | lc-tvi-unicite | limites-continuite | planned | 0 | 0 | planned | planned | TODO |
+| ma-2bac-pc-svt | lc-equation-fx-k | limites-continuite | planned | 0 | 0 | planned | planned | TODO |
+| ma-2bac-pc-svt | lc-encadrement-solution | limites-continuite | planned | 0 | 0 | planned | planned | TODO |
 
 ## Review rule
 

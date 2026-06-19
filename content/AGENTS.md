@@ -4,7 +4,7 @@
 
 These instructions apply to all files under `content/`.
 
-This directory is an Obsidian-compatible vault for authoring Moroccan 2BAC PC/SVT mathematics content in Markdown.
+This directory is an Obsidian-compatible vault for authoring Moroccan mathematics program content in Markdown.
 
 ## Current phase: content authoring system buildout
 
@@ -36,7 +36,7 @@ Before creating or editing mini-lessons:
 - Read `_guides/schema/math-notation.md`.
 - Read `_guides/schema/frontmatter-schema.md`.
 - Read `_guides/lessons/lesson-structure.md`.
-- Read `_guides/units/curriculum-map-2bac-pc-svt.md`.
+- Read the target program's `_curriculum-map.md` under `content/programs/<program_id>/`.
 - Read `_templates/mini-lesson.template.md`.
 - Read `_examples/golden-lesson-slice-limites.md`.
 - Read `_examples/motivation-examples.md`.
@@ -107,27 +107,27 @@ When polishing, critiquing, diagnosing, grilling, proposing alternatives, or mak
 
 ## Unit folder rule
 
-Use flat numbered official curriculum unit folders directly under `content/2bac-pc-svt/`.
+Use flat numbered official curriculum unit folders directly under `content/programs/<program_id>/`.
 
 Example:
 
 ```text
-content/2bac-pc-svt/01-limites-continuite/_index.md
-content/2bac-pc-svt/01-limites-continuite/lessons/lc-lesson-001.md
-content/2bac-pc-svt/01-limites-continuite/exercises/lc-ex-001.md
+content/programs/ma-2bac-pc-svt/01-limites-continuite/_index.md
+content/programs/ma-2bac-pc-svt/01-limites-continuite/lessons/lc-lesson-001.md
+content/programs/ma-2bac-pc-svt/01-limites-continuite/exercises/lc-ex-001.md
 ```
 
-Unofficial topics live under `content/2bac-pc-svt/topics/`.
+Unofficial topics live under `content/programs/<program_id>/topics/`.
 
 Example:
 
 ```text
-content/2bac-pc-svt/topics/etudier-une-fonction/_index.md
-content/2bac-pc-svt/topics/etudier-une-fonction/lessons/ef-lesson-001.md
-content/2bac-pc-svt/topics/etudier-une-fonction/exercises/ef-ex-001.md
+content/programs/ma-2bac-pc-svt/topics/etudier-une-fonction/_index.md
+content/programs/ma-2bac-pc-svt/topics/etudier-une-fonction/lessons/ef-lesson-001.md
+content/programs/ma-2bac-pc-svt/topics/etudier-une-fonction/exercises/ef-ex-001.md
 ```
 
-Do not create domain folders under `content/2bac-pc-svt/`. Keep `domain` as frontmatter metadata only. For the canonical official unit order, use `_guides/units/curriculum-map-2bac-pc-svt.md`.
+Do not create domain folders under `content/programs/<program_id>/`. Keep `domain` as frontmatter metadata only. For the canonical official unit order, use the target program's `_curriculum-map.md`.
 
 ## Lesson voice rule
 
@@ -162,7 +162,7 @@ Before generating the golden unit, make sure the base system exists:
 
 ## Content principles
 
-- Write for 2BAC PC/SVT learners in Morocco.
+- Write for the target program learners in Morocco.
 - Student-facing content must be in clear French.
 - Prefer short, precise sentences.
 - Every mathematical claim must include its conditions of use.

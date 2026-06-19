@@ -14,9 +14,9 @@ This is an example/reference file only. It is not real unit content.
 
 ```yaml
 type: exercise
-id: 2bac-pcsvt-lc-ex-014
+id: ma-2bac-pcsvt-lc-ex-014
 title: "Choisir la quantité conjuguée"
-program: 2bac-pc-svt
+program: ma-2bac-pc-svt
 level: 2bac
 tracks: [pc, svt]
 language: fr

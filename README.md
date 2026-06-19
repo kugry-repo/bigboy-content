@@ -1,6 +1,8 @@
 # BigBoy Content
 
-Markdown-first source for Moroccan 2BAC PC/SVT mathematics content: content-unit plans, mini-lessons, exercises, standalone quizzes, exercise sets, hints, and detailed solutions.
+Markdown-first source for a shared Moroccan mathematics authoring system: program indexes, curriculum maps, unit plans, mini-lessons, exercises, standalone quizzes, exercise sets, hints, and detailed solutions.
+
+Programs live under `content/programs/<program_id>/`. The first program is `content/programs/ma-2bac-pc-svt/`; future programs such as `ma-2bac-sma` and `ma-1bac-pc-svt` use the same shared guides, templates, prompts, and validator.
 
 The canonical human entrypoint is `content/_prompts/START-HERE.md`. The canonical state-aware prompt is `content/_prompts/commands/next-action.md`.
 

@@ -1,19 +1,19 @@
 ---
 type: correction
-id: 2bac-pcsvt-UNIT_CODE-corr-SOURCE_SLUG
+id: "{{id_prefix}}-{{unit_code}}-corr-{{source_slug}}"
 title: "CORRECTION_TITLE"
-program: 2bac-pc-svt
-level: 2bac
-tracks: [pc, svt]
-language: fr
-unit_kind: UNIT_KIND
-unit_code: UNIT_CODE
-unit_slug: UNIT_SLUG
-unit_folder: UNIT_FOLDER
-unit_order: UNIT_ORDER
-official: OFFICIAL
-content_scope: CONTENT_SCOPE
-domain: DOMAIN_SLUG
+program: "{{program}}"
+level: "{{level}}"
+tracks: "{{tracks}}"
+language: "{{language}}"
+unit_kind: "{{unit_kind}}"
+unit_code: "{{unit_code}}"
+unit_slug: "{{unit_slug}}"
+unit_folder: "{{unit_folder}}"
+unit_order: "{{unit_order}}"
+official: "{{official}}"
+content_scope: "{{content_scope}}"
+domain: "{{domain}}"
 skills: []
 status: draft
 sync_status: current

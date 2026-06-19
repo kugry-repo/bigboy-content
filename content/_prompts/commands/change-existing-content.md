@@ -17,6 +17,7 @@ Change existing content. This schema changed. Migrate affected files.
 Optional fields:
 
 ```text
+TARGET_PROGRAM: <program_id>
 TARGET_UNIT: <unit-folder-or-path-or-code>
 CHANGE_REQUEST: <natural language description>
 ```

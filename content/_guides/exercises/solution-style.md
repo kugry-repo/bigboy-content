@@ -4,7 +4,7 @@
 
 A solution must teach reasoning, not only provide the answer.
 
-For 2BAC PC/SVT students, a good solution makes the method visible and shows why each important step is allowed.
+For learners in the target program, a good solution makes the method visible and shows why each important step is allowed.
 
 ## Core Rule
 

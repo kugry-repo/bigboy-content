@@ -20,7 +20,7 @@ Every lesson, exercise, standalone quiz, set, and solution should be:
 
 The repository uses one content-unit system.
 
-Official curriculum units live directly under `content/2bac-pc-svt/`. Unofficial topics live under `content/2bac-pc-svt/topics/`.
+Official curriculum units live directly under `content/programs/<program_id>/`. Unofficial topics live under `content/programs/<program_id>/topics/`.
 
 Both unit kinds use:
 
