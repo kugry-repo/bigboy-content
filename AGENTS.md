@@ -6,6 +6,33 @@ This repository is for building a Markdown-first authoring system for Moroccan 2
 
 The current priority is a clean authoring system and strong content structure. Do not build frontend rendering, app logic, or deployment unless explicitly requested.
 
+## Agent notifications
+
+- Completion notification is required: whenever you finish a task, before the final response, or finish a chat thread, play `notification.mp3` from the repo root.
+  - On this Windows-hosted project, use PowerShell from the repo root:
+    ```powershell
+    Add-Type -AssemblyName PresentationCore
+    $path = (Resolve-Path '.\notification.mp3').ProviderPath
+    $player = New-Object System.Windows.Media.MediaPlayer
+    $player.Open([Uri]$path)
+    $player.Volume = 1
+    $player.Play()
+    for ($i = 0; -not $player.NaturalDuration.HasTimeSpan -and $i -lt 50; $i++) {
+      Start-Sleep -Milliseconds 100
+    }
+    $duration = if ($player.NaturalDuration.HasTimeSpan) {
+      [Math]::Ceiling($player.NaturalDuration.TimeSpan.TotalMilliseconds) + 250
+    } else {
+      2000
+    }
+    Start-Sleep -Milliseconds $duration
+    $player.Close()
+    ```
+  - If local audio playback is unavailable or blocked, report that clearly in the final response instead of silently skipping the notification.
+- Question notification is required: whenever you are about to ask the user a direct question for clarification, approval, choice, or unblocking, play `notification.mp3` immediately before sending that question.
+  - On this Windows-hosted project, use the same PowerShell command from the repo root.
+  - If local audio playback is unavailable or blocked, mention the failed notification attempt in the same message as the question.
+
 ## Current phase: underlying system development
 
 This project is still in the system-design/buildout phase. The priority is a clean, coherent, future-proof authoring system, not preserving backward compatibility with earlier drafts of the system.
