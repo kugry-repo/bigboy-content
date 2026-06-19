@@ -5,14 +5,14 @@ This folder contains the prompt system for the Markdown-first authoring workflow
 Start with:
 
 - `START-HERE.md` when you are unsure which prompt to run.
-- `commands/next-action.md` when you want Codex to inspect the current unit and recommend the next exact action.
+- `content/_prompts/commands/next-action.md` when you want Codex to inspect the current unit and recommend the next exact action.
 
 ## Folder Structure
 
-- `commands/` contains prompts the user runs directly to decide, manage, or revise work.
-- `workflows/` contains step-by-step workflow prompts grouped by content type.
-- `shortcuts/` contains optional direct prompts for special cases.
-- `_shared/` contains reusable prompt contracts, output rules, and validation rules.
+- `content/_prompts/commands/` contains prompts the user runs directly to decide, manage, or revise work.
+- `content/_prompts/workflows/` contains step-by-step workflow prompts grouped by content type.
+- `content/_prompts/shortcuts/` contains optional direct prompts for special cases.
+- `content/_prompts/_shared/` contains reusable prompt contracts, output rules, and validation rules.
 
 Numbered prompt files are only meaningful inside their own workflow folder. There is no global flat prompt numbering anymore.
 
@@ -20,63 +20,71 @@ Do not add new `00-*` control prompts, `q01-*` quiz prompts, or letter suffix pr
 
 ## Commands
 
-- `commands/next-action.md` diagnoses the current state and recommends the next exact action.
-- `commands/set-current-unit.md` sets or changes `_workflow/current-unit.md`.
-- `commands/manage-unit.md` creates, renames, changes metadata, splits, merges, deletes, reorders, or moves official/unofficial units.
-- `commands/initialize-unit.md` expands one `planning_state: stub` unit into an initialized planning dashboard.
-- `commands/content-studio.md` supports conversational critique, diagnosis, proposals, grilling, and targeted patches across content artifacts.
-- `commands/change-existing-content.md` handles targeted revision, stale-file sync, and workflow/template/schema changes.
+- `content/_prompts/commands/next-action.md` diagnoses the current state and recommends the next exact action.
+- `content/_prompts/commands/set-current-unit.md` sets or changes `_workflow/current-unit.md`.
+- `content/_prompts/commands/manage-unit.md` creates, renames, changes metadata, splits, merges, deletes, reorders, or moves official/unofficial units.
+- `content/_prompts/commands/initialize-unit.md` expands one `planning_state: stub` unit into an initialized planning dashboard.
+- `content/_prompts/commands/content-studio.md` supports conversational critique, diagnosis, proposals, grilling, and targeted patches across content artifacts.
+- `content/_prompts/commands/change-existing-content.md` handles targeted revision, stale-file sync, and workflow/template/schema changes.
 
 ## Local Prompt Workflows
 
 Unit workflow:
 
-- `workflows/unit/01-plan-unit.md`
-- `workflows/unit/02-review-unit.md`
-- `workflows/unit/03-finalize-unit.md`
+- `content/_prompts/workflows/unit/01-plan-unit.md`
+- `content/_prompts/workflows/unit/02-review-unit.md`
+- `content/_prompts/workflows/unit/03-finalize-unit.md`
 
 Lesson workflow:
 
-- `workflows/lessons/01-prepare-source.md`
-- `workflows/lessons/02-generate-raw-dump.md`
-- `workflows/lessons/03-curate-material.md`
-- `workflows/lessons/04-create-draft.md`
-- `workflows/lessons/05-coherence-pass.md`
-- `workflows/lessons/06-compression-pass.md`
-- `workflows/lessons/07-verify-finalize.md`
+- `content/_prompts/workflows/lessons/01-prepare-source.md`
+- `content/_prompts/workflows/lessons/02-generate-raw-dump.md`
+- `content/_prompts/workflows/lessons/03-curate-material.md`
+- `content/_prompts/workflows/lessons/04-create-draft.md`
+- `content/_prompts/workflows/lessons/05-coherence-pass.md`
+- `content/_prompts/workflows/lessons/06-compression-pass.md`
+- `content/_prompts/workflows/lessons/07-verify-finalize.md`
 
 Conversational studio:
 
-- `commands/content-studio.md`
+- `content/_prompts/commands/content-studio.md`
 
 Exercise workflow:
 
-- `workflows/exercises/01-generate-raw-seeds.md`
-- `workflows/exercises/02-curate-design-cards.md`
-- `workflows/exercises/03-check-unit-balance.md`
-- `workflows/exercises/04-create-batch.md`
-- `workflows/exercises/05-review-exercise-quality.md`
-- `workflows/exercises/06-review-solutions.md`
-- `workflows/exercises/07-create-sets.md`
+- `content/_prompts/workflows/exercises/01-generate-raw-seeds.md`
+- `content/_prompts/workflows/exercises/02-curate-design-cards.md`
+- `content/_prompts/workflows/exercises/03-check-unit-balance.md`
+- `content/_prompts/workflows/exercises/04-create-batch.md`
+- `content/_prompts/workflows/exercises/05-review-exercise-quality.md`
+- `content/_prompts/workflows/exercises/06-review-solutions.md`
+- `content/_prompts/workflows/exercises/07-create-sets.md`
 
 Quiz workflow:
 
-- `workflows/quizzes/01-plan-quiz-intent.md`
-- `workflows/quizzes/02-generate-raw-item-pool.md`
-- `workflows/quizzes/03-curate-item-design-cards.md`
-- `workflows/quizzes/04-create-quiz-file.md`
-- `workflows/quizzes/05-review-item-quality.md`
-- `workflows/quizzes/06-review-answer-keys.md`
-- `workflows/quizzes/07-review-feedback-remediation.md`
+- `content/_prompts/workflows/quizzes/01-plan-quiz-intent.md`
+- `content/_prompts/workflows/quizzes/02-generate-raw-item-pool.md`
+- `content/_prompts/workflows/quizzes/03-curate-item-design-cards.md`
+- `content/_prompts/workflows/quizzes/04-create-quiz-file.md`
+- `content/_prompts/workflows/quizzes/05-review-item-quality.md`
+- `content/_prompts/workflows/quizzes/06-review-answer-keys.md`
+- `content/_prompts/workflows/quizzes/07-review-feedback-remediation.md`
 
 ## Shortcuts
 
-- `shortcuts/create-direct-exercise-blueprint.md` is only for very small units or explicit direct-blueprint requests. Substantial units should use the normal exercise workflow.
+- `content/_prompts/shortcuts/create-direct-exercise-blueprint.md` is only for very small units or explicit direct-blueprint requests. Substantial units should use the normal exercise workflow.
 
-## Shared Rules
+## Shared Contract
 
-- `_shared/prompt-contract.md` defines target resolution and prompt behavior contracts.
-- `_shared/output-rules.md` defines final-response and reporting conventions.
-- `_shared/validation-rules.md` defines checks to run or report after prompt-driven edits.
+- `content/_prompts/_shared/prompt-contract.md` defines shared prompt behavior, target resolution, `_workflow/current-unit.md` schema, current-unit behavior, prompt path style, read/write boundaries, and global prompt discipline.
+- `content/_prompts/_shared/output-rules.md` defines final-response and reporting conventions.
+- `content/_prompts/_shared/validation-rules.md` defines checks to run or report after prompt-driven edits.
 
-Prompts should follow these shared rules and use only the current folder-based paths.
+Operating prompts should inherit `content/_prompts/_shared/prompt-contract.md`. If a prompt needs target details, write a short `## Target Resolution` section that starts with:
+
+```md
+Follow `content/_prompts/_shared/prompt-contract.md`.
+```
+
+Then add only prompt-specific selectors or blockers. Do not copy the generic target-resolution algorithm into individual prompts.
+
+Use repository-relative POSIX paths for prompt references, for example `content/_prompts/workflows/lessons/01-prepare-source.md`.

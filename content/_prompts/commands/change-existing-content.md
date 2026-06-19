@@ -26,14 +26,14 @@ Do not require these fields. The user is not responsible for knowing the depende
 
 ## Current Unit
 
-If the request does not name a specific file, unit, or global workflow area, read `_workflow/current-unit.md`.
+If the request does not name a specific file, unit, or global workflow area, read `_workflow/current-unit.md` using the schema from `content/_prompts/_shared/prompt-contract.md`.
 
-Use only `TARGET_UNIT` for unit-level scope.
+Use the shared target fields for unit-level scope. Do not create prompt-specific local-state fields.
 
 ## Scope Resolution
 
 1. Identify whether the request is file-specific, unit-specific, prompt/guide/template-specific, validator-specific, or global.
-2. If a unit is named, resolve it using the standard target resolution rules from `content/_prompts/commands/next-action.md`.
+2. If a unit is named, resolve it using `content/_prompts/_shared/prompt-contract.md`.
 3. If no unit is named and the request is unit-level, read `_workflow/current-unit.md`.
 4. If the scope is still unclear, stop and ask.
 5. Derive affected files from the requested change, not from the creation checklist alone.
@@ -81,10 +81,10 @@ Before deciding what to patch, discover the affected files.
 For unit-level or content-level changes, inspect as relevant:
 
 - `TARGET_UNIT_INDEX`
-- `TARGET_UNIT_FOLDER/lessons/`
-- `TARGET_UNIT_FOLDER/exercises/`
-- `TARGET_UNIT_FOLDER/quizzes/`
-- `TARGET_UNIT_FOLDER/sets/`
+- `TARGET_UNIT_PATH/lessons/`
+- `TARGET_UNIT_PATH/exercises/`
+- `TARGET_UNIT_PATH/quizzes/`
+- `TARGET_UNIT_PATH/sets/`
 - unit `## Production dashboard`
 - `## Journal de production`
 - lesson, exercise, quiz, and set frontmatter

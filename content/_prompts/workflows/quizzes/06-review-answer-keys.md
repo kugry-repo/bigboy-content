@@ -16,7 +16,17 @@ TARGET_UNIT: <unit-folder-or-path-or-code>
 TARGET_QUIZ_FILE: <quiz-file-path-or-id>
 ```
 
-If no explicit target is provided, read `_workflow/current-unit.md` and inspect quiz files that need answer-key review.
+If no explicit target is provided, read `_workflow/current-unit.md` using the schema from `content/_prompts/_shared/prompt-contract.md`, then inspect quiz files that need answer-key review.
+
+## Target Resolution
+
+Follow `content/_prompts/_shared/prompt-contract.md`.
+
+Prompt-specific requirements:
+
+- Resolve exactly one target unit before reviewing quiz files.
+- If `TARGET_QUIZ_FILE` is missing, inspect `TARGET_UNIT_PATH/quizzes/` and select only quiz files that need answer-key review.
+- If the target quiz file is missing or ambiguous, stop and ask. Do not edit files.
 
 ## Read First
 

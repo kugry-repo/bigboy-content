@@ -48,6 +48,10 @@ Do not require `TARGET_PROGRAM`, `TARGET_UNIT`, `TARGET_FILE`, `MODE`, or simila
 
 ## Target Inference
 
+Follow `content/_prompts/_shared/prompt-contract.md`.
+
+Studio-specific inference:
+
 Infer the target in this order:
 
 1. If the user selected text in the IDE, use the selected text as the primary target.

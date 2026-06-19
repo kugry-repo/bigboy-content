@@ -16,18 +16,17 @@ TARGET_UNIT: <unit-folder-or-path-or-code>
 TARGET_QUIZ_INTENT: <intent-title-or-planned-file>
 ```
 
-If no explicit target is provided, read `_workflow/current-unit.md`.
+If no explicit target is provided, read `_workflow/current-unit.md` using the schema from `content/_prompts/_shared/prompt-contract.md`.
 
 ## Target Resolution
 
-Before doing any work:
+Follow `content/_prompts/_shared/prompt-contract.md`.
 
-1. Resolve `TARGET_UNIT` using the standard unit-resolution rules from `content/_guides/units/unit-workflow.md`.
-2. Read `TARGET_UNIT_INDEX`.
-3. Require `type: unit-index`.
-4. Require `planning_state: initialized` or `planning_state: published`.
-5. Locate the selected quiz intent card.
-6. If the target or intent is missing or ambiguous, stop and ask. Do not edit files.
+Prompt-specific requirements:
+
+- Resolve exactly one target unit before reading or editing unit artifacts.
+- Locate exactly one quiz intent card in `TARGET_UNIT_INDEX`.
+- If the target or intent is missing or ambiguous, stop and ask. Do not edit files.
 
 ## Read First
 

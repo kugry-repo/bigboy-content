@@ -91,37 +91,19 @@ Do not create a root-level `lesson.md`.
 
 ## Target resolution
 
-Workflow prompts use `TARGET_PROGRAM` and `TARGET_UNIT` as advanced explicit targets. Studio-style commands may infer both from selected text, active file, path, and frontmatter.
+Prompt target resolution is defined by `content/_prompts/_shared/prompt-contract.md`.
 
-Resolution order:
+Workflow prompts use `TARGET_PROGRAM` and `TARGET_UNIT` as explicit targets. Studio-style commands may infer both from selected text, active file, path, and frontmatter when their prompt-specific section says so.
 
-1. Look for explicit `TARGET_PROGRAM`.
-2. If missing, infer `TARGET_PROGRAM` from a target path under `content/programs/<program_id>/`, active file frontmatter, selected file frontmatter, or `_workflow/current-unit.md`.
-3. If the program cannot be inferred, stop and ask for it. Do not default to any program.
-4. Look for explicit `TARGET_UNIT`.
-5. If missing, read `_workflow/current-unit.md`.
-6. Resolve the unit by scanning unit indexes inside the selected program only:
-   - official units under `content/programs/<TARGET_PROGRAM>/*/_index.md`;
-   - unofficial topics under `content/programs/<TARGET_PROGRAM>/topics/*/_index.md`.
-7. Match only against:
-   - `unit_code`;
-   - `unit_slug`;
-   - `unit_folder`;
-   - `title`;
-   - resolved folder path.
-8. Derive:
-   - `TARGET_PROGRAM`;
-   - `TARGET_PROGRAM_ROOT`;
-   - `TARGET_PROGRAM_INDEX`;
-   - `TARGET_CURRICULUM_MAP`;
-   - `TARGET_ID_PREFIX`;
-   - `TARGET_UNIT_FOLDER`;
-   - `TARGET_UNIT_INDEX`;
-   - `TARGET_UNIT_KIND`;
-   - `TARGET_UNIT_CODE`;
-   - `TARGET_UNIT_TITLE`;
-9. Read the unit `_index.md` and check `planning_state`.
-10. Stop if the target is missing or ambiguous.
+Use the shared contract for:
+
+- target-resolution precedence;
+- `_workflow/current-unit.md` schema;
+- derived target fields such as `TARGET_UNIT_PATH`, `TARGET_UNIT_INDEX`, `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, and `TARGET_PLANNING_STATE`;
+- when to ask a human instead of inferring;
+- repository-relative prompt path style.
+
+This guide defines unit lifecycle and dashboard semantics. It should not duplicate the prompt target-resolution algorithm.
 
 ## Source of truth
 

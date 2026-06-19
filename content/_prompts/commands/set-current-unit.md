@@ -12,7 +12,7 @@ It must not edit content files, unit files, lesson files, exercise files, quiz f
 
 ## Input
 
-Ask the user for one value if it was not provided:
+Accept or infer:
 
 ```text
 TARGET_PROGRAM: <program_id>
@@ -32,54 +32,52 @@ TARGET_UNIT: content/programs/ma-2bac-pc-svt/topics/etudier-une-fonction
 
 ## Target Resolution
 
-Before writing anything:
+Follow `content/_prompts/_shared/prompt-contract.md`.
 
-1. Read `AGENTS.md`.
-2. Look for explicit `TARGET_PROGRAM`; otherwise infer it from a path, frontmatter, or `_workflow/current-unit.md`.
-3. If `TARGET_PROGRAM` cannot be inferred, stop and ask. Do not default to PC/SVT.
-4. Look for explicit `TARGET_UNIT`.
-5. Resolve the unit by scanning unit indexes inside `TARGET_PROGRAM`:
-   - official units under `content/programs/<TARGET_PROGRAM>/*/_index.md`;
-   - unofficial units under `content/programs/<TARGET_PROGRAM>/topics/*/_index.md`.
-6. Match only against:
-   - `unit_code`;
-   - `unit_slug`;
-   - `unit_folder`;
-   - `title`;
-   - resolved folder path.
-7. Derive `TARGET_UNIT_FOLDER` as the resolved folder.
-8. Derive `TARGET_UNIT_INDEX` as `<resolved-folder>/_index.md`.
-9. Read `TARGET_UNIT_INDEX`.
-10. Require `type: unit-index`.
-11. Derive:
-   - `TARGET_UNIT_KIND`;
-   - `TARGET_UNIT_CODE`;
-   - `TARGET_UNIT_TITLE`;
-   - `TARGET_PROGRAM`.
-12. If the target is missing, ambiguous, or cannot be resolved, stop and ask for clarification. Do not edit files.
+Prompt-specific requirements:
+
+- Read `AGENTS.md` before writing.
+- Explicit input, selected paths, active files, and frontmatter take precedence over existing `_workflow/current-unit.md`.
+- Use `_workflow/current-unit.md` only as fallback context when the user did not provide enough target information.
+- Resolve exactly one unit and read `TARGET_PROGRAM_INDEX` and `TARGET_UNIT_INDEX` before writing.
+- If the target is missing, ambiguous, or cannot be resolved, stop and ask for clarification. Do not edit files.
 
 ## Task
 
 1. Confirm the resolved unit kind, code, and title.
 2. Create `_workflow/` if it does not exist.
 3. Create or update `_workflow/current-unit.md`.
-4. Prefer storing `TARGET_UNIT` as the unit code if that code is unique.
-5. Use the unit folder if the unit code is missing or ambiguous.
-6. Do not generate content.
-7. Do not edit any file under `content/`.
+4. Store `TARGET_UNIT` as the unit code when the code is unique inside `TARGET_PROGRAM`; otherwise store `TARGET_UNIT_FOLDER`.
+5. Do not generate content.
+6. Do not edit any file under `content/`.
 
 Use this file format:
 
 ```md
 # Local authoring current unit
 
-TARGET_UNIT: <canonical-unit-code-or-folder>
+TARGET_PROGRAM: <program-id>
+TARGET_UNIT: <unit-code-or-unit-folder>
+TARGET_PROGRAM_ROOT: content/programs/<program-id>
+TARGET_PROGRAM_INDEX: content/programs/<program-id>/_index.md
+TARGET_CURRICULUM_MAP: content/programs/<program-id>/_curriculum-map.md
+TARGET_ID_PREFIX: <program-id-prefix>
+TARGET_UNIT_FOLDER: <program-relative-unit-folder>
+TARGET_UNIT_PATH: content/programs/<program-id>/<program-relative-unit-folder>
+TARGET_UNIT_INDEX: content/programs/<program-id>/<program-relative-unit-folder>/_index.md
+TARGET_UNIT_KIND: <official-curriculum-unit | unofficial-topic>
+TARGET_UNIT_CODE: <unit-code>
+TARGET_UNIT_TITLE: <unit-title>
+TARGET_PLANNING_STATE: <stub | initialized | published>
 
-Program: <program-id>
-Resolved folder: content/programs/<TARGET_PROGRAM>/<unit-folder>
-Unit kind: <official-curriculum-unit | unofficial-topic>
-Unit code: <unit-code>
-Unit title: <unit-title>
+## Summary
+
+- Program: <program-id>
+- Unit path: content/programs/<program-id>/<program-relative-unit-folder>
+- Unit kind: <official-curriculum-unit | unofficial-topic>
+- Unit code: <unit-code>
+- Unit title: <unit-title>
+- Planning state: <stub | initialized | published>
 
 This file is local authoring current-unit state and should be ignored by Git.
 ```

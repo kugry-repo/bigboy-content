@@ -19,7 +19,7 @@ TARGET_EXERCISE_FILES: <file-list>
 TARGET_EXERCISE_IDS: <id-list>
 ```
 
-If no explicit target is provided, read `_workflow/current-unit.md`.
+If no explicit target is provided, read `_workflow/current-unit.md` using the schema from `content/_prompts/_shared/prompt-contract.md`.
 
 If neither an explicit target nor local current-unit state exists, stop and ask the user to set a current unit by running:
 
@@ -29,20 +29,12 @@ content/_prompts/commands/set-current-unit.md
 
 ## Target Resolution
 
-Before doing any work:
+Follow `content/_prompts/_shared/prompt-contract.md`.
 
-1. Look for explicit `TARGET_PROGRAM`; otherwise infer it from a path under `content/programs/<program_id>/`, frontmatter, or `_workflow/current-unit.md`.
-2. If `TARGET_PROGRAM` cannot be inferred, stop and ask. Do not default to PC/SVT.
-3. Look for explicit `TARGET_UNIT`.
-4. If no explicit target exists, read `_workflow/current-unit.md`.
-5. Resolve the unit by scanning unit indexes inside `TARGET_PROGRAM`:
-   - official units under `content/programs/<TARGET_PROGRAM>/*/_index.md`;
-   - unofficial topics under `content/programs/<TARGET_PROGRAM>/topics/*/_index.md`.
-4. Match only against `unit_code`, `unit_slug`, `unit_folder`, `title`, and resolved folder path.
-5. Derive `TARGET_UNIT_FOLDER` and `TARGET_UNIT_INDEX`.
-6. Read `TARGET_UNIT_INDEX` and require `type: unit-index`.
-7. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM`.
-8. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
+Prompt-specific requirements:
+
+- Resolve exactly one target unit before reading or editing unit artifacts.
+- Use optional selector fields from `## Target` only inside the resolved unit.
 
 ## Stub Unit Rule
 
@@ -63,7 +55,7 @@ If `TARGET_UNIT_INDEX` has `planning_state: stub`, stop before changing unit pla
 - `content/_guides/core/source-policy.md`
 - `TARGET_UNIT_INDEX`
 - source exercise design cards in `TARGET_UNIT_INDEX`, if present
-- selected exercise files under `TARGET_UNIT_FOLDER/exercises/`
+- selected exercise files under `TARGET_UNIT_PATH/exercises/`
 
 ## Task
 
@@ -148,4 +140,4 @@ Finish by summarizing:
 - fixes made;
 - status fields changed;
 - remaining solution-review or math-verification needs;
-- next prompt: `workflows/exercises/06-review-solutions.md` when the exercise quality pass is done.
+- next prompt: `content/_prompts/workflows/exercises/06-review-solutions.md` when the exercise quality pass is done.

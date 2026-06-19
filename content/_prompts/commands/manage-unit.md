@@ -64,35 +64,14 @@ Do not leave duplicate entries, stale links, old names, or alternate schemas beh
 
 For actions that operate on an existing unit:
 
-1. Look for explicit `TARGET_PROGRAM`.
-2. If missing, infer `TARGET_PROGRAM` from a path under `content/programs/<program_id>/`, active file frontmatter, selected file frontmatter, or `_workflow/current-unit.md`.
-3. If `TARGET_PROGRAM` cannot be inferred, stop and ask. Do not default to any program.
-4. Look for explicit `TARGET_UNIT`.
-5. If missing, read `_workflow/current-unit.md`.
-6. Resolve the unit by scanning unit indexes inside `TARGET_PROGRAM` only:
-   - official units under `content/programs/<TARGET_PROGRAM>/*/_index.md`;
-   - unofficial units under `content/programs/<TARGET_PROGRAM>/topics/*/_index.md`.
-7. Match only against:
-   - `unit_code`;
-   - `unit_slug`;
-   - `unit_folder`;
-   - `title`;
-   - resolved folder path.
-8. Derive:
-   - `TARGET_PROGRAM`;
-   - `TARGET_PROGRAM_ROOT`;
-   - `TARGET_PROGRAM_INDEX`;
-   - `TARGET_CURRICULUM_MAP`;
-   - `TARGET_ID_PREFIX`;
-   - `TARGET_UNIT_FOLDER`;
-   - `TARGET_UNIT_INDEX`;
-   - `TARGET_UNIT_KIND`;
-   - `TARGET_UNIT_CODE`;
-   - `TARGET_UNIT_TITLE`.
-9. Read `TARGET_CURRICULUM_MAP`.
-10. If the target is an official curriculum unit, treat the curriculum-map row as canonical and verify the unit `_index.md` repeated identity fields against it.
-11. If the target is an unofficial topic, treat the topic unit `_index.md` as canonical registration and verify derived catalog rows against it.
-12. Stop if missing or ambiguous.
+Follow `content/_prompts/_shared/prompt-contract.md`.
+
+Prompt-specific requirements:
+
+- Read `TARGET_CURRICULUM_MAP`.
+- If the target is an official curriculum unit, treat the curriculum-map row as canonical and verify the unit `_index.md` repeated identity fields against it.
+- If the target is an unofficial topic, treat the topic unit `_index.md` as canonical registration and verify derived catalog rows against it.
+- Stop if the target is missing or ambiguous.
 
 ## ACTION: create
 

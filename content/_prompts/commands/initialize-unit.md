@@ -21,6 +21,10 @@ TARGET_UNIT: content/programs/ma-2bac-pc-svt/01-limites-continuite
 
 ## Target Inference
 
+Follow `content/_prompts/_shared/prompt-contract.md`.
+
+Initialize-specific inference:
+
 Resolve the target in this order:
 
 1. Infer `TARGET_PROGRAM` from the active file path, active file frontmatter, selected path, explicit `TARGET_PROGRAM`, or `_workflow/current-unit.md`.
@@ -30,11 +34,8 @@ Resolve the target in this order:
 5. Use selected text or an explicit path if the user highlighted one.
 6. Use explicit `TARGET_UNIT` only as an override.
 7. If still missing, read `_workflow/current-unit.md`.
-8. Resolve against unit indexes inside `TARGET_PROGRAM`:
-   - official units under `content/programs/<TARGET_PROGRAM>/*/_index.md`;
-   - unofficial topics under `content/programs/<TARGET_PROGRAM>/topics/*/_index.md`.
-9. Match against `unit_code`, `unit_slug`, `unit_folder`, `title`, and resolved folder path.
-10. Ask only if the target remains missing or ambiguous.
+8. Resolve the unit using the shared contract.
+9. Ask only if the target remains missing or ambiguous.
 
 ## Read First
 

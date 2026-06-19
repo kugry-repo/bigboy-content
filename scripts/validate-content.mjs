@@ -572,6 +572,9 @@ const REQUIRED_QUIZ_WORKFLOW_PROMPTS = [
 const REQUIRED_CONTENT_STUDIO_COMMAND =
   "content/_prompts/commands/content-studio.md";
 
+const SHARED_PROMPT_CONTRACT_PATH =
+  "content/_prompts/_shared/prompt-contract.md";
+
 const OBSOLETE_COMMAND_PROMPTS = [
   `content/_prompts/commands/${"review"}-${"existing"}-${"lesson"}.md`,
 ];
@@ -618,6 +621,14 @@ const REMOVED_ACTIVE_TEXT = [
   /planned exercise table/i,
   /planned quiz table/i,
   /when no design card exists/i,
+];
+
+const GENERIC_TARGET_RESOLUTION_PATTERNS = [
+  /Look for explicit `TARGET_PROGRAM`/i,
+  /Resolve the unit by scanning unit indexes/i,
+  /Match only against:/i,
+  /resolved folder path/i,
+  /standard unit-resolution rules from `content\/_guides\/units\/unit-workflow\.md`/i,
 ];
 
 const LESSON_QUALITY_SIGNAL_CHECKS = [
@@ -2864,6 +2875,10 @@ function checkPromptLayout() {
     const relative = rel(filePath);
     const basename = path.basename(filePath);
     const parent = toPosix(path.relative(PROMPTS_DIR, path.dirname(filePath)));
+    const isOperatingPrompt =
+      relative.startsWith("content/_prompts/commands/") ||
+      relative.startsWith("content/_prompts/workflows/") ||
+      relative.startsWith("content/_prompts/shortcuts/");
 
     if (/^00-/.test(basename)) {
       addError(filePath, 'obsolete prompt filename pattern "00-*" is not allowed');
@@ -2894,8 +2909,40 @@ function checkPromptLayout() {
       }
     }
 
-    if (relative.includes("\\\\")) {
-      addError(filePath, "prompt path should use repository-root-relative POSIX separators in text references");
+    const promptRootRelativePathReference =
+      /(?:^|[\s`(])(?:commands|workflows|shortcuts|_shared)\/[^\s`)]*\.md\b/i;
+    const promptBackslashPathReference =
+      /content\\_prompts\\|(?:^|[\s`(])(?:commands|workflows|shortcuts|_shared)\\[^\s`)]*\.md\b/i;
+
+    if (
+      promptRootRelativePathReference.test(text) ||
+      promptBackslashPathReference.test(text)
+    ) {
+      addError(filePath, "prompt references must use repository-relative POSIX paths like content/_prompts/commands/next-action.md");
+    }
+
+    const targetResolutionSection = getSection(text, 2, "Target Resolution");
+    if (targetResolutionSection && relative !== SHARED_PROMPT_CONTRACT_PATH) {
+      if (!targetResolutionSection.includes(SHARED_PROMPT_CONTRACT_PATH)) {
+        addError(filePath, "prompt-specific Target Resolution must inherit content/_prompts/_shared/prompt-contract.md");
+      }
+
+      for (const pattern of GENERIC_TARGET_RESOLUTION_PATTERNS) {
+        if (pattern.test(targetResolutionSection)) {
+          addError(filePath, "prompt-specific Target Resolution duplicates generic target-resolution rules");
+          break;
+        }
+      }
+    }
+
+    const usesUnitTargetContract =
+      /\bTARGET_UNIT\b|_workflow\/current-unit\.md|^## Target Inference|^## Scope Resolution/m.test(text);
+    if (
+      isOperatingPrompt &&
+      usesUnitTargetContract &&
+      !text.includes(SHARED_PROMPT_CONTRACT_PATH)
+    ) {
+      addError(filePath, "unit-target prompt must inherit content/_prompts/_shared/prompt-contract.md");
     }
   }
 }

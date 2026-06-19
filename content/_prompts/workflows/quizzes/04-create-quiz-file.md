@@ -16,18 +16,18 @@ TARGET_UNIT: <unit-folder-or-path-or-code>
 TARGET_QUIZ_INTENT: <intent-title-or-planned-file>
 ```
 
-If no explicit target is provided, read `_workflow/current-unit.md`.
+If no explicit target is provided, read `_workflow/current-unit.md` using the schema from `content/_prompts/_shared/prompt-contract.md`.
 
 ## Target Resolution
 
-Before doing any work:
+Follow `content/_prompts/_shared/prompt-contract.md`.
 
-1. Resolve `TARGET_UNIT` using the standard unit-resolution rules.
-2. Read `TARGET_UNIT_INDEX`.
-3. Require `planning_state: initialized` or `planning_state: published`.
-4. Locate the selected quiz intent and item design cards.
-5. Use only item cards with `Status: ready-for-quiz-file`.
-6. If the target is missing, ambiguous, or has no ready item cards, stop and report the blocker.
+Prompt-specific requirements:
+
+- Resolve exactly one target unit before reading or editing unit artifacts.
+- Locate exactly one quiz intent and its item design cards in `TARGET_UNIT_INDEX`.
+- Use only item cards with `Status: ready-for-quiz-file`.
+- If the target is missing, ambiguous, or has no ready item cards, stop and report the blocker.
 
 ## Read First
 
@@ -51,7 +51,7 @@ Before doing any work:
 Create the requested quiz file under:
 
 ```text
-TARGET_UNIT_FOLDER/quizzes/
+TARGET_UNIT_PATH/quizzes/
 ```
 
 Use the new quiz template.

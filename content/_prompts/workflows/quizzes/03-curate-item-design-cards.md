@@ -16,17 +16,17 @@ TARGET_UNIT: <unit-folder-or-path-or-code>
 TARGET_QUIZ_INTENT: <intent-title-or-planned-file>
 ```
 
-If no explicit target is provided, read `_workflow/current-unit.md`.
+If no explicit target is provided, read `_workflow/current-unit.md` using the schema from `content/_prompts/_shared/prompt-contract.md`.
 
 ## Target Resolution
 
-Before doing any work:
+Follow `content/_prompts/_shared/prompt-contract.md`.
 
-1. Resolve `TARGET_UNIT` using the standard unit-resolution rules.
-2. Read `TARGET_UNIT_INDEX`.
-3. Require `planning_state: initialized` or `planning_state: published`.
-4. Locate the selected quiz intent card and its raw item pool.
-5. If no raw item pool exists, stop and recommend `content/_prompts/workflows/quizzes/02-generate-raw-item-pool.md`.
+Prompt-specific requirements:
+
+- Resolve exactly one target unit before reading or editing unit artifacts.
+- Locate exactly one quiz intent card and its raw item pool in `TARGET_UNIT_INDEX`.
+- If no raw item pool exists, stop and recommend `content/_prompts/workflows/quizzes/02-generate-raw-item-pool.md`.
 
 ## Read First
 

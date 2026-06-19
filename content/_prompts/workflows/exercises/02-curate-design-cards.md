@@ -4,7 +4,7 @@ Use this prompt after raw exercise seeds exist for at least one exercise cluster
 
 This step curates raw seeds into rich exercise design cards. It does not create final exercise files.
 
-For substantial units, curate one exercise cluster at a time by default. Use `workflows/exercises/03-check-unit-balance.md` only after cluster cards exist and the unit needs a whole-plan balance pass.
+For substantial units, curate one exercise cluster at a time by default. Use `content/_prompts/workflows/exercises/03-check-unit-balance.md` only after cluster cards exist and the unit needs a whole-plan balance pass.
 
 ## Target
 
@@ -18,7 +18,7 @@ Optional selectors:
 TARGET_EXERCISE_CLUSTER: <cluster-id-or-title>
 ```
 
-If no explicit target is provided, read `_workflow/current-unit.md`.
+If no explicit target is provided, read `_workflow/current-unit.md` using the schema from `content/_prompts/_shared/prompt-contract.md`.
 
 If neither an explicit target nor local current-unit state exists, stop and ask the user to set a current unit by running:
 
@@ -28,20 +28,12 @@ content/_prompts/commands/set-current-unit.md
 
 ## Target Resolution
 
-Before doing any work:
+Follow `content/_prompts/_shared/prompt-contract.md`.
 
-1. Look for explicit `TARGET_PROGRAM`; otherwise infer it from a path under `content/programs/<program_id>/`, frontmatter, or `_workflow/current-unit.md`.
-2. If `TARGET_PROGRAM` cannot be inferred, stop and ask. Do not default to PC/SVT.
-3. Look for explicit `TARGET_UNIT`.
-4. If no explicit target exists, read `_workflow/current-unit.md`.
-5. Resolve the unit by scanning unit indexes inside `TARGET_PROGRAM`:
-   - official units under `content/programs/<TARGET_PROGRAM>/*/_index.md`;
-   - unofficial topics under `content/programs/<TARGET_PROGRAM>/topics/*/_index.md`.
-4. Match only against `unit_code`, `unit_slug`, `unit_folder`, `title`, and resolved folder path.
-5. Derive `TARGET_UNIT_FOLDER` and `TARGET_UNIT_INDEX`.
-6. Read `TARGET_UNIT_INDEX` and require `type: unit-index`.
-7. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM`.
-8. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
+Prompt-specific requirements:
+
+- Resolve exactly one target unit before reading or editing unit artifacts.
+- Use optional selector fields from `## Target` only inside the resolved unit.
 
 ## Stub Unit Rule
 
@@ -68,7 +60,7 @@ If `TARGET_UNIT_INDEX` has `planning_state: stub`, stop before changing unit pla
 - `TARGET_UNIT_INDEX`
 - selected cluster raw seeds
 - existing curated design cards, if any
-- relevant mini-lesson files under `TARGET_UNIT_FOLDER/lessons/`
+- relevant mini-lesson files under `TARGET_UNIT_PATH/lessons/`
 
 ## Cluster Selection
 
@@ -84,7 +76,7 @@ If no `TARGET_EXERCISE_CLUSTER` is provided:
 - find the first raw cluster dump that is not yet curated;
 - curate only that cluster.
 
-If no raw seed dump exists for the selected cluster, stop and recommend `workflows/exercises/01-generate-raw-seeds.md`.
+If no raw seed dump exists for the selected cluster, stop and recommend `content/_prompts/workflows/exercises/01-generate-raw-seeds.md`.
 
 ## Worth-Existing Filter
 
@@ -230,4 +222,4 @@ Finish by summarizing:
 - design cards kept, merged, rejected, or marked needs-redesign/needs-verification;
 - coverage by skill and mini-lesson;
 - missing areas or verification needs;
-- recommended next prompt: `workflows/exercises/03-check-unit-balance.md` when cluster cards are ready for whole-unit balance.
+- recommended next prompt: `content/_prompts/workflows/exercises/03-check-unit-balance.md` when cluster cards are ready for whole-unit balance.

@@ -1,28 +1,37 @@
 # Prompt Contract
 
-All prompts in this folder use the shared multi-program content system. Do not refer users to removed flat prompt names, old single-program paths, or compatibility aliases.
+All operating prompts under `content/_prompts/commands/`, `content/_prompts/workflows/`, and `content/_prompts/shortcuts/` inherit this contract unless a prompt states a narrower prompt-specific requirement.
+
+Do not refer users to removed flat prompt names, old single-program paths, compatibility aliases, or prompt-root-relative paths. Prompt references must use repository-relative POSIX paths such as `content/_prompts/commands/next-action.md`.
 
 ## Target Resolution
 
-Workflow prompts that operate on a program or content unit should accept:
+Unit-level prompts accept explicit targets in this shape:
 
 ```text
 TARGET_PROGRAM: <program_id>
 TARGET_UNIT: <unit-folder-or-path-or-code>
 ```
 
-`TARGET_PROGRAM` is the canonical program ID, for example `ma-2bac-pc-svt`.
+Resolve target context in this order:
 
-Infer `TARGET_PROGRAM` whenever possible:
+1. Explicit fields in the user request.
+2. Selected text, active file path, or active file frontmatter when the prompt supports editor-context inference.
+3. `_workflow/current-unit.md`, using the canonical local state schema below.
+4. A human question when the target is still missing or ambiguous.
 
-- from a path under `content/programs/<program_id>/`;
-- from the active file frontmatter `program`;
-- from the resolved unit index frontmatter;
-- from `_workflow/current-unit.md` when it stores a program-qualified target.
+Never silently default to a program.
 
-If `TARGET_PROGRAM` cannot be inferred and no explicit value is supplied, stop and ask for the missing program context. Never silently default to PC/SVT.
+`TARGET_PROGRAM` is the program directory name under `content/programs/`, for example `ma-2bac-pc-svt`.
 
-Resolve units by scanning only the selected program:
+After resolving `TARGET_PROGRAM`, derive:
+
+- `TARGET_PROGRAM_ROOT`: `content/programs/<TARGET_PROGRAM>`
+- `TARGET_PROGRAM_INDEX`: `content/programs/<TARGET_PROGRAM>/_index.md`
+- `TARGET_CURRICULUM_MAP`: `content/programs/<TARGET_PROGRAM>/_curriculum-map.md`
+- `TARGET_ID_PREFIX`: the program `id_prefix`
+
+Resolve `TARGET_UNIT` by scanning only the selected program:
 
 - `content/programs/<TARGET_PROGRAM>/*/_index.md`
 - `content/programs/<TARGET_PROGRAM>/topics/*/_index.md`
@@ -33,35 +42,66 @@ Match only against:
 - `unit_slug`
 - `unit_folder`
 - `title`
-- resolved folder path
-
-After resolving, derive:
-
-- `TARGET_PROGRAM`
-- `TARGET_PROGRAM_ROOT`
-- `TARGET_PROGRAM_INDEX`
-- `TARGET_CURRICULUM_MAP`
-- `TARGET_ID_PREFIX`
-- `TARGET_UNIT_FOLDER`
+- `TARGET_UNIT_PATH`
 - `TARGET_UNIT_INDEX`
-- `TARGET_UNIT_KIND`
-- `TARGET_UNIT_CODE`
-- `TARGET_UNIT_TITLE`
+
+After resolving a unit, derive:
+
+- `TARGET_UNIT`: the canonical unit code when unique, otherwise `TARGET_UNIT_FOLDER`
+- `TARGET_UNIT_FOLDER`: the program-relative unit folder from frontmatter, for example `01-limites-continuite` or `topics/etudier-une-fonction`
+- `TARGET_UNIT_PATH`: the repository-relative unit folder, for example `content/programs/<TARGET_PROGRAM>/<TARGET_UNIT_FOLDER>`
+- `TARGET_UNIT_INDEX`: `<TARGET_UNIT_PATH>/_index.md`
+- `TARGET_UNIT_KIND`: the unit `unit_kind`
+- `TARGET_UNIT_CODE`: the unit `unit_code`
+- `TARGET_UNIT_TITLE`: the unit `title`
+- `TARGET_PLANNING_STATE`: the unit `planning_state`
+
+Read `TARGET_PROGRAM_INDEX` and `TARGET_UNIT_INDEX` before editing. Require `TARGET_UNIT_INDEX` frontmatter `type: unit-index`.
 
 If the target is missing, ambiguous, or cannot be resolved inside the selected program, stop and ask. Do not edit files.
 
-After resolving a unit, read its `_index.md` and check `planning_state`.
+If `TARGET_PLANNING_STATE` is `stub`, do not create lessons, exercises, quizzes, sets, or full planning sections. Run `content/_prompts/commands/initialize-unit.md` first unless the current command is only inspecting the stub or explicitly initializing it.
 
-- If `planning_state: stub`, do not create lessons, exercises, quizzes, sets, or full planning sections. Run `content/_prompts/commands/initialize-unit.md` first unless the current command is only inspecting the stub or explicitly initializing it.
-- If `planning_state: initialized` or `planning_state: published`, use the full dashboard and artifact workflows normally.
+## Local Current-Unit State
 
-`content/_prompts/commands/content-studio.md` is inference-first. It should use selected text, active file, path, and frontmatter before asking for explicit fields such as `TARGET_PROGRAM`, `TARGET_UNIT`, `TARGET_FILE`, or `MODE`.
+`content/_prompts/commands/set-current-unit.md` is the only producer of `_workflow/current-unit.md`.
+
+The canonical machine-readable block in `_workflow/current-unit.md` is:
+
+```text
+TARGET_PROGRAM: <program_id>
+TARGET_UNIT: <unit-code-or-unit-folder>
+TARGET_PROGRAM_ROOT: content/programs/<program_id>
+TARGET_PROGRAM_INDEX: content/programs/<program_id>/_index.md
+TARGET_CURRICULUM_MAP: content/programs/<program_id>/_curriculum-map.md
+TARGET_ID_PREFIX: <program-id-prefix>
+TARGET_UNIT_FOLDER: <program-relative-unit-folder>
+TARGET_UNIT_PATH: content/programs/<program_id>/<program-relative-unit-folder>
+TARGET_UNIT_INDEX: content/programs/<program_id>/<program-relative-unit-folder>/_index.md
+TARGET_UNIT_KIND: <official-curriculum-unit | unofficial-topic>
+TARGET_UNIT_CODE: <unit-code>
+TARGET_UNIT_TITLE: <unit-title>
+TARGET_PLANNING_STATE: <stub | initialized | published>
+```
+
+Prompts that consume `_workflow/current-unit.md` should read these uppercase fields directly. They may verify them by reading `TARGET_UNIT_INDEX`, but they must not depend on prose labels such as `Program:` or `Resolved folder:`.
+
+## Prompt-Specific Requirements
+
+Individual prompts may add short target requirements, such as selecting one mini-lesson, exercise cluster, quiz intent, or quiz file after the unit is resolved.
+
+Do not copy the generic target-resolution algorithm into individual prompts. A prompt-specific `## Target Resolution` section should start with:
+
+```md
+Follow `content/_prompts/_shared/prompt-contract.md`.
+```
 
 ## Behavior
 
-- Use the current prompt file as the source of truth for the requested command or workflow step.
+- Use the current prompt file as the source of truth for prompt-specific work after the shared contract has resolved the target.
+- Use `TARGET_UNIT_PATH` for file operations under the unit folder.
+- Use `TARGET_UNIT_FOLDER` only for the program-relative frontmatter value.
 - Use `TARGET_ID_PREFIX` when constructing IDs.
 - Use `TARGET_CURRICULUM_MAP`, not a global curriculum map, for official curriculum alignment.
 - Do not ask for a global production marker.
-- Use only current folder-based prompt paths.
 - Do not create frontend rendering, app logic, or deployment work unless explicitly requested.

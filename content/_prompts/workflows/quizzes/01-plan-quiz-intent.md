@@ -19,24 +19,16 @@ TARGET_QUIZ_SERIES: <series-id-or-title>
 TARGET_SKILL_AREA: <skill-area>
 ```
 
-If no explicit target is provided, read `_workflow/current-unit.md`.
+If no explicit target is provided, read `_workflow/current-unit.md` using the schema from `content/_prompts/_shared/prompt-contract.md`.
 
 ## Target Resolution
 
-Before doing any work:
+Follow `content/_prompts/_shared/prompt-contract.md`.
 
-1. Look for explicit `TARGET_PROGRAM`; otherwise infer it from a path under `content/programs/<program_id>/`, frontmatter, or `_workflow/current-unit.md`.
-2. If `TARGET_PROGRAM` cannot be inferred, stop and ask. Do not default to PC/SVT.
-3. Look for explicit `TARGET_UNIT`.
-4. If no explicit target exists, read `_workflow/current-unit.md`.
-5. Resolve the unit by scanning unit indexes inside `TARGET_PROGRAM`:
-   - official units under `content/programs/<TARGET_PROGRAM>/*/_index.md`;
-   - unofficial units under `content/programs/<TARGET_PROGRAM>/topics/*/_index.md`.
-4. Match only against `unit_code`, `unit_slug`, `unit_folder`, `title`, and resolved folder path.
-5. Derive `TARGET_UNIT_FOLDER`, `TARGET_UNIT_INDEX`, `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, `TARGET_UNIT_TITLE`, and `TARGET_PROGRAM`.
-6. Read `TARGET_UNIT_INDEX`.
-7. Require `type: unit-index`.
-8. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
+Prompt-specific requirements:
+
+- Resolve exactly one target unit before reading or editing unit artifacts.
+- Use optional selector fields from `## Target` only inside the resolved unit.
 
 ## Stub Unit Rule
 
