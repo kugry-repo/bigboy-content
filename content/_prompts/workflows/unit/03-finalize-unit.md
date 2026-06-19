@@ -1,6 +1,8 @@
-# Prompt - Publish-Ready Cleanup
+# Prompt - Publish-Readiness Cleanup
 
-Use this prompt for metadata, link, status, TODO, and publish-readiness cleanup on existing unit artifacts.
+Use this prompt for metadata, link, status, todo, and publish-readiness cleanup on existing unit artifacts.
+
+This prompt is not an automatic publication prompt. It prepares and reports readiness. It must not set unit `planning_state: published`; that state is reserved for an explicit human publication decision outside the normal workflow.
 
 ## Target
 
@@ -58,8 +60,6 @@ This is cleanup work only.
 
 First, read `TARGET_UNIT_INDEX`, inspect `## Production dashboard`, and identify which existing artifacts can be cleaned safely. If major work is missing, report it as a gap or blocker instead of forcing unrelated workstreams to run first.
 
-This is cleanup only.
-
 Do not:
 
 - create new mini-lessons;
@@ -70,6 +70,8 @@ Do not:
 - rewrite the full unit;
 - invent official curriculum claims;
 - mark files as `published` unless explicitly requested;
+- set unit `planning_state: published`;
+- set unit `status: published`;
 - build frontend or app code.
 
 Check:
@@ -91,10 +93,23 @@ Check:
 
 Make only targeted cleanup edits.
 
+Allowed cleanup changes:
+
+- frontmatter metadata consistency;
+- non-published status corrections when evidence supports them;
+- links, headings, todo placement, and author-note hygiene;
+- dashboard rows for cleanup/review state;
+- production journal notes for cleanup performed;
+- source-safety notes and unresolved-blocker notes.
+
+If the user explicitly asks whether the unit can be published, report readiness, blockers, and the evidence checked. Do not change `planning_state` to `published`.
+
 Finish with:
 
 - files cleaned;
 - status changes made;
+- whether unit publication readiness was assessed;
 - remaining TODOs or author notes;
 - source-safety items still needing human review;
+- blockers before any manual `planning_state: published` decision;
 - final cleanup summary.

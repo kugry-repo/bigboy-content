@@ -92,7 +92,7 @@ When doing unit-level work:
 4. If `planning_state: stub`, do not create lessons, exercises, quizzes, sets, or full planning sections. Run `_prompts/commands/initialize-unit.md` first, unless the task is only to inspect or modify the stub itself.
 5. Identify the requested artifact or workstream: unit map, lessons, exercises, exercise sets, quizzes, unit review, metadata/link cleanup, targeted revision, or conversational studio work.
 6. If the user explicitly names a workflow prompt or workstream, use that route.
-7. If the user asks "what next?", inspect `planning_state`; if initialized, inspect `## Production dashboard`, existing files, blockers, and the likely user goal before recommending the smallest valuable next action.
+7. If the user asks "what next?", use `_prompts/commands/next-action.md`; inspect `planning_state`; if initialized, inspect `## Production dashboard`, existing files, blockers, and the likely user goal before recommending one exact prompt path.
 8. Do not force a lesson -> exercise -> quiz order.
 9. Required inputs are local to the artifact being created. Optional references should improve quality but must not become hidden blockers.
 10. If required inputs are missing, create the smallest missing prerequisite when the request allows it, or report the exact missing artifact that blocks the work.
@@ -102,6 +102,8 @@ When doing unit-level work:
 Exercises may be created from the unit map, skill map, official curriculum notes, misconception map, exam patterns, exercise cluster map, raw seeds, exercise design cards, or existing lessons when available. Existing lessons are useful references, not a universal prerequisite. Exercises are ability-building devices; batch-created exercises still need exercise quality review and solution review before reviewed status.
 
 Quizzes may be created from quiz intent cards, skill targets, misconceptions, lessons, exercises, exam patterns, raw item pools, or curated item design cards. Lessons and exercises are optional remediation references unless the specific quiz intent depends on them.
+
+For unit planning or plan refresh, use `_prompts/workflows/unit/01-plan-unit.md`. For unit-wide consistency review, use `_prompts/workflows/unit/02-review-unit.md`. For metadata/link/todo/status/source-safety cleanup before publication consideration, use `_prompts/workflows/unit/03-finalize-unit.md`.
 
 When revising existing content, syncing stale files, or responding to an upstream plan/template/guide change, use `_prompts/commands/change-existing-content.md`. Discover the blast radius and patch only affected files or produce an impact plan.
 
@@ -143,7 +145,7 @@ Do not create one huge `lesson.md` for a content unit unless explicitly requeste
 
 Student-facing lesson content should be split into focused mini-lesson files under the unit `lessons/` folder.
 
-An initialized or published unit `_index.md` is the planning dashboard. A stub `_index.md` is only a registration record until `_prompts/commands/initialize-unit.md` expands it.
+An initialized or published unit `_index.md` is the planning dashboard. A stub `_index.md` is only a registration record until `_prompts/commands/initialize-unit.md` expands it. `planning_state: published` is reserved for an explicit human publication decision; current workflow prompts prepare readiness but do not automatically set it.
 
 Mini-lesson files are the actual lesson units.
 

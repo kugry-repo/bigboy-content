@@ -36,6 +36,7 @@ The validator checks:
 - canonical unit-index frontmatter fields;
 - unit-index `planning_state` values: `stub`, `initialized`, and `published`;
 - stub unit indexes as lightweight registered units without dashboards;
+- `planning_state: published` as a structurally valid but manual/reserved lifecycle state, with warnings when it is not paired with `status: published`;
 - permitted unit kinds and content scopes;
 - folder/frontmatter consistency;
 - numeric prefixes for official unit folders as errors;

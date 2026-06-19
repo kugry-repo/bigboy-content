@@ -189,6 +189,7 @@ For full lesson review, use `_guides/lessons/lesson-quality-rubric.md`.
 ## Before publishing
 
 - [ ] Status changed to `reviewed` or `published` only after review.
+- [ ] Unit `planning_state: published` is used only after an explicit human publication decision; `content/_prompts/workflows/unit/03-finalize-unit.md` prepares readiness but does not automatically publish the unit.
 - [ ] `updated` date is changed.
 - [ ] Notes marked TODO are resolved or intentionally left in author notes.
 - [ ] The file is ready for future app parsing.

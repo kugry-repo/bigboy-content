@@ -4,6 +4,8 @@ This guide gives the conceptual overview for creating content without losing con
 
 For the authoritative unit lifecycle, dashboard model, workstream meanings, and unit `_index.md` body schema, use `content/_guides/units/unit-workflow.md`.
 
+When the user is unsure what to do next for a current or target unit, use `content/_prompts/commands/next-action.md`. It is the canonical state-aware router and should recommend one exact prompt path.
+
 ## Core idea
 
 Treat Markdown content like source code.
@@ -37,6 +39,8 @@ Unofficial topics may contain topic-native content and links to official-unit co
 The unit `_index.md` is the only unit-planning artifact.
 
 Unstarted units should remain lightweight stubs with `planning_state: stub`. Use `content/_prompts/commands/initialize-unit.md` to expand one unit into an initialized dashboard before planning lessons, exercises, quizzes, or sets.
+
+`planning_state: published` is reserved for an explicit human publication decision after review and cleanup. Current workflow prompts can prepare readiness, but they do not automatically publish a unit.
 
 After initialization, use it for:
 
@@ -121,7 +125,7 @@ Every MCQ/MR option should have answer-specific feedback. Wrong choices should m
 
 Content can be revised after it exists. Updating an earlier plan does not mean rerunning later work from zero.
 
-For existing content, stale-file sync, or global schema/template/prompt/validator changes, use:
+For a known bounded change to existing content, stale-file sync, or global schema/template/prompt/validator changes, use:
 
 ```text
 content/_prompts/commands/change-existing-content.md
@@ -136,6 +140,10 @@ content/_prompts/commands/content-studio.md
 ```
 
 The studio command is not a generation pipeline. It should infer the target from selected text, active file, path, and frontmatter when possible.
+
+For unit-wide consistency review, use `content/_prompts/workflows/unit/02-review-unit.md`.
+
+For metadata, link, todo, status, and source-safety cleanup before publication consideration, use `content/_prompts/workflows/unit/03-finalize-unit.md`. This cleanup prompt does not automatically set `planning_state: published`.
 
 ## Good Codex task size
 

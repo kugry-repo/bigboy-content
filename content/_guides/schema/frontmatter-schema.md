@@ -129,7 +129,11 @@ Unit indexes have a lifecycle controlled by `planning_state`:
 
 - `stub`: the unit is registered but not initialized. The body is a lightweight stub with no H2 planning dashboard.
 - `initialized`: the full planning dashboard exists and can be developed.
-- `published`: the full planning dashboard exists and the unit is complete enough to be considered real content.
+- `published`: reserved/manual state for a unit whose full dashboard exists and whose authored content has passed explicit human publication review.
+
+`content/_prompts/commands/initialize-unit.md` owns the transition from `stub` to `initialized`.
+
+No current workflow prompt automatically owns the transition from `initialized` to `published`. Use `published` only after an explicit human publication decision. `content/_prompts/workflows/unit/03-finalize-unit.md` may prepare and report publication readiness, but it must not automatically set `planning_state: published`.
 
 Official curriculum units:
 
@@ -203,6 +207,8 @@ Allowed values:
 - `needs-review`
 - `reviewed`
 - `published`
+
+On unit indexes, `status` and `planning_state` are separate. `status: published` claims learner-facing maturity; `planning_state: published` is the manual unit lifecycle state described above.
 
 ## Mini-Lesson
 

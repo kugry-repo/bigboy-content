@@ -78,14 +78,15 @@ If `TARGET_PLANNING_STATE` is `stub`, do not expect a dashboard. Recommend `cont
 
 Identify the requested artifact/workstream when present:
 
-- unit map;
+- unit planning or plan refresh;
 - lessons;
 - exercises;
 - exercise sets;
 - quizzes;
 - unit review;
 - metadata/link cleanup;
-- targeted revision.
+- existing-content revision;
+- conversational content-studio work.
 
 If the user request is open-ended, choose based on:
 
@@ -100,14 +101,30 @@ Do not force unrelated workstreams to run first.
 
 Routing rules:
 
-- If the user wants exercises, route directly into the exercise workflow. Existing lessons are optional references unless the requested exercise depends on a specific lesson.
-- If the user wants quizzes, route directly into the quiz workflow. Lessons and exercises are optional remediation links unless the quiz intent depends on them.
-- If the user wants lessons, route into the lesson workflow for the selected or first useful mini-lesson.
-- If the user wants sets, check for existing exercises or precise exercise design cards.
-- If the user wants review, route to unit review or a targeted review command.
-- If the user wants cleanup, route to cleanup for existing artifacts and report gaps.
-- If the user wants targeted revision or stale-file sync, recommend `content/_prompts/commands/change-existing-content.md`.
-- If the user wants conversational critique, diagnosis, proposals, grilling, or targeted patching of existing content, recommend `content/_prompts/commands/content-studio.md`.
+- If the user wants unit planning, plan refresh, unit-map work, or artifact-planning decisions, recommend `content/_prompts/workflows/unit/01-plan-unit.md`.
+- If the user wants a unit-wide consistency review across the unit plan and existing artifacts, recommend `content/_prompts/workflows/unit/02-review-unit.md`.
+- If the user wants metadata/link cleanup, todo cleanup, status hygiene, source-safety cleanup, or publish-readiness cleanup, recommend `content/_prompts/workflows/unit/03-finalize-unit.md`.
+- If the user asks whether a unit is ready to publish, recommend `content/_prompts/workflows/unit/03-finalize-unit.md` for readiness cleanup and report that no current prompt automatically sets `planning_state: published`.
+- If the user wants a known bounded change to existing files, stale-file sync, or migration after a prompt/guide/template/schema/validator change, recommend `content/_prompts/commands/change-existing-content.md`.
+- If the user wants conversational critique, diagnosis, proposals, grilling, taste decisions, or a small targeted patch on a selected file/fragment, recommend `content/_prompts/commands/content-studio.md`.
+- If the user wants exercises only, route directly into the exercise workflow. Existing lessons are optional references unless the requested exercise depends on a specific lesson.
+- If the user wants quizzes only, route directly into the quiz workflow. Lessons and exercises are optional remediation links unless the quiz intent depends on them.
+- If the user wants lessons only, route into the lesson workflow for the selected or first useful mini-lesson.
+- If the user wants exercise sets only, check for existing exercise files or precise reviewed design cards, then recommend `content/_prompts/workflows/exercises/07-create-sets.md` when safe.
+- If the user asks to move `planning_state: stub` to `planning_state: initialized`, recommend `content/_prompts/commands/initialize-unit.md`.
+- Do not recommend a lesson -> exercise -> quiz sequence unless the user's request actually asks for that production order.
+
+`planning_state: published` is not an active automatic transition. Treat it as a reserved/manual state for an explicit human publication decision after review and cleanup. This router may recommend readiness work, but it should not present any prompt as automatically publishing a unit.
+
+## Unit workflow diagnosis
+
+For unit-level requests, use these exact prompt paths:
+
+- Planning, plan refresh, and artifact-planning decisions: `content/_prompts/workflows/unit/01-plan-unit.md`
+- Unit-wide consistency review and targeted unit-level consistency fixes: `content/_prompts/workflows/unit/02-review-unit.md`
+- Publish-readiness cleanup for metadata, links, todos, statuses, and source-safety notes: `content/_prompts/workflows/unit/03-finalize-unit.md`
+
+Use `content/_prompts/commands/initialize-unit.md` first when the target is a stub and the user wants the full dashboard, planning, or artifact work.
 
 ## Lesson diagnosis
 
@@ -198,7 +215,7 @@ List files expected by the dashboard or planning areas that are missing, plus fi
 
 ## Recommended next action
 
-Give one exact next action. If the unit is a stub and the user wants content or dashboard work, recommend `content/_prompts/commands/initialize-unit.md`. If the user asked for a specific artifact, stay inside that workstream unless a required local input is missing. If the user asked to revise existing content or stale/inconsistent downstream files are the main issue, recommend `content/_prompts/commands/change-existing-content.md`. If the user wants conversational polishing or targeted patching, recommend `content/_prompts/commands/content-studio.md`.
+Give one exact next action and name the prompt path. If the unit is a stub and the user wants content or dashboard work, recommend `content/_prompts/commands/initialize-unit.md`. If the user asked for unit planning, recommend `content/_prompts/workflows/unit/01-plan-unit.md`. If the user asked for unit-wide review, recommend `content/_prompts/workflows/unit/02-review-unit.md`. If the user asked for cleanup or publication readiness, recommend `content/_prompts/workflows/unit/03-finalize-unit.md` and say that it does not automatically set `planning_state: published`. If the user asked for a specific artifact, stay inside that workstream unless a required local input is missing. If the user asked to revise existing content or stale/inconsistent downstream files are the main issue, recommend `content/_prompts/commands/change-existing-content.md`. If the user wants conversational polishing or targeted patching, recommend `content/_prompts/commands/content-studio.md`.
 
 ## Prompt to run next
 

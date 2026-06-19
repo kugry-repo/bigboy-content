@@ -4,6 +4,8 @@ Use this command to expand a lightweight unit stub into an initialized planning 
 
 This command is for unit `_index.md` lifecycle only. It does not create lesson, exercise, quiz, or set files.
 
+This command owns the transition from `planning_state: stub` to `planning_state: initialized`. It does not publish units or set `planning_state: published`.
+
 ## Input
 
 Normal use should infer the target from the active file, selected path, or current editor context.

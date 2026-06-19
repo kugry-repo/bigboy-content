@@ -15,6 +15,14 @@ Each unit belongs to exactly one program. Program metadata comes from `content/p
 
 There is no canonical global unit sequence. Do not invent numbered unit ladders, extra global gates, or split labels such as `5a` and `5b`. Numbered prompt files inside a workflow folder are local operating procedures for that workstream only.
 
+## Entry-point model
+
+Use `content/_prompts/START-HERE.md` as the prompt-library landing page.
+
+Use `content/_prompts/commands/next-action.md` as the canonical state-aware router when the user is unsure what to do for a current or target unit. It should inspect the unit and name one exact prompt path for the next action.
+
+Use artifact workflow prompts directly when the user already knows the intended workstream. Workstreams are chosen by intent and local prerequisites, not by a universal production order.
+
 ## Authority model
 
 Official curriculum structure is owned by the program `_curriculum-map.md`. It is the source of truth for the official unit list, order, code, folder, slug, title, domain, and official curriculum presence.
@@ -56,7 +64,7 @@ Use `planning_state` in unit-index frontmatter:
 
 - `stub`: the unit is registered but not initialized. The body stays tiny and has no planning dashboard.
 - `initialized`: the full planning dashboard exists and can be developed.
-- `published`: the unit dashboard exists and the unit is complete enough to be considered real content.
+- `published`: reserved/manual state for a unit whose dashboard exists and whose authored content has passed explicit human publication review.
 
 `status` remains content maturity. `planning_state` is the shape and lifecycle of the unit index itself.
 
@@ -73,6 +81,8 @@ Run `content/_prompts/commands/initialize-unit.md` before planning lessons, exer
 Use `content/_prompts/commands/initialize-unit.md` to expand one stub into the current initialized dashboard. Initialization must preserve the unit identity fields and set `planning_state: initialized`.
 
 Content creation workflows must not create lessons, exercises, quizzes, sets, or full planning sections inside a stub. They must stop and ask for unit initialization first, or initialize the target only when the user explicitly asked for initialization.
+
+No current workflow prompt owns an automatic transition from `planning_state: initialized` to `planning_state: published`. Treat `published` as reserved for an explicit human publication decision after review and cleanup. `content/_prompts/workflows/unit/03-finalize-unit.md` can prepare and report publish readiness, but it must not automatically set `planning_state: published`.
 
 ## Canonical artifact folders
 
@@ -233,12 +243,15 @@ Choose work by artifact/request, not by the first incomplete dashboard row.
 
 Examples:
 
+- If the user asks for unit planning or plan refresh, route to `content/_prompts/workflows/unit/01-plan-unit.md`.
 - If the user asks for exercises, route to the exercise workflow. Existing lessons are helpful references, but exercises do not require lessons first.
 - If the user asks for quizzes, route to the quiz workflow. A quiz is not a late add-on; it may be prerequisite, skill, method-choice, error-clinic, fluency, mixed-review, or exam-readiness.
 - If the user asks for lesson work, route to the local lesson workflow.
-- If the user asks for unit review, review existing artifacts and report gaps.
-- If the user asks for cleanup, clean the existing metadata, links, TODOs, statuses, and author notes without requiring every workstream to be finished.
-- If the user asks "what next?", inspect the dashboard, existing files, blockers, and likely goal, then recommend the highest-leverage small action.
+- If the user asks for unit-wide review, route to `content/_prompts/workflows/unit/02-review-unit.md`.
+- If the user asks for metadata/link cleanup or publish-readiness cleanup, route to `content/_prompts/workflows/unit/03-finalize-unit.md`.
+- If the user asks for a known bounded change to existing files, stale-file sync, or schema/template/prompt/validator migration, route to `content/_prompts/commands/change-existing-content.md`.
+- If the user asks for conversational critique, diagnosis, proposals, taste decisions, grilling, or a small targeted patch on a selected artifact, route to `content/_prompts/commands/content-studio.md`.
+- If the user asks "what next?", inspect the dashboard, existing files, blockers, and likely goal, then recommend one exact prompt path.
 
 ## Dependencies
 
@@ -343,11 +356,15 @@ Check progression, metadata, links, statuses, skill coverage, quiz alignment, so
 
 For skill coverage, synthesize from the unit `_index.md`, lesson files, exercise files, quiz files, declared `skills`, design cards, and visible progression gaps. Report skills taught but not practiced, practiced but not taught, quizzed without enough exercise preparation, over-covered or under-covered, and missing prerequisites. Do not update any manual global coverage file.
 
+This is a unit-wide consistency review. It may make small targeted consistency fixes to dashboard rows, links, statuses, and obvious metadata problems. It is not the conversational studio for selected text, not a broad migration command, and not the publication transition.
+
 ### Metadata and link cleanup
 
 Use `content/_prompts/workflows/unit/03-finalize-unit.md` for targeted cleanup of metadata, links, status fields, TODOs, author notes, quiz answer-key states, feedback states, Markdown cleanliness, and source-safety notes.
 
-Do not mark files `published` unless explicitly requested.
+This prompt is publish-readiness cleanup, not automatic publication. It should report remaining gaps and blockers instead of forcing unrelated workstreams to be completed first. It must not automatically set unit `planning_state: published`; that state is reserved for an explicit human publication decision.
+
+Do not mark files `published` unless explicitly requested and the relevant review evidence already supports it.
 
 ### Targeted revision
 
@@ -357,9 +374,13 @@ Structural changes must migrate affected existing files to the new source of tru
 
 Targeted revision should patch only the affected files and any directly impacted links, metadata, dashboard rows, or journal notes.
 
+Use this command when the user already knows the change they want, even if they do not know every affected file. It discovers the blast radius and applies the bounded change coherently.
+
 ### Content studio
 
 Use `content/_prompts/commands/content-studio.md` for conversational critique, diagnosis, proposals, grilling, and targeted patches across lessons, exercises, quizzes, and unit planning sections. It is not a generation pipeline and should infer the target from editor context when possible.
+
+Use this command when the user is still shaping the change through selected text, taste, voice, pedagogy, diagnosis, or local repair. If the request becomes a known bounded migration across files, switch to `content/_prompts/commands/change-existing-content.md`.
 
 ## Production journal
 

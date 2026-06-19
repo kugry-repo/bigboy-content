@@ -2,6 +2,8 @@
 
 Use this prompt when a unit has enough planned or created material to review as a learning sequence.
 
+This prompt owns unit-wide consistency review and small targeted unit-level fixes. It is not the conversational studio for selected text, not a broad migration command, and not publish-readiness cleanup.
+
 ## Target
 
 Input:
@@ -69,6 +71,7 @@ Do not:
 - create new exercise sets;
 - mass rewrite the unit;
 - mark files as `published` unless explicitly requested;
+- set unit `planning_state: published`;
 - build frontend or app code.
 
 Check:
@@ -112,7 +115,7 @@ Report:
 
 This is review output only. Do not create or maintain a repository-wide coverage file.
 
-Make only targeted edits to unit dashboard rows, statuses, links, and small consistency issues. For larger rewrites, report recommendations instead of doing them.
+Make only targeted edits to unit dashboard rows, statuses, links, and small consistency issues. For larger rewrites, report recommendations instead of doing them. For metadata/link/todo/source-safety cleanup before publication consideration, recommend `content/_prompts/workflows/unit/03-finalize-unit.md`.
 
 Finish with:
 

@@ -2,6 +2,8 @@
 
 Use this prompt to create or improve one unit `_index.md`.
 
+This prompt owns unit planning, plan refresh, and artifact-planning decisions. It does not review the full unit, perform publish-readiness cleanup, or publish the unit.
+
 ## Target
 
 Input:
@@ -103,7 +105,7 @@ Use this misconception table:
 | Confusion | Pourquoi elle arrive | Comment la lecon doit la corriger | Ou la traiter |
 |---|---|---|---|
 
-Keep frontmatter `status` as `planned` unless the existing unit index already justifies a different non-published status.
+Keep frontmatter `status` as `planned` unless the existing unit index already justifies a different non-published status. Do not set `planning_state: published`; that lifecycle state is reserved for an explicit human publication decision after review and cleanup.
 
 Finish by summarizing:
 

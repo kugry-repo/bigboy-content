@@ -4,8 +4,8 @@ This folder contains the prompt system for the Markdown-first authoring workflow
 
 Start with:
 
-- `START-HERE.md` when you are unsure which prompt to run.
-- `content/_prompts/commands/next-action.md` when you want Codex to inspect the current unit and recommend the next exact action.
+- `START-HERE.md` when you need the prompt-library landing page.
+- `content/_prompts/commands/next-action.md` when you want Codex to inspect the current or target unit and recommend the next exact prompt path.
 
 ## Folder Structure
 
@@ -20,7 +20,7 @@ Do not add new `00-*` control prompts, `q01-*` quiz prompts, or letter suffix pr
 
 ## Commands
 
-- `content/_prompts/commands/next-action.md` diagnoses the current state and recommends the next exact action.
+- `content/_prompts/commands/next-action.md` diagnoses the current state and recommends the next exact prompt path.
 - `content/_prompts/commands/set-current-unit.md` sets or changes `_workflow/current-unit.md`.
 - `content/_prompts/commands/manage-unit.md` creates, renames, changes metadata, splits, merges, deletes, reorders, or moves official/unofficial units.
 - `content/_prompts/commands/initialize-unit.md` expands one `planning_state: stub` unit into an initialized planning dashboard.
@@ -31,9 +31,9 @@ Do not add new `00-*` control prompts, `q01-*` quiz prompts, or letter suffix pr
 
 Unit workflow:
 
-- `content/_prompts/workflows/unit/01-plan-unit.md`
-- `content/_prompts/workflows/unit/02-review-unit.md`
-- `content/_prompts/workflows/unit/03-finalize-unit.md`
+- `content/_prompts/workflows/unit/01-plan-unit.md` owns unit planning, plan refresh, and artifact-planning decisions.
+- `content/_prompts/workflows/unit/02-review-unit.md` owns unit-wide consistency review and small targeted unit-level fixes.
+- `content/_prompts/workflows/unit/03-finalize-unit.md` owns publish-readiness cleanup for metadata, links, todos, statuses, and source-safety notes. It does not automatically publish the unit.
 
 Lesson workflow:
 

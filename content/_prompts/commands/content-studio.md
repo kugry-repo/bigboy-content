@@ -4,6 +4,10 @@ Use this command for conversational polishing, critique, diagnosis, proposals, a
 
 This is not a pipeline step. It is an authoring studio for back-and-forth work while drafting or revising.
 
+Use this command when the user wants selected-fragment work, taste/voice discussion, diagnosis, proposals, grilling, or a small local patch. If the user already knows a bounded change that may affect multiple files, stale downstream artifacts, prompts, guides, templates, schemas, or validators, use `content/_prompts/commands/change-existing-content.md` instead.
+
+For unit-wide consistency review, use `content/_prompts/workflows/unit/02-review-unit.md`. For metadata/link/todo/status/source-safety cleanup before publication consideration, use `content/_prompts/workflows/unit/03-finalize-unit.md`.
+
 It works for:
 
 - lessons;
@@ -242,6 +246,7 @@ Do not:
 - rewrite whole files for local problems;
 - alter IDs, frontmatter identity fields, status fields, or unrelated sections unless the user asked for that;
 - mark content `published` unless explicitly requested;
+- set unit `planning_state: published`;
 - paste copyrighted third-party course material;
 - invent official curriculum claims without a documented source.
 
