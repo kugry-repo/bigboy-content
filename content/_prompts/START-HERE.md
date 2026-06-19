@@ -15,7 +15,7 @@ Use the command prompts when you need to decide, manage, or change direction:
 - `commands/manage-unit.md` - create, rename, split, merge, delete, reorder, or move official/unofficial units and topics.
 - `commands/initialize-unit.md` - expand one registered `planning_state: stub` unit into an initialized planning dashboard.
 - `commands/content-studio.md` - conversational critique, diagnosis, proposals, grilling, or targeted patches across lessons, exercises, quizzes, and unit planning sections.
-- `commands/change-existing-content.md` - change existing lessons, exercises, quizzes, plans, trackers, prompts, guides, templates, or validators safely.
+- `commands/change-existing-content.md` - change existing lessons, exercises, quizzes, plans, unit dashboards, prompts, guides, templates, or validators safely.
 
 Use workflow prompts when you already know what you are producing:
 

@@ -123,7 +123,7 @@ Behavior:
 
 ### `medium-content-sync`
 
-A change that may affect a unit plan, one or more mini-lessons, neighboring lessons, linked exercises, linked quizzes, sets, trackers, or status notes.
+A change that may affect a unit plan, one or more mini-lessons, neighboring lessons, linked exercises, linked quizzes, sets, unit dashboards, or status notes.
 
 Behavior:
 

@@ -38,6 +38,8 @@ All unit-level planning belongs in the unit `_index.md`, including:
 
 Do not create or use a second planning-note convention. Do not preemptively expand every stub when the dashboard shape changes.
 
+Skill coverage is content-derived. Track it locally through the unit skill map, artifact frontmatter `skills`, exercise design cards, quiz intent/item design cards, and review notes. A generated coverage report may be added later, but no manually maintained global file is a source of truth.
+
 ## Unit index lifecycle
 
 Use `planning_state` in unit-index frontmatter:
@@ -345,6 +347,8 @@ sets/
 ```
 
 Check progression, metadata, links, statuses, skill coverage, quiz alignment, solution quality, notation, source safety, and unresolved TODOs.
+
+For skill coverage, synthesize from the unit `_index.md`, lesson files, exercise files, quiz files, declared `skills`, design cards, and visible progression gaps. Report skills taught but not practiced, practiced but not taught, quizzed without enough exercise preparation, over-covered or under-covered, and missing prerequisites. Do not update any manual global coverage file.
 
 ### Metadata and link cleanup
 

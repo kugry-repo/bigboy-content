@@ -71,7 +71,7 @@ A golden unit should include:
 - full mathematical review;
 - full pedagogical review;
 - compression, taste, and voice review;
-- skill coverage review;
+- content-derived skill coverage review;
 - no major unresolved TODOs.
 
 The first version does not need to reach all targets immediately.
@@ -207,7 +207,7 @@ Before a unit becomes the model for future units, review:
 - lesson voice;
 - exercise-solution clarity;
 - quiz item quality, answer key correctness, feedback quality, and remediation quality;
-- skill coverage;
+- skill coverage inferred from the unit index, artifact frontmatter, design cards, and review notes;
 - exam alignment;
 - notation consistency;
 - source safety;

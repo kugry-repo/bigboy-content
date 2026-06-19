@@ -165,7 +165,8 @@ For full lesson review, use `_guides/lessons/lesson-quality-rubric.md`.
 - [ ] The unit `_index.md` has diagram/interactivity planning.
 - [ ] The unit has a `lessons/` folder.
 - [ ] The unit does not rely on one huge `lesson.md`.
-- [ ] Skill coverage is reflected in `_tracking/skill-coverage.md`.
+- [ ] Each lesson, exercise, and quiz declares precise `skills` in frontmatter.
+- [ ] Unit-level skill coverage can be inferred from the unit `_index.md`, artifact frontmatter, exercise/quiz design cards, and review notes.
 
 ## Exam alignment
 

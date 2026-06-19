@@ -32,7 +32,7 @@ Unit management operations can affect:
 - Obsidian links;
 - program indexes;
 - topic catalog indexes;
-- trackers;
+- unit dashboards and status notes;
 - guides;
 - prompt examples;
 - artifact workflow prompt paths and dashboard rows;
@@ -210,7 +210,7 @@ Use this action when a unit stays in the same official/topic section but its ord
    - `content/programs/<TARGET_PROGRAM>/_index.md`;
    - `content/programs/<TARGET_PROGRAM>/topics/_index.md` if relevant;
    - frontmatter `unit_folder` values;
-   - links, trackers, prompt examples, and guide examples that mention old ordered paths.
+   - links, unit dashboards, prompt examples, and guide examples that mention old ordered paths.
 4. If folder prefixes change, move folders with `git mv` and update all references.
 5. Run validation.
 
@@ -226,7 +226,7 @@ Use this action when a unit moves between sections, for example from an unoffici
    - `UNIT_ORDER`;
    - `UNIT_FOLDER`.
 3. Move the folder with `git mv`.
-4. Update `_index.md` frontmatter, folder paths, IDs if `unit_code` changes, catalog rows, links, trackers, guides, prompts, generated content references, and validation assumptions.
+4. Update `_index.md` frontmatter, folder paths, IDs if `unit_code` changes, catalog rows, links, unit dashboards, guides, prompts, generated content references, and validation assumptions.
 5. Do not keep the old section entry, alias, or duplicate unit folder.
 6. Run validation.
 

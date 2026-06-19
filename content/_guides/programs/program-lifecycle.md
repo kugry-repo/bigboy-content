@@ -155,7 +155,7 @@ Rename behavior is destructive:
 2. Update program index frontmatter.
 3. Update `program` in all unit, topic, lesson, exercise, quiz, set, and correction frontmatter.
 4. Update `id_prefix` and all IDs if the prefix changes.
-5. Update links, prompts, examples, trackers, and docs that name the old program.
+5. Update links, prompts, examples, catalogs, workflow state, and docs that name the old program.
 6. Remove all old path references.
 7. Run validation.
 
@@ -170,7 +170,7 @@ Delete behavior:
 1. Inspect whether the program contains authored lessons, exercises, quizzes, sets, or corrections.
 2. If it only contains stubs and placeholders, delete directly when requested.
 3. If it contains real authored content, delete only when the user explicitly confirms deletion of the program and its contents.
-4. Remove references from guides, prompts, trackers, and examples.
+4. Remove references from guides, prompts, catalogs, workflow state, and examples.
 5. Run validation.
 
 Do not leave the program index, topics catalog, or old path references behind.

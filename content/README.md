@@ -9,7 +9,6 @@ This folder is the Markdown source for a shared authoring system across Moroccan
 - `_references/`: shared source references, exam patterns, misconception maps, notation decisions, and glossary material.
 - `_prompts/`: reusable Codex prompts.
 - `_examples/`: explicitly labeled examples. PC/SVT examples are examples, not defaults.
-- `_tracking/`: cross-program tracking views.
 - `programs/`: canonical program roots. Each program owns `_index.md`, `_curriculum-map.md`, official unit folders, and `topics/`.
 
 ## Program Roots
@@ -54,6 +53,8 @@ The unit `_index.md` is the only unit-planning artifact. Unstarted units stay li
 Use `content/_prompts/commands/initialize-unit.md` to expand one stub before planning lessons, exercises, quizzes, sets, or dashboard work. Do not expand every unit index just because the dashboard shape changes.
 
 After initialization, lesson preparation, exercise clusters, raw exercise seeds, exercise design cards, quiz intent cards, raw item pools, quiz item design cards, set planning, production dashboard state, and production journal entries all live in the unit `_index.md`.
+
+Skill coverage is content-derived: unit indexes, artifact frontmatter `skills`, exercise and quiz design cards, and unit review notes are the current source of truth. A generated coverage report may be added later; no manually maintained global file is authoritative.
 
 ## Authoring Flow
 

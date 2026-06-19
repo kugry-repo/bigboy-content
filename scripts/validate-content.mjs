@@ -27,7 +27,6 @@ const REQUIRED_BASE_DIRS = [
   "content/_prompts",
   "content/_references",
   "content/_examples",
-  "content/_tracking",
   "content/programs",
 ];
 
@@ -816,8 +815,8 @@ function countMatches(text, regex) {
   return [...text.matchAll(regex)].length;
 }
 
-function isGuidePromptReferenceOrTracking(filePath) {
-  return /^content\/_(guides|prompts|references|tracking)\//.test(rel(filePath));
+function isGuidePromptOrReference(filePath) {
+  return /^content\/_(guides|prompts|references)\//.test(rel(filePath));
 }
 
 function isTemplatePlaceholderId(filePath, id) {
@@ -2682,8 +2681,8 @@ function collectIdsAndWarnings() {
     }
 
     if (!parsed.hasFrontmatter) {
-      if (isGuidePromptReferenceOrTracking(filePath)) {
-        addWarning(filePath, "has no frontmatter; allowed for guides, prompts, references, and tracking files");
+      if (isGuidePromptOrReference(filePath)) {
+        addWarning(filePath, "has no frontmatter; allowed for guides, prompts, and references");
       }
       continue;
     }

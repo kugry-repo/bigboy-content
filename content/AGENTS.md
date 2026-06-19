@@ -8,7 +8,7 @@ This directory is an Obsidian-compatible vault for authoring Moroccan mathematic
 
 ## Current phase: content authoring system buildout
 
-The Markdown content system is not a frozen production format yet. For guides, prompts, templates, validators, trackers, naming rules, frontmatter schemas, and folder structure, prefer one clear current system over backward compatibility with older drafts.
+The Markdown content system is not a frozen production format yet. For guides, prompts, templates, validators, production dashboards, naming rules, frontmatter schemas, and folder structure, prefer one clear current system over backward compatibility with older drafts.
 
 - Assume breaking changes to the authoring format are acceptable unless the user explicitly asks for compatibility.
 - Do not keep old and new workflows, schemas, templates, prompts, validation paths, aliases, fallbacks, or migration shims running in parallel.
@@ -157,8 +157,10 @@ Before generating the golden unit, make sure the base system exists:
 - notation decisions;
 - motivation examples;
 - validation script;
-- skill coverage dashboard;
+- content-derived skill coverage review rules;
 - diagram guidelines.
+
+Skill coverage is tracked locally through unit indexes, artifact frontmatter `skills`, exercise/quiz design cards, and review notes. A generated coverage report may be added later; no manual global file is a source of truth.
 
 ## Content principles
 

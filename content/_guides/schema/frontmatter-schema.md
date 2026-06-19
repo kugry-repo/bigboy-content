@@ -4,7 +4,7 @@ Every generated content file and index file starts with YAML frontmatter.
 
 The schema is program-aware. Program metadata is defined once in `content/programs/<program_id>/_index.md`, then copied into units and artifacts where validation needs local context.
 
-Guides, prompts, references, and tracking documents may be metadata-free. Validator output for metadata-free guide, prompt, reference, or tracking files should be warnings at most unless the project later decides to enforce frontmatter everywhere.
+Guides, prompts, and references may be metadata-free. Validator output for metadata-free guide, prompt, or reference files should be warnings at most unless the project later decides to enforce frontmatter everywhere.
 
 ## Program Index
 

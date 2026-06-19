@@ -71,7 +71,6 @@ If `TARGET_UNIT_INDEX` has `planning_state: stub`, stop before changing unit pla
 - `content/_guides/core/verification-checklist.md`
 - `content/_guides/lessons/lesson-quality-rubric.md`
 - `content/_guides/core/source-policy.md`
-- `content/_tracking/skill-coverage.md`
 - `TARGET_UNIT_INDEX`
 - all mini-lessons under `TARGET_UNIT_FOLDER/lessons/`
 - all exercises under `TARGET_UNIT_FOLDER/exercises/`
@@ -114,7 +113,28 @@ Check:
 - exam patterns are present without exaggeration;
 - source safety: no unsupported official claims, no exaggerated exam claims, and no accidental copied third-party content.
 
-Make only targeted edits to trackers, statuses, links, and small consistency issues. For larger rewrites, report recommendations instead of doing them.
+Synthesize skill coverage from the actual unit files, not from any global manual file:
+
+- unit `_index.md`;
+- lesson files;
+- exercise files;
+- quiz files;
+- declared frontmatter `skills`;
+- exercise design cards;
+- quiz intent cards and item design cards;
+- visible gaps in the learning progression.
+
+Report:
+
+- skills taught but not practiced;
+- skills practiced but not taught;
+- skills quizzed without enough exercise preparation;
+- over-covered or under-covered skills;
+- missing prerequisite skills.
+
+This is review output only. Do not create or maintain a repository-wide coverage file.
+
+Make only targeted edits to unit dashboard rows, statuses, links, and small consistency issues. For larger rewrites, report recommendations instead of doing them.
 
 Finish with:
 
