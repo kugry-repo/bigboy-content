@@ -8,9 +8,10 @@ This command owns the transition from `planning_state: stub` to `planning_state:
 
 ## Input
 
-Normal use should infer the target from the active file, selected path, or current editor context.
+Normal use may infer the target from explicit fields, supported editor context,
+or `_workflow/current-unit.md` according to the shared prompt contract.
 
-Optional override:
+Explicit target fields:
 
 ```text
 INITIALIZE_UNIT
@@ -21,23 +22,20 @@ TARGET_UNIT: content/programs/ma-2bac-pc-svt/01-limites-continuite
 
 `TARGET_UNIT` may be a unit folder, unit `_index.md`, unit code, unit slug, unit title, or `unit_folder` value.
 
-## Target Inference
+## Target Resolution
 
 Follow `content/_prompts/_shared/prompt-contract.md`.
 
-Initialize-specific inference:
+Prompt-specific requirements:
 
-Resolve the target in this order:
-
-1. Infer `TARGET_PROGRAM` from the active file path, active file frontmatter, selected path, explicit `TARGET_PROGRAM`, or `_workflow/current-unit.md`.
-2. If `TARGET_PROGRAM` cannot be inferred, stop and ask for the program. Do not default to PC/SVT.
-3. Use the active file if it is a unit `_index.md`.
-4. Use the active file path to infer the parent unit folder.
-5. Use selected text or an explicit path if the user highlighted one.
-6. Use explicit `TARGET_UNIT` only as an override.
-7. If still missing, read `_workflow/current-unit.md`.
-8. Resolve the unit using the shared contract.
-9. Ask only if the target remains missing or ambiguous.
+- Explicit `TARGET_*` fields always win over active editor context.
+- Active file, selected path, selected text, or frontmatter may fill missing fields only when they do not conflict with explicit fields.
+- `_workflow/current-unit.md` may fill missing fields only after explicit fields and supported editor context.
+- If supported editor context or cached current-unit fields conflict with explicit fields, stop and ask for clarification. Do not choose silently.
+- Resolve exactly one unit and read the actual `TARGET_UNIT_INDEX` before deciding whether the unit is `stub`, `initialized`, or `published`.
+- If `_workflow/current-unit.md` says the unit is initialized but the actual unit index says `planning_state: stub`, the actual unit index wins.
+- If `_workflow/current-unit.md` says the unit is stub but the actual unit index says `planning_state: initialized` or `planning_state: published`, the actual unit index wins.
+- If the target remains missing, ambiguous, or cannot be resolved inside the selected program, stop and ask. Do not default to PC/SVT.
 
 ## Read First
 
@@ -60,6 +58,7 @@ Resolve the target in this order:
 - Do not add fake lesson rows, exercise design cards, quiz intent cards, quiz item design cards, or generic placeholder tables.
 - Do not initialize every unit in the program. Initialize only the resolved target.
 - If the unit already has `planning_state: initialized` or `planning_state: published`, do not recreate the dashboard. Report that it is already initialized and offer the smallest targeted patch if the dashboard is malformed.
+- If `_workflow/current-unit.md` points to the initialized unit, consider that cache stale after changing `planning_state`. Do not rewrite it from this command; delete or clear it only if visible and safe, otherwise tell the user to rerun `content/_prompts/commands/set-current-unit.md`.
 
 ## Initialized Body
 

@@ -523,6 +523,9 @@ const REQUIRED_CONTENT_STUDIO_COMMAND =
 const SHARED_PROMPT_CONTRACT_PATH =
   "content/_prompts/_shared/prompt-contract.md";
 
+const SET_CURRENT_UNIT_COMMAND =
+  "content/_prompts/commands/set-current-unit.md";
+
 const OBSOLETE_COMMAND_PROMPTS = [
   `content/_prompts/commands/${"review"}-${"existing"}-${"lesson"}.md`,
 ];
@@ -573,12 +576,62 @@ const REMOVED_ACTIVE_TEXT = [
   /when no design card exists/i,
 ];
 
+const CANONICAL_TARGET_FIELDS = [
+  "TARGET_PROGRAM",
+  "TARGET_PROGRAM_PATH",
+  "TARGET_PROGRAM_INDEX",
+  "TARGET_CURRICULUM_MAP",
+  "TARGET_ID_PREFIX",
+  "TARGET_UNIT",
+  "TARGET_UNIT_FOLDER",
+  "TARGET_UNIT_PATH",
+  "TARGET_UNIT_INDEX",
+  "TARGET_UNIT_KIND",
+  "TARGET_UNIT_CODE",
+  "TARGET_UNIT_TITLE",
+  "TARGET_PLANNING_STATE",
+];
+
+const OBSOLETE_TARGET_FIELDS = [
+  "TARGET_PROGRAM_ROOT",
+];
+
+const TARGET_CONTRACT_SECTION_HEADINGS = [
+  "Target Resolution",
+  "Target Inference",
+  "Target Fields",
+  "Target Detection",
+  "Target Selection",
+  "Current Unit",
+];
+
+const TARGET_DRIFT_SCAN_SECTION_HEADINGS = [
+  ...TARGET_CONTRACT_SECTION_HEADINGS,
+  "Scope Resolution",
+  "Edit Scope Resolution",
+];
+
 const GENERIC_TARGET_RESOLUTION_PATTERNS = [
   /Look for explicit `TARGET_PROGRAM`/i,
   /Resolve the unit by scanning unit indexes/i,
   /Match only against:/i,
   /resolved folder path/i,
   /standard unit-resolution rules from `content\/_guides\/units\/unit-workflow\.md`/i,
+];
+
+const TARGET_PRECEDENCE_DRIFT_PATTERNS = [
+  /Resolve the target in this order:/i,
+  /Infer the target in this order:/i,
+  /Use explicit `TARGET_UNIT` only as an override/i,
+  /selected text as the primary target/i,
+  /active file path, active file frontmatter, selected path, explicit `TARGET_PROGRAM`/i,
+  /If no explicit target is provided,\s*read `_workflow\/current-unit\.md`/i,
+];
+
+const CURRENT_UNIT_WRITE_DRIFT_PATTERNS = [
+  /Create or update `_workflow\/current-unit\.md`/i,
+  /create or update only:\s*```text\s*_workflow\/current-unit\.md/i,
+  /clear it or update it to a safe state/i,
 ];
 
 const LESSON_QUALITY_SIGNAL_CHECKS = [
@@ -1054,6 +1107,32 @@ function getSection(body, level, heading) {
   }
 
   return "";
+}
+
+function getSectionsByHeadings(body, level, headings) {
+  const headingSet = new Set(headings);
+  const sections = [];
+
+  for (const heading of headingSet) {
+    const section = getSection(body, level, heading);
+    if (section) {
+      sections.push({ heading, text: section });
+    }
+  }
+
+  return sections;
+}
+
+function textIncludesInOrder(text, snippets) {
+  let cursor = 0;
+
+  for (const snippet of snippets) {
+    const index = text.indexOf(snippet, cursor);
+    if (index === -1) return false;
+    cursor = index + snippet.length;
+  }
+
+  return true;
 }
 
 function hasHeadingInSection(sectionText, level, heading) {
@@ -2987,6 +3066,69 @@ function checkObsoleteQuizPromptReferences() {
   }
 }
 
+function checkSharedPromptContract(filePath, text) {
+  const requiredPrecedence = [
+    "1. Explicit fields",
+    "2. Selected text",
+    "3. `_workflow/current-unit.md`",
+    "4. A human question",
+  ];
+
+  if (!textIncludesInOrder(text, requiredPrecedence)) {
+    addError(
+      filePath,
+      "shared prompt contract must define target precedence as explicit fields, supported editor context, _workflow/current-unit.md, then ask",
+    );
+  }
+
+  for (const field of CANONICAL_TARGET_FIELDS) {
+    if (!text.includes(field)) {
+      addError(filePath, `shared prompt contract is missing canonical target field "${field}"`);
+    }
+  }
+
+  for (const field of OBSOLETE_TARGET_FIELDS) {
+    if (text.includes(field)) {
+      addError(filePath, `shared prompt contract uses obsolete target field "${field}"`);
+    }
+  }
+
+  const requiredCurrentUnitSnippets = [
+    "ephemeral local convenience cache",
+    "It is not a",
+    "source of truth",
+    "only normal producer and",
+    "rewriter of `_workflow/current-unit.md`",
+    "must not synthesize a new",
+    "Actual program and unit indexes win",
+    "If cached `TARGET_UNIT_PATH` or `TARGET_UNIT_INDEX` no longer exists, ignore the cache",
+  ];
+
+  for (const snippet of requiredCurrentUnitSnippets) {
+    if (!text.includes(snippet)) {
+      addError(filePath, `shared prompt contract is missing current-unit rule: "${snippet}"`);
+    }
+  }
+}
+
+function checkSetCurrentUnitPrompt(filePath, text) {
+  for (const field of CANONICAL_TARGET_FIELDS) {
+    if (!text.includes(field)) {
+      addError(filePath, `set-current-unit prompt is missing canonical target field "${field}"`);
+    }
+  }
+
+  for (const field of OBSOLETE_TARGET_FIELDS) {
+    if (text.includes(field)) {
+      addError(filePath, `set-current-unit prompt uses obsolete target field "${field}"`);
+    }
+  }
+
+  if (!/Derive `TARGET_PLANNING_STATE`.*actual unit index/i.test(text)) {
+    addError(filePath, "set-current-unit prompt must derive TARGET_PLANNING_STATE from the actual unit index");
+  }
+}
+
 function checkPromptLayout() {
   for (const filePath of walkMarkdownFiles(PROMPTS_DIR)) {
     const relative = rel(filePath);
@@ -3038,22 +3180,79 @@ function checkPromptLayout() {
       addError(filePath, "prompt references must use repository-relative POSIX paths like content/_prompts/commands/next-action.md");
     }
 
-    const targetResolutionSection = getSection(text, 2, "Target Resolution");
-    if (targetResolutionSection && relative !== SHARED_PROMPT_CONTRACT_PATH) {
-      if (!targetResolutionSection.includes(SHARED_PROMPT_CONTRACT_PATH)) {
-        addError(filePath, "prompt-specific Target Resolution must inherit content/_prompts/_shared/prompt-contract.md");
-      }
+    if (relative === SHARED_PROMPT_CONTRACT_PATH) {
+      checkSharedPromptContract(filePath, text);
+    }
 
-      for (const pattern of GENERIC_TARGET_RESOLUTION_PATTERNS) {
-        if (pattern.test(targetResolutionSection)) {
-          addError(filePath, "prompt-specific Target Resolution duplicates generic target-resolution rules");
+    if (relative === SET_CURRENT_UNIT_COMMAND) {
+      checkSetCurrentUnitPrompt(filePath, text);
+    }
+
+    if (relative !== SHARED_PROMPT_CONTRACT_PATH) {
+      for (const field of OBSOLETE_TARGET_FIELDS) {
+        if (text.includes(field)) {
+          addError(filePath, `prompt uses obsolete target field "${field}"`);
+        }
+      }
+    }
+
+    const targetContractSections = getSectionsByHeadings(
+      text,
+      2,
+      TARGET_CONTRACT_SECTION_HEADINGS,
+    );
+
+    if (targetContractSections.length && relative !== SHARED_PROMPT_CONTRACT_PATH) {
+      for (const section of targetContractSections) {
+        if (!section.text.includes(SHARED_PROMPT_CONTRACT_PATH)) {
+          addError(
+            filePath,
+            `prompt-specific ${section.heading} must inherit content/_prompts/_shared/prompt-contract.md`,
+          );
+        }
+      }
+    }
+
+    const targetDriftSections = getSectionsByHeadings(
+      text,
+      2,
+      TARGET_DRIFT_SCAN_SECTION_HEADINGS,
+    );
+
+    if (relative !== SHARED_PROMPT_CONTRACT_PATH) {
+      for (const section of targetDriftSections) {
+        for (const pattern of [
+          ...GENERIC_TARGET_RESOLUTION_PATTERNS,
+          ...TARGET_PRECEDENCE_DRIFT_PATTERNS,
+        ]) {
+          if (pattern.test(section.text)) {
+            addError(
+              filePath,
+              `prompt-specific ${section.heading} duplicates or contradicts shared target-resolution rules`,
+            );
+            break;
+          }
+        }
+      }
+    }
+
+    if (
+      relative !== SHARED_PROMPT_CONTRACT_PATH &&
+      relative !== SET_CURRENT_UNIT_COMMAND
+    ) {
+      for (const pattern of CURRENT_UNIT_WRITE_DRIFT_PATTERNS) {
+        if (pattern.test(text)) {
+          addError(
+            filePath,
+            "only content/_prompts/commands/set-current-unit.md may write _workflow/current-unit.md; other prompts may only invalidate or report stale cache",
+          );
           break;
         }
       }
     }
 
     const usesUnitTargetContract =
-      /\bTARGET_UNIT\b|_workflow\/current-unit\.md|^## Target Inference|^## Scope Resolution/m.test(text);
+      /\bTARGET_UNIT\b|\bTARGET_PROGRAM_PATH\b|_workflow\/current-unit\.md|^## Target (?:Resolution|Inference|Fields|Detection|Selection)|^## Current Unit|^## Scope Resolution/m.test(text);
     if (
       isOperatingPrompt &&
       usesUnitTargetContract &&

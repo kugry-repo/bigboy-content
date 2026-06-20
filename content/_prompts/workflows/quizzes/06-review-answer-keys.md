@@ -16,7 +16,7 @@ TARGET_UNIT: <unit-folder-or-path-or-code>
 TARGET_QUIZ_FILE: <quiz-file-path-or-id>
 ```
 
-If no explicit target is provided, read `_workflow/current-unit.md` using the schema from `content/_prompts/_shared/prompt-contract.md`, then inspect quiz files that need answer-key review.
+If no explicit target is provided, follow `content/_prompts/_shared/prompt-contract.md`; supported editor context may resolve the unit before `_workflow/current-unit.md` is used. After resolving the unit, inspect quiz files that need answer-key review.
 
 ## Target Resolution
 
@@ -83,4 +83,3 @@ Summarize:
 - unresolved math/source risks;
 - status changes;
 - recommended next prompt: `content/_prompts/workflows/quizzes/07-review-feedback-remediation.md` when answer keys pass.
-

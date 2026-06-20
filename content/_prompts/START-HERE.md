@@ -11,7 +11,7 @@ Use the command prompts when you need to decide, manage, or change direction:
 - `content/_prompts/commands/next-action.md` - diagnose current state and recommend the next exact action.
 - `content/_prompts/commands/create-program.md` - initialize a new program root without creating lesson/exercise/quiz content.
 - `content/_prompts/commands/manage-program.md` - create, rename, delete, modify, split, or adapt full programs.
-- `content/_prompts/commands/set-current-unit.md` - set or change the active unit/topic.
+- `content/_prompts/commands/set-current-unit.md` - write the local current-unit cache.
 - `content/_prompts/commands/manage-unit.md` - create, rename, change metadata, split, merge, delete, reorder, or move official/unofficial units and topics.
 - `content/_prompts/commands/initialize-unit.md` - expand one registered `planning_state: stub` unit into an initialized planning dashboard.
 - `content/_prompts/commands/content-studio.md` - conversational critique, diagnosis, proposals, grilling, or targeted patches across lessons, exercises, quizzes, and unit planning sections.

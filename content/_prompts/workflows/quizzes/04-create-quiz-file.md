@@ -16,7 +16,7 @@ TARGET_UNIT: <unit-folder-or-path-or-code>
 TARGET_QUIZ_INTENT: <intent-title-or-planned-file>
 ```
 
-If no explicit target is provided, read `_workflow/current-unit.md` using the schema from `content/_prompts/_shared/prompt-contract.md`.
+If no explicit target is provided, follow `content/_prompts/_shared/prompt-contract.md`; supported editor context may resolve the unit before `_workflow/current-unit.md` is used.
 
 ## Target Resolution
 

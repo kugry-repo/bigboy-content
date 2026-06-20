@@ -21,7 +21,7 @@ Do not add new `00-*` control prompts, `q01-*` quiz prompts, or letter suffix pr
 ## Commands
 
 - `content/_prompts/commands/next-action.md` diagnoses the current state and recommends the next exact prompt path.
-- `content/_prompts/commands/set-current-unit.md` sets or changes `_workflow/current-unit.md`.
+- `content/_prompts/commands/set-current-unit.md` writes the ephemeral `_workflow/current-unit.md` cache.
 - `content/_prompts/commands/manage-unit.md` creates, renames, changes metadata, splits, merges, deletes, reorders, or moves official/unofficial units.
 - `content/_prompts/commands/initialize-unit.md` expands one `planning_state: stub` unit into an initialized planning dashboard.
 - `content/_prompts/commands/content-studio.md` supports conversational critique, diagnosis, proposals, grilling, and targeted patches across content artifacts.

@@ -136,6 +136,19 @@ Use `content/_prompts/commands/initialize-unit.md` for one target unit when the 
 
 Unofficial topics live under `content/programs/<program_id>/topics/` and follow the same unit lifecycle.
 
+## Local Current-Unit Cache
+
+`_workflow/current-unit.md` is an ephemeral local cache written by
+`content/_prompts/commands/set-current-unit.md`. Program lifecycle operations
+that rename, delete, split, or otherwise change paths may make that cache
+stale.
+
+If the cache points inside an affected program, clear it only when it is visible
+and safe, or tell the user/operator to rerun
+`content/_prompts/commands/set-current-unit.md`. Do not synthesize a new
+canonical current-unit entry from a program rename, delete, split, or adapt
+operation.
+
 ## Validate Programs
 
 Run all validation:
@@ -158,7 +171,7 @@ Rename behavior is destructive:
 2. Update program index frontmatter.
 3. Update `program` in all unit, topic, lesson, exercise, quiz, set, and correction frontmatter.
 4. Update `id_prefix` and all IDs if the prefix changes.
-5. Update links, prompts, examples, derived catalogs, workflow state, and docs that name the old program.
+5. Update links, prompts, examples, derived catalogs, stale local workflow cache references, and docs that name the old program.
 6. Remove all old path references.
 7. Run validation.
 
@@ -173,7 +186,7 @@ Delete behavior:
 1. Inspect whether the program contains authored lessons, exercises, quizzes, sets, or corrections.
 2. If it only contains stubs and placeholders, delete directly when requested.
 3. If it contains real authored content, delete only when the user explicitly confirms deletion of the program and its contents.
-4. Remove references from guides, prompts, derived catalogs, workflow state, and examples.
+4. Remove references from guides, prompts, derived catalogs, stale local workflow cache references, and examples.
 5. Run validation.
 
 Do not leave the program index, derived topics catalog, or old path references behind.

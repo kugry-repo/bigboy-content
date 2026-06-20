@@ -13,20 +13,31 @@ TARGET_PROGRAM: <program_id>
 TARGET_UNIT: <unit-folder-or-path-or-code>
 ```
 
-Resolve target context in this order:
+Prompts may also accept canonical derived fields from the lists below, such as
+`TARGET_UNIT_PATH` or `TARGET_UNIT_INDEX`, when the user provides them
+explicitly.
+
+Resolve target identity in this order:
 
 1. Explicit fields in the user request.
 2. Selected text, active file path, or active file frontmatter when the prompt supports editor-context inference.
-3. `_workflow/current-unit.md`, using the canonical local state schema below.
+3. `_workflow/current-unit.md`, using the canonical local cache schema below.
 4. A human question when the target is still missing or ambiguous.
 
 Never silently default to a program.
+
+Later sources may fill missing fields only. They must not override earlier
+sources. If supported editor context points to a different program, unit, or
+file from explicit fields, stop and ask unless the prompt says to ignore that
+editor context. If `_workflow/current-unit.md` conflicts with explicit fields or
+supported editor context, treat the cache as stale and do not use it to change
+the resolved target.
 
 `TARGET_PROGRAM` is the program directory name under `content/programs/`, for example `ma-2bac-pc-svt`.
 
 After resolving `TARGET_PROGRAM`, derive:
 
-- `TARGET_PROGRAM_ROOT`: `content/programs/<TARGET_PROGRAM>`
+- `TARGET_PROGRAM_PATH`: `content/programs/<TARGET_PROGRAM>`
 - `TARGET_PROGRAM_INDEX`: `content/programs/<TARGET_PROGRAM>/_index.md`
 - `TARGET_CURRICULUM_MAP`: `content/programs/<TARGET_PROGRAM>/_curriculum-map.md`
 - `TARGET_ID_PREFIX`: the program `id_prefix`
@@ -58,20 +69,37 @@ After resolving a unit, derive:
 
 Read `TARGET_PROGRAM_INDEX` and `TARGET_UNIT_INDEX` before editing. Require `TARGET_UNIT_INDEX` frontmatter `type: unit-index`.
 
+Actual program and unit indexes win over cached or derived fields whenever
+there is disagreement. Derive `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`,
+`TARGET_UNIT_TITLE`, and `TARGET_PLANNING_STATE` from `TARGET_UNIT_INDEX`, not
+from `_workflow/current-unit.md`.
+
 If the target is missing, ambiguous, or cannot be resolved inside the selected program, stop and ask. Do not edit files.
 
 If `TARGET_PLANNING_STATE` is `stub`, do not create lessons, exercises, quizzes, sets, or full planning sections. Run `content/_prompts/commands/initialize-unit.md` first unless the current command is only inspecting the stub or explicitly initializing it.
 
 ## Local Current-Unit State
 
-`content/_prompts/commands/set-current-unit.md` is the only producer of `_workflow/current-unit.md`.
+`_workflow/current-unit.md` is an ephemeral local convenience cache. It is not a
+source of truth for program identity, unit identity, folder paths, title, kind,
+or `planning_state`.
+
+`content/_prompts/commands/set-current-unit.md` is the only normal producer and
+rewriter of `_workflow/current-unit.md`.
+
+Other commands may invalidate stale current-unit state when they can prove it
+points to an affected unit. They may delete or clear the cache if it is visible
+and safe, or they may tell the user to rerun
+`content/_prompts/commands/set-current-unit.md`. They must not synthesize a new
+canonical current-unit entry from a rename, reorder, move, split, merge, delete,
+or initialize operation.
 
 The canonical machine-readable block in `_workflow/current-unit.md` is:
 
 ```text
 TARGET_PROGRAM: <program_id>
 TARGET_UNIT: <unit-code-or-unit-folder>
-TARGET_PROGRAM_ROOT: content/programs/<program_id>
+TARGET_PROGRAM_PATH: content/programs/<program_id>
 TARGET_PROGRAM_INDEX: content/programs/<program_id>/_index.md
 TARGET_CURRICULUM_MAP: content/programs/<program_id>/_curriculum-map.md
 TARGET_ID_PREFIX: <program-id-prefix>
@@ -84,7 +112,14 @@ TARGET_UNIT_TITLE: <unit-title>
 TARGET_PLANNING_STATE: <stub | initialized | published>
 ```
 
-Prompts that consume `_workflow/current-unit.md` should read these uppercase fields directly. They may verify them by reading `TARGET_UNIT_INDEX`, but they must not depend on prose labels such as `Program:` or `Resolved folder:`.
+Prompts that consume `_workflow/current-unit.md` should read these uppercase fields directly. They must verify them by reading `TARGET_PROGRAM_INDEX` and `TARGET_UNIT_INDEX`, and they must not depend on prose labels such as `Program:` or `Resolved folder:`.
+
+Stale-cache behavior:
+
+- If cached `TARGET_UNIT_PATH` or `TARGET_UNIT_INDEX` no longer exists, ignore the cache.
+- If cached code, title, kind, or `planning_state` disagrees with the actual unit index, use the actual unit index for the current command and require a current-unit refresh.
+- If a destructive or lifecycle command changed the cached unit's identity, path, or state, consider `_workflow/current-unit.md` stale until `content/_prompts/commands/set-current-unit.md` is rerun.
+- If ignoring the cache leaves the target missing or ambiguous, stop and ask the user to set or provide the target.
 
 ## Prompt-Specific Requirements
 

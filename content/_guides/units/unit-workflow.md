@@ -115,6 +115,14 @@ Use the shared contract for:
 
 This guide defines unit lifecycle and dashboard semantics. It should not duplicate the prompt target-resolution algorithm.
 
+`_workflow/current-unit.md` is only an ephemeral local cache. It is written by
+`content/_prompts/commands/set-current-unit.md`; actual program and unit indexes
+remain authoritative. Unit lifecycle operations that change identity, folder
+path, order, or `planning_state` should treat any matching current-unit cache as
+stale. They may clear it when visible and safe, or tell the user/operator to
+rerun `content/_prompts/commands/set-current-unit.md`, but they must not create
+a new canonical current-unit entry from the changed unit.
+
 ## Source of truth
 
 Use five layers of state:

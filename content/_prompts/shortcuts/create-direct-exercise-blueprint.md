@@ -38,9 +38,9 @@ Optional selectors:
 TARGET_EXERCISE_CLUSTER: <cluster-id-or-title>
 ```
 
-If no explicit target is provided, read `_workflow/current-unit.md` using the schema from `content/_prompts/_shared/prompt-contract.md`.
+If no explicit target is provided, follow `content/_prompts/_shared/prompt-contract.md`; supported editor context may resolve the unit before `_workflow/current-unit.md` is used.
 
-If neither an explicit target nor local current-unit state exists, stop and ask the user to set a current unit by running:
+If no explicit target, supported editor context, or local current-unit state exists, stop and ask the user to set a current unit by running:
 
 ```text
 content/_prompts/commands/set-current-unit.md

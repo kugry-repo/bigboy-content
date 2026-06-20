@@ -26,19 +26,22 @@ CHANGE_REQUEST: <natural language description>
 
 Do not require these fields. The user is not responsible for knowing the dependency graph or listing affected files.
 
-## Current Unit
+## Target Resolution
 
-If the request does not name a specific file, unit, or global workflow area, read `_workflow/current-unit.md` using the schema from `content/_prompts/_shared/prompt-contract.md`.
+Follow `content/_prompts/_shared/prompt-contract.md`.
 
-Use the shared target fields for unit-level scope. Do not create prompt-specific local-state fields.
+Prompt-specific requirements:
+
+- Use the shared target fields for unit-level scope. Do not create prompt-specific local-state fields.
+- If the request does not name a specific file, unit, or global workflow area, resolve unit identity through the shared precedence: explicit fields, supported editor context, `_workflow/current-unit.md`, then ask.
+- If `_workflow/current-unit.md` is stale or conflicts with explicit fields or editor context, ignore it when another target source is available; otherwise stop and ask the user to rerun `content/_prompts/commands/set-current-unit.md`.
 
 ## Scope Resolution
 
 1. Identify whether the request is file-specific, unit-specific, prompt/guide/template-specific, validator-specific, or global.
-2. If a unit is named, resolve it using `content/_prompts/_shared/prompt-contract.md`.
-3. If no unit is named and the request is unit-level, read `_workflow/current-unit.md`.
-4. If the scope is still unclear, stop and ask.
-5. Derive affected files from the requested change, not from the creation checklist alone.
+2. Resolve unit identity only when the classified scope is unit-level or file-specific content work.
+3. If the scope is still unclear after reading the request and supported context, stop and ask.
+4. Derive affected files from the requested change, not from the creation checklist alone.
 
 If a resolved unit has `planning_state: stub`, do not create lesson, exercise, quiz, set, or full dashboard content inside it. For unit-level content work, recommend `content/_prompts/commands/initialize-unit.md` first. For global schema, prompt, guide, validator, or template migrations, it is valid to patch stub frontmatter or stub body shape directly when the lifecycle changes.
 

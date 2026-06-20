@@ -2,7 +2,8 @@
 
 Use this prompt to set the local authoring current content unit.
 
-This helper may create or update only:
+This helper is the canonical writer for the ephemeral local current-unit cache.
+It may create or update only:
 
 ```text
 _workflow/current-unit.md
@@ -37,9 +38,10 @@ Follow `content/_prompts/_shared/prompt-contract.md`.
 Prompt-specific requirements:
 
 - Read `AGENTS.md` before writing.
-- Explicit input, selected paths, active files, and frontmatter take precedence over existing `_workflow/current-unit.md`.
-- Use `_workflow/current-unit.md` only as fallback context when the user did not provide enough target information.
+- Use `_workflow/current-unit.md` only as fallback context after explicit fields and supported editor context.
+- If fallback cache fields are stale or conflict with the actual indexes, use the actual indexes for the resolved target and overwrite the cache with freshly derived fields.
 - Resolve exactly one unit and read `TARGET_PROGRAM_INDEX` and `TARGET_UNIT_INDEX` before writing.
+- Derive `TARGET_PLANNING_STATE`, `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, and `TARGET_UNIT_TITLE` from the actual unit index.
 - If the target is missing, ambiguous, or cannot be resolved, stop and ask for clarification. Do not edit files.
 
 ## Task
@@ -58,7 +60,7 @@ Use this file format:
 
 TARGET_PROGRAM: <program-id>
 TARGET_UNIT: <unit-code-or-unit-folder>
-TARGET_PROGRAM_ROOT: content/programs/<program-id>
+TARGET_PROGRAM_PATH: content/programs/<program-id>
 TARGET_PROGRAM_INDEX: content/programs/<program-id>/_index.md
 TARGET_CURRICULUM_MAP: content/programs/<program-id>/_curriculum-map.md
 TARGET_ID_PREFIX: <program-id-prefix>

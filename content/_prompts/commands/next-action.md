@@ -19,9 +19,9 @@ Optional natural-language request:
 REQUEST: <what the user wants next>
 ```
 
-If no explicit target is provided, read `_workflow/current-unit.md` using the schema from `content/_prompts/_shared/prompt-contract.md`.
+If no explicit target is provided, follow `content/_prompts/_shared/prompt-contract.md`: use supported editor context first when available, then read `_workflow/current-unit.md` using the shared cache schema.
 
-If neither an explicit target nor local current-unit state exists, stop and ask the user to set a current unit by running:
+If no explicit target, supported editor context, or local current-unit state exists, stop and ask the user to set a current unit by running:
 
 ```text
 content/_prompts/commands/set-current-unit.md
@@ -34,7 +34,9 @@ Follow `content/_prompts/_shared/prompt-contract.md`.
 Prompt-specific requirements:
 
 - Resolve exactly one target unit before inspection.
-- Derive and report `TARGET_PLANNING_STATE`.
+- Verify `_workflow/current-unit.md` against the actual `TARGET_UNIT_INDEX` before relying on mutable fields from the cache.
+- Derive and report `TARGET_PLANNING_STATE` from the actual unit index.
+- If current-unit cache is missing, stale, conflicting, or points to a missing `TARGET_UNIT_PATH` or `TARGET_UNIT_INDEX`, do not write a replacement. Ignore stale cache when another target source is available; otherwise stop and ask the user to rerun `content/_prompts/commands/set-current-unit.md`.
 - Use this prompt file as the source of truth for diagnostic behavior after target resolution.
 - Do not ask for a global production marker.
 - This command is read-only. If the target is missing, ambiguous, or cannot be resolved, stop and ask. Do not edit files.
@@ -191,7 +193,7 @@ Report the current unit, resolved folder, index path, program, unit code, title,
 
 ## Target source
 
-Report whether the target came from explicit `TARGET_UNIT` or `_workflow/current-unit.md`.
+Report whether the target came from explicit `TARGET_UNIT`, supported editor context, or `_workflow/current-unit.md`. If `_workflow/current-unit.md` was stale, conflicting, ignored, or needs refresh, say so and recommend `content/_prompts/commands/set-current-unit.md`.
 
 ## Request/workstream
 

@@ -21,6 +21,7 @@ Do not keep aliases, fallback paths, deprecated IDs, or duplicate old/new progra
 
 - `AGENTS.md`
 - `content/AGENTS.md`
+- `content/_prompts/_shared/prompt-contract.md` for `_workflow/current-unit.md` cache ownership and stale-cache behavior
 - `content/_guides/programs/program-lifecycle.md`
 - `content/_guides/schema/frontmatter-schema.md`
 - `content/_guides/schema/id-and-naming.md`
@@ -76,7 +77,7 @@ Use the new program's `id_prefix` for all unit IDs:
 
 Create a `topics/_index.md` catalog even if no topics exist yet.
 
-Update shared docs, prompt examples, derived catalogs, and workflow state only where they need to mention the new program explicitly.
+Update shared docs, prompt examples, derived catalogs, and stale local workflow cache only where they need to mention the new program explicitly. Do not synthesize a new `_workflow/current-unit.md`; rerun `content/_prompts/commands/set-current-unit.md` after program identity or path changes.
 
 Run `npm run validate`.
 
@@ -98,9 +99,9 @@ Behavior:
 3. Update `_curriculum-map.md` references if needed; keep it as the official-unit structure authority.
 4. Update `program` in all descendant frontmatter.
 5. If `id_prefix` changes, update every descendant ID and ID reference.
-6. Update guides, prompts, examples, derived catalogs, and workflow state.
+6. Update guides, prompts, examples, derived catalogs, and stale local workflow cache references.
 7. Search the repository for old program IDs, old ID prefixes, and old paths.
-8. Delete stale references.
+8. Delete stale references. If `_workflow/current-unit.md` points inside the renamed program, clear it if visible and safe, or report that `content/_prompts/commands/set-current-unit.md` must be rerun.
 9. Run `npm run validate`.
 
 ## ACTION: modify
@@ -135,7 +136,7 @@ Behavior:
 1. Inspect descendant lessons, exercises, quizzes, sets, and corrections.
 2. If authored content exists and `DELETE_CONTENT` is not `yes`, stop and report what would be deleted.
 3. Remove `content/programs/<TARGET_PROGRAM>/`.
-4. Remove references from guides, prompts, examples, derived catalogs, and workflow state.
+4. Remove references from guides, prompts, examples, derived catalogs, and stale local workflow cache. If `_workflow/current-unit.md` points inside the deleted program, clear it if visible and safe, or report that `content/_prompts/commands/set-current-unit.md` must be rerun.
 5. Run `npm run validate`.
 
 ## ACTION: split
@@ -154,7 +155,7 @@ Behavior:
 
 1. Create each destination program root with its own `_index.md` and `_curriculum-map.md`.
 2. Move units only when their destination is clear.
-3. Update program frontmatter, ID prefixes, curriculum maps, links, derived catalogs, and workflow state.
+3. Update program frontmatter, ID prefixes, curriculum maps, links, derived catalogs, and stale local workflow cache references. Do not synthesize a new `_workflow/current-unit.md`; rerun `content/_prompts/commands/set-current-unit.md` after split paths are final.
 4. If unit classification is unclear, stop with a human-decision list.
 5. Remove the old mixed-context program only after content is moved or explicitly discarded.
 6. Run `npm run validate`.

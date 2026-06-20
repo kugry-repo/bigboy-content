@@ -73,6 +73,19 @@ Prompt-specific requirements:
 - If the target is an unofficial topic, treat the topic unit `_index.md` as canonical registration and verify derived catalog rows against it.
 - Stop if the target is missing or ambiguous.
 
+## Current-Unit Cache Handling
+
+`content/_prompts/commands/set-current-unit.md` is the only normal producer and
+rewriter of `_workflow/current-unit.md`.
+
+For rename, metadata-only state changes, delete, split, merge, reorder, or move
+operations:
+
+- If `_workflow/current-unit.md` points to an affected unit, treat it as stale after the operation.
+- Delete or clear `_workflow/current-unit.md` only when it is visible and safe to do so.
+- If it is not safe to clear, report that the user/operator must rerun `content/_prompts/commands/set-current-unit.md`.
+- Do not synthesize a new canonical current-unit entry from the changed unit identity, path, order, or state.
+
 ## ACTION: create
 
 Require or infer:
@@ -147,7 +160,7 @@ Rules:
 7. Update only examples that explicitly mention the deleted unit:
    - `content/_guides/schema/id-and-naming.md`;
    - any guide or prompt example that mentions it.
-8. If `_workflow/current-unit.md` points to the deleted unit, clear it or update it to a safe state.
+8. If `_workflow/current-unit.md` points to the deleted unit, clear it if visible and safe, or report that the user/operator must rerun `content/_prompts/commands/set-current-unit.md`.
 9. Search the repo for old references and remove or update them.
 10. Do not leave dead Obsidian links.
 11. Run validation.

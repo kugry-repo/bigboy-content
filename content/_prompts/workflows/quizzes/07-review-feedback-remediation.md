@@ -16,7 +16,7 @@ TARGET_UNIT: <unit-folder-or-path-or-code>
 TARGET_QUIZ_FILE: <quiz-file-path-or-id>
 ```
 
-If no explicit target is provided, read `_workflow/current-unit.md` using the schema from `content/_prompts/_shared/prompt-contract.md`, then inspect quiz files that need feedback or remediation review.
+If no explicit target is provided, follow `content/_prompts/_shared/prompt-contract.md`; supported editor context may resolve the unit before `_workflow/current-unit.md` is used. After resolving the unit, inspect quiz files that need feedback or remediation review.
 
 ## Target Resolution
 
@@ -89,4 +89,3 @@ Summarize:
 - remaining weak diagnostic or next-step routing;
 - status changes;
 - whether the quiz is ready for broader review or publication consideration.
-

@@ -50,27 +50,36 @@ AUTHOR_NOTE: Improve the feedback for wrong answers. Do not change the correct a
 
 Do not require `TARGET_PROGRAM`, `TARGET_UNIT`, `TARGET_FILE`, `MODE`, or similar fields when the target can be inferred.
 
-## Target Inference
+## Target Resolution
 
 Follow `content/_prompts/_shared/prompt-contract.md`.
 
-Studio-specific inference:
+Prompt-specific requirements:
 
-Infer the target in this order:
+- Resolve target identity before deciding the edit scope.
+- Explicit `TARGET_*` fields and `TARGET_FILE` win over selected text, active file, path, and frontmatter.
+- Selected text, active file, path, and frontmatter may infer missing target fields only when they do not conflict with explicit fields.
+- If explicit target fields and selected editor context point to different units or files, stop and ask for clarification instead of silently choosing one.
+- If `_workflow/current-unit.md` conflicts with explicit fields or supported editor context, treat it as stale and do not use it.
+- After target identity is resolved, use the selected fragment as the bounded edit scope when one exists.
+- If `TARGET_FILE` is provided, verify that it belongs to the resolved target unit unless the user explicitly asked for a global prompt/guide/template change.
 
-1. If the user selected text in the IDE, use the selected text as the primary target.
-2. Infer the active file from the IDE or editor context.
-3. Infer artifact type from path and/or frontmatter:
+## Edit Scope Resolution
+
+After target identity is resolved:
+
+1. Use the selected text as the edit scope when it belongs to the resolved target file.
+2. Otherwise use `TARGET_FILE` when provided.
+3. Otherwise use the active file from supported editor context.
+4. Infer artifact type from the resolved file path and/or frontmatter:
    - `lessons/` -> lesson
    - `exercises/` -> exercise
    - `quizzes/` -> quiz
    - `sets/` -> exercise set
    - `_index.md` -> unit planning/dashboard
-4. Infer `TARGET_PROGRAM` from the path, for example `content/programs/ma-2bac-pc-svt/01-limites-continuite/...`, or from frontmatter `program`.
-5. Infer unit from the path and confirm with frontmatter fields such as `unit_code`, `unit_slug`, `unit_folder`, `type`, and `title`.
-6. Read the parent unit `_index.md`.
-7. Read the relevant guides and templates for that artifact type.
-8. Ask the user only if the target program or artifact is still ambiguous after inspection.
+5. Read the parent unit `_index.md`.
+6. Read the relevant guides and templates for that artifact type.
+7. Ask the user only if the target file, target unit, or artifact type is still ambiguous after inspection.
 
 If the target unit `_index.md` has `planning_state: stub`, do not create or patch lesson, exercise, quiz, set, or full planning content. Recommend `content/_prompts/commands/initialize-unit.md` first, unless the user is only asking to diagnose the stub itself.
 
