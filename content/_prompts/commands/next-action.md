@@ -103,7 +103,7 @@ If the user request is open-ended, choose based on:
 
 Do not force unrelated workstreams to run first.
 
-Sparse units are valid. Report absent artifact families as `not present`, `not in scope`, or `intentionally absent` unless the unit plan, dashboard, requested publish target, existing artifact references, or local workflow prerequisites make the absence a blocker.
+Sparse units are valid. For initialized or published units, read the dashboard `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes` before classifying missing work. Report absent artifact families as `not-in-scope`, `deferred`, or `not-started` unless the unit plan, requested publish target, existing artifact references, or local workflow prerequisites make the absence a blocker.
 
 Routing rules:
 
@@ -213,7 +213,7 @@ List dashboard rows or artifacts that appear ready or complete because their exp
 
 ## Absent by design
 
-List artifact families that are not present but appear outside the requested or declared scope. If none are clearly absent by design, say so.
+List artifact families whose dashboard `Scope` row is `not-in-scope` or whose absence otherwise appears outside the requested or declared scope. If none are clearly `not-in-scope`, say so.
 
 ## Partial or blocked work
 

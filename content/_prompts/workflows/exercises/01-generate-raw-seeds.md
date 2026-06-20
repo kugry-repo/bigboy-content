@@ -68,7 +68,7 @@ If `TARGET_UNIT_INDEX` has `planning_state: stub`, stop before changing unit pla
 - `content/_references/concept-dependencies.md`
 - `content/_references/notation-decisions.md`
 - `TARGET_UNIT_INDEX`
-- relevant mini-lesson files under `TARGET_UNIT_PATH/lessons/`
+- relevant mini-lesson files under `TARGET_UNIT_PATH/lessons/` when they exist or when lesson support is in scope
 
 ## Cluster Selection
 
@@ -141,7 +141,7 @@ Cluster:
 - <cluster id/title>
 
 Mini-lesson links:
-- <lesson path or title>
+- <lesson path or title, `not-in-scope` when the unit intentionally has exercises but no local lessons, or `deferred` when lesson support is planned later>
 
 Skill tested:
 - <precise skill>

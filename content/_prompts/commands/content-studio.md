@@ -250,7 +250,7 @@ Focus on progression logic, same-unit `exercise_ids`, set-level `skills`, diffic
 
 Use unit guides.
 
-Focus on unit scope, lesson/exercise/quiz plan, dependencies, sequencing, what should exist now vs later, avoiding generic placeholder dashboards, and making planning decisions concrete.
+Focus on unit scope, lesson/exercise/quiz plan, dependencies, sequencing, dashboard `Scope` rows, what should exist now vs later, avoiding generic placeholder dashboards, and making planning decisions concrete. Use `not-started`, `not-in-scope`, and `deferred` for sparse artifact-family scope.
 
 For a stub unit index, diagnose or propose only. Use `content/_prompts/commands/initialize-unit.md` before creating a full planning dashboard.
 

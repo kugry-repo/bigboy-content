@@ -76,7 +76,7 @@ If `TARGET_UNIT_INDEX` has `planning_state: stub`, stop before changing unit pla
 - `content/_references/exercise-patterns.md`
 - `content/_references/official-sources.md`
 - `TARGET_UNIT_INDEX`
-- relevant mini-lesson files under `TARGET_UNIT_PATH/lessons/`
+- relevant mini-lesson files under `TARGET_UNIT_PATH/lessons/` when they exist or when lesson support is in scope
 
 ## Task
 
@@ -130,7 +130,7 @@ Linked skills:
 - <skill id>
 
 Linked mini-lessons:
-- `<lesson-file-or-title>`
+- `<lesson-file-or-title>` when available, `not-in-scope` for exercise-only units, or `deferred` when lesson support is planned later
 
 Target ability:
 - After this exercise, the student should be able to...

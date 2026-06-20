@@ -60,7 +60,7 @@ If `TARGET_UNIT_INDEX` has `planning_state: stub`, stop before changing unit pla
 - `TARGET_UNIT_INDEX`
 - selected cluster raw seeds
 - existing curated design cards, if any
-- relevant mini-lesson files under `TARGET_UNIT_PATH/lessons/`
+- relevant mini-lesson files under `TARGET_UNIT_PATH/lessons/` when they exist or when lesson support is in scope
 
 ## Cluster Selection
 
@@ -151,7 +151,7 @@ Linked skills:
 - <skill id>
 
 Linked mini-lessons:
-- `<lesson-file-or-title>`
+- `<lesson-file-or-title>` when available, `not-in-scope` for exercise-only units, or `deferred` when lesson support is planned later
 
 Target ability:
 - After this exercise, the student should be able to...
@@ -220,6 +220,6 @@ Finish by summarizing:
 - selected cluster;
 - number of design cards created or updated;
 - design cards kept, merged, rejected, or marked needs-redesign/needs-verification;
-- coverage by skill and mini-lesson;
+- coverage by skill and linked support; if local lessons are `not-in-scope`, report exercise-only coverage instead of treating lesson links as missing;
 - missing areas or verification needs;
 - recommended next prompt: `content/_prompts/workflows/exercises/03-check-unit-balance.md` when cluster cards are ready for whole-unit balance.

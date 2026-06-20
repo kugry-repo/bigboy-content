@@ -55,7 +55,7 @@ If `TARGET_UNIT_INDEX` has `planning_state: stub`, stop before changing unit pla
 - `TARGET_UNIT_INDEX`
 - all existing exercise cluster raw seed dumps
 - all existing exercise design cards
-- relevant mini-lesson files under `TARGET_UNIT_PATH/lessons/`
+- relevant mini-lesson files under `TARGET_UNIT_PATH/lessons/` when they exist or when lesson support is in scope
 
 ## Task
 
@@ -103,7 +103,7 @@ Check:
 - missing skills;
 - difficulty balance;
 - direct practice vs guided practice vs exam-pattern vs synthesis;
-- mini-lesson coverage;
+- mini-lesson coverage only when local lessons are in scope; otherwise verify that exercise design cards record `not-in-scope` or `deferred` support honestly;
 - progression from easy to hard;
 - verification risks.
 
@@ -125,7 +125,7 @@ Finish by summarizing:
 
 - clusters reviewed;
 - cards marked ready, needs-redesign, rejected, or needs-verification;
-- coverage by skill and mini-lesson;
+- coverage by skill and linked support; if local lessons are `not-in-scope`, report exercise-only coverage instead of treating lesson links as missing;
 - skill-ladder gaps;
 - difficulty, role, and type balance;
 - missing areas or verification needs;

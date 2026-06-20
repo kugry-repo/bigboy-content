@@ -98,7 +98,7 @@ When doing unit-level work:
 6. If the user explicitly names a workflow prompt or workstream, use that route.
 7. If the user asks "what next?", use `_prompts/commands/next-action.md`; inspect `planning_state`; if initialized, inspect `## Production dashboard`, existing files, blockers, and the likely user goal before recommending one exact prompt path.
 8. Do not force a lesson -> exercise -> quiz order.
-9. A unit may be intentionally sparse. Lessons, exercises, quizzes, and sets are independent workstreams; absent artifact families are blockers only when the unit plan, publish target, existing references, or local workflow prerequisites require them.
+9. A unit may be intentionally sparse. Lessons, exercises, quizzes, and sets are independent workstreams; absent artifact families are blockers only when the unit plan, publish target, existing references, or local workflow prerequisites require them. In initialized dashboards, use family `Scope` rows with `not-started`, `not-in-scope`, or `deferred` to distinguish intended, intentionally absent, and intentionally postponed artifact families.
 10. Required inputs are local to the artifact being created. Optional references should improve quality but must not become hidden blockers.
 11. If required inputs are missing, create the smallest missing prerequisite when the request allows it, or report the exact missing artifact that blocks the work.
 12. Update `## Production dashboard` and `## Journal de production` after initialized-unit changes when appropriate.

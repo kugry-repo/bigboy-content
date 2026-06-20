@@ -151,22 +151,20 @@ For full lesson review, use `_guides/lessons/lesson-quality-rubric.md`.
 
 ## Unit coverage checklist
 
-- [ ] The unit `_index.md` has a mini-lesson plan.
-- [ ] The unit `_index.md` has a misconception map.
-- [ ] The unit `_index.md` has cluster-based raw exercise seeds, or author notes explain why raw seeds are intentionally absent for the current scope.
-- [ ] The unit `_index.md` has curated exercise design cards.
-- [ ] The unit-level exercise plan has balance notes or card statuses from `content/_prompts/workflows/exercises/03-check-unit-balance.md` when several clusters exist.
-- [ ] Exercise files are one exercise per file and were created in a small batch unless explicitly requested otherwise.
-- [ ] Exercise files pass quality review through `content/_prompts/workflows/exercises/05-review-exercise-quality.md`.
-- [ ] Exercise solutions pass solution review through `content/_prompts/workflows/exercises/06-review-solutions.md`.
-- [ ] The unit `_index.md` has quiz series planning when standalone quizzes are needed.
-- [ ] The unit `_index.md` has quiz intent cards, raw item pools, and item design cards before final quiz files are created.
-- [ ] Quiz files are created in small batches, usually one at a time.
-- [ ] The unit `_index.md` has diagram/interactivity planning.
-- [ ] The unit has a `lessons/` folder.
-- [ ] The unit does not rely on one huge `lesson.md`.
-- [ ] Each lesson, exercise, quiz, and exercise set declares precise `skills` in frontmatter.
-- [ ] Unit-level skill coverage can be inferred from the unit `_index.md`, artifact frontmatter, exercise/quiz design cards, and review notes.
+- [ ] The initialized unit dashboard has `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes`.
+- [ ] Each artifact-family `Scope` row uses the canonical meaning: `not-started` means intended but not begun, `not-in-scope` means intentionally absent, and `deferred` means intentionally postponed.
+- [ ] Families marked `not-in-scope` are not treated as missing mini-lesson plans, exercise design cards, quiz files, or remediation targets.
+- [ ] Families marked `deferred` are reported as deferred future work or open planning decisions, not accidental omissions.
+- [ ] For lessons in scope, the unit `_index.md` has a mini-lesson plan and the unit does not rely on one huge root-level `lesson.md`.
+- [ ] For exercises in scope, the unit `_index.md` has an exercise cluster map, raw exercise seeds or a clear direct-design justification, curated exercise design cards, and balance notes or card statuses when several clusters exist.
+- [ ] For exercises in scope, exercise files are one exercise per file, created in small batches unless explicitly requested otherwise, and reviewed through exercise quality and solution review before reviewed status.
+- [ ] For quizzes in scope, the unit `_index.md` has quiz intent cards, raw item pools, and item design cards before final standalone quiz files are created.
+- [ ] For quizzes in scope, quiz files are standalone files under `quizzes/`, usually created one at a time, and reviewed separately for item quality, answer keys, feedback, and remediation.
+- [ ] The unit `_index.md` has a misconception map for the declared scope.
+- [ ] The unit `_index.md` has diagram/interactivity planning when the declared scope needs diagrams or interactions.
+- [ ] The unit has the canonical artifact folders: `lessons/`, `exercises/`, `quizzes/`, and `sets/`, even when one family is `not-in-scope`.
+- [ ] Each existing lesson, exercise, quiz, and exercise set declares precise `skills` in frontmatter.
+- [ ] Unit-level skill coverage can be inferred from the unit `_index.md`, artifact frontmatter, exercise/quiz design cards, and review notes for the in-scope families.
 
 ## Exam alignment
 

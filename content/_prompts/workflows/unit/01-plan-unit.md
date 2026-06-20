@@ -60,7 +60,7 @@ Create or improve the unit plan in `TARGET_UNIT_INDEX`.
 
 This is unit-map work only.
 
-Planning records declared scope. It may plan one artifact family, several artifact families, all artifact families, or an intentionally sparse unit. Include the canonical planning sections, but mark artifact families as `not in scope` or `deferred` when the unit is intentionally partial.
+Planning records declared scope. It may plan one artifact family, several artifact families, all artifact families, or an intentionally sparse unit. Include the canonical planning sections, and use the dashboard `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes` to mark each family as `not-started`, `not-in-scope`, or `deferred`.
 
 Do not create:
 

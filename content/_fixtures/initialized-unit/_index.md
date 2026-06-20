@@ -99,6 +99,8 @@ No exam-alignment notes recorded yet.
 
 ## Production dashboard
 
+Use the artifact-family `Scope` rows to record sparse-unit intent: `not-started` means the family is intended but not begun, `not-in-scope` means it is intentionally absent, and `deferred` means it is intentionally postponed.
+
 ### Unit map
 - Curriculum scope: not-started
 - Skill map: not-started
@@ -106,6 +108,7 @@ No exam-alignment notes recorded yet.
 - Exam pattern notes: not-started
 
 ### Lessons
+- Scope: not-started
 - Source/target prep: not-started
 - Raw dumps: not-started
 - Curation: not-started
@@ -115,6 +118,7 @@ No exam-alignment notes recorded yet.
 - Final verification: not-started
 
 ### Exercises
+- Scope: not-started
 - Cluster map: not-started
 - Raw seeds: not-started
 - Design cards: not-started
@@ -125,6 +129,7 @@ No exam-alignment notes recorded yet.
 - Sets: not-started
 
 ### Quizzes
+- Scope: not-started
 - Quiz intent map: not-started
 - Raw item pool: not-started
 - Item design cards: not-started
@@ -147,4 +152,3 @@ No exam-alignment notes recorded yet.
 ## Notes auteur
 
 This fixture demonstrates the initialized unit index scaffold only. Do not use it as educational content, curriculum evidence, or a real unit seed.
-

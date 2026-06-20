@@ -51,6 +51,7 @@ The validator checks:
 - required exercise cluster, raw-seed, and design-card areas from the canonical initialized scaffold;
 - required quiz raw-material and design-card areas from the canonical initialized scaffold;
 - `## Production dashboard` rows from the canonical initialized scaffold as the authoritative initialized/published unit workstream tracker;
+- allowed dashboard statuses including the sparse-family states `not-started`, `not-in-scope`, and `deferred`;
 - `## Journal de production` as the historical log;
 - the non-production initialized-unit reference fixture under `content/_fixtures/initialized-unit/`;
 - intentional invalid contract fixtures under `content/_fixtures/contracts/`, run in isolation as fault-injection checks;

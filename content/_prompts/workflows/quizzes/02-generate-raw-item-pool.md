@@ -105,7 +105,7 @@ Misconception tag:
 - TODO
 
 Remediation angle:
-- TODO
+- TODO; name available support, or use `not-in-scope`/`deferred` when local lessons or exercises are intentionally absent or postponed
 
 Mismath / ambiguity risk:
 - TODO
@@ -127,4 +127,3 @@ Summarize:
 - seeds rejected or marked needs-verification;
 - mismath and source/exam risks;
 - recommended next prompt: `content/_prompts/workflows/quizzes/03-curate-item-design-cards.md`.
-

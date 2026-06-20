@@ -26,6 +26,8 @@ A design card is the canonical plan for a future exercise.
 
 It is detailed enough that batch creation can write the final file without inventing the pedagogical purpose, decision point, trap, parameter constraints, hint ladder, or verification strategy from scratch.
 
+Exercise design cards are local prerequisites for final exercise files. Linked mini-lessons are optional support references. If the unit intentionally has no local lessons, write `not-in-scope` in the linked mini-lessons field. If local lessons are planned later, write `deferred` and describe any temporary support in review notes.
+
 ### Final file
 
 A final exercise file is learner-facing training material under `exercises/`.
@@ -204,7 +206,7 @@ Linked skills:
 - <skill id>
 
 Linked mini-lessons:
-- `<lesson-file-or-title>`
+- `<lesson-file-or-title>` when available, `not-in-scope` for exercise-only units, or `deferred` when lesson support is planned later
 
 Target ability:
 - After this exercise, the student should be able to...

@@ -93,6 +93,7 @@ For unit-level or content-level changes, inspect as relevant:
 - `TARGET_UNIT_PATH/quizzes/`
 - `TARGET_UNIT_PATH/sets/`
 - unit `## Production dashboard`
+- artifact-family `Scope` rows and the canonical sparse states `not-started`, `not-in-scope`, and `deferred`
 - `## Journal de production`
 - lesson, exercise, quiz, and set frontmatter
 - lesson, exercise, quiz, and set IDs

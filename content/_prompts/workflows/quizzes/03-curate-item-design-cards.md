@@ -128,8 +128,8 @@ Misconception tags:
 - TODO
 
 Linked remediation:
-- Lesson:
-- Exercise:
+- Lesson: <lesson path/title, `not-in-scope`, or `deferred`>
+- Exercise: <exercise path/id, `not-in-scope`, or `deferred`>
 - Mini-review:
 - Retry item type:
 
@@ -149,4 +149,3 @@ Summarize:
 - diagnostic signals represented;
 - feedback/remediation gaps;
 - recommended next prompt: `content/_prompts/workflows/quizzes/04-create-quiz-file.md` when enough cards are ready.
-

@@ -65,6 +65,8 @@ Review the unit plan, declared scope, and existing artifacts.
 
 This is unit-review work only.
 
+Before classifying missing work, read the dashboard `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes`. Interpret them canonically: `not-started` means intended but not begun, `not-in-scope` means intentionally absent, and `deferred` means intentionally postponed.
+
 Do not:
 
 - create new mini-lessons;
@@ -100,7 +102,7 @@ A missing artifact family is a blocker only when:
 - an existing artifact references it;
 - a workflow prerequisite says it is locally required.
 
-Otherwise report the family as `not present`, `not in scope`, or `intentionally absent`, not as a defect.
+Otherwise report the family using its canonical dashboard scope state: `not-in-scope`, `deferred`, or `not-started`.
 
 Check:
 
@@ -110,7 +112,7 @@ Check:
 - existing mini-lessons follow the editorial pipeline at a high level and do not feel like rigid templates;
 - existing lessons have clear purpose, coherence, precision, useful checks or practice direction when appropriate, and no unnecessary ceremony;
 - frontmatter fields and IDs are consistent;
-- declared skills are covered, practiced, quizzed, deferred, or absent in a way that matches the declared scope;
+- declared skills are covered, practiced, quizzed, deferred, or intentionally `not-in-scope` in a way that matches the declared scope;
 - exercises align with lessons only when both streams exist or the unit plan says they should align;
 - standalone quizzes align with lessons, exercises, quiz intent cards, or item design cards only when those streams/cards exist or the unit plan says they should align;
 - difficulty progression is reasonable inside each existing stream and across streams that explicitly interact;
@@ -151,7 +153,7 @@ Finish with:
 
 - unit quality summary;
 - files touched;
-- sparse-unit handling: artifact families present, absent by design, or absent because of a blocker;
+- sparse-unit handling: artifact families present, `not-in-scope`, `deferred`, `not-started`, or absent because of a blocker;
 - blocker classification: structural blockers, declared-scope gaps, quality/readiness observations, optional future improvements;
 - readiness label using the vocabulary above;
 - recommended next actions;

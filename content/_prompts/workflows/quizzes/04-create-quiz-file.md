@@ -58,6 +58,8 @@ Use the new quiz template.
 
 Do not invent diagnostic design from scratch.
 
+Do not block quiz creation merely because local lessons or exercises are absent when the quiz intent and item design cards mark those support families `not-in-scope` or `deferred`. Keep remediation actionable through the support that is available, planned, or explicitly postponed.
+
 Fill the new frontmatter fields:
 
 - `quiz_kind`
@@ -108,4 +110,3 @@ Summarize:
 - status fields set;
 - unresolved answer-key, feedback, remediation, or source risks;
 - recommended next prompt: `content/_prompts/workflows/quizzes/05-review-item-quality.md`.
-

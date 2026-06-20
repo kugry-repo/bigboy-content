@@ -60,7 +60,7 @@ Perform cleanup and publish-readiness assessment for `TARGET_UNIT_PATH`.
 
 This is cleanup work only.
 
-First, read `TARGET_UNIT_INDEX`, inspect `## Production dashboard`, determine the unit's declared scope, and identify which existing artifacts can be cleaned safely. If major work is missing, report it as a declared-scope gap only when a local contract requires it. Otherwise report the absent artifact family as `not present`, `not in scope`, or `intentionally absent`.
+First, read `TARGET_UNIT_INDEX`, inspect `## Production dashboard`, determine the unit's declared scope from the `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes`, and identify which existing artifacts can be cleaned safely. Interpret `not-started` as intended but not begun, `not-in-scope` as intentionally absent, and `deferred` as intentionally postponed. If major work is missing, report it as a declared-scope gap only when a local contract requires it. Otherwise report the absent artifact family using its canonical dashboard scope state.
 
 Do not:
 
@@ -89,8 +89,8 @@ Classify findings as:
 - blocking structural issues;
 - blocking declared-scope issues;
 - non-blocking polish issues;
-- intentionally absent workstreams;
-- deferred future work.
+- `not-in-scope` workstreams;
+- `deferred` future work.
 
 A missing artifact family is a blocker only when:
 
@@ -119,11 +119,11 @@ Check:
 Assess publish-readiness for the declared scope:
 
 - structural contracts are satisfied;
-- declared-scope artifacts exist or are explicitly deferred;
+- artifacts required by the declared scope exist, while excluded families are marked `not-in-scope` and postponed families are marked `deferred` according to the dashboard `Scope` rows;
 - existing references resolve or are marked as unresolved blockers;
 - unresolved TODOs, author notes, and verification needs are either cleared or explicitly classified;
 - source-safety risks are marked and not hidden;
-- sparse or intentionally absent workstreams are not treated as defects.
+- `not-in-scope` and `deferred` workstreams are not treated as accidental defects.
 
 Make only targeted cleanup edits.
 
@@ -144,7 +144,7 @@ Finish with:
 - status changes made;
 - whether unit publication readiness was assessed;
 - readiness label using the vocabulary above;
-- sparse-unit handling: artifact families present, absent by design, or absent because of a blocker;
+- sparse-unit handling: artifact families present, `not-in-scope`, `deferred`, `not-started`, or absent because of a blocker;
 - remaining TODOs or author notes;
 - source-safety items still needing human review;
 - blockers before any manual `planning_state: published` decision, split into structural blockers and declared-scope gaps;

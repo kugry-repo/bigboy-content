@@ -437,6 +437,8 @@ const DASHBOARD_HEADING = "Production dashboard";
 
 const ALLOWED_DASHBOARD_STATUSES = new Set([
   "not-started",
+  "not-in-scope",
+  "deferred",
   "partial",
   "ready",
   "needs-review",
@@ -444,6 +446,13 @@ const ALLOWED_DASHBOARD_STATUSES = new Set([
   "blocked",
   "not-run",
 ]);
+
+const ARTIFACT_FAMILY_DASHBOARD_SECTIONS = new Set([
+  "Lessons",
+  "Exercises",
+  "Quizzes",
+]);
+const DASHBOARD_SCOPE_ROW = "Scope";
 
 const REQUIRED_DASHBOARD = parseDashboardContractFromTemplate(
   CANONICAL_INITIALIZED_UNIT_TEMPLATE_BODY,
@@ -1481,6 +1490,20 @@ function checkProductionDashboard(filePath, dashboardSection) {
         addError(
           filePath,
           `dashboard row "${row}" has invalid status "${status}"; expected one of ${[...ALLOWED_DASHBOARD_STATUSES].join(", ")}`,
+        );
+      }
+    }
+
+    if (
+      ARTIFACT_FAMILY_DASHBOARD_SECTIONS.has(group.section) &&
+      rows.get(DASHBOARD_SCOPE_ROW) === "not-in-scope"
+    ) {
+      for (const [row, status] of rows.entries()) {
+        if (row === DASHBOARD_SCOPE_ROW || status === "not-in-scope") continue;
+
+        addError(
+          filePath,
+          `dashboard section "### ${group.section}" is marked "Scope: not-in-scope" but row "${row}" is "${status}"; family-local rows must also be "not-in-scope"`,
         );
       }
     }

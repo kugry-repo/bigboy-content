@@ -83,7 +83,17 @@ A missing artifact family is a blocker only when one of these local contracts re
 - an existing artifact links to or depends on the missing artifact family;
 - a workflow prerequisite says the artifact is locally required for the requested operation.
 
-Otherwise, absence is reported as `not present`, `not in scope`, or `intentionally absent`, not as a defect.
+Otherwise, absence is reported through the canonical sparse-family dashboard states, not as a defect.
+
+Artifact-family scope is recorded mechanically in each initialized unit dashboard through the `Scope` row under `### Lessons`, `### Exercises`, and `### Quizzes`.
+
+Canonical sparse-family states:
+
+- `not-started`: this artifact family is intended for the unit, but work has not begun.
+- `not-in-scope`: this artifact family is intentionally absent from the unit and must not block review, cleanup, or finalization for the declared scope.
+- `deferred`: this artifact family is intentionally postponed. It is a visible open planning decision or future-work note, not an accidental omission.
+
+Use these hyphenated values in dashboard rows and status reports. Do not write prose variants such as `not in scope` as dashboard statuses. When a family is `not-in-scope`, mark the family `Scope` row and its family-local dashboard rows `not-in-scope` for mechanical clarity. When a family is `deferred`, mark the `Scope` row `deferred`; family-local rows that have not started may also be marked `deferred`, while any real completed or reviewed work should keep its honest progress status.
 
 ## Unit index lifecycle
 
@@ -206,7 +216,9 @@ The production dashboard is a compact status view for independent but coordinate
 
 Allowed dashboard statuses:
 
-- `not-started`: no meaningful work exists yet.
+- `not-started`: the row or artifact family is intended, but no meaningful work exists yet.
+- `not-in-scope`: the artifact family or row is intentionally absent from this unit's declared scope.
+- `deferred`: the artifact family or row is intentionally postponed and should remain visible as future work or an open planning decision.
 - `partial`: some useful work exists, but the item is incomplete.
 - `ready`: the item has enough information for the next local operation.
 - `needs-review`: work exists but needs human, mathematical, pedagogical, or source review.
@@ -215,6 +227,8 @@ Allowed dashboard statuses:
 - `not-run`: use only for validator or automation rows that have not been executed.
 
 Use the smallest honest status. Do not mark a workstream complete just because an unrelated workstream is complete.
+
+The `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes` are the canonical way to distinguish "we plan this later" (`not-started`), "we intentionally do not want this family in the unit" (`not-in-scope`), and "we are postponing this family" (`deferred`). Review and finalize prompts must read those rows before treating absent files or planning sections as defects.
 
 The canonical dashboard groups and rows are defined in `content/_templates/unit-index.template.md`. The current groups are Unit map, Lessons, Exercises, Quizzes, and Unit review.
 
@@ -255,7 +269,7 @@ Quiz file creation requires a quiz intent card and ready item design cards. Quiz
 
 Exercise set creation requires existing exercise files or precise exercise design cards. Sets should link to exercise files instead of duplicating full exercise content.
 
-Unit review and cleanup operate on whatever exists. They should report absent artifact families as `not present`, `not in scope`, or `intentionally absent` unless a local contract makes the absence a blocker.
+Unit review and cleanup operate on whatever exists. They should report absent artifact families using `not-in-scope`, `deferred`, or `not-started` from the dashboard `Scope` rows unless a local contract makes the absence a blocker.
 
 ## Design-card rule
 
@@ -352,7 +366,7 @@ This is a unit-wide consistency review. It may make small targeted consistency f
 
 Use `content/_prompts/workflows/unit/03-finalize-unit.md` for targeted cleanup of metadata, links, status fields, TODOs, author notes, quiz answer-key states, feedback states, Markdown cleanliness, and source-safety notes.
 
-This prompt is a cleanup pass, consistency pass, publish-readiness assessment, and blocker report for the declared scope. It should report intentionally absent workstreams separately from blockers, and it should not force unrelated workstreams to be completed first.
+This prompt is a cleanup pass, consistency pass, publish-readiness assessment, and blocker report for the declared scope. It should report `not-in-scope` and `deferred` workstreams separately from blockers, and it should not force unrelated workstreams to be completed first.
 
 It must not automatically set unit `planning_state: published`; that state is reserved for an explicit human publication decision. It must not mark files `published` unless explicitly requested and the relevant review evidence already supports it.
 

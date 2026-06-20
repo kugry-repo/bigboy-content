@@ -63,7 +63,7 @@ Do not generate final quiz items in this step.
 
 Do not create a quiz with no clear diagnostic goal.
 
-Do not create exam-readiness quizzes if remediation links cannot be sketched.
+Do not create exam-readiness quizzes if actionable remediation paths cannot be sketched from available, planned, or explicitly deferred support. Local lessons and exercises are useful targets when they exist or are intentionally planned, but they are not global prerequisites for every quiz intent.
 
 ## Quiz Intent Card Format
 
@@ -124,6 +124,7 @@ Remediation paths:
 - If partial:
 - If failed:
 - By misconception:
+- Local lessons/exercises support: available | planned | `not-in-scope` | `deferred`
 
 Source/exam claim policy:
 - original | adapted | exam-pattern only
@@ -150,4 +151,3 @@ Summarize:
 - item count and cognitive roles;
 - remediation gaps;
 - recommended next prompt: `content/_prompts/workflows/quizzes/02-generate-raw-item-pool.md`.
-

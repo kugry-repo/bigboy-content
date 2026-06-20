@@ -41,6 +41,8 @@ The workflow roles are:
 
 Do not use old workflow names or keep parallel exercise review systems.
 
+Exercise work is local to the exercise family. Raw seeds and exercise design cards are prerequisites for final exercise creation; local mini-lessons are optional support references, not a universal prerequisite. If the unit intentionally has exercises but no local lessons, set the lesson-family dashboard `Scope` row to `not-in-scope` and write `not-in-scope` in mini-lesson link fields instead of inventing lesson links. If lessons are planned later, use `deferred`.
+
 ## Raw Seed vs Design Card vs Final File
 
 ### Raw exercise seed
@@ -52,7 +54,7 @@ It is not a final exercise and should not contain a polished final statement or 
 It should capture:
 
 - cluster;
-- linked mini-lessons;
+- linked mini-lessons when available, or `not-in-scope`/`deferred` when local lessons are intentionally absent or postponed;
 - precise skill tested;
 - rough exercise shape;
 - student action trained;

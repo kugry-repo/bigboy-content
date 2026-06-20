@@ -54,7 +54,7 @@ If `TARGET_UNIT_INDEX` has `planning_state: stub`, stop before changing unit pla
 - `content/_templates/exercise.template.md`
 - `TARGET_UNIT_INDEX`
 - curated exercise design cards in `TARGET_UNIT_INDEX`
-- relevant mini-lesson files under `TARGET_UNIT_PATH/lessons/`
+- relevant mini-lesson files under `TARGET_UNIT_PATH/lessons/` when they exist or when lesson support is in scope
 
 ## Task
 
@@ -68,7 +68,7 @@ Use only design cards with:
 Status: ready-for-exercise-batch
 ```
 
-Do not invent the pedagogical design from scratch. The mathematical goal, target ability, student decision point, method, traps, hint ladder, verification strategy, variants, and risks must come from the design card.
+Do not invent the pedagogical design from scratch. The mathematical goal, target ability, student decision point, method, traps, hint ladder, verification strategy, variants, and risks must come from the design card. Linked mini-lessons are optional support references; if the design card records `not-in-scope` or `deferred`, do not block exercise creation just because no local lesson file exists.
 
 If a selected exercise lacks a canonical design card in `TARGET_UNIT_INDEX`, stop with this actionable error:
 

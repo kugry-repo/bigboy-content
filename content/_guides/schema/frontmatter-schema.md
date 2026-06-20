@@ -148,6 +148,14 @@ A stub is not a failed unit. Sparse units can be publish-ready for their declare
 
 The initialized body and production dashboard scaffold are authored in `content/_templates/unit-index.template.md`. Do not maintain a separate full body copy in schema docs.
 
+Initialized and published unit dashboards use artifact-family `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes`. The sparse-family states are:
+
+- `not-started`: the family is intended, but work has not begun.
+- `not-in-scope`: the family is intentionally absent and should not block review or finalization for the declared scope.
+- `deferred`: the family is intentionally postponed and should be reported as future work or an open planning decision.
+
+Other dashboard rows use the allowed dashboard statuses documented in `content/_guides/units/unit-workflow.md`. Use hyphenated machine-friendly values in rows; prose variants such as `not in scope` are not dashboard statuses.
+
 `content/_prompts/commands/initialize-unit.md` owns the transition from `stub` to `initialized`.
 
 No current workflow prompt automatically owns the transition from `initialized` to `published`. Use `published` only after an explicit human publication decision. `content/_prompts/workflows/unit/03-finalize-unit.md` may prepare and report publication readiness for declared scope, but it must not automatically set `planning_state: published`.

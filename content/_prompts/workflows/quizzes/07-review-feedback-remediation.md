@@ -58,7 +58,7 @@ Check:
 - global mastery criteria;
 - remediation by mastery level;
 - remediation by misconception;
-- links/placeholders to lessons, exercises, or mini-review;
+- links/placeholders to available or planned lessons, exercises, mini-reviews, or prerequisite paths, with `not-in-scope` or `deferred` accepted when local support families are intentionally absent or postponed;
 - usefulness of feedback for a real student.
 
 You may update:
