@@ -132,7 +132,17 @@ After a material edit, invalidate only the affected review evidence with `needs-
 - exercise design cards/blueprints: set card readiness/review state to `needs-review` when prior readiness became stale, and flag derived exercise files whose design evidence depends on the changed card;
 - exercise statements: set `statement_status: needs-review`, and also `solution_status: needs-review` when the solution depends on the changed statement;
 - exercise solutions: set `solution_status: needs-review` only unless the statement or design also changed or is wrong;
-- quizzes: invalidate `item_quality_status`, `answer_key_status`, `feedback_status`, and/or `remediation_status` according to the changed stem/type/options/distractors, answer logic, feedback, or remediation.
+- quizzes: invalidate `item_quality_status`, `answer_key_status`, `feedback_status`, and/or `remediation_status` according to the changed stem/type/MCQ options/distractors/non-choice interaction, answer logic, feedback, or remediation.
+
+Quiz type-specific implications:
+
+- MCQ/MR distractor changes affect item-quality review and usually feedback review.
+- MCQ/MR correct-answer changes affect answer-key review and likely feedback review.
+- Fill-blank accepted-answer form changes affect answer-key review; common wrong-form feedback changes affect feedback review.
+- Match pairing changes affect answer-key review and may affect explanation or feedback.
+- Sequence ordering-criterion changes affect item-quality and answer-key review.
+- Hotspot target-region changes affect answer-key review and may affect UI-dependent review notes or feedback.
+- Non-choice item edits should not introduce MCQ choices, distractors, or per-choice feedback unless the item type itself is changed and item-quality review is invalidated.
 
 When any exercise or quiz review substatus becomes `needs-review`, demote top-level `status: reviewed` or `status: published` to `status: needs-review`. Do not restart the full pipeline unless the change truly invalidates the whole artifact or unit plan.
 

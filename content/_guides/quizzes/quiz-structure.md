@@ -35,14 +35,14 @@ Do not confuse the planning artifacts.
 |---|---|---|
 | Quiz intent | The diagnostic purpose before item generation. | A quiz intent card in the unit `_index.md`. |
 | Raw item seed | A rough item idea with possible signal and risks. | Raw seeds, more than the final quiz needs. |
-| Item design card | A curated item with target, type, answer logic, distractors, feedback, and remediation. | Item cards inside quiz design planning. |
+| Item design card | A curated item with target, type, answer logic, type-specific wrong-response planning, feedback, and remediation. | Item cards inside quiz design planning. |
 | Final quiz file | The student-facing Markdown quiz plus answer key, feedback, and author notes. | One file under `quizzes/`. |
 | Answer key | The verified correct answer, accepted alternatives, and partial correctness rules. | `## Corrigé et feedback` plus `answer_key_status`. |
-| Feedback/remediation | The teaching response and next-step routing after each answer and after the whole quiz. | Choice feedback, mastery criteria, and remediation section. |
+| Feedback/remediation | The teaching response and next-step routing after each answer and after the whole quiz. | Type-specific item feedback, mastery criteria, and remediation section. |
 
 Raw item seeds are exploratory. Item design cards are the curated bridge. Final quiz files remain drafts until item quality, answer keys, feedback, and remediation have been reviewed separately.
 
-After a material edit to a quiz file, use `needs-review` on only the affected review substatus fields. Stem, item-type, option, or distractor edits invalidate item-quality review; correct-answer edits invalidate answer-key review; option or misconception edits may invalidate feedback review; feedback edits invalidate feedback review; remediation edits invalidate remediation review.
+After a material edit to a quiz file, use `needs-review` on only the affected review substatus fields. Stem, item-type, MCQ/MR option or distractor, match-prompt, sequence-criterion, or hotspot-target edits invalidate item-quality review; correct-answer, accepted-alternative, pairing, order, or region edits invalidate answer-key review; option, diagnostic-signal, misconception, or non-choice wrong-response edits may invalidate feedback review; feedback edits invalidate feedback review; remediation edits invalidate remediation review.
 
 ## Canonical Quiz Workflow
 
@@ -76,7 +76,7 @@ Reject seeds with no diagnostic signal.
 
 Turn raw item seeds into curated item design cards. Keep, merge, reject, defer, or mark for verification.
 
-An item deserves to be included only if it checks a precise skill, creates a useful diagnostic signal, has plausible wrong answers, supports answer-specific feedback, and fits the quiz purpose.
+An item deserves to be included only if it checks a precise skill, creates a useful diagnostic signal, has plausible wrong choices or wrong-response patterns, supports type-specific feedback, and fits the quiz purpose.
 
 Item design cards are contract-bearing planning artifacts, not informal notes. The card heading is the stable item-card ID. In a unit `_index.md`, cards live under `### Design cards des items de quiz` and use H4 headings:
 
@@ -156,6 +156,21 @@ Per-choice feedback plan:
 Misconceptions by wrong choice:
 - For MCQ/MR only, where appropriate.
 
+Proposition contract:
+- For true-false only: the exact proposition, context, true/false answer, and ambiguity guard.
+
+Accepted answer forms:
+- For fill-blank only: expected answer(s), accepted equivalent forms, notation constraints, and common wrong forms to anticipate.
+
+Pairing contract:
+- For match only: left-side prompts, right-side matches, correct pairings, distractor entries if used, and uniqueness or many-to-one rule.
+
+Ordering criterion:
+- For sequence only: items to order, correct order, ordering rule, and allowed alternative orders if any.
+
+Hotspot target region:
+- For hotspot only: target image/diagram/graph description or reference, correct region definition, common wrong regions, and `content-contract-ready / UI-dependent` marker when UI support is not implemented.
+
 Mismath / ambiguity risks:
 - <risks to check before final drafting>
 
@@ -163,7 +178,7 @@ Batch/readiness note:
 - Why this card is or is not ready for final quiz drafting.
 ```
 
-For non-choice item types, keep the answer contract, verification check, explanation goal, feedback design, and remediation plan specific to that item type. Do not invent per-choice feedback where there are no choices.
+For non-choice item types, keep the answer contract, verification check, explanation goal, feedback design, remediation plan, and type-specific planning field specific to that item type. Do not invent per-choice feedback where there are no choices.
 
 ### 04-create-quiz-file
 
@@ -173,7 +188,7 @@ Do not invent diagnostic design from scratch during final file creation. If a re
 
 ### 05-review-item-quality
 
-Review quiz purpose, place in series, skill coverage, cognitive role balance, item-type fit, stem clarity, diagnostic signal, distractor quality, misconception coverage, question order, standalone usability, item bloat, duplicate signals, and source/exam claim safety.
+Review quiz purpose, place in series, skill coverage, cognitive role balance, item-type fit, stem clarity, diagnostic signal, MCQ/MR distractor quality, non-choice wrong-response quality, misconception coverage, question order, standalone usability, item bloat, duplicate signals, and source/exam claim safety.
 
 This step may update `item_quality_status`. It must not mark answer keys, feedback, or remediation reviewed.
 
@@ -185,7 +200,7 @@ This step may update `answer_key_status`. It must not mark feedback or remediati
 
 ### 07-review-feedback-remediation
 
-Review the teaching value of feedback and next-step routing: answer-specific feedback, diagnostic signals, why wrong answers are tempting, why they are wrong, what to remember, remediation after each choice, mastery criteria, remediation by mastery level, and remediation by misconception.
+Review the teaching value of feedback and next-step routing: type-specific feedback, diagnostic signals, why wrong choices or wrong responses are tempting, why they are wrong, what to remember, remediation after each MCQ/MR choice where applicable, mastery criteria, remediation by mastery level, and remediation by misconception.
 
 This step may update `feedback_status` and `remediation_status`. It must not mark the answer key reviewed unless answer-key review has passed.
 
@@ -233,6 +248,22 @@ Allowed item types:
 `sequence` and `hotspot` are future-ready item types. They may be used in Markdown planning and author notes even before a frontend renderer exists.
 
 Do not use item types just for variety. Choose the item type because it best reveals the intended diagnostic signal.
+
+### Minimum item-type contracts
+
+Every final standalone quiz item needs a type-specific contract. The contract is not only the student-facing stem and answer. It includes answer precision, verification, explanation, feedback, remediation, and review evidence where applicable.
+
+| Item type | Student-facing shape | Answer contract | Feedback/remediation contract | Verification rule | Per-choice feedback |
+|---|---|---|---|---|---|
+| `multiple-choice` | One clear stem with several plausible choices. | Exactly one correct choice. | Distractor rationale for each wrong choice, answer-specific feedback, explanation of the correct answer, and next-step remediation. | Verify that exactly one choice is correct and that every wrong choice is plausible but false. | Required for diagnostic items. |
+| `multiple-response` | One clear stem with several selectable choices. | All correct choices identified, with partial-credit or all-or-nothing logic stated when relevant. | Feedback for selected wrong choices and missed correct choices where practical; explanation of the full correct set. | Verify that the scoring and correct set are unambiguous. | Required for diagnostic items. |
+| `true-false` | One precise proposition. | `Vrai` or `Faux`, plus the correction or condition that decides it. | Feedback for both responses when diagnostic; remediation for the misconception behind the wrong response. | Verify that the proposition is not ambiguous or context-dependent unless the context is explicit. | Not applicable beyond the two response paths. |
+| `fill-blank` | A short blank with clear answer format. | Expected answer(s), accepted equivalent forms, and notation constraints. | Feedback for common wrong forms where practical, plus remediation. | Verify that accepted forms are clear and mathematically equivalent. | Not applicable. Do not invent choices. |
+| `match` | Left-side prompts and right-side matches. | Correct pairings, with distractor entries if used. | Pairing rationale, feedback for common wrong pairings, and remediation. | Verify that pairings are unique, or explicitly mark many-to-one matching if allowed. | Not applicable. |
+| `sequence` | Items to order. | Correct order and the rule/criterion for ordering. | Explanation of the dependency/order logic, feedback for common swaps, and remediation. | Verify that the order is mathematically or logically unique unless alternatives are stated. | Not applicable. |
+| `hotspot` | Image, diagram, graph, table, or described visual target. | Target reference/description and correct region(s) in Markdown-friendly terms. | Feedback for common wrong regions and remediation. | Verify that the target region is unambiguous. Mark as `content-contract-ready / UI-dependent` until learner UI support exists. | Not applicable. |
+
+Non-choice items must not be forced into MCQ-shaped fields. They still need explanation, feedback, remediation, and verification, but those pieces should match the interaction type.
 
 ## Normal Quiz Size
 

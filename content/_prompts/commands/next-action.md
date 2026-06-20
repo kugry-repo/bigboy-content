@@ -117,9 +117,9 @@ Routing rules:
 - If lesson files changed materially, recommend targeted lesson review through `content/_prompts/workflows/lessons/07-verify-finalize.md`.
 - If exercise statements, design intent, hints, mistake blocks, or verification changed materially, recommend `content/_prompts/workflows/exercises/05-review-exercise-quality.md`.
 - If exercise solutions, final answers, theorem-condition checks, or solution pedagogy changed materially, recommend `content/_prompts/workflows/exercises/06-review-solutions.md`.
-- If quiz stems, item types, options, distractors, diagnostic signals, misconceptions, or item order changed materially, recommend `content/_prompts/workflows/quizzes/05-review-item-quality.md`.
-- If quiz correct answers, accepted alternatives, partial correctness, or answer constraints changed materially, recommend `content/_prompts/workflows/quizzes/06-review-answer-keys.md`.
-- If quiz feedback, mastery criteria, remediation, or next-step routing changed materially, recommend `content/_prompts/workflows/quizzes/07-review-feedback-remediation.md`.
+- If quiz stems, item types, MCQ/MR options or distractors, match prompt structure, sequence ordering criterion, hotspot target wording, diagnostic signals, misconceptions, or item order changed materially, recommend `content/_prompts/workflows/quizzes/05-review-item-quality.md`.
+- If quiz correct answers, accepted fill-blank alternatives, match pairings, sequence correct order, hotspot correct region, partial correctness, or answer constraints changed materially, recommend `content/_prompts/workflows/quizzes/06-review-answer-keys.md`.
+- If quiz per-choice MCQ/MR feedback, non-choice wrong-response feedback, mastery criteria, remediation, or next-step routing changed materially, recommend `content/_prompts/workflows/quizzes/07-review-feedback-remediation.md`.
 - If unit scope, dashboard rows, cross-family links, finalization blockers, or publication-readiness evidence changed, recommend `content/_prompts/workflows/unit/02-review-unit.md` or `content/_prompts/workflows/unit/03-finalize-unit.md` according to whether the user wants diagnosis or cleanup/readiness.
 - If the user wants exercises only, route directly into the exercise workflow. Existing lessons are optional references unless the requested exercise depends on a specific lesson.
 - If the user wants quizzes only, route directly into the quiz workflow. Lessons and exercises are optional remediation links unless the quiz intent depends on them.

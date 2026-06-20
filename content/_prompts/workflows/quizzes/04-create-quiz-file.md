@@ -30,6 +30,7 @@ Prompt-specific requirements:
 - If the target is missing, ambiguous, or has no ready item cards, stop and report the blocker.
 - If a selected item card is missing its stable item-card ID, target skill, item type, difficulty, stem/task design, answer contract, verification check, explanation goal, feedback design, remediation plan, source/provenance notes, or batch/readiness note, stop and repair the card before drafting the quiz.
 - For `multiple-choice` and `multiple-response` cards, also require choices, correct choice(s), distractor rationale, per-choice feedback planning, and misconception mapping where appropriate.
+- For `true-false`, `fill-blank`, `match`, `sequence`, and `hotspot` cards, also require the relevant proposition, accepted-answer, pairing, ordering, or hotspot-region planning field. Do not draft a final item by squeezing a non-choice card into MCQ fields.
 
 ## Read First
 
@@ -58,7 +59,9 @@ TARGET_UNIT_PATH/quizzes/
 
 Use the new quiz template.
 
-Do not invent diagnostic design from scratch. The item type, stem/task design, answer contract, distractors, explanation goal, feedback design, remediation plan, and verification risks must come from the item design cards.
+Do not invent diagnostic design from scratch. The item type, stem/task design, answer contract, MCQ/MR distractors or non-choice wrong-response planning, explanation goal, feedback design, remediation plan, and verification risks must come from the item design cards.
+
+Preserve each card's item type in the final question metadata. A final question must not change `multiple-response` into `multiple-choice`, or turn a fill-blank, match, sequence, or hotspot card into an A-D item, unless the card is first repaired and re-reviewed.
 
 Do not block quiz creation merely because local lessons or exercises are absent when the quiz intent and item design cards mark those support families `not-in-scope` or `deferred`. Keep remediation actionable through the support that is available, planned, or explicitly postponed.
 
@@ -95,7 +98,9 @@ Required final quiz qualities:
 - diagnostic map;
 - questions with `Source item card` metadata;
 - answer key;
-- per-choice feedback for MCQ/MR;
+- type-specific answer contract and verification notes;
+- per-choice feedback for diagnostic MCQ/MR;
+- non-choice feedback/remediation that matches the item type, without fake per-choice fields;
 - misconception tags where relevant;
 - remediation by mastery level and misconception;
 - author notes with risks/statuses.

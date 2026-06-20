@@ -51,7 +51,7 @@ Prompt-specific requirements:
 
 Review selected existing quiz files for item quality.
 
-If this review follows a material edit to stems, item types, options, distractors, diagnostic signals, misconceptions, or item order, identify the changed item components and review those components in context. A successful item-quality review refreshes `item_quality_status` only.
+If this review follows a material edit to stems, item types, MCQ/MR options or distractors, non-choice interaction shape, diagnostic signals, misconceptions, or item order, identify the changed item components and review those components in context. A successful item-quality review refreshes `item_quality_status` only.
 
 Check:
 
@@ -60,9 +60,11 @@ Check:
 - skill coverage;
 - cognitive role balance;
 - item-type fit;
+- item-type contract fit for every final question;
 - stem clarity;
 - diagnostic signal;
-- distractor quality;
+- MCQ/MR distractor quality;
+- non-choice wrong-response pattern quality where relevant;
 - misconception coverage;
 - question order/difficulty progression;
 - standalone usability;
@@ -75,6 +77,10 @@ You may update:
 - stems;
 - options;
 - item types;
+- fill-blank answer-format instructions;
+- match left/right prompt structure;
+- sequence item wording or ordering criterion;
+- hotspot target description when the issue is item clarity rather than answer-key correctness;
 - item order;
 - diagnostic map;
 - misconception tags;

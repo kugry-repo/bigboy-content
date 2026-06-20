@@ -65,10 +65,14 @@ TODO.
 
 ## Questions
 
+Standalone quiz files contain diagnostic quiz items. Do not use this full contract for in-lesson mini-checks.
+
+Use one canonical item type per question: `multiple-choice`, `multiple-response`, `true-false`, `fill-blank`, `match`, `sequence`, or `hotspot`.
+
 ### Question 1 — TODO
 
 Type:
-- multiple-choice
+- multiple-choice | multiple-response | true-false | fill-blank | match | sequence | hotspot
 
 Cognitive role:
 - recognition
@@ -89,59 +93,207 @@ Stem:
 TODO.
 
 Options / interaction:
-- A. TODO
-- B. TODO
-- C. TODO
-- D. TODO
+- TODO. Use choices only for `multiple-choice` and `multiple-response`; use answer-input, proposition, matching, ordering, or hotspot target details for other item types.
 
 ## Corrigé et feedback
 
+Use the snippet that matches each question type. Every item needs an answer contract, explanation, verification notes, feedback, and remediation. MCQ/MR items need per-choice feedback; non-choice items do not.
+
 ### Question 1
 
-Correct answer:
+Item type:
 - TODO
+
+Answer contract:
+- TODO
+
+Explanation:
+- TODO
+
+Verification notes:
+- TODO
+
+Feedback:
+- TODO
+
+Remediation:
+- TODO
+
+Misconception tags:
+- TODO
+
+### Type snippets
+
+#### multiple-choice
+
+Correct answer:
+- A
 
 Why the correct answer is correct:
 - TODO
 
 Choice feedback:
 - A:
-  - Status: correct | incorrect | partially-correct
+  - Status: correct
   - Diagnostic signal: TODO
   - Why this is tempting: TODO
   - Why it is correct/incorrect: TODO
   - What to remember: TODO
   - Remediation: TODO
 - B:
-  - Status: correct | incorrect | partially-correct
+  - Status: incorrect
   - Diagnostic signal: TODO
   - Why this is tempting: TODO
   - Why it is correct/incorrect: TODO
   - What to remember: TODO
   - Remediation: TODO
-- C:
-  - Status: correct | incorrect | partially-correct
-  - Diagnostic signal: TODO
-  - Why this is tempting: TODO
-  - Why it is correct/incorrect: TODO
-  - What to remember: TODO
-  - Remediation: TODO
-- D:
-  - Status: correct | incorrect | partially-correct
-  - Diagnostic signal: TODO
-  - Why this is tempting: TODO
-  - Why it is correct/incorrect: TODO
-  - What to remember: TODO
-  - Remediation: TODO
-
-Accepted alternatives, if needed:
-- TODO.
 
 Verification notes:
+- Exactly one correct answer.
+
+#### multiple-response
+
+Correct answer:
+- A, C
+
+Scoring / answer rule:
 - TODO.
 
-Misconception tags:
+Choice feedback:
+- A:
+  - Status: correct
+  - Diagnostic signal: TODO
+  - Missing-correct feedback: TODO
+  - What to remember: TODO
+  - Remediation: TODO
+- B:
+  - Status: incorrect
+  - Diagnostic signal: TODO
+  - Why this is tempting: TODO
+  - Why it is correct/incorrect: TODO
+  - What to remember: TODO
+  - Remediation: TODO
+
+Verification notes:
+- Correct set and scoring rule are unambiguous.
+
+#### true-false
+
+Correct answer:
+- Vrai | Faux
+
+Explanation:
 - TODO.
+
+Response feedback:
+- Vrai:
+  - Status: correct | incorrect
+  - Diagnostic signal: TODO
+  - Why it is correct/incorrect: TODO
+  - Remediation: TODO
+- Faux:
+  - Status: correct | incorrect
+  - Diagnostic signal: TODO
+  - Why it is correct/incorrect: TODO
+  - Remediation: TODO
+
+Verification notes:
+- Proposition is not ambiguous, or the context makes it explicit.
+
+#### fill-blank
+
+Expected answer(s):
+- TODO
+
+Accepted alternatives:
+- TODO
+
+Common wrong forms:
+- TODO
+
+Feedback:
+- TODO
+
+Remediation:
+- TODO
+
+Verification notes:
+- Answer format and accepted equivalent forms are clear.
+
+#### match
+
+Correct pairings:
+- TODO -> TODO
+
+Pairing rationale:
+- TODO
+
+Common wrong pairings:
+- TODO
+
+Feedback:
+- TODO
+
+Remediation:
+- TODO
+
+Verification notes:
+- Pairings are unique, or many-to-one matching is explicitly allowed.
+
+#### sequence
+
+Correct order:
+- TODO
+
+Ordering criterion:
+- TODO
+
+Common wrong order:
+- TODO
+
+Feedback:
+- TODO
+
+Remediation:
+- TODO
+
+Verification notes:
+- Order is unique, or allowed alternatives are stated.
+
+#### hotspot
+
+Target reference:
+- TODO image/diagram/graph/table description or file reference.
+
+Correct region(s):
+- TODO Markdown-friendly region definition.
+
+UI support:
+- content-contract-ready / UI-dependent
+
+Common wrong regions:
+- TODO
+
+Feedback:
+- TODO
+
+Remediation:
+- TODO
+
+Verification notes:
+- Target region is unambiguous without guessing the renderer.
+
+#### choice-feedback line format
+
+For diagnostic MCQ/MR choice feedback, use:
+
+- Choice label:
+  - Status: correct | incorrect | partially-correct
+  - Diagnostic signal: TODO
+  - Why this is tempting: TODO
+  - Why it is correct/incorrect: TODO
+  - What to remember: TODO
+  - Remediation: TODO
 
 ## Critères de maîtrise
 

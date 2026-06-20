@@ -52,6 +52,10 @@ Check:
 
 - correct answers;
 - accepted alternatives;
+- fill-blank accepted equivalent forms and notation constraints;
+- match correct pairings and uniqueness or many-to-one rules;
+- sequence correct order, ordering criterion, and allowed alternative orders if any;
+- hotspot correct region definition and target-reference consistency;
 - domains;
 - theorem conditions;
 - notation;
@@ -61,12 +65,15 @@ Check:
 - answer consistency with stem and feedback;
 - no unsupported official/exam claims.
 
-If this review follows a material edit to correct-answer logic, accepted alternatives, answer constraints, or mathematically relevant options, identify the changed answer-key scope and review it in context. A successful answer-key review refreshes `answer_key_status` only.
+If this review follows a material edit to correct-answer logic, accepted alternatives, answer constraints, MCQ/MR choices that affect correctness, match pairings, sequence order, or hotspot region definition, identify the changed answer-key scope and review it in context. A successful answer-key review refreshes `answer_key_status` only.
 
 You may update:
 
 - correct answer;
 - accepted alternatives;
+- correct pairings;
+- correct order;
+- correct hotspot region definition;
 - verification notes;
 - mathematically wrong options;
 - `answer_key_status`.

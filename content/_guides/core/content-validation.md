@@ -51,7 +51,7 @@ The validator checks:
 - required exercise cluster, raw-seed, and design-card areas from the canonical initialized scaffold;
 - required quiz raw-material and design-card areas from the canonical initialized scaffold;
 - canonical exercise design-card IDs, duplicate IDs, allowed statuses, required field labels, ready-card completeness, and final exercise `source_design_card` references when enough local planning data exists;
-- canonical quiz item design-card IDs, duplicate IDs, allowed statuses, required field labels, MCQ/MR distractor and per-choice feedback planning fields, ready-card completeness, and final quiz `Source item card` references when enough local planning data exists;
+- canonical quiz item design-card IDs, duplicate IDs, allowed statuses, required field labels, MCQ/MR distractor and per-choice feedback planning fields, non-choice type-specific planning fields, ready-card completeness, and final quiz `Source item card` references when enough local planning data exists;
 - `## Production dashboard` rows from the canonical initialized scaffold as the authoritative initialized/published unit workstream tracker;
 - allowed dashboard statuses including the sparse-family states `not-started`, `not-in-scope`, and `deferred`;
 - `## Journal de production` as the historical log;
@@ -244,4 +244,4 @@ The canonical quiz workflow is:
 07-review-feedback-remediation.md
 ```
 
-The validator checks quiz frontmatter, required headings, item type and cognitive role signals, per-choice feedback signals, remediation structure, reviewed TODO conflicts, source safety, review freshness, and status conflicts. It does not attempt deep symbolic mathematics.
+The validator checks quiz frontmatter, required headings, allowed item types, final question item-type contracts, MCQ/MR per-choice feedback signals, non-choice answer-contract signals, remediation structure, reviewed TODO conflicts, source safety, review freshness, and status conflicts. It does not attempt deep symbolic mathematics.

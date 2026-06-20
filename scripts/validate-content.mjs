@@ -439,6 +439,29 @@ const QUIZ_CHOICE_ITEM_CARD_REQUIRED_FIELDS = [
   },
 ];
 
+const QUIZ_ITEM_CARD_TYPE_REQUIRED_FIELDS = new Map([
+  [
+    "true-false",
+    [{ label: "Proposition contract", aliases: ["proposition-contract"] }],
+  ],
+  [
+    "fill-blank",
+    [{ label: "Accepted answer forms", aliases: ["accepted-answer-forms"] }],
+  ],
+  [
+    "match",
+    [{ label: "Pairing contract", aliases: ["pairing-contract"] }],
+  ],
+  [
+    "sequence",
+    [{ label: "Ordering criterion", aliases: ["ordering-criterion"] }],
+  ],
+  [
+    "hotspot",
+    [{ label: "Hotspot target region", aliases: ["hotspot-target-region"] }],
+  ],
+]);
+
 const REQUIRED_QUIZ_FIELDS = [
   "quiz_kind",
   "quiz_series",
@@ -891,6 +914,8 @@ const CONTRACT_FIXTURES = {
     "content/_fixtures/contracts/invalid-exercise-design-card-contract.md",
   quizItemCardContract:
     "content/_fixtures/contracts/invalid-quiz-item-card-contract.md",
+  quizItemBodyContract:
+    "content/_fixtures/contracts/invalid-quiz-item-body-contract.md",
   exerciseSetBadExerciseId:
     "content/_fixtures/contracts/invalid-exercise-set-bad-exercise-id.md",
   unsupportedObjectType:
@@ -1974,6 +1999,18 @@ function checkQuizItemDesignCardContracts(filePath, body) {
         fieldSeverity,
       );
     }
+
+    const typeRequiredFields =
+      QUIZ_ITEM_CARD_TYPE_REQUIRED_FIELDS.get(itemType) ?? [];
+    if (typeRequiredFields.length > 0) {
+      checkRequiredPlanningFields(
+        filePath,
+        "quiz item design card",
+        card,
+        typeRequiredFields,
+        fieldSeverity,
+      );
+    }
   }
 
   return cardById;
@@ -3054,6 +3091,26 @@ function checkContractFixtures() {
   );
 
   expectInvalidContractFixture(
+    CONTRACT_FIXTURES.quizItemBodyContract,
+    "quiz item body contract",
+    () => {
+      const parsed = readFixtureFrontmatter(
+        CONTRACT_FIXTURES.quizItemBodyContract,
+        "quiz item body contract fixture",
+      );
+      checkFinalQuizItemContracts(
+        fullPathFromRepoPath(CONTRACT_FIXTURES.quizItemBodyContract),
+        parsed.data,
+        parsed.body,
+      );
+    },
+    [
+      /Question 1 - Bad MCQ: multiple-choice item must have exactly one correct answer/,
+      /Question 1 - Bad MCQ: multiple-choice item needs per-choice feedback/,
+    ],
+  );
+
+  expectInvalidContractFixture(
     CONTRACT_FIXTURES.exerciseSetBadExerciseId,
     "exercise-set exercise_ids shape",
     () => {
@@ -3567,6 +3624,531 @@ function checkQuizSourceItemCards(unit, filePath, body) {
   }
 }
 
+function quizItemQuestionNumber(heading, fallback) {
+  const match = heading.match(/^Question\s+(\d+)/i);
+  return match ? Number.parseInt(match[1], 10) : fallback;
+}
+
+function parseQuizQuestionBlocks(body) {
+  const questionsSection = stripFencedCodeBlocks(
+    getSection(body, 2, "Questions"),
+  );
+  const questionMatches = [...questionsSection.matchAll(/^###\s+(Question\b.+?)\s*$/gm)];
+  const questions = [];
+
+  for (let index = 0; index < questionMatches.length; index += 1) {
+    const match = questionMatches[index];
+    const heading = match[1].trim();
+    const bodyStart = match.index + match[0].length;
+    const bodyEnd =
+      index + 1 < questionMatches.length
+        ? questionMatches[index + 1].index
+        : questionsSection.length;
+    const text = questionsSection.slice(bodyStart, bodyEnd);
+
+    questions.push({
+      heading,
+      number: quizItemQuestionNumber(heading, index + 1),
+      text,
+      fields: parsePlanningCardFields(text),
+    });
+  }
+
+  return questions;
+}
+
+function parseQuizAnswerBlocks(body) {
+  const feedbackSection = stripFencedCodeBlocks(
+    getSection(body, 2, "Corrigé et feedback"),
+  );
+  const answerMatches = [...feedbackSection.matchAll(/^###\s+(Question\b.+?)\s*$/gm)];
+  const answers = new Map();
+
+  for (let index = 0; index < answerMatches.length; index += 1) {
+    const match = answerMatches[index];
+    const heading = match[1].trim();
+    const bodyStart = match.index + match[0].length;
+    const bodyEnd =
+      index + 1 < answerMatches.length
+        ? answerMatches[index + 1].index
+        : feedbackSection.length;
+    const text = feedbackSection.slice(bodyStart, bodyEnd);
+
+    answers.set(quizItemQuestionNumber(heading, index + 1), {
+      heading,
+      number: quizItemQuestionNumber(heading, index + 1),
+      text,
+      fields: parsePlanningCardFields(text),
+    });
+  }
+
+  return answers;
+}
+
+function quizFieldValue(block, aliases) {
+  return planningField(block, aliases)?.value ?? "";
+}
+
+function hasCompleteQuizField(block, aliases) {
+  return isPlanningFieldComplete(planningField(block, aliases));
+}
+
+function quizItemContractSeverity(data) {
+  return data.status === "reviewed" || data.status === "published"
+    ? "error"
+    : "warning";
+}
+
+function addQuizItemContractDiagnostic(filePath, data, question, message) {
+  const fullMessage = `${question.heading}: ${message}`;
+  if (quizItemContractSeverity(data) === "error") addError(filePath, fullMessage);
+  else addWarning(filePath, fullMessage);
+}
+
+function addQuizItemContractError(filePath, question, message) {
+  addError(filePath, `${question.heading}: ${message}`);
+}
+
+function quizChoiceLabels(text) {
+  const labels = [];
+  const seen = new Set();
+
+  for (const line of String(text ?? "").split(/\r?\n/)) {
+    const match = line.match(/^\s*[-*]\s*(?:`)?([A-Z]|Vrai|Faux|True|False)(?:`)?[\).:]\s+/i);
+    if (!match) continue;
+
+    const raw = match[1];
+    const label = raw.length === 1
+      ? raw.toUpperCase()
+      : raw[0].toUpperCase() + raw.slice(1).toLowerCase();
+    if (seen.has(label)) continue;
+
+    seen.add(label);
+    labels.push(label);
+  }
+
+  return labels;
+}
+
+function labelRegex(label) {
+  const escaped = escapeRegex(label);
+  if (/^[A-Z]$/.test(label)) {
+    return new RegExp(
+      `(?:^|[\\s,;:/\\-\\[(])${escaped}(?:$|[\\s,;:.)\\]\\-])`,
+      "i",
+    );
+  }
+
+  return new RegExp(`\\b${escaped}\\b`, "i");
+}
+
+function labelsMentionedInText(text, labels) {
+  const cleaned = String(text ?? "").replace(/`/g, "");
+  return labels.filter((label) => labelRegex(label).test(cleaned));
+}
+
+function feedbackHasLabelBlock(text, label) {
+  const escaped = escapeRegex(label);
+  return new RegExp(`^\\s*[-*]\\s*(?:\`)?${escaped}(?:\`)?\\s*:`, "im")
+    .test(String(text ?? ""));
+}
+
+function looksLikeMcqChoiceList(text) {
+  return quizChoiceLabels(text).filter((label) => /^[A-Z]$/.test(label)).length >= 2;
+}
+
+function answerTextForContract(answerBlock) {
+  return quizFieldValue(answerBlock, [
+    "correct-answer",
+    "correct-answers",
+    "correct-choice-s",
+    "correct-choices",
+    "answer-contract",
+  ]);
+}
+
+function requireAnswerBlockField(filePath, data, question, answerBlock, aliases, label) {
+  if (hasCompleteQuizField(answerBlock, aliases)) return true;
+  addQuizItemContractDiagnostic(filePath, data, question, `missing ${label}`);
+  return false;
+}
+
+function requireGeneralAnswerContract(filePath, data, question, answerBlock) {
+  requireAnswerBlockField(
+    filePath,
+    data,
+    question,
+    answerBlock,
+    [
+      "explanation",
+      "why-the-correct-answer-is-correct",
+      "pairing-rationale",
+      "ordering-rationale",
+    ],
+    "explanation",
+  );
+  requireAnswerBlockField(
+    filePath,
+    data,
+    question,
+    answerBlock,
+    ["verification-notes", "verification-rule", "verification-check"],
+    "verification notes",
+  );
+  requireAnswerBlockField(
+    filePath,
+    data,
+    question,
+    answerBlock,
+    ["feedback", "choice-feedback", "response-feedback"],
+    "feedback",
+  );
+  requireAnswerBlockField(
+    filePath,
+    data,
+    question,
+    answerBlock,
+    ["remediation"],
+    "remediation",
+  );
+}
+
+function checkChoiceBasedQuizItem(filePath, data, question, answerBlock, itemType) {
+  const optionText = quizFieldValue(question, [
+    "options-interaction",
+    "options",
+    "interaction",
+  ]);
+  const choiceLabels = quizChoiceLabels(optionText).filter((label) => /^[A-Z]$/.test(label));
+
+  if (choiceLabels.length < 2) {
+    addQuizItemContractDiagnostic(
+      filePath,
+      data,
+      question,
+      `${itemType} item needs recognizable choices`,
+    );
+  }
+
+  const correctLabels = labelsMentionedInText(
+    answerTextForContract(answerBlock),
+    choiceLabels,
+  );
+
+  if (itemType === "multiple-choice" && correctLabels.length !== 1) {
+    addQuizItemContractDiagnostic(
+      filePath,
+      data,
+      question,
+      "multiple-choice item must have exactly one correct answer",
+    );
+  }
+
+  if (itemType === "multiple-response" && correctLabels.length < 1) {
+    addQuizItemContractDiagnostic(
+      filePath,
+      data,
+      question,
+      "multiple-response item must identify at least one correct answer",
+    );
+  }
+
+  if (
+    itemType === "multiple-response" &&
+    !hasCompleteQuizField(answerBlock, [
+      "scoring-answer-rule",
+      "answer-rule",
+      "partial-credit-rule",
+    ])
+  ) {
+    addQuizItemContractDiagnostic(
+      filePath,
+      data,
+      question,
+      "multiple-response item needs an unambiguous scoring or answer rule",
+    );
+  }
+
+  const choiceFeedback = quizFieldValue(answerBlock, ["choice-feedback"]);
+  if (!choiceFeedback.trim()) {
+    addQuizItemContractDiagnostic(
+      filePath,
+      data,
+      question,
+      `${itemType} item needs per-choice feedback, not only generic feedback`,
+    );
+    return;
+  }
+
+  const missingFeedback = choiceLabels.filter(
+    (label) => !feedbackHasLabelBlock(choiceFeedback, label),
+  );
+  if (missingFeedback.length > 0) {
+    addQuizItemContractDiagnostic(
+      filePath,
+      data,
+      question,
+      `per-choice feedback missing for choice(s): ${missingFeedback.join(", ")}`,
+    );
+  }
+
+  if (
+    itemType === "multiple-response" &&
+    !hasAnyNormalizedText(choiceFeedback, [
+      "missing-correct",
+      "missed correct",
+      "missed-correct",
+      "manque",
+      "oublie",
+    ])
+  ) {
+    addQuizItemContractDiagnostic(
+      filePath,
+      data,
+      question,
+      "multiple-response feedback should address missed correct choices where practical",
+    );
+  }
+}
+
+function checkTrueFalseQuizItem(filePath, data, question, answerBlock) {
+  const answerText = answerTextForContract(answerBlock);
+  if (!hasAnyNormalizedText(answerText, ["vrai", "faux", "true", "false"])) {
+    addQuizItemContractDiagnostic(
+      filePath,
+      data,
+      question,
+      "true-false item needs a true/false answer",
+    );
+  }
+
+  const responseFeedback = quizFieldValue(answerBlock, [
+    "response-feedback",
+    "choice-feedback",
+    "feedback",
+  ]);
+  for (const label of ["Vrai", "Faux"]) {
+    if (!feedbackHasLabelBlock(responseFeedback, label)) {
+      addQuizItemContractDiagnostic(
+        filePath,
+        data,
+        question,
+        `true-false item should include feedback for "${label}" response`,
+      );
+    }
+  }
+}
+
+function checkFillBlankQuizItem(filePath, data, question, answerBlock) {
+  requireAnswerBlockField(
+    filePath,
+    data,
+    question,
+    answerBlock,
+    ["expected-answer-s", "expected-answers", "expected-answer"],
+    "expected answer(s)",
+  );
+  requireAnswerBlockField(
+    filePath,
+    data,
+    question,
+    answerBlock,
+    ["accepted-alternatives", "accepted-alternatives-if-needed"],
+    "accepted alternatives or explicit none",
+  );
+
+  const optionText = quizFieldValue(question, [
+    "options-interaction",
+    "options",
+    "interaction",
+  ]);
+  if (looksLikeMcqChoiceList(optionText)) {
+    addQuizItemContractDiagnostic(
+      filePath,
+      data,
+      question,
+      "fill-blank item should use an answer-input contract, not MCQ-style choices",
+    );
+  }
+}
+
+function checkMatchQuizItem(filePath, data, question, answerBlock) {
+  requireAnswerBlockField(
+    filePath,
+    data,
+    question,
+    answerBlock,
+    ["correct-pairings", "correct-pairing-s", "pairings"],
+    "correct pairings",
+  );
+  requireAnswerBlockField(
+    filePath,
+    data,
+    question,
+    answerBlock,
+    ["pairing-rationale", "explanation"],
+    "pairing rationale",
+  );
+
+  const pairings = quizFieldValue(answerBlock, [
+    "correct-pairings",
+    "correct-pairing-s",
+    "pairings",
+  ]);
+  if (pairings.trim() && !/(->|=>|→|:)/.test(pairings)) {
+    addQuizItemContractDiagnostic(
+      filePath,
+      data,
+      question,
+      "match item pairings should use a recognizable mapping format",
+    );
+  }
+}
+
+function checkSequenceQuizItem(filePath, data, question, answerBlock) {
+  requireAnswerBlockField(
+    filePath,
+    data,
+    question,
+    answerBlock,
+    ["correct-order"],
+    "correct order",
+  );
+  requireAnswerBlockField(
+    filePath,
+    data,
+    question,
+    answerBlock,
+    ["ordering-criterion"],
+    "ordering criterion",
+  );
+}
+
+function checkHotspotQuizItem(filePath, data, question, answerBlock) {
+  const targetReference =
+    quizFieldValue(question, ["target-reference", "target-description"]) ||
+    quizFieldValue(answerBlock, ["target-reference", "target-description"]);
+  if (!String(targetReference).trim() || /^TODO\b/i.test(String(targetReference).trim())) {
+    addQuizItemContractDiagnostic(
+      filePath,
+      data,
+      question,
+      "hotspot item needs a target image, diagram, graph, table, or visual description",
+    );
+  }
+
+  requireAnswerBlockField(
+    filePath,
+    data,
+    question,
+    answerBlock,
+    ["correct-region-s", "correct-regions", "correct-region"],
+    "correct region definition",
+  );
+
+  const combined = `${question.text}\n${answerBlock.text}`;
+  if (!hasAnyNormalizedText(combined, ["content-contract-ready", "ui-dependent"])) {
+    addQuizItemContractDiagnostic(
+      filePath,
+      data,
+      question,
+      "hotspot item should mark content-contract-ready / UI-dependent until UI support exists",
+    );
+  }
+}
+
+function checkFinalQuizItemContracts(filePath, data, body) {
+  const questions = parseQuizQuestionBlocks(body);
+  const answerBlocks = parseQuizAnswerBlocks(body);
+  const declaredItemTypes = new Set(
+    Array.isArray(data.item_types)
+      ? data.item_types
+      : isEmptyValue(data.item_types)
+        ? []
+        : [data.item_types],
+  );
+
+  for (const question of questions) {
+    const itemTypeField = planningField(question, ["type", "item-type"]);
+    const itemType = firstPlanningFieldToken(itemTypeField);
+
+    if (!itemType) {
+      addQuizItemContractDiagnostic(filePath, data, question, "missing item type");
+      continue;
+    }
+
+    if (!ALLOWED_QUIZ_ITEM_TYPES.has(itemType)) {
+      addQuizItemContractError(
+        filePath,
+        question,
+        `unsupported item type "${itemType}"; expected one of ${[...ALLOWED_QUIZ_ITEM_TYPES].join(", ")}`,
+      );
+      continue;
+    }
+
+    if (declaredItemTypes.size > 0 && !declaredItemTypes.has(itemType)) {
+      addQuizItemContractDiagnostic(
+        filePath,
+        data,
+        question,
+        `item type "${itemType}" is not listed in frontmatter item_types`,
+      );
+    }
+
+    if (!hasCompleteQuizField(question, ["stem"])) {
+      addQuizItemContractDiagnostic(filePath, data, question, "missing stem");
+    }
+
+    const answerBlock = answerBlocks.get(question.number);
+    if (!answerBlock) {
+      addQuizItemContractDiagnostic(
+        filePath,
+        data,
+        question,
+        'missing matching answer/feedback block under "## Corrigé et feedback"',
+      );
+      continue;
+    }
+
+    requireAnswerBlockField(
+      filePath,
+      data,
+      question,
+      answerBlock,
+      [
+        "correct-answer",
+        "correct-answers",
+        "correct-choice-s",
+        "correct-choices",
+        "answer-contract",
+        "expected-answer-s",
+        "expected-answers",
+        "correct-pairings",
+        "correct-pairing-s",
+        "correct-order",
+        "correct-region-s",
+        "correct-regions",
+      ],
+      "answer contract",
+    );
+    requireGeneralAnswerContract(filePath, data, question, answerBlock);
+
+    if (itemType === "multiple-choice" || itemType === "multiple-response") {
+      checkChoiceBasedQuizItem(filePath, data, question, answerBlock, itemType);
+    } else if (itemType === "true-false") {
+      checkTrueFalseQuizItem(filePath, data, question, answerBlock);
+    } else if (itemType === "fill-blank") {
+      checkFillBlankQuizItem(filePath, data, question, answerBlock);
+    } else if (itemType === "match") {
+      checkMatchQuizItem(filePath, data, question, answerBlock);
+    } else if (itemType === "sequence") {
+      checkSequenceQuizItem(filePath, data, question, answerBlock);
+    } else if (itemType === "hotspot") {
+      checkHotspotQuizItem(filePath, data, question, answerBlock);
+    }
+  }
+}
+
 function checkQuizFile(unit, filePath) {
   const fileName = path.basename(filePath);
   const nameMatch = fileName.match(new RegExp(`^${escapeRegex(unit.code)}-quiz-(\\d{3})\\.md$`));
@@ -3672,6 +4254,7 @@ function checkQuizFile(unit, filePath) {
   }
 
   checkQuizSourceItemCards(unit, filePath, parsed.body);
+  checkFinalQuizItemContracts(filePath, data, parsed.body);
 
   if (data.quiz_kind === "method-choice" && !cognitiveRoles.includes("method-choice")) {
     addWarning(filePath, 'frontmatter "quiz_kind: method-choice" but cognitive_roles does not include "method-choice"');
@@ -3681,8 +4264,11 @@ function checkQuizFile(unit, filePath) {
     addWarning(filePath, 'frontmatter "quiz_kind: error-clinic" but cognitive_roles does not include "error-diagnosis"');
   }
 
+  const hasChoiceBasedItems = itemTypes.some((itemType) =>
+    CHOICE_BASED_QUIZ_ITEM_TYPES.has(itemType),
+  );
   const appearsMcqOrMr =
-    itemTypes.some((itemType) => itemType === "multiple-choice" || itemType === "multiple-response") ||
+    hasChoiceBasedItems ||
     /multiple-choice|multiple-response/i.test(text);
   const feedbackSection = getSection(parsed.body, 2, "Corrigé et feedback");
   const hasPerChoiceFeedback = hasAnyNormalizedText(feedbackSection, [
@@ -3702,7 +4288,7 @@ function checkQuizFile(unit, filePath) {
       addWarning(filePath, 'feedback lacks "Diagnostic signal" or equivalent');
     }
 
-    if (!hasAnyNormalizedText(feedbackSection, ["why this is tempting", "pourquoi c'est tentant", "pourquoi cette reponse est tentante"])) {
+    if (hasChoiceBasedItems && !hasAnyNormalizedText(feedbackSection, ["why this is tempting", "pourquoi c'est tentant", "pourquoi cette reponse est tentante"])) {
       addWarning(filePath, 'feedback lacks "Why this is tempting" or equivalent');
     }
 

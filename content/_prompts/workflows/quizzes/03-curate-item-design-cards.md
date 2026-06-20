@@ -55,7 +55,7 @@ Use the worth-including filter below. Reject or merge a raw item if:
 
 - it only checks memory without value;
 - it has no diagnostic signal;
-- wrong answers are random;
+- wrong answers or wrong-response patterns are random;
 - feedback would be generic;
 - the stem is ambiguous;
 - the answer depends on hidden lesson wording;
@@ -96,7 +96,13 @@ For `multiple-choice` and `multiple-response` cards, also include:
 - per-choice feedback plan;
 - misconception targeted by each wrong choice where appropriate.
 
-For non-choice item types, do not force per-choice feedback. Require the appropriate answer contract, verification check, feedback design, and remediation plan for that item type.
+For non-choice item types, do not force per-choice feedback. Require the appropriate answer contract, verification check, feedback design, remediation plan, and type-specific field:
+
+- `true-false`: proposition contract;
+- `fill-blank`: accepted answer forms;
+- `match`: pairing contract;
+- `sequence`: ordering criterion;
+- `hotspot`: hotspot target region and `content-contract-ready / UI-dependent` marker when UI support is not implemented.
 
 ## Canonical Item Design Card Format
 
@@ -157,6 +163,21 @@ Per-choice feedback plan:
 
 Misconceptions by wrong choice:
 - For MCQ/MR only, where appropriate.
+
+Proposition contract:
+- For true-false only.
+
+Accepted answer forms:
+- For fill-blank only.
+
+Pairing contract:
+- For match only.
+
+Ordering criterion:
+- For sequence only.
+
+Hotspot target region:
+- For hotspot only.
 
 Mismath / ambiguity risks:
 - <risks to check before final drafting>

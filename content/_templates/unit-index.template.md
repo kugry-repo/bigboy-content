@@ -93,7 +93,7 @@ No raw quiz item pools recorded yet.
 
 No quiz item design cards recorded yet.
 
-When created, use H4 item cards from `content/_guides/quizzes/quiz-structure.md`; final quiz questions reference them with `Source item card`.
+When created, use H4 item cards from `content/_guides/quizzes/quiz-structure.md`; final quiz questions reference them with `Source item card`. MCQ/MR cards need distractor and per-choice feedback planning. Non-choice cards need their type-specific accepted-answer, pairing, ordering, or hotspot-region contract without fake per-choice fields.
 
 ## Diagrammes et interactions à prévoir
 

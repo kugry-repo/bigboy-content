@@ -129,9 +129,9 @@ quiz intent
 
 Quiz item design cards are the source of truth for quiz creation. A table-only quiz summary is not enough to create a quiz.
 
-Quiz item design cards are contract-bearing planning artifacts. A ready item card must have a stable H4 item-card ID, allowed status, quiz intent context, target skill, item type, difficulty, stem/task design, answer contract, verification check, explanation goal, feedback design, remediation plan, and source/provenance notes. MCQ/MR item cards also need choices, correct choice(s), distractor rationale, per-choice feedback planning, and misconception mapping where appropriate. Non-choice item cards keep item-type-specific answer, feedback, and remediation contracts without fake per-choice fields.
+Quiz item design cards are contract-bearing planning artifacts. A ready item card must have a stable H4 item-card ID, allowed status, quiz intent context, target skill, item type, difficulty, stem/task design, answer contract, verification check, explanation goal, feedback design, remediation plan, and source/provenance notes. Supported item types are `multiple-choice`, `multiple-response`, `true-false`, `fill-blank`, `match`, `sequence`, and `hotspot`. MCQ/MR item cards also need choices, correct choice(s), distractor rationale, per-choice feedback planning, and misconception mapping where appropriate. Non-choice item cards keep item-type-specific answer, feedback, verification, and remediation contracts without fake per-choice fields.
 
-Every MCQ/MR option should have answer-specific feedback. Wrong choices should map to real misconceptions.
+Every MCQ/MR option should have answer-specific feedback. Wrong choices should map to real misconceptions. Fill-blank, match, sequence, and hotspot items should plan common wrong forms, wrong pairings, wrong orders, or wrong regions instead of pretending they have choices.
 
 Final quiz questions record their source planning object with `Source item card` in the question metadata.
 

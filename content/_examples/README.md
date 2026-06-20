@@ -37,5 +37,6 @@ Some examples use `ma-2bac-pc-svt` IDs because PC/SVT is the seed program. Treat
 - `golden-quiz-intent-card.md` - canonical quiz intent card example.
 - `golden-quiz-design-card.md` - canonical quiz item design card example.
 - `golden-quiz-limites.md` - compact final quiz structure example.
+- `quiz-item-type-contracts.md` - compact structural examples for all supported standalone quiz item types.
 - `bad-vs-better-quiz-item.md` - weak quiz item improved into a diagnostic item.
 - `bad-vs-better-quiz-feedback.md` - generic feedback improved into diagnostic feedback.

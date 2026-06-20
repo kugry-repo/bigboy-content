@@ -77,6 +77,8 @@ After initialization, lesson preparation, exercise clusters, raw exercise seeds,
 
 Exercise design cards and quiz item design cards are contract-bearing planning artifacts. Ready cards need stable H4 IDs, allowed statuses, target skills, answer/solution or feedback/remediation contracts, verification/source notes, and readiness notes before final files are created. Final exercises trace back with `source_design_card`; final quiz questions trace back with `Source item card`.
 
+Standalone quiz item types are canonical and type-specific: `multiple-choice`, `multiple-response`, `true-false`, `fill-blank`, `match`, `sequence`, and `hotspot`. MCQ/MR items require distractor and per-choice feedback planning where diagnostic; non-choice items require their own accepted-answer, pairing, ordering, or hotspot-region contract without fake per-choice fields.
+
 Skill coverage is content-derived: unit indexes, artifact frontmatter `skills`, exercise and quiz design cards, and unit review notes are the current source of truth. A generated coverage report may be added later; no manually maintained global file is authoritative.
 
 ## Authoring Flow
@@ -96,7 +98,7 @@ Start with:
 
 Create final files only through the appropriate workflow prompts and in small batches. Do not create whole units, full exercise libraries, quiz libraries, or app/frontend work unless explicitly requested.
 
-Changed artifacts route to the smallest owning review: lesson verification for lesson substance, exercise quality review for exercise statement/design changes, solution review for exercise solution changes, quiz item-quality review for item/stem/distractor changes, answer-key review for answer logic, and feedback/remediation review for next-step routing.
+Changed artifacts route to the smallest owning review: lesson verification for lesson substance, exercise quality review for exercise statement/design changes, solution review for exercise solution changes, quiz item-quality review for item/stem/MCQ-distractor/non-choice interaction changes, answer-key review for answer logic, accepted forms, pairings, order, or hotspot regions, and feedback/remediation review for next-step routing.
 
 ## Validation
 

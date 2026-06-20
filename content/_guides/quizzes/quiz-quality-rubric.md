@@ -19,9 +19,10 @@ Every serious quiz item must answer:
 
 - What does this question test?
 - What student state does the answer reveal?
-- What misconception does each wrong answer expose?
-- Why is each wrong answer tempting?
-- What should the student do next after choosing it?
+- For choice-based items, what misconception does each wrong choice expose?
+- For non-choice items, what common wrong response, wrong pairing, wrong order, or wrong region should the feedback anticipate?
+- Why is the wrong response tempting?
+- What should the student do next after the response?
 
 A good quiz is not "10 questions + answer key." A good quiz is diagnostic items, misconception-aware feedback, and targeted next steps.
 
@@ -52,8 +53,8 @@ Score each criterion from 1 to 5.
 | Skill coverage | Random skills or too many targets. | Covers the main skill but misses important traps. | Covers the intended skill map without drift or padding. |
 | Cognitive mix | Same cognitive demand repeated. | Some mix of recognition, calculation, or method choice. | Roles are intentionally chosen for diagnosis: recognition, method-choice, micro-calculation, error-diagnosis, missing-step, representation, transfer, theorem-condition, graph-reading, or proof-order. |
 | Item-type fit | Item types are chosen for variety or convenience. | Mostly suitable item types. | Each item type fits the diagnostic signal better than alternatives. |
-| Distractor quality | Wrong answers are random, impossible, or cosmetic. | Some plausible distractors. | Each wrong answer exposes a real misconception, invalid theorem use, domain error, method-choice error, algebra slip, or incomplete reasoning. |
-| Feedback quality | "Correct/incorrect" only. | Gives general explanations. | Feedback is answer-specific, explains why the answer is tempting, why it works/fails, and what to remember. |
+| Distractor / wrong-response quality | Wrong answers or anticipated wrong responses are random, impossible, or cosmetic. | Some plausible distractors or common wrong responses are planned. | Each wrong response exposes a real misconception, invalid theorem use, domain error, method-choice error, algebra slip, or incomplete reasoning. |
+| Feedback quality | "Correct/incorrect" only. | Gives general explanations. | Feedback is type-specific, explains why the answer is tempting, why it works/fails, and what to remember. |
 | Remediation quality | No next step after diagnosis. | General advice such as "review the lesson." | Routes by mastery level and misconception to available or planned lessons, exercises, mini-reviews, prerequisite paths, or retry item types. |
 | Difficulty progression | No order logic. | Roughly easier to harder. | Progression reveals readiness, core skill, traps, transfer, and synthesis in a planned sequence. |
 | Standalone usability | Depends on hidden lesson wording. | Mostly understandable alone. | A student can attempt it from the file alone with clear prerequisites, instructions, and notation. |
@@ -71,7 +72,7 @@ Score each individual item from 1 to 5.
 | Stem clarity | Ambiguous, overloaded, or depends on hidden context. | Clear enough with minor polish needed. | Clear, compact, and complete without giving away the answer. |
 | Mathematical correctness | Contains an error or missing condition. | Correct but needs verification notes. | Correct, condition-aware, and notation-consistent. |
 | Answer key correctness | Key is missing, wrong, or incomplete. | Key is plausible but needs review. | Key, accepted alternatives, and partial correctness rules are verified. |
-| Wrong-answer quality | Wrong answers are random or impossible. | Some wrong answers are plausible. | Every wrong answer maps to a meaningful student state. |
+| Wrong-answer quality | Wrong answers or anticipated wrong responses are random or impossible. | Some wrong answers or common wrong responses are plausible. | Every wrong response maps to a meaningful student state. |
 | Diagnostic signal | Answer choices do not reveal why the student failed. | Reveals one broad weakness. | Each answer gives a distinct, useful diagnosis. |
 | Feedback specificity | Generic feedback. | Explains correct answer and some wrong answers. | Feedback names the exact mistake, why it is tempting, why it fails, and what to do next. |
 | Remediation usefulness | No useful next step. | General next step. | Choice-level and misconception-level remediation are actionable. |
@@ -85,6 +86,8 @@ A quiz cannot be marked reviewed if answer key, item quality, feedback, diagnost
 A correct answer key alone is not enough for a quiz to be reviewed.
 
 A wrong answer is not acceptable unless it represents a plausible student mistake, misconception, invalid theorem use, domain error, method-choice error, algebra slip, or incomplete reasoning.
+
+For `multiple-choice` and `multiple-response`, per-choice feedback and distractor rationale are required for diagnostic items. For `fill-blank`, `match`, `sequence`, and `hotspot`, do not fake choices; require the appropriate accepted-answer, pairing, ordering, or target-region contract instead.
 
 Do not use item types just for variety.
 
@@ -105,8 +108,8 @@ A reviewed quiz must have:
 - diagnostic item mix;
 - appropriate item types;
 - correct answer key;
-- answer-specific feedback;
-- meaningful distractors;
+- type-specific feedback;
+- meaningful distractors or anticipated wrong-response patterns;
 - misconception tags where relevant;
 - remediation paths;
 - realistic mastery criteria;
@@ -117,7 +120,7 @@ Use separate status fields intentionally:
 
 - `item_quality_status`: item purpose, clarity, diagnostic value, distractor quality, and item-type fit.
 - `answer_key_status`: mathematical correctness and accepted answers.
-- `feedback_status`: answer-specific teaching quality.
+- `feedback_status`: type-specific teaching quality.
 - `remediation_status`: next-step routing.
 
 After a material edit, set only the affected quiz review substatus to `needs-review` until that targeted review passes. Do not treat a reviewed answer key as fresh evidence for changed feedback, or reviewed feedback as fresh evidence for changed distractors.

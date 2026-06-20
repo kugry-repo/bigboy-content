@@ -191,7 +191,7 @@ Each quiz belongs to a quiz series and lives under `quizzes/`. Normal quizzes us
 
 Every MCQ/MR choice should have answer-specific feedback. Wrong choices should map to real misconceptions and explain why the choice is tempting, why it fails, and what idea to use instead.
 
-Ready quiz item design cards should use the canonical H4 item-card contract. MCQ/MR cards need choices, correct choice(s), distractor rationale, per-choice feedback planning, and misconception mapping before final quiz file creation. Non-choice cards need item-type-specific answer, feedback, verification, and remediation contracts without fake per-choice requirements.
+Ready quiz item design cards should use the canonical H4 item-card contract. MCQ/MR cards need choices, correct choice(s), distractor rationale, per-choice feedback planning, and misconception mapping before final quiz file creation. Non-choice cards need item-type-specific answer, feedback, verification, remediation, and planning fields without fake per-choice requirements.
 
 Quiz remediation should route by mastery level and by misconception. A correct answer key alone is not enough for reviewed quiz status.
 

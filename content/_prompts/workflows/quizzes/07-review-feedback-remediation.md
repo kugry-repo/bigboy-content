@@ -51,19 +51,21 @@ Prompt-specific requirements:
 
 Check:
 
-- answer-specific feedback;
-- diagnostic signal for each answer;
-- why wrong answers are tempting;
-- why wrong answers are wrong;
+- type-specific feedback;
+- per-choice feedback for diagnostic MCQ/MR items;
+- diagnostic signal for each answer or anticipated wrong-response pattern;
+- why wrong choices, wrong forms, wrong pairings, wrong orders, or wrong regions are tempting;
+- why those responses are wrong;
 - what to remember;
-- remediation after each choice;
+- remediation after each MCQ/MR choice where applicable;
+- remediation for true-false wrong response, fill-blank common wrong forms, match wrong pairings, sequence wrong swaps, and hotspot wrong regions where applicable;
 - global mastery criteria;
 - remediation by mastery level;
 - remediation by misconception;
 - links/placeholders to available or planned lessons, exercises, mini-reviews, or prerequisite paths, with `not-in-scope` or `deferred` accepted when local support families are intentionally absent or postponed;
 - usefulness of feedback for a real student.
 
-If this review follows a material edit to per-choice feedback, diagnostic signals, mastery criteria, or remediation, identify the changed scope and review only the relevant feedback/remediation evidence. A successful review refreshes `feedback_status` and/or `remediation_status` only when those components were actually checked.
+If this review follows a material edit to per-choice feedback, non-choice wrong-response feedback, diagnostic signals, mastery criteria, or remediation, identify the changed scope and review only the relevant feedback/remediation evidence. A successful review refreshes `feedback_status` and/or `remediation_status` only when those components were actually checked.
 
 You may update:
 
@@ -77,7 +79,7 @@ You may update:
 
 You must not mark `answer_key_status` reviewed unless answer-key review has passed.
 
-Use `feedback_status: reviewed` only when answer-specific feedback is useful and specific.
+Use `feedback_status: reviewed` only when type-specific feedback is useful and specific.
 
 Use `remediation_status: reviewed` only when next-step routing is actionable by mastery level and misconception.
 

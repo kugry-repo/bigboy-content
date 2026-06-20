@@ -85,6 +85,18 @@ Weak remediation is vague:
 Remediation: Revoir le cours.
 ```
 
+## Non-Choice Remediation
+
+For non-choice item types, do not invent per-choice remediation.
+
+- `true-false`: route from the incorrect response to the missing condition, correction, or misconception.
+- `fill-blank`: route from common wrong forms, missing equivalent forms, or notation mistakes to the smallest useful review/practice path.
+- `match`: route from common wrong pairings to the relation that should have controlled the match.
+- `sequence`: route from common swaps to the dependency or ordering criterion that was missed.
+- `hotspot`: route from common wrong regions to the visual cue, scale, label, interval, or diagram feature that identifies the target.
+
+The answer-key review proves the correct answer contract. The feedback/remediation review proves that the response teaches and routes usefully. Do not treat one review as evidence for the other.
+
 ## Link Policy
 
 Use the most concrete available target:

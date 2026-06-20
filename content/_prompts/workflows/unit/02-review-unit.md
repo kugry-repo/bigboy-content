@@ -75,7 +75,7 @@ Lessons, exercises, and standalone quizzes are first-class artifact families. Re
 
 - Lessons: use `content/_guides/lessons/lesson-editorial-pipeline.md`, `content/_guides/lessons/lesson-structure.md`, and `content/_guides/lessons/lesson-quality-rubric.md` for lesson clarity, structure, coherence, compression, voice, mathematical correctness, and learning flow.
 - Exercises: use `content/_guides/exercises/exercise-structure.md`, `content/_guides/exercises/exercise-design-guide.md`, `content/_guides/exercises/exercise-quality-rubric.md`, and `content/_guides/exercises/solution-style.md` for statement quality, target skill, difficulty, trap design, design-card readiness, solution correctness, solution pedagogy, and batch balance.
-- Quizzes: use `content/_guides/quizzes/quiz-structure.md`, `content/_guides/quizzes/quiz-item-writing-guide.md`, `content/_guides/quizzes/quiz-quality-rubric.md`, and `content/_guides/quizzes/quiz-remediation-guide.md` for diagnostic intent, item quality, answer keys, distractors, feedback, explanation, remediation, and quiz-level coherence.
+- Quizzes: use `content/_guides/quizzes/quiz-structure.md`, `content/_guides/quizzes/quiz-item-writing-guide.md`, `content/_guides/quizzes/quiz-quality-rubric.md`, and `content/_guides/quizzes/quiz-remediation-guide.md` for diagnostic intent, item quality, item-type contracts, answer keys, MCQ/MR distractors, non-choice wrong-response patterns, feedback, explanation, remediation, and quiz-level coherence.
 
 Do not judge exercises by lesson flow standards. Do not judge standalone quizzes as compressed lessons or in-lesson checks. Use lesson standards only for lesson artifacts, exercise standards only for exercise artifacts and exercise design cards, and quiz standards only for quiz artifacts and quiz planning cards.
 
@@ -130,12 +130,12 @@ Check:
 - frontmatter fields and IDs are consistent;
 - declared skills are covered, practiced, quizzed, deferred, or intentionally `not-in-scope` in a way that matches the declared scope;
 - when exercises are in scope, exercise files, design cards or direct blueprints, statement/design statuses, solution statuses, source design-card links, and batch-balance notes satisfy the exercise workflow contract at a review-signal level;
-- when quizzes are in scope, standalone quiz files, quiz intent cards, item design cards, item-quality status, answer-key status, feedback status, remediation status, and required answer/feedback/remediation sections satisfy the quiz workflow contract at a review-signal level;
+- when quizzes are in scope, standalone quiz files, quiz intent cards, item design cards, item-quality status, answer-key status, feedback status, remediation status, canonical item types, and required type-specific answer/feedback/remediation sections satisfy the quiz workflow contract at a review-signal level;
 - exercises align with lessons only when both streams exist or the unit plan says they should align;
 - standalone quizzes align with lessons, exercises, quiz intent cards, or item design cards only when those streams/cards exist or the unit plan says they should align;
 - difficulty progression is reasonable inside each existing stream and across streams that explicitly interact;
 - existing exercise solutions are clear and correct at a review-signal level, without assuming solution review from statement/design review;
-- existing quiz item quality, answer keys, feedback, and remediation are clear, correct, useful, and misconception-based at a review-signal level, without assuming feedback/remediation review from answer-key review;
+- existing quiz item quality, answer keys, feedback, and remediation are clear, correct, useful, and misconception-based at a review-signal level, without assuming feedback/remediation review from answer-key review or answer-key review from feedback/remediation review;
 - no in-scope artifact claims readiness while lesson status, exercise substatuses, quiz substatuses, or dashboard review rows are `needs-review`;
 - notation is consistent;
 - diagrams/interactions are planned where declared useful;

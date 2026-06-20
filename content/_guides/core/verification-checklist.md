@@ -99,9 +99,17 @@ Check:
 - [ ] Ready MCQ/MR item cards include choices, correct choice(s), distractor rationale, per-choice feedback planning, and misconception mapping where appropriate.
 - [ ] Non-choice item cards use item-type-specific answer, feedback, verification, and remediation contracts without fake per-choice requirements.
 - [ ] Each final question records `Source item card`.
-- [ ] Item quality is reviewed for purpose, skill coverage, cognitive role balance, item-type fit, stem clarity, diagnostic signal, distractors, misconception coverage, order, standalone usability, and source safety.
+- [ ] Each final question declares one canonical item type: `multiple-choice`, `multiple-response`, `true-false`, `fill-blank`, `match`, `sequence`, or `hotspot`.
+- [ ] MCQ items have choices, exactly one correct answer, distractor rationale, explanation, verification, and per-choice diagnostic feedback.
+- [ ] Multiple-response items have choices, an unambiguous correct set, scoring/answer rule where needed, explanation, verification, and feedback for selected wrong and missed correct choices where practical.
+- [ ] True-false items have a precise proposition, a true/false answer, explanation, verification against ambiguity, and feedback for both response paths when diagnostic.
+- [ ] Fill-blank items have a clear blank, expected answers, accepted equivalent forms when relevant, answer-format verification, explanation, feedback for common wrong forms, and remediation.
+- [ ] Match items have left/right lists, correct pairings, uniqueness or many-to-one rules, pairing rationale, feedback for common wrong pairings, and remediation.
+- [ ] Sequence items have items to order, correct order, ordering criterion, uniqueness or allowed alternatives, explanation, feedback for common swaps, and remediation.
+- [ ] Hotspot items have a target visual reference or description, Markdown-friendly correct region definition, `content-contract-ready / UI-dependent` marker until UI support exists, explanation, feedback for common wrong regions, and remediation.
+- [ ] Item quality is reviewed for purpose, skill coverage, cognitive role balance, item-type fit, stem clarity, diagnostic signal, MCQ/MR distractors, non-choice wrong-response patterns, misconception coverage, order, standalone usability, and source safety.
 - [ ] Answer keys are reviewed separately for correctness, accepted alternatives, partial correctness, conditions, notation, and consistency with the stem.
-- [ ] Feedback is reviewed separately for answer-specific teaching quality, diagnostic signals, tempting wrong choices, and what to remember.
+- [ ] Feedback is reviewed separately for type-specific teaching quality, diagnostic signals, tempting wrong choices or wrong responses, and what to remember.
 - [ ] Remediation is reviewed separately for actionable routing by mastery level and misconception.
 - [ ] `answer_key_status: reviewed` does not automatically refresh `feedback_status` or `remediation_status`.
 - [ ] `feedback_status: reviewed` or `remediation_status: reviewed` does not automatically refresh `item_quality_status`.

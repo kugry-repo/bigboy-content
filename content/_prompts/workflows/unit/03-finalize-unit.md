@@ -78,7 +78,7 @@ Finalize only the artifact families that are in scope for the declared unit scop
 
 - Lessons: verify intended mini-lesson files exist, lesson `status` and dashboard review state are acceptable, lesson structure and metadata satisfy the lesson contract, and known review issues are resolved or explicitly deferred.
 - Exercises: verify final exercise files exist for intended exercise batches, statements and solutions have acceptable independent review states, design cards or direct blueprints are ready/used/resolved when present, `solution_status` is not assumed from `statement_status`, and exercise batch balance has been handled when the unit scope requires it.
-- Quizzes: verify standalone quiz files exist for intended quiz work, item quality, answer key, feedback, and remediation review states are acceptable, required answer/feedback/remediation contracts are present, quizzes are not treated as in-lesson mini-checks, and remediation uses available, planned, `not-in-scope`, or `deferred` support honestly.
+- Quizzes: verify standalone quiz files exist for intended quiz work, item quality, answer key, feedback, and remediation review states are acceptable, canonical item types and required type-specific answer/feedback/remediation contracts are present, quizzes are not treated as in-lesson mini-checks, and remediation uses available, planned, `not-in-scope`, or `deferred` support honestly.
 
 Do not use `content/_guides/units/golden-unit-standard.md` as a mandatory checklist for every unit. It is an aspirational complete-unit model. Sparse units can be ready when complete for their declared scope.
 
@@ -137,7 +137,7 @@ Check:
 - exercises in scope have one exercise per file, source design-card traceability, acceptable statement/design evidence, acceptable solution evidence, and no top-level reviewed/published claim while any exercise substatus is stale or failed;
 - exercise solution review is checked separately from statement/design review;
 - standalone quizzes live under `quizzes/`;
-- quizzes in scope have acceptable item-quality, answer-key, feedback, and remediation evidence according to `content/_guides/quizzes/quiz-quality-rubric.md`;
+- quizzes in scope have acceptable item-quality, answer-key, feedback, remediation, and type-specific item contract evidence according to `content/_guides/quizzes/quiz-quality-rubric.md`;
 - quiz `answer_key_status`, `feedback_status`, and `remediation_status` fields are accurate and not treated as interchangeable;
 - standalone quizzes are not treated as lesson checkpoints or compressed exercises;
 - files remain ready for future app parsing.

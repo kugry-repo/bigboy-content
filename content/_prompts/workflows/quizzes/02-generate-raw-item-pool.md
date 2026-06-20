@@ -52,7 +52,7 @@ Create or update a raw item pool for one quiz intent.
 
 Generate raw item seeds, not polished quiz files.
 
-Each wrong answer idea must represent a real student mistake.
+Each wrong answer idea or anticipated wrong response must represent a real student mistake. Use wrong choices for MCQ/MR seeds; use common wrong forms, wrong pairings, wrong orders, or wrong regions for non-choice seeds.
 
 Reject seeds with no diagnostic signal.
 
@@ -89,14 +89,22 @@ Stem idea:
 Correct answer idea:
 - TODO
 
-Likely wrong answer:
+Likely wrong answer / wrong response pattern:
 - TODO
 
-What the wrong answer reveals:
+What the wrong answer / wrong response reveals:
 - TODO
 
-Why the wrong answer is tempting:
+Why the wrong answer / wrong response is tempting:
 - TODO
+
+Type-specific contract sketch:
+- MCQ/MR: choice set, correct choice(s), distractor idea, and per-choice feedback angle.
+- True-false: exact proposition, answer, and ambiguity risk.
+- Fill-blank: expected answer form and accepted alternatives to plan.
+- Match: left/right lists and pairing logic.
+- Sequence: items to order and ordering criterion.
+- Hotspot: target visual/diagram reference and correct region definition.
 
 Feedback angle:
 - TODO

@@ -139,7 +139,7 @@ For every requested edit:
 2. Identify the smallest subcomponent when possible:
    - lesson explanation, definition, example, prerequisite note, checkpoint, or author note;
    - exercise design intent/card, statement, givens, target, constraints, hints, solution, final answer, verification, mistake block, or author note;
-   - quiz stem, item type, options, distractors, answer key, accepted alternatives, per-choice feedback, diagnostic map, mastery criteria, remediation, or author note.
+   - quiz stem, item type, MCQ/MR options or distractors, fill-blank accepted forms, match pairings, sequence order/criterion, hotspot target region, answer key, per-choice feedback, non-choice wrong-response feedback, diagnostic map, mastery criteria, remediation, or author note.
 3. Classify the edit as material or non-material.
 4. Patch only the bounded scope.
 5. After a material edit, set only the affected review status fields to `needs-review`.
@@ -154,12 +154,21 @@ Freshness invalidation rules:
 - Exercise design cards or design intent: material edits set the card readiness/review state to `needs-review` when it had been ready, and flag derived exercise files whose design evidence depends on the changed card.
 - Exercise statements: material edits set `statement_status: needs-review`; also set `solution_status: needs-review` when the solution depends on the changed statement. Demote exercise `status` to `needs-review` when it had been `reviewed` or `published`.
 - Exercise solutions: material edits set `solution_status: needs-review` only, unless the edit reveals the statement or design is also wrong. Demote exercise `status` to `needs-review` when it had been `reviewed` or `published`.
-- Quiz stems, item types, options, or distractors: material edits set `item_quality_status: needs-review`.
+- Quiz stems, item types, MCQ/MR options or distractors, match prompt structure, sequence ordering criterion, or hotspot target wording: material edits set `item_quality_status: needs-review`.
 - Quiz correct-answer logic: set `answer_key_status: needs-review`.
 - Quiz option, diagnostic-signal, or misconception changes: set `feedback_status: needs-review` when feedback depends on those choices.
 - Quiz feedback edits: set `feedback_status: needs-review`.
 - Quiz remediation edits: set `remediation_status: needs-review`.
 - Quiz `status` becomes `needs-review` when it had been `reviewed` or `published` and any quiz review substatus is invalidated.
+
+Quiz type-specific freshness examples:
+
+- Changing an MCQ/MR distractor affects `item_quality_status` and usually `feedback_status`.
+- Changing an MCQ/MR correct choice affects `answer_key_status` and likely `feedback_status`.
+- Changing a fill-blank accepted answer form affects `answer_key_status`; changing common wrong-form feedback affects `feedback_status`.
+- Changing a match pair affects `answer_key_status` and may affect explanation or feedback.
+- Changing a sequence ordering criterion affects `item_quality_status` and `answer_key_status`.
+- Changing a hotspot region definition affects `answer_key_status` and may affect UI-dependent review notes and feedback.
 
 ## Mode Behavior
 
@@ -264,7 +273,7 @@ Content studio supports quiz modes across `diagnose`, `propose`, `patch`, and `p
 
 When the active file or selection is inside a quiz file, infer the target unit from the path when possible, then use frontmatter and the parent unit `_index.md` to confirm.
 
-Focus on quiz purpose, place in series, exact skill target, diagnostic signal, distractor quality, wrong-answer feedback, correct-answer feedback, misconceptions, item-type suitability, pacing, standalone usefulness, mastery criteria, remediation paths, and supported item types: multiple choice, multiple response, true/false, fill in blanks, matching, sequence, and hotspot when the system supports them.
+Focus on quiz purpose, place in series, exact skill target, diagnostic signal, MCQ/MR distractor quality, wrong-response feedback, correct-answer feedback, misconceptions, item-type suitability, pacing, standalone usefulness, mastery criteria, remediation paths, and supported item types: `multiple-choice`, `multiple-response`, `true-false`, `fill-blank`, `match`, `sequence`, and `hotspot`.
 
 Do not treat standalone quizzes as lesson mini-checks or compressed exercise sheets. Judge them by diagnostic value, answer-key correctness, feedback, and remediation.
 
@@ -272,15 +281,16 @@ Use these critique questions for quiz selections:
 
 - Is this item diagnostically useful?
 - Is this the right item type?
-- What misconception does each wrong answer reveal?
-- Why is each wrong answer tempting?
+- For MCQ/MR, what misconception does each wrong choice reveal?
+- For non-choice items, what common wrong form, wrong pairing, wrong order, or wrong region should the feedback anticipate?
+- Why is the wrong response tempting?
 - Is the feedback specific enough?
 - What should the student do next after this answer?
 - Is this quiz checking ability or just producing a score?
 
 Do not mark `item_quality_status`, `answer_key_status`, `feedback_status`, or `remediation_status` as reviewed during a general patch unless the request explicitly includes the corresponding review criteria. Do not mark `status: published` unless explicitly requested and all four quiz review statuses are already `reviewed`.
 
-Use `needs-review` to invalidate affected quiz statuses after material edits. Route item/stem/option/distractor review to `content/_prompts/workflows/quizzes/05-review-item-quality.md`, answer-key review to `content/_prompts/workflows/quizzes/06-review-answer-keys.md`, and feedback/remediation review to `content/_prompts/workflows/quizzes/07-review-feedback-remediation.md`.
+Use `needs-review` to invalidate affected quiz statuses after material edits. Route item/stem/MCQ-option/distractor/non-choice interaction review to `content/_prompts/workflows/quizzes/05-review-item-quality.md`, answer-key review to `content/_prompts/workflows/quizzes/06-review-answer-keys.md`, and feedback/remediation review to `content/_prompts/workflows/quizzes/07-review-feedback-remediation.md`.
 
 ### Exercise Sets
 

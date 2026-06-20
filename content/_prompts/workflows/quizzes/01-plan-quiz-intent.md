@@ -109,7 +109,12 @@ Needed cognitive roles:
 - proof-order:
 
 Allowed item types:
-- TODO
+- multiple-choice | multiple-response | true-false | fill-blank | match | sequence | hotspot
+
+Item-type contract notes:
+- Why each allowed type fits the diagnostic goal.
+- MCQ/MR: whether distractors and per-choice feedback are needed.
+- Non-choice: expected answer form, pairing logic, ordering criterion, or hotspot target contract as appropriate.
 
 Expected item count:
 - TODO

@@ -254,7 +254,7 @@ On unit indexes, `status` and `planning_state` are separate. `status: published`
 
 Review status is evidence about the current version of an artifact or sub-artifact. When reviewed content changes materially, the relevant evidence is stale and the affected status field must be changed to `needs-review`, unless a more specific failed-review value already applies after an actual review.
 
-A material edit changes meaning, math, answer logic, pedagogy, or review scope. This includes changes to mathematical statements, definitions, examples, exercise statements, givens, targets, constraints, solution logic, final answers, quiz stems, item types, options, distractors, answer keys, per-choice feedback, explanations, remediation, prerequisite assumptions, difficulty, skill target, or intended misconception when those details affect what the review meant.
+A material edit changes meaning, math, answer logic, pedagogy, or review scope. This includes changes to mathematical statements, definitions, examples, exercise statements, givens, targets, constraints, solution logic, final answers, quiz stems, item types, MCQ/MR options or distractors, fill-blank accepted forms, match pairings, sequence order/criterion, hotspot target regions, answer keys, per-choice or non-choice feedback, explanations, remediation, prerequisite assumptions, difficulty, skill target, or intended misconception when those details affect what the review meant.
 
 A non-material edit does not change meaning, math, answer logic, feedback, or pedagogy. Examples include typo fixes, formatting cleanup, minor punctuation, link formatting, and wording polish whose mathematical and pedagogical meaning is unchanged.
 
@@ -266,8 +266,8 @@ Use `needs-review` as the canonical stale-review value:
 - Exercise design-card or blueprint material edits set the card readiness/review state to `needs-review` when it had been ready, and they should flag any derived exercise files whose design evidence now depends on the changed card.
 - Exercise statement material edits set `statement_status: needs-review`; also set `solution_status: needs-review` when the solution depends on the changed statement. If the exercise `status` was `reviewed` or `published`, set it to `needs-review`.
 - Exercise solution material edits set `solution_status: needs-review` unless the edit reveals that the statement or design is also wrong. If the exercise `status` was `reviewed` or `published`, set it to `needs-review`.
-- Quiz stem, item type, option, or distractor material edits set `item_quality_status: needs-review`.
-- Quiz edits that affect the correct answer set `answer_key_status: needs-review`.
+- Quiz stem, item type, MCQ/MR option or distractor, match prompt, sequence criterion, or hotspot target wording material edits set `item_quality_status: needs-review`.
+- Quiz edits that affect the correct answer, accepted alternatives, correct pairing, correct order, or correct hotspot region set `answer_key_status: needs-review`.
 - Quiz edits that affect options, diagnostic signals, or misconceptions set `feedback_status: needs-review` when feedback depends on those choices.
 - Quiz feedback material edits set `feedback_status: needs-review`.
 - Quiz remediation material edits set `remediation_status: needs-review`.
@@ -465,6 +465,18 @@ Allowed quiz review substatus values:
 - `needs-correction`: review found a serious item, answer-key, feedback, or remediation problem.
 
 `status: published` requires all four quiz review substatuses to be `reviewed`.
+
+Allowed `item_types` values are:
+
+- `multiple-choice`
+- `multiple-response`
+- `true-false`
+- `fill-blank`
+- `match`
+- `sequence`
+- `hotspot`
+
+Each final question must declare one of these item types in its question metadata and satisfy the matching standalone quiz item contract from `content/_guides/quizzes/quiz-structure.md`. `sequence` and `hotspot` are valid content contracts even when learner UI support is future work; hotspot items should mark the contract `content-contract-ready / UI-dependent` until rendering support exists.
 
 ```yaml
 ---

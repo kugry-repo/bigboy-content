@@ -226,8 +226,10 @@ Review freshness follows `content/_guides/schema/frontmatter-schema.md`: a mater
 - Standalone quizzes live under `quizzes/`.
 - Each standalone quiz is one Markdown file with multiple questions.
 - Do not confuse standalone quizzes with mini-lesson checkpoints.
+- Canonical standalone quiz item types are `multiple-choice`, `multiple-response`, `true-false`, `fill-blank`, `match`, `sequence`, and `hotspot`.
 - Every MCQ/MR option should have answer-specific feedback.
 - Wrong choices should map to real misconceptions and explain why they are tempting.
+- Non-choice quiz items need their type-specific accepted-answer, pairing, ordering, or hotspot-region contract. Do not invent MCQ choices, distractors, or per-choice feedback for non-choice items.
 - Generate quizzes through quiz intent cards, raw item pools, and curated item design cards before final quiz creation unless explicitly requested otherwise.
 - Create quizzes one file at a time by default.
 - Review item quality, answer keys, feedback, and remediation separately.
