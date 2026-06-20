@@ -6,9 +6,11 @@ These instructions apply to all files under `content/`.
 
 This directory is an Obsidian-compatible vault for authoring Moroccan mathematics program content in Markdown.
 
-## Current phase: content authoring system buildout
+## Current phase: production-ready authoring
 
-The Markdown content system is not a frozen production format yet. For guides, prompts, templates, validators, production dashboards, naming rules, frontmatter schemas, and folder structure, prefer one clear current system over backward compatibility with older drafts.
+The Markdown content system is ready to begin a real vertical-slice content production pass. It is not frozen forever. For guides, prompts, templates, validators, production dashboards, naming rules, frontmatter schemas, and folder structure, prefer one clear current system over backward compatibility with older drafts.
+
+Start from `content/_prompts/START-HERE.md` when choosing a route. Use `content/_prompts/commands/next-action.md` when the target unit exists but the next action is unclear. Prefer small editor-first authoring and review loops; avoid new large refactors unless repository evidence shows a real blocker.
 
 - Assume breaking changes to the authoring format are acceptable unless the user explicitly asks for compatibility.
 - Do not keep old and new workflows, schemas, templates, prompts, validation paths, aliases, fallbacks, or migration shims running in parallel.
@@ -46,7 +48,7 @@ Before reviewing lessons:
 - Read `_prompts/workflows/lessons/05-coherence-pass.md`.
 - Read `_prompts/workflows/lessons/06-compression-pass.md`.
 - Read `_prompts/workflows/lessons/07-verify-finalize.md`.
-- For conversational review, critique, repair, or targeted patching of an existing lesson, read `_prompts/commands/content-studio.md`.
+- For conversational review, critique, repair, or targeted patching of existing content, read `_prompts/commands/content-studio.md`.
 - Read `_guides/lessons/lesson-quality-rubric.md`.
 
 Before creating or editing exercises:
@@ -124,7 +126,7 @@ Route stale review evidence to the smallest owning review: lesson `status` to th
 
 When revising existing content, syncing stale files, or responding to an upstream plan/template/guide change, use `_prompts/commands/change-existing-content.md`. Discover the blast radius and patch only affected files or produce an impact plan.
 
-When polishing, critiquing, diagnosing, grilling, proposing alternatives, or making targeted patches while authoring content, use `_prompts/commands/content-studio.md`. The studio command should infer the target from selected text, active file, path, and frontmatter whenever possible.
+When polishing, critiquing, diagnosing, grilling, proposing alternatives, or making targeted patches while authoring content, use `_prompts/commands/content-studio.md`. It is the daily targeted edit/review command for lessons, exercises, exercise solutions, quizzes, quiz distractors and feedback, exercise sets, and unit-index text. The studio command should infer the target from selected text, active file path, explicit path, and frontmatter whenever possible, with `_workflow/current-unit.md` only as fallback context. Stale review evidence still routes to the owning artifact review prompt.
 
 ## Unit folder rule
 

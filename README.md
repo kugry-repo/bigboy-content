@@ -4,6 +4,8 @@ Markdown-first source for a shared Moroccan mathematics authoring system: progra
 
 Programs live under `content/programs/<program_id>/`. The first program is `content/programs/ma-2bac-pc-svt/`; future programs such as `ma-2bac-sma` and `ma-1bac-pc-svt` use the same shared guides, templates, prompts, and validator.
 
+The authoring system is ready to begin a real vertical content slice. Start from the prompt-library entrypoint, route uncertain unit work through `next-action`, and keep production loops small, targeted, and validation-backed.
+
 The canonical prompt-library entrypoint is `content/_prompts/START-HERE.md`. When the human is unsure what to do for a current or target unit, the canonical state-aware router is `content/_prompts/commands/next-action.md`; it should name the exact next prompt path.
 
 The guide library is categorized under `content/_guides/`; start with `content/_guides/README.md`.
@@ -12,7 +14,9 @@ For official curriculum units, the program `_curriculum-map.md` is the canonical
 
 The canonical unit lifecycle and dashboard guide is `content/_guides/units/unit-workflow.md`. Unit `_index.md` files are the only unit-planning artifacts. Unstarted units stay as `planning_state: stub`; initialize one unit with `content/_prompts/commands/initialize-unit.md` before building its lightweight planning scaffold. Artifact frontmatter owns artifact status and review freshness; the unit index owns unit-level scope, planning notes, blockers, and navigation. The initialized scaffold is authored in `content/_templates/unit-index.template.md`, with a non-production reference fixture at `content/_fixtures/initialized-unit/_index.md`. `planning_state: published` is reserved for an explicit human publication decision; no current workflow prompt sets it automatically.
 
-Use `content/_prompts/commands/content-studio.md` for conversational polishing, critique, diagnosis, proposals, and targeted patches from selected text, active files, or explicit paths. Use `content/_prompts/commands/change-existing-content.md` for known bounded changes, stale-file sync, and workflow/template/schema migrations. Use workflow prompts for canonical artifact workstreams.
+Use `content/_prompts/commands/content-studio.md` as the daily targeted edit/review command for lessons, exercises, exercise solutions, quizzes, quiz distractors and feedback, exercise sets, and unit-index text. It resolves from selected text, active file path, explicit path, then `_workflow/current-unit.md` fallback. Use `content/_prompts/commands/change-existing-content.md` for known bounded changes, stale-file sync, and workflow/template/schema migrations. Use workflow prompts for canonical artifact workstreams and stale review-evidence refresh.
+
+Recommended first production step: initialize one selected official unit, produce one lesson, several real exercises, one small quiz, and one exercise set/practice path from real exercises, then run targeted reviews and validation triage. This is a suggested first vertical slice, not a new global workflow phase.
 
 Run validation from the repository root:
 
@@ -26,4 +30,4 @@ Package the ChatGPT source archive with:
 npm run zip
 ```
 
-This repository intentionally does not support backward compatibility for old authoring schemas, prompt paths, folder structures, or validation paths during the current system-buildout phase.
+This repository intentionally does not support backward compatibility for old authoring schemas, prompt paths, folder structures, or validation paths during content-system development. Future cleanup should update docs, prompts, templates, validation, and examples to one current source of truth instead of keeping legacy paths alive.

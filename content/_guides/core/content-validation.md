@@ -129,7 +129,7 @@ The validator checks:
 - `## Inventaire des fichiers finaux` rows and links for final lesson, exercise, set, and quiz navigation, including sparse-aware `none`, `not-in-scope`, and `deferred` states;
 - `## Journal de production` as a decision/blocker log, not a routine progress tracker;
 - the non-production initialized-unit reference fixture under `content/_fixtures/initialized-unit/`;
-- intentional invalid contract fixtures under `content/_fixtures/contracts/`, run in isolation as fault-injection checks;
+- contract fixture families under `content/_fixtures/contracts/`, run in isolation as invalid, valid, or warning-only validator regression checks;
 - absence of removed duplicate tracker headings;
 - absence of old planned-exercise or planned-quiz table sections;
 - absence of old `chapter_*` and `topic_*` frontmatter fields;
@@ -206,26 +206,35 @@ It does not accept older unit-index structures, table-only exercise or quiz plan
 content/_fixtures/contracts/
 ```
 
-These fixtures are intentionally invalid and must be named `invalid-*`. They
-prove validator behavior for editor-first target precedence, current-unit cache boundaries,
-content-object schema alignment, official-unit map/folder/index agreement,
-stub-vs-initialized scaffold boundaries, final-artifact inventory, routing
-ownership, exercise-set `exercise_ids`, and removed content-object types.
+These fixtures are validator regression cases, not production authoring
+examples. The validator supports three fixture filename families:
 
-The validator runs each fixture in isolation and expects a specific diagnostic.
-Those intentional diagnostics are removed before production results are
-reported. Do not treat contract fixtures as examples, templates, migration
-shims, or alternate schemas.
+- `invalid-*` fixtures test blocking errors.
+- `valid-*` fixtures test accepted sparse or normal contracts.
+- `warning-only-*` fixtures test non-blocking warnings.
+
+They prove validator behavior for editor-first target precedence, current-unit
+cache boundaries, content-object schema alignment, official-unit
+map/folder/index agreement, stub-vs-initialized scaffold boundaries,
+final-artifact inventory, routing ownership, exercise-set `exercise_ids`, and
+removed content-object types.
+
+The validator runs each fixture in isolation. Invalid fixtures expect specific
+blocking diagnostics, valid fixtures expect no diagnostics, and warning-only
+fixtures expect warnings without blocking errors. Intentional fixture
+diagnostics are removed before production results are reported. Do not treat
+contract fixtures as examples, templates, migration shims, or alternate schemas.
 
 To add a fixture:
 
-1. Add one small `invalid-*` file under `content/_fixtures/contracts/`.
-2. Make the file fail one contract clearly.
-3. Add one matching `expectInvalidContractFixture(...)` case in `scripts/validate-content.mjs`.
-4. Run `npm run validate` and confirm the fixture count increases.
+1. Choose `invalid-*`, `valid-*`, or `warning-only-*` according to the behavior being protected.
+2. Add one small file under `content/_fixtures/contracts/`.
+3. Make the file prove one contract clearly.
+4. Add one matching `expectInvalidContractFixture(...)`, `expectValidContractFixture(...)`, or `expectWarningOnlyContractFixture(...)` case in `scripts/validate-content.mjs`.
+5. Run `npm run validate` and confirm the fixture count increases.
 
 Normal validation still validates production content under `content/programs/`
-strictly. Invalid fixtures must never be added to a production program tree.
+strictly. Contract fixtures must never be added to a production program tree.
 
 ## Template And Example Boundaries
 

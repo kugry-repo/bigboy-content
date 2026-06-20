@@ -1,6 +1,6 @@
 # Command - Content Studio
 
-Use this command for conversational polishing, critique, diagnosis, proposals, and targeted patches across content artifacts.
+Use this command as the daily targeted edit/review command for conversational polishing, critique, diagnosis, proposals, and patches across lessons, exercises, exercise solutions, quizzes, quiz distractors and feedback, exercise sets, and unit `_index.md` text.
 
 This is not a pipeline step. It is an authoring studio for back-and-forth work while drafting or revising. It does not replace unit-wide review, publish-readiness cleanup, or state-aware next-action routing.
 
@@ -18,9 +18,9 @@ It works for:
 - one exercise statement, hint, solution step, final answer, or mistake block;
 - one quiz question stem, option, distractor, answer note, feedback block, or remediation note;
 - a related quiz option and feedback pair, even when they are not adjacent;
-- exercise sets;
+- one exercise set progression note, membership detail, label, prerequisite note, or learner-facing set note;
 - one bounded source/provenance or exam-claim note;
-- unit `_index.md` planning sections and author-facing planning cards.
+- unit `_index.md` summary/navigation text, planning sections, and author-facing planning cards.
 
 It patches existing bounded content. It does not create exercise batches, full
 quiz files, full quiz banks, full exam papers, or broad planning coverage.

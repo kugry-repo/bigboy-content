@@ -231,10 +231,12 @@ For conversational critique, diagnosis, proposals, grilling, or targeted patches
 content/_prompts/commands/content-studio.md
 ```
 
-The studio command is the daily editor-facing route for small Markdown edits. It
-is not a generation pipeline. Select the smallest useful fragment when possible,
-or rely on the active file path. The prompt should infer the unit from the file
-path before using `_workflow/current-unit.md`.
+The studio command is the daily editor-facing route for small targeted edits or
+reviews across lessons, exercises, exercise solutions, quizzes, quiz distractors
+and feedback, exercise sets, and unit-index text. It is not a generation
+pipeline. Select the smallest useful fragment when possible, use the active file
+path or an explicit path when available, and treat `_workflow/current-unit.md`
+only as fallback context.
 
 Useful examples:
 

@@ -240,7 +240,7 @@ stable public IDs remain unchanged and every path reference is updated. A
 mutation that would rewrite, delete, or retire a published ID must stop for an
 explicit publication migration decision.
 
-When a program, unit, or artifact is renamed during system buildout, update
+When a program, unit, or artifact is renamed during authoring-system development, update
 paths, frontmatter, derived catalogs, links, examples, prompts, guides, and
 validation rules in the same destructive change. Do not keep aliases, fallback
 paths, or duplicate old/new naming systems.

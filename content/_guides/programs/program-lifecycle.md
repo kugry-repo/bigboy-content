@@ -220,7 +220,8 @@ Metadata changes may affect many files:
 - `status`.
 
 If `id_prefix` changes, check publication state first. Unpublished IDs may be
-rewritten destructively during system buildout. Published IDs must not be
+rewritten destructively during authoring-system development before publication.
+Published IDs must not be
 rewritten automatically; stop for an explicit publication migration decision.
 Retired IDs must be recorded in `content/_references/deleted-ids.md`.
 

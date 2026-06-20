@@ -274,11 +274,12 @@ At a high level, an initialized or published unit index contains placement notes
 
 The exercise planning area stores the cluster map, raw seeds, and exercise design cards. The quiz planning area stores quiz intent cards, raw item pools, and quiz item design cards.
 
-Export boundary for initialized or published unit indexes:
+Export boundary for initialized or published unit indexes, using literal
+headings from `content/_templates/unit-index.template.md`:
 
 - Learner-facing candidates: `## Place dans le programme`, `## Objectifs et
-  plan de l'unite`, `## Prerequis`, `## Competences`, `## Inventaire des
-  fichiers finaux`, and `## Lecons`, but only when their content is written as
+  plan de l'unité`, `## Prérequis`, `## Compétences`, `## Inventaire des
+  fichiers finaux`, and `## Leçons`, but only when their content is written as
   clean learner orientation or navigation.
 - Author-only by default: mini-lesson planning, misconceptions-to-treat,
   exercise planning, set planning, quiz planning, diagram planning,
@@ -558,7 +559,7 @@ Use this command when the user already knows the change they want, even if they 
 
 ### Content studio
 
-Use `content/_prompts/commands/content-studio.md` for conversational critique, diagnosis, proposals, grilling, and targeted patches across lessons, exercises, quizzes, and unit planning sections. It is not a generation pipeline and should infer the target from editor context when possible.
+Use `content/_prompts/commands/content-studio.md` for conversational critique, diagnosis, proposals, grilling, and targeted patches across lessons, exercises, exercise solutions, quizzes, quiz distractors and feedback, exercise sets, and unit-index text. It is not a generation pipeline and should infer the target from selected text, active file path, or explicit path before using `_workflow/current-unit.md` fallback context.
 
 Use this command when the user is still shaping the change through selected text, taste, voice, pedagogy, diagnosis, or local repair. If the request becomes a known bounded migration across files, switch to `content/_prompts/commands/change-existing-content.md`.
 

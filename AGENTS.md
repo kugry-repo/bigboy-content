@@ -4,7 +4,7 @@
 
 This repository is for building a shared Markdown-first authoring system for Moroccan mathematics programs: lessons, exercises, standalone quizzes, hints, and detailed solutions.
 
-The current priority is a clean authoring system and strong content structure. Do not build frontend rendering, app logic, or deployment unless explicitly requested.
+The authoring system is ready to begin real vertical-slice content production. Keep production work editor-first, targeted, sparse when appropriate, and validation-backed. Do not build frontend rendering, app logic, or deployment unless explicitly requested.
 
 ## Agent notifications
 
@@ -33,9 +33,9 @@ The current priority is a clean authoring system and strong content structure. D
   - On this Windows-hosted project, use the same PowerShell command from the repo root.
   - If local audio playback is unavailable or blocked, mention the failed notification attempt in the same message as the question.
 
-## Current phase: underlying system development
+## Current phase: production-ready authoring
 
-This project is still in the system-design/buildout phase. The priority is a clean, coherent, future-proof authoring system, not preserving backward compatibility with earlier drafts of the system.
+This project is ready to start real content production through the existing authoring center. Start from `content/_prompts/START-HERE.md`, use `content/_prompts/commands/next-action.md` when the next action is unclear, and prefer small targeted authoring/review loops. Future system cleanup is still allowed when it removes a real blocker or keeps the authoring system coherent; do not preserve backward compatibility with earlier drafts of the system.
 
 ### Default refactor policy
 
@@ -85,8 +85,9 @@ This project is still in the system-design/buildout phase. The priority is a cle
 - Before editing anything under `content/`, read `content/AGENTS.md`.
 - Before creating or modifying lessons, exercises, standalone quizzes, or solutions, read the relevant files in `content/_guides/`.
 - For content work, the mini-lesson architecture is defined under `content/AGENTS.md` and `content/_guides/units/unit-workflow.md`; that workflow applies to every content unit, whether it is an official curriculum unit or an unofficial topic.
+- For prompt choice, start from `content/_prompts/START-HERE.md`; when unsure about the current or target unit, use `content/_prompts/commands/next-action.md`.
 - Unit `_index.md` files use `planning_state`. Do not create lessons, exercises, quizzes, sets, or full planning sections in a `planning_state: stub` unit; initialize it first with `content/_prompts/commands/initialize-unit.md`.
-- Use `content/_prompts/commands/content-studio.md` for conversational polishing, critique, diagnosis, proposals, and targeted patches across existing content artifacts.
+- Use `content/_prompts/commands/content-studio.md` as the daily targeted edit/review command for lessons, exercises, exercise solutions, quizzes, quiz distractors and feedback, exercise sets, and unit-index text. It should infer targets from selected text, active file path, explicit path, then `_workflow/current-unit.md` fallback; stale review evidence still belongs to the owning review prompts.
 - Do not create one huge lesson file unless explicitly requested.
 - Each exercise lives in its own file. For broad exercise production, create exercise files in small batches of 3 to 5; for one focused exercise, a tiny routine group, or one solution, use `content/_prompts/shortcuts/create-direct-exercise.md`.
 - Standalone quizzes live under the target unit `quizzes/` folder. Use the full quiz pipeline for full quiz banks, high-stakes diagnostics, and broad coverage; use `content/_prompts/shortcuts/lightweight-quiz.md` for one item, one distractor plus feedback, one feedback/remediation slice, one added item, or a short exit-ticket/remediation quiz.

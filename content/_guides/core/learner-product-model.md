@@ -141,22 +141,23 @@ their declared scope says so.
 A unit `_index.md` is a mixed authoring file. Do not assume the whole file
 becomes a public page. Do not assume everything is hidden either.
 
-Public-rendering candidates:
+Public-rendering candidates, using literal headings from
+`content/_templates/unit-index.template.md`:
 
 - `## Place dans le programme`, when written as clean learner orientation;
-- `## Objectifs et plan de l'unite`, when written as a concise learner-facing
+- `## Objectifs et plan de l'unité`, when written as a concise learner-facing
   summary;
-- `## Prerequis` and `## Competences`, when they describe learner needs and
+- `## Prérequis` and `## Compétences`, when they describe learner needs and
   goals rather than internal planning;
 - `## Inventaire des fichiers finaux`, as routing data for final artifacts;
-- `## Lecons`, when it contains navigation to existing lesson files.
+- `## Leçons`, when it contains navigation to existing lesson files.
 
 Author-only by default:
 
-- `## Plan des mini-lecons`;
-- `## Misconceptions a traiter`;
+- `## Plan des mini-leçons`;
+- `## Misconceptions à traiter`;
 - all exercise, set, and quiz planning sections;
-- `## Diagrammes et interactions a prevoir`;
+- `## Diagrammes et interactions à prévoir`;
 - `## Notes d'alignement examen`;
 - `## Production dashboard`;
 - `## Journal de production`;

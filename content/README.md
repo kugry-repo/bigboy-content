@@ -2,6 +2,8 @@
 
 This folder is the Markdown source for a shared authoring system across Moroccan mathematics programs. It is designed for Obsidian preview, Git version control, Codex-assisted authoring, and future rendering in a web app.
 
+The system is ready to begin real vertical-slice content production. Use the existing authoring center, start from `_prompts/START-HERE.md`, ask `_prompts/commands/next-action.md` when the next step is unclear, and keep production loops targeted rather than restarting the system design.
+
 ## Main Folders
 
 - `_guides/`: categorized authoring rules, learner product boundaries, workflow semantics, notation, structure, validation, and review. Start with `_guides/README.md`.
@@ -127,6 +129,8 @@ Fast day-to-day route:
 5. Run the smallest focused command for the actual task, such as `content/_prompts/shortcuts/create-direct-exercise.md`, `content/_prompts/shortcuts/lightweight-quiz.md`, or `content/_prompts/commands/content-studio.md`.
 6. Update only useful unit state, then run `npm run validate`.
 
+Recommended first production slice: initialize one selected official unit; produce one lesson, several real exercises, one small quiz, and one exercise set/practice path from existing exercises; run targeted reviews; then run validation triage. This is a pointer for starting production, not a new required workflow phase.
+
 Start with:
 
 - `content/_prompts/START-HERE.md` when choosing a prompt.
@@ -134,7 +138,7 @@ Start with:
 - `content/_prompts/commands/manage-program.md` when creating, renaming, deleting, or modifying a program.
 - `content/_prompts/commands/manage-unit.md` when creating, renaming, deleting, splitting, or merging units/topics.
 - `content/_prompts/commands/initialize-unit.md` before building a unit that is still a stub.
-- `content/_prompts/commands/content-studio.md` for conversational polishing, critique, diagnosis, proposals, and targeted patches.
+- `content/_prompts/commands/content-studio.md` for daily targeted edits/reviews across lessons, exercises, exercise solutions, quizzes, quiz distractors and feedback, exercise sets, and unit-index text.
 - `content/_prompts/shortcuts/create-direct-exercise.md` for small direct exercise work.
 - `content/_prompts/shortcuts/lightweight-quiz.md` for small quiz item, distractor, feedback, or short-quiz work.
 - `content/_guides/programs/program-lifecycle.md` for program lifecycle operations.
@@ -144,8 +148,10 @@ Start with:
 
 For day-to-day Markdown editing, select the smallest useful fragment in VS Code,
 Obsidian, or Codex and run `content/_prompts/commands/content-studio.md`.
-Selection and active-file path come before the current-unit cache. If the file
-path is known, the author should not need to provide `TARGET_UNIT`.
+Selection, active-file path, and explicit path come before the current-unit
+cache. If the file path is known, the author should not need to provide
+`TARGET_UNIT`. Use the owning artifact review prompt, not content-studio, when
+the task is to refresh stale review evidence.
 
 Create final files only through the appropriate workflow prompts and in small batches. Do not create whole units, full exercise libraries, quiz libraries, or app/frontend work unless explicitly requested.
 

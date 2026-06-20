@@ -8,6 +8,12 @@ For an existing current or target unit, "what should I do next?" requests should
 
 `content/_prompts/commands/next-action.md`
 
+The authoring system is ready for a first real vertical content slice. A good
+starting slice is: initialize one selected official unit, produce one lesson,
+several real exercises, one small quiz, and one exercise set/practice path from
+real exercises, then run targeted reviews and validation triage. This is a
+production pointer, not a new workflow phase.
+
 ## Quick Choices
 
 | Situation | Run |
@@ -17,7 +23,7 @@ For an existing current or target unit, "what should I do next?" requests should
 | The unit was just initialized and scope is still unclear or sparse. | `content/_prompts/workflows/unit/01-plan-unit.md` as a light scope pass. |
 | I need one focused exercise, a tiny routine group, or one exercise solution. | `content/_prompts/shortcuts/create-direct-exercise.md` |
 | I need one quiz item, one distractor/feedback slice, one added item, or a short focused quiz. | `content/_prompts/shortcuts/lightweight-quiz.md` |
-| I need bounded critique, polishing, diagnosis, proposals, or a local patch. | `content/_prompts/commands/content-studio.md` |
+| I need a targeted edit/review for existing lesson, exercise/solution, quiz feedback, set, or unit-index text. | `content/_prompts/commands/content-studio.md` |
 | I know a bounded change may affect several files or workflow contracts. | `content/_prompts/commands/change-existing-content.md` |
 
 Use the command prompts when you need to decide, manage, or change direction:
@@ -28,7 +34,7 @@ Use the command prompts when you need to decide, manage, or change direction:
 - `content/_prompts/commands/set-current-unit.md` - write the local current-unit cache.
 - `content/_prompts/commands/manage-unit.md` - create, rename, change metadata, split, merge, delete, reorder, or move official/unofficial units and topics.
 - `content/_prompts/commands/initialize-unit.md` - expand one registered `planning_state: stub` unit into an initialized planning scaffold.
-- `content/_prompts/commands/content-studio.md` - conversational critique, diagnosis, proposals, grilling, or targeted patches across lessons, exercises, quizzes, and unit planning sections.
+- `content/_prompts/commands/content-studio.md` - daily targeted critique, diagnosis, proposals, grilling, or patches across lessons, exercises, exercise solutions, quizzes, quiz distractors and feedback, exercise sets, and unit-index text.
 - `content/_prompts/commands/change-existing-content.md` - change existing lessons, exercises, quizzes, plans, unit indexes, prompts, guides, templates, or validators safely.
 
 Use workflow prompts when you already know what you are producing:
@@ -58,7 +64,7 @@ notes, TODOs, blockers, and prompt/validator metadata author-only by default.
 
 For edits to existing reviewed content, use the revision freshness contract in `content/_guides/schema/frontmatter-schema.md`: material edits invalidate only affected review evidence with `needs-review`; non-material edits may preserve status only with an explicit reason.
 
-Use `content/_prompts/commands/content-studio.md` for bounded patching or critique while editing Markdown. Select a paragraph, solution block, quiz option, feedback block, set note, or unit-index planning card when possible; otherwise use the active file path. The current-unit cache is only fallback context.
+Use `content/_prompts/commands/content-studio.md` for bounded patching or critique while editing Markdown. Select a paragraph, exercise solution block, quiz option, distractor/feedback block, set note, or unit-index text when possible; otherwise use the active file path or an explicit path. The current-unit cache is only fallback context.
 
 Simple content-studio examples:
 
