@@ -198,6 +198,35 @@ Use one or more:
 
 Standalone quiz item types such as MCQ and true/false belong in quiz files unless the exercise is explicitly designed as a non-quiz training device.
 
+## Exam-Style Exercises
+
+An exam-style exercise is still a normal `type: exercise` file. It is not a
+full exam paper and does not need marks, bareme, sections, variants, or timed
+paper structure.
+
+Use `exercise_role: exam-pattern` when the exercise trains a reusable
+exam-style chain. Use `exam_relevance: high` only when the file has a source
+note or an explicit exam-pattern note in the design card or author notes.
+
+Exam-style exercises should have:
+
+- realistic exam-like wording without pretending to be official;
+- skill integration rather than a disguised routine calculation;
+- difficulty that fits the target learner and prerequisites;
+- a clear student decision point;
+- solution reasoning that names the method and checks conditions;
+- common traps and recovery cues;
+- optional estimated time through `estimated_time_min`;
+- optional source/provenance notes when inspired by or adapted from an exam;
+- optional marks only as an author note when a checked source provides them.
+
+If an exercise is adapted from an official exam item, use
+`source_type: national-exam` and record country, year, session, track, source,
+and adaptation status in `source_ref` or `## Notes auteur`. If it is only
+inspired by a pattern, use `source_type: exam-inspired` or keep
+`source_type: original` with a clear exam-pattern note when the wording and
+structure are newly created.
+
 ## Required Final Exercise Sections
 
 Each final exercise should follow this order:

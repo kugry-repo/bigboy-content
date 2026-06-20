@@ -103,8 +103,14 @@ Warm-ups may have a light decision point, but this must be intentional and named
 ### Exam usefulness without unsupported exam claims
 
 - `1`: claims official exam status without source, or imitates exam style in a misleading way.
-- `3`: useful for exams but the claim needs clearer sourcing or softer wording.
-- `5`: exam usefulness is framed honestly as a pattern, habit, or source-backed claim.
+- `3`: useful for exams but the wording, source note, trap design, or method cue needs clearer treatment.
+- `5`: exam usefulness is framed honestly as a pattern, habit, or source-backed claim; the item has realistic wording, integrated skills, a real decision point, common traps, and clear method cues.
+
+For `exercise_role: exam-pattern`, also check that the exercise is not just a
+normal routine item with an exam label. It should train a reusable exam-style
+chain, transfer decision, or trap recovery. Marks and bareme are not required
+for ordinary exam-style practice; if they appear, they need a checked source or
+an explicit author-only rationale.
 
 ### Reusability in sets
 
@@ -135,7 +141,7 @@ A reviewed exercise must have:
 - verification strategy;
 - useful variants when relevant;
 - design/status notes;
-- no unsupported official/exam claims;
+- no unsupported official/exam claims and no misleading "official paper" label;
 - reviewed mathematics.
 
 Reviewed means the exercise is a reliable training device, not merely a correct calculation.

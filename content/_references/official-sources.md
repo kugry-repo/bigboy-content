@@ -29,10 +29,14 @@ Recommended format:
 ```md
 ### Bac national YYYY — PC/SVT — session normale
 
+- Country:
 - Track:
 - Session:
+- Year:
 - Source:
 - Used for:
+- Use status:
+  original pattern analysis | exam-inspired practice | adapted item | direct reproduction
 - Notes:
 ```
 

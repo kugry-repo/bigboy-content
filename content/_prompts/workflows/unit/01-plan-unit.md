@@ -45,6 +45,7 @@ If `TARGET_UNIT_INDEX` has `planning_state: stub`, stop before changing unit pla
 - `content/programs/<TARGET_PROGRAM>/_curriculum-map.md`
 - `content/_guides/schema/frontmatter-schema.md`
 - `content/_guides/schema/id-and-naming.md`
+- `content/_guides/core/source-policy.md`
 - `content/_guides/quizzes/quiz-structure.md`
 - `content/_guides/lessons/lesson-editorial-pipeline.md`
 - `content/_guides/lessons/lesson-structure.md`
@@ -52,6 +53,7 @@ If `TARGET_UNIT_INDEX` has `planning_state: stub`, stop before changing unit pla
 - `content/_references/misconception-map.md`
 - `content/_references/concept-dependencies.md`
 - `content/_references/notation-decisions.md`
+- `content/_references/official-sources.md`
 - `TARGET_UNIT_INDEX`
 
 ## Task
@@ -97,7 +99,7 @@ The unit plan must include:
 16. Quiz planning areas: quiz intent cards, raw item pools, and rich item design-card areas when there are real decisions to record.
 17. Planned quiz progression for diagnostic checkpoints inside quiz intent cards and item design cards.
 18. Planned diagrams and future interactions.
-19. Exam-style patterns, with unsupported official claims marked for verification. Model them as exercises, quizzes, or sets; do not invent full exam-paper support.
+19. Exam-style patterns, with unsupported official claims marked for verification. Model them as exercises, exam-pattern sets, or exam-readiness quizzes. Record source/provenance notes for original, exam-inspired, adapted, or directly reproduced official-exam material. Do not invent full exam-paper support.
 20. Compact production dashboard, only for scope, blockers, and next decisions.
 21. Author notes and uncertainty markers.
 

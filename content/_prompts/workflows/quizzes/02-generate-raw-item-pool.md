@@ -119,6 +119,9 @@ Remediation angle:
 Mismath / ambiguity risk:
 - TODO
 
+Source/provenance idea:
+- original | exam-inspired | possible national-exam adaptation | unknown
+
 Curation decision:
 - keep | merge | reject | defer | needs-verification
 

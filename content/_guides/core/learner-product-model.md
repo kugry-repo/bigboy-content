@@ -26,14 +26,56 @@ The current learner-facing artifact families are:
 - Revision pages: content units with `content_scope: global-revision`,
   `synthesis`, `cross-chapter-method`, or related unofficial-topic scopes that
   collect or route learners across official units.
-- Exam-style practice: exercises, quizzes, or sets whose role is exam-pattern
-  preparation without unsupported official claims.
+- Exam-style practice: exercises, exam-pattern sets, exam-readiness quizzes, or
+  revision/exam-prep paths whose role is exam-pattern preparation without
+  unsupported official claims.
 
 Full exam papers are not a first-class content type yet. Until that changes,
 exam preparation should be modeled as exam-style exercises, quiz items, sets, or
 unofficial `exam-prep` / revision topics. If a future phase introduces full
 exams, it should define their folder, frontmatter, source policy, learner
 placement, and validation contract explicitly.
+
+## Current Exam-Practice Model
+
+Model A is the current contract:
+
+- Exam-style practice is first-class.
+- Full exam papers are not first-class artifacts yet.
+- Exam preparation lives inside the existing artifact families: exercises,
+  exercise sets, standalone quizzes, and revision/exam-prep topics.
+- Source-aware practice is supported through `source_type`, `source_ref`, and
+  author-only source notes.
+
+Supported exam-practice artifacts:
+
+| Artifact | Current representation | Learner-facing meaning |
+|---|---|---|
+| Exam-style exercise | `type: exercise`, often `exercise_role: exam-pattern` or `exam_relevance: high` | A focused practice item that trains realistic exam wording, method choice, traps, or a reusable chain. |
+| Exam-pattern exercise set | `type: exercise-set` under `sets/` | A learner path that links existing exercises around an exam-style progression without duplicating statements. |
+| Exam-readiness quiz | `type: quiz` with `quiz_kind: exam-readiness` | A diagnostic readiness check for exam-pattern recognition, transfer, traps, and time pressure; not a simulated full paper. |
+| Global revision practice | Unofficial topic with `content_scope: global-revision` or related revision/synthesis scope | A cross-unit revision path that can link lessons, exercises, sets, quizzes, and exam-style practice. |
+| Specific-topic exam practice | Final artifacts inside the official unit or a focused unofficial topic | Exam-style practice for one concept, method, or official curriculum area. |
+| Source/provenance note | `source_type`, `source_ref`, `## Notes auteur`, and source records | Author traceability for original, exam-inspired, adapted, or directly reproduced material. |
+| Official exam adaptation note | `source_type: national-exam` plus a source/adaptation note | A clear "adapted from" note when a checked official exam item was changed; it is not an official paper. |
+
+Where exam-style material lives:
+
+- Topic-specific practice lives in the relevant official unit unless it is
+  better as a focused cross-chapter topic.
+- Cross-topic exam-style practice lives in an unofficial topic such as
+  `global-revision`, `synthesis`, `cross-chapter-method`, or a future
+  `exam-prep` topic.
+- Exam-readiness quizzes live under the target unit/topic `quizzes/` folder.
+- Exam-pattern sets live under `sets/` and link existing exercise files.
+- Source analysis, adaptation reasoning, copied-text risk notes, and raw exam
+  observations stay author-only by default.
+- Future full exam papers should wait for an explicit artifact contract.
+
+Before full exams become first-class, a later phase must define at least:
+folder placement, frontmatter type, timing, marks/bareme, sections, correction
+scheme, source/provenance rules, variant handling, whole-paper review, and
+learner navigation.
 
 ## Author-Only Material
 
@@ -71,8 +113,12 @@ The intended learner navigation is:
 4. Global revision: review across official units, usually through synthesis
    lessons, mixed exercises, revision sets, and diagnostic quizzes.
 5. Exam-style practice: prepare around exam patterns or exam contexts through
-   exercises, quiz items, and sets. Official source/provenance notes remain
-   author-only unless intentionally summarized for learners.
+   exercises, exam-pattern sets, and exam-readiness quizzes. Official
+   source/provenance notes remain author-only unless intentionally summarized
+   for learners.
+6. Source-aware adaptations: when supported by checked source notes, learners
+   may see a short "adapted from an official exam" context note. This is not the
+   same as an official full exam paper.
 
 The normal learner journey can be:
 

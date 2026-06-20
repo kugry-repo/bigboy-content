@@ -331,6 +331,40 @@ updated: YYYY-MM-DD
 
 These common fields must match the parent unit and program where applicable. `domain` must be one of `analyse`, `algebre-geometrie`, `probabilites`, or `transversal`. `skills` should contain the precise skill IDs taught, practiced, assessed, or sequenced by the object.
 
+### Source And Exam Provenance
+
+Allowed `source_type` values are:
+
+- `original`
+- `official-reference`
+- `national-exam`
+- `exam-inspired`
+- `teacher-note`
+- `textbook`
+- `third-party`
+- `unknown`
+
+Use `source_type: original` for newly written lessons, exercises, quizzes, and
+sets, including original exam-style practice. An original item may have high
+exam relevance, but it must not claim official exam status unless the source
+supports that claim.
+
+Use `source_type: exam-inspired` when an artifact trains an observed exam
+pattern without copying a specific statement. `source_ref` should identify the
+pattern, source observation, or author note well enough for later review.
+
+Use `source_type: national-exam` when an artifact is directly based on a
+specific official exam item, whether adapted or directly reproduced. Record the
+country, year, session, track, source, and adaptation status in `source_ref` or
+`## Notes auteur`.
+
+Do not use `adapted` as a frontmatter `source_type`; adaptation status is a
+source/provenance note attached to `source_type: national-exam`.
+
+Full exam papers are not first-class schema objects yet. Do not add a
+`type: exam`, full-paper folder, timing, marks/bareme, section,
+correction-scheme, or variant contract without a later schema pass.
+
 ## Mini-Lesson
 
 Mini-lesson files live under the unit `lessons/` folder and use the unit code.
@@ -456,6 +490,12 @@ updated: YYYY-MM-DD
 
 Exercise design cards are not frontmatter objects. They are Markdown planning objects in the unit `_index.md` under `### Design cards des exercices`, using the canonical H4 card contract in `content/_guides/exercises/exercise-design-guide.md`. Final exercise files must reference the source card with `source_design_card`. Reviewed or published exercise files may only reference cards in `ready-for-exercise-batch` or `used-in-exercise` status, and their difficulty, role/type, estimated time, planned file, and linked skills should match the card where those fields exist.
 
+Exam-style exercises use the normal exercise schema. Use
+`exercise_role: exam-pattern` for a reusable exam-style chain, and use
+`exam_relevance: high` only when the artifact has a source note or explicit
+exam-pattern note. Marks and bareme are optional author notes only; they are
+not required or validated for ordinary exam-style practice.
+
 ## Quiz
 
 Standalone quiz files use `type: quiz` and live under the unit `quizzes/` folder.
@@ -542,6 +582,12 @@ updated: YYYY-MM-DD
 ```
 
 Quiz item design cards are Markdown planning objects in the unit `_index.md` under `### Design cards des items de quiz`, using the canonical H4 item-card contract in `content/_guides/quizzes/quiz-structure.md`. Final quiz questions must reference the source planning item with a `Source item card` line in the question metadata. Reviewed or published quiz items may only reference cards in `ready-for-quiz-file` or `used-in-quiz` status, and their item type, cognitive role, and skill target should match the card where those fields exist.
+
+Exam-readiness quizzes use the normal quiz schema with
+`quiz_kind: exam-readiness`. They are diagnostic quizzes, not full simulated
+exam papers.
+Their source/exam claim safety should be recorded through `source_type`,
+`source_ref`, question source-card notes, and `## Notes auteur` when relevant.
 
 ## Exercise Set
 

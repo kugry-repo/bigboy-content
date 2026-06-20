@@ -38,9 +38,13 @@ Use one `quiz_kind` value per quiz.
 | `error-clinic` | Diagnosing common mistakes. | Student-solution snippets, invalid steps, misconception traps, and recovery feedback. |
 | `fluency` | Quick execution of already-taught procedures. | Short items with realistic timing and feedback for slips, not long derivations. |
 | `mixed-review` | Spaced retrieval across a unit segment. | A deliberate mix of prior skills, not a random assortment. |
-| `exam-readiness` | Exam-pattern recognition, transfer, traps, and time pressure. | Supported exam-pattern tasks, explicit source-safety notes, and remediation paths that already exist or can be sketched for the declared scope. |
+| `exam-readiness` | Exam-pattern recognition, transfer, traps, and time pressure. | Supported exam-pattern tasks, explicit source-safety notes, realistic item timing, common exam-error distractors or wrong responses, and remediation paths that already exist or can be sketched for the declared scope. |
 
 Do not create an `exam-readiness` quiz before enough support and remediation paths exist to make the result actionable. The support may be local lessons, local exercises, exercise sets, prerequisite review paths, mini-reviews, or explicitly planned/deferred resources, depending on the quiz intent and declared unit scope.
+
+An `exam-readiness` quiz is not a full simulated exam. Do not require marks,
+bareme, paper sections, official correction-scheme assumptions, or whole-paper
+coverage unless a future full-exam artifact contract exists.
 
 ## Whole Quiz Rubric
 
@@ -59,7 +63,7 @@ Score each criterion from 1 to 5.
 | Difficulty progression | No order logic. | Roughly easier to harder. | Progression reveals readiness, core skill, traps, transfer, and synthesis in a planned sequence. |
 | Standalone usability | Depends on hidden lesson wording. | Mostly understandable alone. | A student can attempt it from the file alone with clear prerequisites, instructions, and notation. |
 | Timing realism | Item count and timing are unrealistic. | Timing is plausible but untested. | Timing matches the quiz kind and item complexity. |
-| Source/exam claim safety | Unsupported official or exam claims. | Some source notes but vague claims remain. | Original/adapted/exam-pattern status is clear; official claims are documented or marked for verification. |
+| Source/exam claim safety | Unsupported official or exam claims. | Some source notes but vague claims remain. | Original, exam-inspired, or national-exam adaptation/direct-reproduction status is clear; official claims are documented or marked for verification. |
 
 ## Item-Level Rubric
 

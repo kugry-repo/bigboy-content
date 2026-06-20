@@ -152,6 +152,9 @@ Check:
 - exam patterns that exist avoid exaggeration;
 - exam-style practice appears through exercises, quizzes, or sets unless a
   future full-exam contract exists;
+- source-aware adaptations from official exams are labeled as adaptations, not
+  official full papers, and record country, year, session, track, source, and
+  adaptation status when relevant;
 - source safety: no unsupported official claims, no exaggerated exam claims, and no accidental copied third-party content.
 
 Synthesize skill coverage from the actual unit files, not from any global manual file:

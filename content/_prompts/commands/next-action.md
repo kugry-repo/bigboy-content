@@ -100,6 +100,8 @@ Identify the requested artifact/workstream when present:
 - exercises;
 - exercise sets;
 - quizzes;
+- exam-style practice;
+- source/provenance review;
 - learner navigation/export boundary;
 - unit review;
 - metadata/link cleanup;
@@ -137,6 +139,8 @@ Routing rules:
 - If the user wants one quiz item, one improved quiz item, one MCQ/MR distractor and feedback pair, one option feedback/remediation slice, one item added to an existing quiz, or a short exit-ticket/remediation quiz and the target unit is initialized, recommend `content/_prompts/shortcuts/lightweight-quiz.md`.
 - If the user wants a full exercise universe, broad topic coverage, a balanced exercise set, or broad exam-prep exercise production, recommend the full exercise workflow at the smallest missing prerequisite.
 - If the user wants a full quiz bank, high-stakes diagnostic quiz, broad unit quiz coverage, or broad exam-readiness quiz production, recommend the full quiz workflow at the smallest missing prerequisite.
+- If the user wants source/provenance review for official, exam-inspired, adapted, or copied material, recommend `content/_prompts/workflows/unit/03-finalize-unit.md` for unit-wide source-safety cleanup or `content/_prompts/commands/content-studio.md` for one bounded selected artifact/source note.
+- If the user asks for a full exam paper, timed official exam, marks/bareme paper, official correction scheme, or exam variant, report that full exam papers are not first-class artifacts yet. Do not route to ordinary exercise, quiz, or set creation as if it were a full exam workflow. Recommend a system-design change through `content/_prompts/commands/change-existing-content.md` before any full-paper content creation.
 - If existing content has `needs-review` review evidence after a material edit, recommend the smallest targeted review prompt that owns that status field.
 - If lesson files changed materially, recommend targeted lesson review through `content/_prompts/workflows/lessons/07-verify-finalize.md`.
 - If exercise statements, design intent, hints, mistake blocks, or verification changed materially, recommend `content/_prompts/workflows/exercises/05-review-exercise-quality.md`.
@@ -239,7 +243,7 @@ Use `content/_prompts/shortcuts/lightweight-quiz.md` when the author asks for:
 
 The lightweight route may infer the unit from the active file path and may patch related item/feedback sections even when they are not adjacent. It must treat MCQ/MR distractors as diagnostic objects: why tempting, why wrong, what misconception they reveal, and what feedback/remediation follows.
 
-Use the full quiz workflow when the author asks for a full quiz bank, high-stakes diagnostic quiz, broad unit quiz coverage, broad exam-readiness production, or systematic coverage across a quiz series:
+Use the full quiz workflow when the author asks for a full quiz bank, high-stakes diagnostic quiz, broad unit quiz coverage, broad exam-readiness production, or systematic coverage across a quiz series. Exam-readiness quiz work is diagnostic practice, not full-paper simulation:
 
 1. If quiz intent, target skill area, or series is missing, recommend `content/_prompts/workflows/quizzes/01-plan-quiz-intent.md` or a small unit-map patch if the intent is genuinely unclear.
 2. If a quiz intent exists but raw item seeds are missing or thin, recommend `content/_prompts/workflows/quizzes/02-generate-raw-item-pool.md`.
@@ -248,6 +252,18 @@ Use the full quiz workflow when the author asks for a full quiz bank, high-stake
 5. If quiz files exist with draft, `needs-review`, or weak item quality and the user wants item-quality review evidence refreshed, recommend `content/_prompts/workflows/quizzes/05-review-item-quality.md`.
 6. If quiz files exist with draft or `needs-review` answer keys and the user wants answer-key evidence refreshed, recommend `content/_prompts/workflows/quizzes/06-review-answer-keys.md`.
 7. If quiz files exist with draft or `needs-review` feedback or remediation and the user wants feedback/remediation evidence refreshed, recommend `content/_prompts/workflows/quizzes/07-review-feedback-remediation.md`.
+
+## Full exam requests
+
+There is no current full-exam artifact family. If a request asks for complete
+timed exam papers, official paper reproduction, marks/bareme allocation,
+section-level paper structure, official correction schemes, answer booklets,
+variants, or whole-exam review, say that full exams are deferred and not
+first-class yet.
+
+The next action for full-exam support is a system-design task, not content
+creation. Recommend `content/_prompts/commands/change-existing-content.md` to
+define the future contract before any full exam paper is authored.
 
 ## Report
 

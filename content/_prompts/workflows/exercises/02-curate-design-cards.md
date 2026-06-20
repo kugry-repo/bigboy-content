@@ -130,6 +130,8 @@ Every curated card must include:
 - hint ladder;
 - verification strategy;
 - source/provenance notes;
+- for exam-pattern cards: realistic exam cue, integrated skills, common traps,
+  source/adaptation status when relevant, and no invented marks/bareme;
 - potential sets;
 - batch/readiness note;
 - keep/reject decision.
@@ -208,7 +210,7 @@ Verification strategy:
 - How the student or reviewer can check the result.
 
 Source/provenance:
-- original | exam-inspired | adapted | source note, with source-anchor notes when applicable
+- original | exam-inspired | national-exam adaptation/direct reproduction note | source note, with source-anchor notes when applicable
 
 Variants:
 - Easier:

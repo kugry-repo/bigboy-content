@@ -32,7 +32,8 @@ updated: YYYY-MM-DD
 <!--
 Exercise sets are learner-facing practice paths. They link to existing exercise
 files and describe a useful progression without duplicating statements, hints,
-or solutions. Keep planning risks and source notes in "## Notes auteur".
+or solutions. Exam-pattern sets are still sets, not full exam papers. Keep
+planning risks, source notes, and adaptation notes in "## Notes auteur".
 -->
 
 ## Objectif de la série
@@ -59,3 +60,8 @@ TODO.
 ## Notes auteur
 
 TODO. Author-only. Not learner-facing.
+
+- Source/provenance:
+- Exam-pattern logic:
+- Official-exam adaptation notes:
+- Full exam paper support: not first-class in the current model.

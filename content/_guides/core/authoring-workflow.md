@@ -57,6 +57,20 @@ Learner-facing roles:
 - Exam-style practice is organized through exercises, quizzes, sets, or
   exam-prep/revision topics. Full exam papers are not first-class artifacts yet.
 
+Exam-style practice currently means:
+
+- exam-pattern exercises under `exercises/`;
+- exam-pattern exercise sets under `sets/`;
+- exam-readiness quizzes under `quizzes/`;
+- global revision or exam-prep topic paths that collect those artifacts;
+- source-aware adaptations recorded with `source_type`, `source_ref`, and
+  author-only notes.
+
+Do not route a request for a full timed exam paper into ordinary exercise,
+quiz, or set creation. Full papers need a later artifact contract for timing,
+marks/bareme, sections, correction scheme, source/provenance, variants,
+whole-paper review, and learner navigation.
+
 ## Planning source of truth
 
 The unit `_index.md` is the only unit-planning artifact.

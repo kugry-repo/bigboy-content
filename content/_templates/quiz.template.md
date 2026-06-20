@@ -355,3 +355,6 @@ TODO: Author-only notes. Not learner-facing.
 - Remediation status:
 - Mismath risks:
 - Source/exam claim risks:
+- Source/provenance: `original`, `exam-inspired`, or `national-exam` with adaptation/direct-reproduction note when relevant.
+- Exam-readiness note: diagnostic readiness check, not a full simulated exam paper.
+- Marks/bareme/sections: omit unless a future full-exam contract explicitly supports them.

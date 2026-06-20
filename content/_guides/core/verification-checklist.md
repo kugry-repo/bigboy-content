@@ -31,6 +31,9 @@ The checklist is scope-aware. Apply a family section only when that family is in
 - [ ] `skills` contains precise skill IDs for the artifact's role.
 - [ ] `status` is realistic and does not claim reviewed/published maturity without the relevant family review evidence.
 - [ ] `source_type` and `source_ref` are correct.
+- [ ] Exam-style artifacts distinguish `original`, `exam-inspired`, and
+  `national-exam` adaptation/direct-reproduction provenance without using
+  unsupported source types.
 - [ ] After a material edit, only affected review evidence was changed to `needs-review`.
 - [ ] After a non-material edit to reviewed/published content, the report explains why meaning, math, answer logic, feedback, remediation, and pedagogy did not change.
 
@@ -135,6 +138,12 @@ Check:
 - [ ] Definitions, theorems, domains, algebraic transformations, probability models, geometry formulas, complex-number notation, final answers, and quiz answer keys are correct for the artifact being reviewed.
 - [ ] Conditions of use are explicit where they affect validity.
 - [ ] Unsupported official claims, exam-frequency claims, or copied third-party content are absent or clearly marked for verification.
+- [ ] Exam-style practice is not mislabeled as an official full exam paper.
+- [ ] Adapted official-exam material records country, year, session, track,
+  source, and adaptation status in `source_ref` or author notes.
+- [ ] Full-paper features such as marks/bareme, sections, variants, official
+  correction schemes, and whole-paper review are absent unless a future
+  full-exam artifact contract exists.
 - [ ] One H1 per file.
 - [ ] Headings are ordered correctly.
 - [ ] LaTeX renders cleanly in Obsidian preview.

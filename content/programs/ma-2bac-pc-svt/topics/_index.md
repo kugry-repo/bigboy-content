@@ -36,7 +36,9 @@ Learner-facing topic roles:
   exam papers are not first-class artifacts yet.
 
 Topic units can contain or link to lessons, exercises, learner-facing sets,
-quizzes, and exam-style practice. Raw planning cards, dashboards, journals, and
+quizzes, exam-style practice, and source-aware official-exam adaptations when
+available. Adapted material must be labeled as adapted practice, not as an
+official full paper. Raw planning cards, dashboards, journals, and
 source-analysis notes remain author-only.
 
 | Ordre | Unite topic | Code | Dossier | Scope | Role | Unites liees | Statut |

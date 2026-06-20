@@ -47,7 +47,9 @@ Learners can enter this program through two routes:
 Official units and unofficial topics can each contain or link to mini-lessons,
 exercises, learner-facing exercise sets, standalone quizzes, and exam-style
 practice. Exam-style practice is represented through those artifact families;
-full exam papers are not first-class artifacts yet.
+adapted official-exam material must be labeled as adapted/source-aware practice,
+not as an official full paper. Full exam papers are not first-class artifacts
+yet.
 
 The normal product path is:
 
@@ -60,6 +62,7 @@ official unit or topic
 -> remediation
 -> global revision
 -> exam-style practice
+-> source-aware official-exam adaptations when available
 ```
 
 This is navigation guidance, not a required authoring order.
@@ -94,7 +97,8 @@ official-unit spine:
 - `synthesis`: mixed problems and cross-topic exercise paths.
 - `cross-chapter-method`: specific skill or method pages.
 - `exam-prep`: future exam-preparation paths if needed; until full exams are
-  modeled, use exercises, quizzes, and sets for exam-style practice.
+  modeled, use exercises, quizzes, and sets for exam-style practice. Do not use
+  this scope to imply full official exam papers.
 
 | Ordre | Unite topic | Code | Scope | Role |
 |---:|---|---|---|---|

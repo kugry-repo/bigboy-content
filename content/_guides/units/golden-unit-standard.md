@@ -78,6 +78,7 @@ A golden unit should include the following because it is deliberately complete:
 - draft quiz files with item quality, answer keys, feedback, and remediation reviewed before learner use;
 - at least 3 exercise sets;
 - exam-style practice through exercises, quizzes, or sets when appropriate;
+- no simulated full exam paper unless a later full-exam artifact contract exists;
 - full mathematical review;
 - full pedagogical review;
 - compression, taste, and voice review;
@@ -193,7 +194,7 @@ quiz intent
 
 Quizzes should be diagnostic instruments, not short exercise sheets. They should test recognition, method choice, micro-calculation, error diagnosis, missing steps, representation, transfer, theorem conditions, graph reading, and proof order when those roles fit the target skill.
 
-Each quiz belongs to a quiz series and lives under `quizzes/`. Normal quizzes usually contain 8 to 12 questions; exam-readiness quizzes may contain 12 to 20.
+Each quiz belongs to a quiz series and lives under `quizzes/`. Normal quizzes usually contain 8 to 12 questions; exam-readiness quizzes may contain 12 to 20. An exam-readiness quiz is diagnostic practice, not a full timed exam paper with marks, bareme, sections, variants, or official correction-scheme assumptions.
 
 Every MCQ/MR choice should have answer-specific feedback. Wrong choices should map to real misconceptions and explain why the choice is tempting, why it fails, and what idea to use instead.
 

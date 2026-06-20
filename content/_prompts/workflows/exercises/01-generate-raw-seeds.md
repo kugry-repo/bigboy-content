@@ -184,6 +184,9 @@ Hint opportunities:
 Verification risks:
 - math, notation, domain, source, ambiguity, or mismath risks.
 
+Source/provenance idea:
+- original | exam-inspired | possible national-exam adaptation | unknown
+
 Curation note:
 - keep | merge | reject | defer | needs-verification
 

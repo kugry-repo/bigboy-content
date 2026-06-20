@@ -139,6 +139,23 @@ Use exam-pattern exercises to train reusable chains such as:
 
 Do not write that an exercise is official, frequent, or required by the Moroccan exam unless the claim is already supported in `content/_references/official-sources.md`. Use softer wording such as "style examen" or "pattern utile" when the source is not official.
 
+An exam-pattern design card should also record:
+
+- whether the item is original, exam-inspired, or adapted from a checked
+  national exam item;
+- the source observation, year/session/track/source when relevant;
+- the realistic exam cue or wording pattern being trained;
+- the integrated skills and student decision point;
+- common exam traps and the method cue the solution should teach;
+- estimated time;
+- whether marks or bareme are intentionally absent. Do not invent marks for
+  ordinary exam-style practice.
+
+If the card is adapted from an official exam item, use
+`source_type: national-exam` in the final file and record the adaptation status
+in `source_ref` or `## Notes auteur`. Do not use `adapted` as a frontmatter
+source type.
+
 ## Hint Ladder Design
 
 Use three progressive hints by default:
@@ -273,7 +290,7 @@ Verification strategy:
 - How the student or reviewer can check the result.
 
 Source/provenance:
-- original | exam-inspired | adapted | source note, with source-anchor notes when applicable
+- original | exam-inspired | national-exam adaptation/direct reproduction note | source note, with source-anchor notes when applicable
 
 Variants:
 - Easier:

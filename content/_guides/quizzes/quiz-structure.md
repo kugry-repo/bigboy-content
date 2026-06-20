@@ -47,10 +47,16 @@ Do not confuse the planning artifacts.
 
 Raw item seeds are exploratory. Item design cards are the curated bridge. Final quiz files remain drafts until item quality, answer keys, feedback, and remediation have been reviewed separately.
 
-Exam-readiness quizzes are exam-style practice artifacts. They should not claim
-official exam frequency, official status, or full-paper coverage unless a
-checked source supports that claim. Full exam papers are not first-class quiz
-artifacts.
+Exam-readiness quizzes are exam-style practice artifacts. They diagnose whether
+a learner is ready for exam-pattern recognition, transfer, traps, and time
+pressure. They should not claim official exam frequency, official status, or
+full-paper coverage. Official frequency or status claims require a checked
+source. Full exam papers are not first-class quiz artifacts.
+
+An exam-readiness quiz is not a simulated full exam. It should have actionable
+remediation paths, source/exam claim safety notes, and realistic timing for its
+items, but it does not need marks, bareme, paper sections, variants, or an
+official correction scheme.
 
 After a material edit to a quiz file, use `needs-review` on only the affected review substatus fields. Stem, item-type, MCQ/MR option or distractor, match-prompt, sequence-criterion, or hotspot-target edits invalidate item-quality review; correct-answer, accepted-alternative, pairing, order, or region edits invalidate answer-key review; option, diagnostic-signal, misconception, or non-choice wrong-response edits may invalidate feedback review; feedback edits invalidate feedback review; remediation edits invalidate remediation review.
 
@@ -148,7 +154,7 @@ Remediation plan:
 - Available support, or `not-in-scope`/`deferred` when local lessons or exercises are intentionally absent or postponed.
 
 Source/provenance:
-- original | exam-inspired | adapted | source note, with source-anchor notes when applicable
+- original | exam-inspired | national-exam adaptation/direct reproduction note | source note, with source-anchor notes when applicable
 
 Choices / interaction design:
 - For MCQ/MR: planned choices. For fill-blank: visible blank/input location. For match: student-facing left/right sets. For sequence: items to order. For hotspot: target visual/interaction marker.

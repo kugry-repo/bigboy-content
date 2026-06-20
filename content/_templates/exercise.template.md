@@ -114,6 +114,9 @@ TODO: Author-only notes. Not learner-facing.
 
 - Design card : `{{unit_code}}-ex-001`
 - Source card status at creation : `ready-for-exercise-batch` before drafting, then `used-in-exercise` only after this file references it.
+- Source/provenance : `original`, `exam-inspired`, or `national-exam` with adaptation/direct-reproduction note when relevant.
+- Exam-style label : use `style examen` or `exam-pattern` only when the exercise trains a real pattern; do not call it an official exam paper.
+- Marks/bareme : omit unless a checked source provides them and the note is useful.
 - Student decision point :
 - Misconception :
 - Review status :

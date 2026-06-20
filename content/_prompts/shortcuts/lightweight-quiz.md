@@ -14,6 +14,8 @@ Use this prompt for:
 - improving one option's feedback or remediation;
 - adding one item to an existing quiz;
 - creating a short quiz, exit ticket, or remediation quiz with a small number of items;
+- creating one narrow exam-readiness item when the objective and remediation
+  path are clear;
 - reviewing only the changed item or feedback slice after a small edit.
 
 Do not use it to create a full quiz bank, broad diagnostic, whole-unit quiz coverage, or a large remediation system.
@@ -110,6 +112,11 @@ content/_prompts/workflows/quizzes/02-generate-raw-item-pool.md
 content/_prompts/workflows/quizzes/03-curate-item-design-cards.md
 content/_prompts/workflows/quizzes/04-create-quiz-file.md
 ```
+
+If the request asks for a full timed exam paper, marks/bareme, paper sections,
+official correction scheme, variants, or whole-paper review, stop and report
+that full exam papers are not first-class artifacts yet. Recommend a
+system-design change before content creation.
 
 ## Task Modes
 
@@ -224,6 +231,11 @@ Every lightweight quiz item must still satisfy:
 - feedback that teaches, not just says "wrong";
 - useful remediation or honest `not-in-scope` / `deferred` support;
 - source/exam claim safety.
+
+For exam-readiness quiz work, keep the item diagnostic: exam-pattern cue,
+common exam-error signal, feedback, and remediation. Do not add full-paper
+claims, marks/bareme, or official-paper labels unless a future full-exam
+contract supports them.
 
 ## Finish
 

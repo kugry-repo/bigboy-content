@@ -73,6 +73,11 @@ The final quiz's questions, feedback, mastery criteria, and remediation are
 learner-facing. Source item card IDs, source/provenance risks, review status
 notes, and planning history belong in `## Notes auteur`.
 
+For `quiz_kind: exam-readiness`, keep the quiz diagnostic. Do not add marks,
+bareme, paper sections, official correction-scheme assumptions, variants, or
+full-paper coverage claims. Record source/exam claim safety in
+`## Notes auteur`.
+
 Fill the new frontmatter fields:
 
 - `quiz_kind`

@@ -69,6 +69,11 @@ Exam-readiness quizzes are exam-style practice, not full exam papers. Until a
 full-exam schema exists, keep exam preparation inside quiz files, exercise
 files, learner-facing sets, or revision/exam-prep topics.
 
+Do not plan marks, bareme, paper sections, official correction schemes, or
+whole-paper coverage for an exam-readiness quiz unless a future full-exam
+artifact contract exists. Plan realistic timing, source/exam claim safety, and
+remediation instead.
+
 ## Quiz Intent Card Format
 
 ```md
@@ -136,7 +141,7 @@ Remediation paths:
 - Local lessons/exercises support: available | planned | `not-in-scope` | `deferred`
 
 Source/exam claim policy:
-- original | adapted | exam-pattern only
+- original | exam-inspired | national-exam adaptation/direct reproduction | exam-pattern only
 - notes:
 
 Mismath / ambiguity risks:

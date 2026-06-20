@@ -19,9 +19,11 @@ It works for:
 - one quiz question stem, option, distractor, answer note, feedback block, or remediation note;
 - a related quiz option and feedback pair, even when they are not adjacent;
 - exercise sets;
+- one bounded source/provenance or exam-claim note;
 - unit `_index.md` planning sections and author-facing planning cards.
 
-It patches existing bounded content. It does not create exercise batches, full quiz files, full quiz banks, or broad planning coverage.
+It patches existing bounded content. It does not create exercise batches, full
+quiz files, full quiz banks, full exam papers, or broad planning coverage.
 
 For learner-facing polish, target final artifact sections or explicitly
 learner-facing unit summary/navigation sections. Do not polish raw dumps, seeds,
@@ -321,6 +323,10 @@ Content studio supports exercise modes across `diagnose`, `propose`, `patch`, an
 
 Focus on target skill precision, worth-existing value, student decision point, exercise role, progression, difficulty honesty, exam/source claim safety, solution steps, hints, common mistake recovery, verification usefulness, design-card alignment when present, and avoiding mechanical low-value exercises.
 
+For exam-style exercises, verify that the item trains a real exam-pattern
+decision, trap, or chain. Do not add marks/bareme or official-paper language
+unless a checked source and current schema support it.
+
 Do not apply lesson-flow or lesson-voice ceremony as the main standard for exercise quality. Exercises are training devices; judge them by the exercise quality rubric and solution-style guide.
 
 When the active file or selection is inside an exercise file, infer the target unit from the path when possible, then use frontmatter and the parent unit `_index.md` to confirm.
@@ -338,6 +344,10 @@ Content studio supports quiz modes across `diagnose`, `propose`, `patch`, and `p
 When the active file or selection is inside a quiz file, infer the target unit from the path when possible, then use frontmatter and the parent unit `_index.md` to confirm.
 
 Focus on quiz purpose, place in series, exact skill target, diagnostic signal, MCQ/MR distractor quality, wrong-response feedback, correct-answer feedback, misconceptions, item-type suitability, pacing, standalone usefulness, mastery criteria, remediation paths, and supported item types: `multiple-choice`, `multiple-response`, `true-false`, `fill-blank`, `match`, `sequence`, and `hotspot`.
+
+For exam-readiness quizzes, keep the work diagnostic. Do not turn a quiz into a
+full simulated exam paper or add full-paper claims without a future artifact
+contract.
 
 Do not treat standalone quizzes as lesson mini-checks or compressed exercise sheets. Judge them by diagnostic value, answer-key correctness, feedback, and remediation.
 

@@ -86,6 +86,8 @@ Every curated item card must include:
 - feedback design;
 - remediation plan;
 - source/provenance notes;
+- for exam-readiness items: realistic exam cue, common exam-error signal,
+  remediation path, and no invented marks/bareme or full-paper claim;
 - batch/readiness note.
 
 For `multiple-choice` and `multiple-response` cards, also include:
@@ -149,7 +151,7 @@ Remediation plan:
 - Available support, or `not-in-scope`/`deferred` when local lessons or exercises are intentionally absent or postponed.
 
 Source/provenance:
-- original | exam-inspired | adapted | source note, with source-anchor notes when applicable
+- original | exam-inspired | national-exam adaptation/direct reproduction note | source note, with source-anchor notes when applicable
 
 Choices / interaction design:
 - For MCQ/MR: planned choices. For fill-blank: visible blank/input location. For match: student-facing left/right sets. For sequence: items to order. For hotspot: target visual/interaction marker.

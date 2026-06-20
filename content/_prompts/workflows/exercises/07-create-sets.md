@@ -97,6 +97,10 @@ global revision topics, synthesis topics, or exam-prep paths. Exam-pattern sets
 must avoid unsupported official claims and should link original or permitted
 exam-inspired exercises.
 
+An exam-pattern set is not a full exam paper. Do not add marks/bareme,
+section-level paper structure, official correction schemes, variants, or
+whole-paper timing unless a future full-exam artifact contract exists.
+
 Use frontmatter values derived from `TARGET_UNIT_INDEX`, including the resolved unit code, program, unit folder, order, domain, tracks, language, and relevant skills.
 
 If no exercises exist and the design cards are not specific enough to build sets safely, stop and ask for clarification.

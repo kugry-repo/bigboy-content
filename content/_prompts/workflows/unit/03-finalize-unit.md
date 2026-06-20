@@ -151,6 +151,9 @@ Check:
 - standalone quizzes are not treated as lesson checkpoints or compressed exercises;
 - exam-style practice is represented by exercises, quizzes, or sets; full exam
   papers are not first-class artifacts yet;
+- adapted official-exam material records country, year, session, track, source,
+  and adaptation status, and does not appear learner-facing as an official full
+  exam paper;
 - files remain ready for future app parsing.
 
 Assess publish-readiness for the declared scope:

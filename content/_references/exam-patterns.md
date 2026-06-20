@@ -1,10 +1,21 @@
 # Exam Patterns
 
-This file is for recording recurring patterns observed in national exams.
+This file records recurring patterns observed in national exams so authors can
+create original exam-style practice.
 
-Do not copy long exam statements here.
+Record patterns, not full exam papers, copied statements, correction schemes,
+or baremes. Full exam papers are not first-class artifacts in the current
+system.
 
-Record patterns, not copyrighted content.
+Use these notes to inform:
+
+- `exercise_role: exam-pattern` exercises;
+- exam-pattern exercise sets;
+- `quiz_kind: exam-readiness` quizzes;
+- global revision or exam-prep topic planning.
+
+Do not use this file to claim that a pattern is official, frequent, or required
+unless the supporting source is checked in `content/_references/official-sources.md`.
 
 ## Pattern entry template
 
@@ -18,6 +29,12 @@ Record patterns, not copyrighted content.
 - Common traps:
 - Suggested original exercise IDs:
 - Source observations:
+- Provenance status:
+  original pattern note | exam-inspired | adapted official-exam item | direct reproduction risk
+- Learner-facing label:
+  style examen | inspire d'un examen | adapte d'un examen officiel | author-only
+- Full-paper support:
+  not applicable; current model supports practice artifacts only
 ```
 
 ## Example pattern

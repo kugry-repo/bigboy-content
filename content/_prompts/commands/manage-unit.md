@@ -31,6 +31,11 @@ Learner-facing role is also different:
 - exam-style practice belongs in exercises, quizzes, or learner-facing sets
   until full exam papers have a first-class schema.
 
+Use official units for topic-specific exam-style practice. Use unofficial
+topics for cross-topic revision, synthesis, method routes, broad exam-pattern
+practice, or a future `exam-prep` path. Do not create a special full-exam unit
+or folder unless a later schema/product pass defines full exam papers.
+
 For official curriculum units, `content/programs/<TARGET_PROGRAM>/_curriculum-map.md`
 is the canonical structure file. It owns official unit list, order, code,
 folder, slug, title, domain, and official curriculum presence. Program

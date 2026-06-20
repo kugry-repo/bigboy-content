@@ -70,7 +70,7 @@ No unit-specific misconceptions recorded yet.
 
 This inventory is for navigation, not status bookkeeping. List final learner-facing or publishable files only; planning cards stay in the planning sections below.
 
-Use the `Scope` value from the matching production-dashboard family row. Use `none` when an in-scope family has no final files yet, `not-in-scope` when the family is intentionally absent, and `deferred` when the family is intentionally postponed. When final files exist, list unit-relative Obsidian links such as `[[lessons/{{unit_code}}-lesson-001|Lesson title]]`. Exam-style material should be listed through its actual artifact family: exercise files, quiz files, or learner-facing exercise sets. Full exams are not first-class artifacts yet.
+Use the `Scope` value from the matching production-dashboard family row. Use `none` when an in-scope family has no final files yet, `not-in-scope` when the family is intentionally absent, and `deferred` when the family is intentionally postponed. When final files exist, list unit-relative Obsidian links such as `[[lessons/{{unit_code}}-lesson-001|Lesson title]]`. Exam-style material should be listed through its actual artifact family: exercise files, quiz files, or learner-facing exercise sets. Full exam papers are not first-class artifacts yet.
 
 | Family | Scope | Final artifacts | Notes |
 |---|---|---|---|
@@ -125,7 +125,19 @@ No diagram or interaction decisions recorded yet.
 
 ## Notes d'alignement examen
 
-No exam-alignment notes recorded yet. Keep source/provenance analysis author-only unless a future learner-facing summary is intentionally written. Model exam-style practice as exercises, quizzes, or sets; full exam papers are not first-class artifacts yet.
+No exam-alignment notes recorded yet.
+
+Use this section for author-only source/provenance analysis, exam-pattern notes,
+adaptation reasoning, and source-safety risks. Model exam-style practice as
+exercises, exam-pattern sets, or exam-readiness quizzes. Topic-specific
+practice belongs in this unit; cross-topic practice belongs in a revision,
+synthesis, cross-chapter-method, or future exam-prep topic. Full exam papers
+are not first-class artifacts yet.
+
+If an artifact is adapted from an official exam item, record country, year,
+session, track, source, and adaptation status in the artifact `source_ref` or
+`## Notes auteur`. Do not label learner-facing material as an official exam
+paper unless the system later supports full papers explicitly.
 
 ## Production dashboard
 

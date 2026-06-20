@@ -11,6 +11,8 @@ Use this prompt for:
 - creating one focused exercise from a clear idea;
 - creating 2 or 3 routine exercises when the skill coverage is obvious and narrow;
 - adding exam-style practice for one known skill without claiming official exam status;
+- adapting one checked official-exam item into a normal exercise, with
+  `source_type: national-exam` and source/adaptation notes;
 - drafting a worked solution for an existing exercise;
 - improving one exercise solution;
 - creating or updating a compact direct design card only when traceability or missing design intent requires it.
@@ -102,6 +104,11 @@ content/_prompts/workflows/exercises/02-curate-design-cards.md
 content/_prompts/workflows/exercises/03-check-unit-balance.md
 content/_prompts/workflows/exercises/04-create-batch.md
 ```
+
+If the request is for a full timed exam paper, marks/bareme paper, official
+correction scheme, or variants, stop and report that full exam papers are not
+first-class artifacts yet. Recommend a system-design change before content
+creation.
 
 ## Task Modes
 
@@ -204,6 +211,10 @@ Every direct exercise must still satisfy:
 - useful hints or a justified compact hint ladder;
 - misconception recovery when the exercise is substantial;
 - source/exam claim safety.
+
+For one exam-style direct exercise, require realistic exam wording, a real
+decision point, a method cue in the solution, common traps when useful, and
+honest provenance. Marks/bareme are not required and should not be invented.
 
 ## Finish
 

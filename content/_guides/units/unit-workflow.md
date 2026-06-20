@@ -229,6 +229,9 @@ The learner product uses the repository artifacts in this relationship:
 - Exam-style practice is modeled through exercises, quizzes, and sets in an
   official unit, a specific topic, a global revision topic, or an `exam-prep`
   topic. Full exam papers are not first-class artifacts yet.
+- Source-aware official-exam adaptations are still exercises, quizzes, or sets.
+  Record provenance in artifact frontmatter, `source_ref`, and author notes;
+  do not present them as official full papers.
 
 The intended learner journey is:
 
@@ -246,6 +249,11 @@ program index
 
 This journey is not an authoring order. Workstreams remain independent and
 sparse units remain valid when their declared scope says so.
+
+Future full exam papers require a separate product decision and artifact
+contract before authoring: folder placement, frontmatter type, timing,
+marks/bareme, sections, correction scheme, variants, source/provenance,
+whole-paper review, and learner navigation.
 
 ## Canonical initialized unit index scaffold
 
