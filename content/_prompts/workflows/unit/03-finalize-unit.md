@@ -72,13 +72,15 @@ Perform cleanup and publish-readiness assessment for `TARGET_UNIT_PATH`.
 
 This is cleanup work only.
 
-First, read `TARGET_UNIT_INDEX`, inspect `## Production dashboard`, determine the unit's declared scope from the `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes`, and identify which existing artifacts can be cleaned safely. Interpret `not-started` as the in-scope/open declaration, `not-in-scope` as intentionally absent, and `deferred` as intentionally postponed. Use family-local rows, not the `Scope` row, to judge progress and review status. If major work is missing, report it as a declared-scope gap only when a local contract requires it. Otherwise report the absent artifact family using its canonical dashboard scope state.
+First, read `TARGET_UNIT_INDEX`, inspect `## Production dashboard` and `## Inventaire des fichiers finaux`, determine the unit's declared scope from the `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes`, and identify which existing artifacts can be cleaned safely. Interpret `not-started` as the in-scope/open declaration, `not-in-scope` as intentionally absent, and `deferred` as intentionally postponed. Use family-local rows, not the `Scope` row, to judge progress and review status. If major work is missing, report it as a declared-scope gap only when a local contract requires it. Otherwise report the absent artifact family using its canonical dashboard scope state.
 
 Finalize only the artifact families that are in scope for the declared unit scope or requested publish target. Use each family-specific completion contract:
 
 - Lessons: verify intended mini-lesson files exist, lesson `status` and dashboard review state are acceptable, lesson structure and metadata satisfy the lesson contract, and known review issues are resolved or explicitly deferred.
 - Exercises: verify final exercise files exist for intended exercise batches, statements and solutions have acceptable independent review states, design cards or direct blueprints are ready/used/resolved when present, `solution_status` is not assumed from `statement_status`, and exercise batch balance has been handled when the unit scope requires it.
 - Quizzes: verify standalone quiz files exist for intended quiz work, item quality, answer key, feedback, and remediation review states are acceptable, canonical item types and required type-specific answer/feedback/remediation contracts are present, quizzes are not treated as in-lesson mini-checks, and remediation uses available, planned, `not-in-scope`, or `deferred` support honestly.
+
+Finalization may report artifact-specific stale evidence, but it must not silently refresh it. Block publication readiness on stale in-scope artifact evidence until the owning review prompt refreshes it.
 
 Do not use `content/_guides/units/golden-unit-standard.md` as a mandatory checklist for every unit. It is an aspirational complete-unit model. Sparse units can be ready when complete for their declared scope.
 
@@ -122,6 +124,7 @@ A missing artifact family is a blocker only when:
 Check:
 
 - frontmatter consistency across the unit;
+- `## Inventaire des fichiers finaux` mirrors dashboard family Scope rows, links existing in-scope final lesson/exercise/quiz files, and keeps planning cards out of final-artifact navigation;
 - lesson `status`, exercise `design_status`/`statement_status`/`solution_status`, and quiz `item_quality_status`/`answer_key_status`/`feedback_status`/`remediation_status` fields;
 - stale review evidence: lesson `status: needs-review`, exercise `design_status`/`statement_status`/`solution_status: needs-review`, quiz review substatuses at `needs-review`, and dashboard review rows at `needs-review`;
 - Obsidian-friendly Markdown headings, callouts, links, and tables;

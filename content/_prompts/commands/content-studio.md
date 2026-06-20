@@ -8,6 +8,8 @@ Use this command when the user wants selected-fragment work, taste/voice discuss
 
 For unit-wide consistency review, use `content/_prompts/workflows/unit/02-review-unit.md`. For metadata/link/todo/status/source-safety cleanup before publication consideration, use `content/_prompts/workflows/unit/03-finalize-unit.md`.
 
+Use content-studio to patch or discuss bounded content. When content already changed and the task is to verify correctness or refresh stale review evidence, use the owning lesson, exercise, or quiz review prompt instead.
+
 It works for:
 
 - lessons;

@@ -79,11 +79,13 @@ Lessons, exercises, and standalone quizzes are first-class artifact families. Re
 
 Do not judge exercises by lesson flow standards. Do not judge standalone quizzes as compressed lessons or in-lesson checks. Use lesson standards only for lesson artifacts, exercise standards only for exercise artifacts and exercise design cards, and quiz standards only for quiz artifacts and quiz planning cards.
 
-Before classifying missing work, read the dashboard `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes`. Interpret them canonically: `not-started` is the in-scope/open declaration, `not-in-scope` means intentionally absent, and `deferred` means intentionally postponed. Use family-local rows, not the `Scope` row, to judge progress and review status.
+Before classifying missing work, read the dashboard `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes`, then compare them with `## Inventaire des fichiers finaux` and the actual artifact folders. Interpret Scope values canonically: `not-started` is the in-scope/open declaration, `not-in-scope` means intentionally absent, and `deferred` means intentionally postponed. Use family-local rows, not the `Scope` row, to judge progress and review status.
 
 Do not require absent artifact families when their `Scope` row is `not-in-scope`. Report `deferred` families as deferred scope, not accidental missing work. If a family is `not-started`, use the family-local rows, unit plan, and request/publish target to decide whether missing work is a declared-scope gap.
 
 If Phase 2 freshness fields are present, surface stale or `needs-review` statuses as targeted review work. If Phase 3 planning objects are present, surface incomplete, stale, or not-ready design cards, blueprints, quiz intent cards, raw pools, or item design cards as planning-object blockers only for families in scope.
+
+This prompt may update unit-level dashboard/readiness evidence, but it does not refresh artifact-specific review evidence. Artifact-specific stale evidence routes to the owning review prompt.
 
 Do not:
 
@@ -125,6 +127,7 @@ Otherwise report the family using its canonical dashboard scope state: `not-in-s
 Check:
 
 - unit plan matches created files;
+- `## Inventaire des fichiers finaux` mirrors dashboard family Scope rows and lists existing in-scope final lesson, exercise, and quiz files without mixing in planning cards;
 - mini-lesson architecture is respected: no root-level `lesson.md`, and mini-lessons live under `lessons/`;
 - when lessons are in scope, lesson files exist as declared, have coherent local progression, follow the editorial pipeline at a review-signal level, and satisfy the lesson rubric without unnecessary ceremony;
 - frontmatter fields and IDs are consistent;

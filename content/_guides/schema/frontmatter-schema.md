@@ -156,6 +156,8 @@ Initialized and published unit dashboards use artifact-family `Scope` rows under
 
 Only `not-started`, `not-in-scope`, and `deferred` are valid artifact-family `Scope` values. Other dashboard rows use the allowed dashboard statuses documented in `content/_guides/units/unit-workflow.md`. Use hyphenated machine-friendly values in rows; prose variants such as `not in scope` are not dashboard statuses.
 
+Initialized and published unit indexes also include `## Inventaire des fichiers finaux`. It is a navigation contract, not frontmatter: one row each for `lessons`, `exercises`, and `quizzes`; row `Scope` mirrors the corresponding dashboard family `Scope`; `Final artifacts` is `none`, `not-in-scope`, `deferred`, or unit-relative Obsidian links to final files under the matching artifact folder. Planning cards are not listed there.
+
 `content/_prompts/commands/initialize-unit.md` owns the transition from `stub` to `initialized`.
 
 No current workflow prompt automatically owns the transition from `initialized` to `published`. Use `published` only after an explicit human publication decision. `content/_prompts/workflows/unit/03-finalize-unit.md` may prepare and report publication readiness for declared scope, but it must not automatically set `planning_state: published`.

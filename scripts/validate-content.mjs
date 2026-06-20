@@ -569,6 +569,7 @@ const REQUIRED_QUIZ_H2 = [
 ];
 
 const DASHBOARD_HEADING = "Production dashboard";
+const FINAL_ARTIFACT_INVENTORY_HEADING = "Inventaire des fichiers finaux";
 
 const ALLOWED_DASHBOARD_STATUSES = new Set([
   "not-started",
@@ -608,6 +609,37 @@ const FINALIZATION_BLOCKING_DASHBOARD_STATUSES = new Set([
   "needs-review",
   "blocked",
   "not-run",
+]);
+
+const FINAL_ARTIFACT_FAMILIES = [
+  {
+    key: "lessons",
+    label: "Lessons",
+    dashboardSection: "Lessons",
+    folder: "lessons",
+  },
+  {
+    key: "exercises",
+    label: "Exercises",
+    dashboardSection: "Exercises",
+    folder: "exercises",
+  },
+  {
+    key: "quizzes",
+    label: "Quizzes",
+    dashboardSection: "Quizzes",
+    folder: "quizzes",
+  },
+];
+
+const FINAL_ARTIFACT_FAMILY_BY_KEY = new Map(
+  FINAL_ARTIFACT_FAMILIES.map((family) => [family.key, family]),
+);
+
+const FINAL_ARTIFACT_EMPTY_MARKERS = new Set([
+  "none",
+  "not-in-scope",
+  "deferred",
 ]);
 
 const REQUIRED_DASHBOARD = parseDashboardContractFromTemplate(
@@ -998,6 +1030,24 @@ const CONTRACT_FIXTURES = {
     "content/_fixtures/contracts/invalid-not-in-scope-planning-object.md",
   notInScopeAuthoredFile:
     "content/_fixtures/contracts/invalid-not-in-scope-authored-file.md",
+  validFinalInventoryLessonOnly:
+    "content/_fixtures/contracts/valid-final-inventory-lesson-only.md",
+  validFinalInventoryExerciseOnly:
+    "content/_fixtures/contracts/valid-final-inventory-exercise-only.md",
+  validFinalInventoryQuizOnly:
+    "content/_fixtures/contracts/valid-final-inventory-quiz-only.md",
+  validFinalInventorySparseNotInScope:
+    "content/_fixtures/contracts/valid-final-inventory-sparse-not-in-scope.md",
+  validFinalInventoryDeferred:
+    "content/_fixtures/contracts/valid-final-inventory-deferred.md",
+  invalidFinalInventoryMalformedLink:
+    "content/_fixtures/contracts/invalid-final-inventory-malformed-link.md",
+  invalidFinalInventoryMissingReviewedArtifact:
+    "content/_fixtures/contracts/invalid-final-inventory-missing-reviewed-artifact.md",
+  unitReviewArtifactRefreshPrompt:
+    "content/_fixtures/contracts/invalid-unit-review-artifact-refresh.md",
+  nextActionPatchReviewOverlapPrompt:
+    "content/_fixtures/contracts/invalid-next-action-patch-review-overlap.md",
   quizQuestionCountAnswerHeading:
     "content/_fixtures/contracts/valid-quiz-question-count-answer-heading.md",
   draftWarningOnlyQuiz:
@@ -2520,6 +2570,249 @@ function checkProductionDashboard(filePath, dashboardSection, data = {}) {
   return familyScopes;
 }
 
+function normalizeInventoryFamilyKey(value) {
+  const normalized = normalizeTableHeader(value);
+  if (normalized === "lesson") return "lessons";
+  if (normalized === "exercise") return "exercises";
+  if (normalized === "quiz") return "quizzes";
+  return normalized;
+}
+
+function normalizedInventoryMarker(value) {
+  return normalizeTableHeader(value);
+}
+
+function parseInventoryWikiLinks(cell) {
+  const links = [];
+  const regex = /\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g;
+
+  for (const match of cell.matchAll(regex)) {
+    links.push({
+      raw: match[0],
+      target: match[1].trim(),
+      label: (match[2] ?? "").trim(),
+    });
+  }
+
+  return links;
+}
+
+function finalArtifactLinkFileRelative(target) {
+  const normalizedTarget = target.trim().replace(/\\/g, "/");
+  return normalizedTarget.endsWith(".md")
+    ? normalizedTarget
+    : `${normalizedTarget}.md`;
+}
+
+function validateFinalArtifactInventoryLink(filePath, data, family, row, link) {
+  const target = link.target;
+  const normalizedTarget = target.replace(/\\/g, "/");
+  const rowLabel = `unit "${unitDashboardLabel(data, filePath)}" final-artifact inventory family "${family.label}"`;
+
+  if (!target) {
+    addError(filePath, `${rowLabel} has an empty final-artifact link target`);
+    return null;
+  }
+
+  if (target !== normalizedTarget) {
+    addError(
+      filePath,
+      `${rowLabel} link "${link.raw}" uses backslashes; use unit-relative POSIX paths like [[${family.folder}/file-id|Title]]`,
+    );
+    return null;
+  }
+
+  if (
+    path.isAbsolute(normalizedTarget) ||
+    normalizedTarget.startsWith("/") ||
+    normalizedTarget.startsWith("content/") ||
+    normalizedTarget.split("/").includes("..")
+  ) {
+    addError(
+      filePath,
+      `${rowLabel} link "${link.raw}" must be unit-relative and stay inside the unit artifact folders`,
+    );
+    return null;
+  }
+
+  if (normalizedTarget.includes("#")) {
+    addError(
+      filePath,
+      `${rowLabel} link "${link.raw}" must target a final artifact file, not a heading or block inside it`,
+    );
+    return null;
+  }
+
+  const targetWithoutExtension = normalizedTarget.replace(/\.md$/i, "");
+  const parts = targetWithoutExtension.split("/");
+  if (parts.length !== 2 || parts[0] !== family.folder || !parts[1]) {
+    addError(
+      filePath,
+      `${rowLabel} link "${link.raw}" must target ${family.folder}/<artifact-file> for the ${family.key} row`,
+    );
+    return null;
+  }
+
+  return finalArtifactLinkFileRelative(normalizedTarget);
+}
+
+function parseFinalArtifactInventory(filePath, sectionText) {
+  const lines = sectionText.split(/\r?\n/);
+  let columns = null;
+  let inInventoryTable = false;
+  const rows = [];
+
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index];
+
+    if (!/^\|/.test(line)) {
+      if (inInventoryTable) break;
+      continue;
+    }
+
+    const cells = splitMarkdownTableRow(line);
+    if (isMarkdownSeparatorRow(cells)) continue;
+
+    if (!columns) {
+      const headers = cells.map(normalizeTableHeader);
+      const candidateColumns = {
+        family: headers.indexOf("family"),
+        scope: headers.indexOf("scope"),
+        finalArtifacts: headers.indexOf("final-artifacts"),
+      };
+
+      if (Object.values(candidateColumns).every((column) => column >= 0)) {
+        columns = candidateColumns;
+        inInventoryTable = true;
+      }
+
+      continue;
+    }
+
+    const familyKey = normalizeInventoryFamilyKey(cells[columns.family]);
+    const scope = cleanTableCell(cells[columns.scope]);
+    const artifactsCell = cleanTableCell(cells[columns.finalArtifacts]);
+    rows.push({
+      lineNumber: index + 1,
+      familyKey,
+      scope,
+      artifactsCell,
+      links: parseInventoryWikiLinks(artifactsCell),
+      fileRelatives: [],
+    });
+  }
+
+  if (!columns) {
+    addError(
+      filePath,
+      `"## ${FINAL_ARTIFACT_INVENTORY_HEADING}" must contain a table with columns "Family", "Scope", and "Final artifacts"`,
+    );
+  }
+
+  return rows;
+}
+
+function checkFinalArtifactInventory(filePath, body, data, familyScopes) {
+  const sectionText = getSection(body, 2, FINAL_ARTIFACT_INVENTORY_HEADING);
+  const byFamily = new Map();
+
+  if (!sectionText.trim()) {
+    addError(
+      filePath,
+      `missing body content under "## ${FINAL_ARTIFACT_INVENTORY_HEADING}"${initializedTemplateHint()}`,
+    );
+    return { byFamily };
+  }
+
+  const rows = parseFinalArtifactInventory(filePath, sectionText);
+  for (const row of rows) {
+    const family = FINAL_ARTIFACT_FAMILY_BY_KEY.get(row.familyKey);
+    if (!family) {
+      addError(
+        filePath,
+        `unit "${unitDashboardLabel(data, filePath)}" final-artifact inventory row ${row.lineNumber} has unknown family "${row.familyKey}"; expected one of ${FINAL_ARTIFACT_FAMILIES.map((entry) => entry.key).join(", ")}`,
+      );
+      continue;
+    }
+
+    if (byFamily.has(row.familyKey)) {
+      addError(
+        filePath,
+        `unit "${unitDashboardLabel(data, filePath)}" final-artifact inventory has duplicate row for family "${row.familyKey}"`,
+      );
+      continue;
+    }
+
+    byFamily.set(row.familyKey, row);
+
+    if (!ALLOWED_DASHBOARD_SCOPE_STATUSES.has(row.scope)) {
+      addError(
+        filePath,
+        `unit "${unitDashboardLabel(data, filePath)}" final-artifact inventory family "${family.label}" has invalid Scope "${row.scope}"; expected one of ${expectedDashboardScopeValues()}`,
+      );
+    }
+
+    const dashboardScope = familyScopes.get(family.dashboardSection);
+    if (dashboardScope && row.scope !== dashboardScope) {
+      addError(
+        filePath,
+        `unit "${unitDashboardLabel(data, filePath)}" final-artifact inventory family "${family.label}" has Scope "${row.scope}" but dashboard "### ${family.dashboardSection}" has "Scope: ${dashboardScope}"`,
+      );
+    }
+
+    const artifactMarker = normalizedInventoryMarker(row.artifactsCell);
+    if (row.links.length === 0) {
+      if (!FINAL_ARTIFACT_EMPTY_MARKERS.has(artifactMarker)) {
+        addError(
+          filePath,
+          `unit "${unitDashboardLabel(data, filePath)}" final-artifact inventory family "${family.label}" has malformed Final artifacts cell "${row.artifactsCell}"; use unit-relative Obsidian links like [[${family.folder}/file-id|Title]] or one of ${[...FINAL_ARTIFACT_EMPTY_MARKERS].join(", ")}`,
+        );
+      }
+    } else {
+      const textOutsideLinks = row.artifactsCell
+        .replace(/\[\[[^\]]+\]\]/g, "")
+        .replace(/<br\s*\/?>/gi, "")
+        .replace(/[,;]/g, "")
+        .trim();
+
+      if (textOutsideLinks) {
+        addError(
+          filePath,
+          `unit "${unitDashboardLabel(data, filePath)}" final-artifact inventory family "${family.label}" mixes links with unsupported text "${textOutsideLinks}"; keep only final-artifact links in that cell`,
+        );
+      }
+    }
+
+    if (row.scope === "not-in-scope" && row.links.length > 0) {
+      addError(
+        filePath,
+        `unit "${unitDashboardLabel(data, filePath)}" final-artifact inventory family "${family.label}" is not-in-scope but lists final artifact links`,
+      );
+    }
+
+    for (const link of row.links) {
+      const fileRelative = validateFinalArtifactInventoryLink(
+        filePath,
+        data,
+        family,
+        row,
+        link,
+      );
+      if (fileRelative) row.fileRelatives.push(fileRelative);
+    }
+  }
+
+  for (const family of FINAL_ARTIFACT_FAMILIES) {
+    if (byFamily.has(family.key)) continue;
+    addError(
+      filePath,
+      `unit "${unitDashboardLabel(data, filePath)}" final-artifact inventory is missing row for family "${family.key}"`,
+    );
+  }
+
+  return { byFamily };
+}
+
 function checkExerciseDesignCardContracts(filePath, body) {
   const exercisePlanning = getSection(body, 2, "Planification des exercices");
   const designCardSection = getSection(
@@ -3132,6 +3425,7 @@ function checkCanonicalUnitBody(indexPath, body, data) {
         quizItemDesignCards: new Map(),
       },
       familyScopes: new Map(),
+      finalArtifactInventory: { byFamily: new Map() },
     };
   }
 
@@ -3171,6 +3465,12 @@ function checkCanonicalUnitBody(indexPath, body, data) {
 
   const dashboardSection = getSection(body, 2, DASHBOARD_HEADING);
   const familyScopes = checkProductionDashboard(indexPath, dashboardSection, data);
+  const finalArtifactInventory = checkFinalArtifactInventory(
+    indexPath,
+    body,
+    data,
+    familyScopes,
+  );
   const planningObjects = checkPlanningObjectContracts(indexPath, body);
   checkScopePlanningObjectContradictions(indexPath, data, familyScopes, planningObjects);
   checkLegacyGlobalProductionText(indexPath, body);
@@ -3189,6 +3489,7 @@ function checkCanonicalUnitBody(indexPath, body, data) {
   return {
     planningObjects,
     familyScopes,
+    finalArtifactInventory,
   };
 }
 
@@ -3666,6 +3967,48 @@ function checkDashboardContractFixture(repoPath, data = {}) {
       ...data,
     },
   );
+}
+
+function checkFinalArtifactInventoryContractFixture(
+  repoPath,
+  { data = {}, scopes = {}, files = {} } = {},
+) {
+  const filePath = fullPathFromRepoPath(repoPath);
+  const text = fs.readFileSync(filePath, "utf8");
+  const unitData = {
+    unit_folder: path.basename(repoPath, ".md"),
+    status: "planned",
+    planning_state: "initialized",
+    ...data,
+  };
+  const familyScopes = new Map(
+    FINAL_ARTIFACT_FAMILIES.map((family) => [
+      family.dashboardSection,
+      scopes[family.key] ?? "not-started",
+    ]),
+  );
+  const finalArtifactInventory = checkFinalArtifactInventory(
+    filePath,
+    text,
+    unitData,
+    familyScopes,
+  );
+  const unit = {
+    indexPath: filePath,
+    dir: path.dirname(filePath),
+    folder: unitData.unit_folder,
+    planningState: unitData.planning_state,
+    data: unitData,
+    familyScopes,
+    finalArtifactInventory,
+  };
+
+  for (const family of FINAL_ARTIFACT_FAMILIES) {
+    const fixtureFiles = (files[family.key] ?? []).map((relativePath) =>
+      path.join(unit.dir, relativePath),
+    );
+    checkFinalArtifactInventoryFiles(unit, family, fixtureFiles);
+  }
 }
 
 function fixtureProgram() {
@@ -4460,6 +4803,167 @@ function checkContractFixtures() {
     [/family "Lessons" is marked "Scope: not-in-scope".*authored artifact file/],
   );
 
+  expectValidContractFixture(
+    CONTRACT_FIXTURES.validFinalInventoryLessonOnly,
+    "lesson-only final-artifact inventory passes",
+    () => checkFinalArtifactInventoryContractFixture(
+      CONTRACT_FIXTURES.validFinalInventoryLessonOnly,
+      {
+        scopes: {
+          lessons: "not-started",
+          exercises: "not-in-scope",
+          quizzes: "not-in-scope",
+        },
+        files: {
+          lessons: ["lessons/fixture-lesson-001.md"],
+        },
+      },
+    ),
+  );
+
+  expectValidContractFixture(
+    CONTRACT_FIXTURES.validFinalInventoryExerciseOnly,
+    "exercise-only final-artifact inventory passes",
+    () => checkFinalArtifactInventoryContractFixture(
+      CONTRACT_FIXTURES.validFinalInventoryExerciseOnly,
+      {
+        scopes: {
+          lessons: "not-in-scope",
+          exercises: "not-started",
+          quizzes: "not-in-scope",
+        },
+        files: {
+          exercises: ["exercises/fixture-ex-001.md"],
+        },
+      },
+    ),
+  );
+
+  expectValidContractFixture(
+    CONTRACT_FIXTURES.validFinalInventoryQuizOnly,
+    "quiz-only final-artifact inventory passes",
+    () => checkFinalArtifactInventoryContractFixture(
+      CONTRACT_FIXTURES.validFinalInventoryQuizOnly,
+      {
+        scopes: {
+          lessons: "not-in-scope",
+          exercises: "not-in-scope",
+          quizzes: "not-started",
+        },
+        files: {
+          quizzes: ["quizzes/fixture-quiz-001.md"],
+        },
+      },
+    ),
+  );
+
+  expectValidContractFixture(
+    CONTRACT_FIXTURES.validFinalInventorySparseNotInScope,
+    "sparse final-artifact inventory does not require not-in-scope links",
+    () => checkFinalArtifactInventoryContractFixture(
+      CONTRACT_FIXTURES.validFinalInventorySparseNotInScope,
+      {
+        scopes: {
+          lessons: "not-started",
+          exercises: "not-in-scope",
+          quizzes: "not-in-scope",
+        },
+        files: {
+          lessons: ["lessons/fixture-lesson-001.md"],
+        },
+      },
+    ),
+  );
+
+  expectValidContractFixture(
+    CONTRACT_FIXTURES.validFinalInventoryDeferred,
+    "deferred final-artifact inventory remains visible without links",
+    () => checkFinalArtifactInventoryContractFixture(
+      CONTRACT_FIXTURES.validFinalInventoryDeferred,
+      {
+        scopes: {
+          lessons: "deferred",
+          exercises: "not-in-scope",
+          quizzes: "not-started",
+        },
+      },
+    ),
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.invalidFinalInventoryMalformedLink,
+    "malformed final-artifact inventory link is caught",
+    () => checkFinalArtifactInventoryContractFixture(
+      CONTRACT_FIXTURES.invalidFinalInventoryMalformedLink,
+      {
+        scopes: {
+          lessons: "not-started",
+          exercises: "not-in-scope",
+          quizzes: "not-in-scope",
+        },
+      },
+    ),
+    [/must target lessons\/<artifact-file>/],
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.invalidFinalInventoryMissingReviewedArtifact,
+    "reviewed in-scope unit must list existing final artifacts",
+    () => checkFinalArtifactInventoryContractFixture(
+      CONTRACT_FIXTURES.invalidFinalInventoryMissingReviewedArtifact,
+      {
+        data: { status: "reviewed" },
+        scopes: {
+          lessons: "not-started",
+          exercises: "not-in-scope",
+          quizzes: "not-in-scope",
+        },
+        files: {
+          lessons: ["lessons/fixture-lesson-001.md"],
+        },
+      },
+    ),
+    [/omits existing final artifact\(s\).*blocking finalization/],
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.unitReviewArtifactRefreshPrompt,
+    "unit review prompt does not refresh artifact-specific evidence",
+    () => {
+      const filePath = fullPathFromRepoPath(CONTRACT_FIXTURES.unitReviewArtifactRefreshPrompt);
+      checkPromptFileContract(
+        filePath,
+        fs.readFileSync(filePath, "utf8"),
+        {
+          relative: "content/_prompts/workflows/unit/invalid-unit-review-artifact-refresh.md",
+          basename: "invalid-unit-review-artifact-refresh.md",
+          parent: "workflows/unit",
+          isOperatingPrompt: true,
+        },
+      );
+    },
+    [/unit review ownership violation/],
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.nextActionPatchReviewOverlapPrompt,
+    "next-action distinguishes content patching from review refresh",
+    () => {
+      const filePath = fullPathFromRepoPath(CONTRACT_FIXTURES.nextActionPatchReviewOverlapPrompt);
+      checkPromptFileContract(
+        filePath,
+        fs.readFileSync(filePath, "utf8"),
+        {
+          relative: "content/_prompts/commands/invalid-next-action-patch-review-overlap.md",
+          basename: "invalid-next-action-patch-review-overlap.md",
+          parent: "commands",
+          isOperatingPrompt: true,
+        },
+      );
+    },
+    [/routing contract violation/],
+  );
+
   expectInvalidContractFixture(
     CONTRACT_FIXTURES.reviewedQuizZeroQuestionCount,
     "reviewed quiz question_count must be positive",
@@ -4595,6 +5099,7 @@ function checkUnitIndex(unitDir, expectedGroup, program) {
     data: parsed.data,
     planningObjects: unitBodyState.planningObjects,
     familyScopes: unitBodyState.familyScopes,
+    finalArtifactInventory: unitBodyState.finalArtifactInventory,
   };
 }
 
@@ -6672,6 +7177,41 @@ function checkNotInScopeArtifactFiles(unit, family, files) {
   }
 }
 
+function checkFinalArtifactInventoryFiles(unit, family, files) {
+  if (unit.planningState === "stub") return;
+
+  const inventoryRow = unit.finalArtifactInventory?.byFamily?.get(family.key);
+  if (!inventoryRow) return;
+
+  const actualFiles = new Set(
+    files.map((filePath) => toPosix(path.relative(unit.dir, filePath))),
+  );
+  const linkedFiles = new Set(inventoryRow.fileRelatives);
+
+  for (const linkedFile of linkedFiles) {
+    if (actualFiles.has(linkedFile)) continue;
+
+    addError(
+      unit.indexPath,
+      `unit "${unit.folder}" final-artifact inventory family "${family.label}" declares "${linkedFile}" but that file does not exist; remove the link, fix the path, or create the final artifact through the owning workflow`,
+    );
+  }
+
+  const familyScope = unit.familyScopes?.get(family.dashboardSection);
+  if (familyScope !== "not-started") return;
+
+  const missingFiles = [...actualFiles].filter((filePath) => !linkedFiles.has(filePath));
+  if (missingFiles.length === 0) return;
+
+  const severity = claimsFinalReadiness(unit.data)
+    ? "blocking finalization"
+    : "navigation warning";
+  const message =
+    `unit "${unit.folder}" final-artifact inventory family "${family.label}" omits existing final artifact(s) ${missingFiles.join(", ")}; ${severity}. Add unit-relative links under "## ${FINAL_ARTIFACT_INVENTORY_HEADING}" or change the family Scope if the files do not belong to the declared scope`;
+
+  addFinalReadinessDiagnostic(unit.indexPath, unit.data, message);
+}
+
 function checkUnitContentFiles(unit) {
   const artifactMarkdownFiles = REQUIRED_UNIT_SUBFOLDERS.flatMap((subdir) =>
     walkMarkdownFiles(path.join(unit.dir, subdir)),
@@ -6694,6 +7234,22 @@ function checkUnitContentFiles(unit) {
   checkNotInScopeArtifactFiles(unit, "Lessons", lessonFiles);
   checkNotInScopeArtifactFiles(unit, "Exercises", exerciseFiles);
   checkNotInScopeArtifactFiles(unit, "Quizzes", quizFiles);
+
+  checkFinalArtifactInventoryFiles(
+    unit,
+    FINAL_ARTIFACT_FAMILY_BY_KEY.get("lessons"),
+    lessonFiles,
+  );
+  checkFinalArtifactInventoryFiles(
+    unit,
+    FINAL_ARTIFACT_FAMILY_BY_KEY.get("exercises"),
+    exerciseFiles,
+  );
+  checkFinalArtifactInventoryFiles(
+    unit,
+    FINAL_ARTIFACT_FAMILY_BY_KEY.get("quizzes"),
+    quizFiles,
+  );
 
   for (const filePath of lessonFiles) {
     checkLessonFile(unit, filePath);
@@ -7473,6 +8029,41 @@ function checkNextActionPrompt(filePath, text) {
       );
     }
   }
+
+  requireTextSnippets(
+    filePath,
+    text,
+    [
+      "Content-studio patches bounded selected content; it does not refresh stale review evidence.",
+      "After content already changed, route review-evidence refresh to the owning artifact review prompt.",
+      "Use `content/_prompts/commands/change-existing-content.md` when a requested edit may affect contracts, dependencies, planning objects, dashboard state, or multiple files.",
+    ],
+    "next-action patch-vs-review routing contract",
+  );
+}
+
+function checkPatchVsReviewRoutingBoundary(filePath, text) {
+  const staleEvidenceToStudioPattern =
+    /(?:stale|needs-review)[^\n]{0,200}content\/_prompts\/commands\/content-studio\.md`?\s+to\s+(?:refresh|review|mark|certify)/i;
+
+  if (staleEvidenceToStudioPattern.test(text)) {
+    addError(
+      filePath,
+      "routing contract violation: content-studio may patch bounded content, but stale review evidence must be refreshed by the owning artifact review prompt",
+    );
+  }
+}
+
+function checkArtifactReviewRefreshOwnershipBoundary(filePath, text) {
+  const unitReviewRefreshPattern =
+    /(?:unit review|unit-wide review|unit consistency review|this prompt).{0,140}(?:refresh|set|mark|update).{0,140}(?:lesson `status`|exercise `(?:design_status|statement_status|solution_status)`|quiz `(?:item_quality_status|answer_key_status|feedback_status|remediation_status)`).{0,100}`?reviewed`?/is;
+
+  if (unitReviewRefreshPattern.test(text)) {
+    addError(
+      filePath,
+      "unit review ownership violation: unit-level review may inspect and report artifact-specific evidence, but refreshing lesson/exercise/quiz review statuses belongs to the owning artifact review prompt",
+    );
+  }
 }
 
 function checkCurrentUnitMutationPrompt(filePath, text, label) {
@@ -7571,6 +8162,8 @@ function checkUnitReviewFinalizePromptContract(filePath, text, relative) {
         "Do not require absent artifact families",
         "families as deferred scope",
         "incomplete, stale, or not-ready design cards",
+        "This prompt may update unit-level dashboard/readiness evidence, but it does not refresh artifact-specific review evidence.",
+        "Artifact-specific stale evidence routes to the owning review prompt.",
       ],
       "unit review prompt artifact-symmetry contract",
     );
@@ -7590,6 +8183,8 @@ function checkUnitReviewFinalizePromptContract(filePath, text, relative) {
         "remediation_status",
         "Do not use `content/_guides/units/golden-unit-standard.md` as a mandatory checklist",
         "Do not block:",
+        "Finalization may report artifact-specific stale evidence, but it must not silently refresh it.",
+        "Block publication readiness on stale in-scope artifact evidence until the owning review prompt refreshes it.",
       ],
       "unit finalize prompt artifact-specific contract",
     );
@@ -7654,6 +8249,8 @@ function checkPromptFileContract(
     checkSetCurrentUnitPrompt(filePath, text);
   }
 
+  checkPatchVsReviewRoutingBoundary(filePath, text);
+  checkArtifactReviewRefreshOwnershipBoundary(filePath, text);
   checkUnitReviewFinalizePromptContract(filePath, text, relative);
 
   if (relative !== SHARED_PROMPT_CONTRACT_PATH) {

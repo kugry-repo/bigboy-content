@@ -57,6 +57,7 @@ Inspect, without editing:
 - the unit `planning_state`;
 - the complete unit index body;
 - `## Production dashboard` only when `planning_state` is `initialized` or `published`;
+- `## Inventaire des fichiers finaux` only when `planning_state` is `initialized` or `published`;
 - `TARGET_UNIT_PATH/lessons/`;
 - `TARGET_UNIT_PATH/exercises/`;
 - `TARGET_UNIT_PATH/quizzes/`;
@@ -107,6 +108,9 @@ Sparse units are valid. For initialized or published units, read the dashboard `
 
 Routing rules:
 
+- Content-studio patches bounded selected content; it does not refresh stale review evidence.
+- After content already changed, route review-evidence refresh to the owning artifact review prompt.
+- Use `content/_prompts/commands/change-existing-content.md` when a requested edit may affect contracts, dependencies, planning objects, dashboard state, or multiple files.
 - If the user wants unit planning, plan refresh, unit-map work, or artifact-planning decisions, recommend `content/_prompts/workflows/unit/01-plan-unit.md`.
 - If the user wants a unit-wide consistency review across the unit plan and existing artifacts, recommend `content/_prompts/workflows/unit/02-review-unit.md`.
 - If the user wants metadata/link cleanup, todo cleanup, status hygiene, source-safety cleanup, or publish-readiness cleanup, recommend `content/_prompts/workflows/unit/03-finalize-unit.md`.
@@ -166,7 +170,7 @@ Choose the next lesson action with this local order:
 6. If coherence is complete but compression/taste/voice review is incomplete or stale, recommend `content/_prompts/workflows/lessons/06-compression-pass.md`.
 7. If compression/taste/voice review is complete but verification/finalization is incomplete, stale, or lesson `status` is `needs-review` after a material edit, recommend `content/_prompts/workflows/lessons/07-verify-finalize.md`.
 
-For repair or critique of already authored lesson text, recommend `content/_prompts/commands/content-studio.md` when the issue is targeted quality, stale review, or repair rather than ordinary creation.
+For repair, critique, or a bounded patch of already authored lesson text, recommend `content/_prompts/commands/content-studio.md` when the user wants to change or discuss the content. If the content already changed and the task is to refresh stale lesson review evidence, recommend `content/_prompts/workflows/lessons/07-verify-finalize.md`.
 
 ## Exercise diagnosis
 
@@ -213,7 +217,7 @@ State the requested artifact/workstream if one was present. If the request was o
 
 ## Dashboard snapshot
 
-If the unit is a stub, say that no dashboard exists yet and summarize artifact folder contents. If the unit is initialized or published, summarize the visible `## Production dashboard` rows and the files that exist under `lessons/`, `exercises/`, `quizzes/`, and `sets/`.
+If the unit is a stub, say that no dashboard exists yet and summarize artifact folder contents. If the unit is initialized or published, summarize the visible `## Production dashboard` rows, `## Inventaire des fichiers finaux`, and the files that exist under `lessons/`, `exercises/`, `quizzes/`, and `sets/`.
 
 ## Ready or complete work
 
@@ -229,7 +233,7 @@ List partially completed mini-lessons, exercise seeds, exercise design cards, ex
 
 ## Missing or inconsistent files
 
-List files expected by the dashboard or planning areas that are missing, plus files that exist but are not referenced. Include all four artifact folders when relevant.
+List files expected by the dashboard, final-artifact inventory, or planning areas that are missing, plus files that exist but are not referenced. Include all four artifact folders when relevant.
 
 ## Recommended next action
 

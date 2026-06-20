@@ -48,6 +48,8 @@ Sparse units can be ready for their declared scope. Missing artifact families ar
 
 Initialized dashboards use `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes` to make sparse units mechanical: `not-started` is the in-scope/open declaration, `not-in-scope` means intentionally absent, and `deferred` means intentionally postponed. Family-local rows record progress and review status.
 
+Initialized and published unit indexes also use `## Inventaire des fichiers finaux` as the navigation inventory for final lessons, exercises, and quizzes. It mirrors those Scope rows and stays separate from exercise and quiz planning cards.
+
 After initialization, use it for:
 
 - mini-lesson source/target notes, raw material, and curation;

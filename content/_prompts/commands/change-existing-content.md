@@ -8,6 +8,8 @@ This command handles bounded edits and migrations. It does not replace unit revi
 
 Use this command when the desired change is already known, even if the user does not know every affected file. For conversational critique, diagnosis, taste/voice exploration, grilling, proposals, or a small selected-fragment patch, use `content/_prompts/commands/content-studio.md`. For unit-wide consistency review, use `content/_prompts/workflows/unit/02-review-unit.md`. For publish-readiness cleanup, use `content/_prompts/workflows/unit/03-finalize-unit.md`.
 
+If content already changed and the only remaining task is to verify or refresh stale review evidence, route to the owning artifact review prompt instead of using this command. Use this command when the edit itself may affect contracts, dependencies, planning objects, dashboard state, or multiple files.
+
 The user may write naturally, for example:
 
 ```text
@@ -93,6 +95,7 @@ For unit-level or content-level changes, inspect as relevant:
 - `TARGET_UNIT_PATH/quizzes/`
 - `TARGET_UNIT_PATH/sets/`
 - unit `## Production dashboard`
+- unit `## Inventaire des fichiers finaux`
 - artifact-family `Scope` rows and the canonical sparse states `not-started`, `not-in-scope`, and `deferred`
 - `## Journal de production`
 - lesson, exercise, quiz, and set frontmatter
@@ -325,6 +328,7 @@ Also report which targeted review evidence was refreshed, and which stale eviden
 Report updates to:
 - file frontmatter if any;
 - unit `## Production dashboard` if any;
+- unit `## Inventaire des fichiers finaux` if any;
 - `## Journal de production` if any.
 
 Include:

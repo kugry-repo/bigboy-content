@@ -104,6 +104,8 @@ When doing unit-level work:
 12. Update `## Production dashboard` and `## Journal de production` after initialized-unit changes when appropriate.
 13. Do not create lessons, exercises, quizzes, or sets unless the current task asks for them.
 
+Initialized and published unit indexes use `## Inventaire des fichiers finaux` as the sparse-aware navigation inventory for final lessons, exercises, and quizzes. Keep it separate from planning-card sections. When final artifact files exist in an in-scope family, list them there with unit-relative Obsidian links; use `none`, `not-in-scope`, or `deferred` when links are not expected.
+
 Exercises may be created from the unit map, skill map, official curriculum notes, misconception map, exam patterns, exercise cluster map, raw seeds, exercise design cards, or existing lessons when available. Existing lessons are useful references, not a universal prerequisite. Exercises are ability-building devices; batch-created exercises still need exercise quality review and solution review before reviewed status.
 
 Final exercise creation requires canonical exercise design cards or direct blueprints that use the same card contract. Do not draft final exercise files from vague seeds or incomplete cards; repair the planning object first. Final exercise files record the source card with `source_design_card`.

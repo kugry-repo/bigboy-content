@@ -210,11 +210,37 @@ Guides and prompts should describe the scaffold's purpose and workstream semanti
 
 Use `content/_fixtures/initialized-unit/_index.md` only as a non-production reference fixture for seeing the current scaffold in a checked-in unit-shaped folder. It is not educational content, not a golden unit, and not curriculum evidence.
 
-At a high level, an initialized or published unit index contains placement notes, objectives, prerequisites, skills, mini-lesson planning, misconceptions, lesson inventory, exercise planning, exercise-set planning, quiz planning, diagram/interaction notes, exam-alignment notes, the production dashboard, the production journal, and author notes.
+At a high level, an initialized or published unit index contains placement notes, objectives, prerequisites, skills, mini-lesson planning, misconceptions, final-artifact inventory, exercise planning, exercise-set planning, quiz planning, diagram/interaction notes, exam-alignment notes, the production dashboard, the production journal, and author notes.
 
 The exercise planning area stores the cluster map, raw seeds, and exercise design cards. The quiz planning area stores quiz intent cards, raw item pools, and quiz item design cards.
 
 New registered units should use `content/_templates/unit-index-stub.template.md` unless the user explicitly asks to initialize the unit immediately. Use `content/_prompts/commands/initialize-unit.md` to instantiate the canonical initialized scaffold for one target unit.
+
+## Final artifact inventory
+
+`## Inventaire des fichiers finaux` is the canonical unit-local navigation table for final student-facing or publishable artifacts. It is separate from planning cards.
+
+Use one row for each independent artifact family:
+
+- `lessons`
+- `exercises`
+- `quizzes`
+
+The row `Scope` value must mirror the matching dashboard family `Scope` row. The `Final artifacts` cell uses:
+
+- `none` when an in-scope family has no final files yet;
+- `not-in-scope` when the family is intentionally absent;
+- `deferred` when the family is intentionally postponed;
+- unit-relative Obsidian links such as `[[lessons/lc-lesson-001|Lesson title]]` when final files exist.
+
+Final artifact links point only to files under the matching family folder. Do not list exercise design cards, quiz item design cards, raw seeds, intent cards, or other planning objects in this inventory. Planning cards remain under `### Design cards des exercices` and `### Design cards des items de quiz`; final exercises and quiz questions refer back to them with `source_design_card` or `Source item card`.
+
+The intended navigation chain is:
+
+- program `_index.md` -> unit `_index.md`;
+- unit `## Inventaire des fichiers finaux` -> available final lessons, exercises, and quizzes;
+- unit planning sections -> exercise design cards and quiz item design cards;
+- final exercise/quiz artifacts -> source planning cards where the artifact contract requires traceability.
 
 ## Production dashboard
 
@@ -243,6 +269,29 @@ The `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes` are the
 The canonical dashboard groups and rows are defined in `content/_templates/unit-index.template.md`. The current groups are Unit map, Lessons, Exercises, Quizzes, and Unit review.
 
 Update dashboard rows when the corresponding artifact changes. Use `## Journal de production` for dated history and rationale.
+
+## Dashboard and status ownership
+
+Status ownership is local and evidence-based:
+
+| State or row | Owning prompt or workflow |
+|---|---|
+| Unit `Scope` rows | `content/_prompts/workflows/unit/01-plan-unit.md`, or targeted unit-index edits through `content/_prompts/commands/change-existing-content.md` when scope changes after planning. |
+| Unit family progress rows | The workflow that created or changed that family artifact; unit review/finalize may correct obvious stale dashboard bookkeeping without certifying artifact quality. |
+| Unit review rows | `content/_prompts/workflows/unit/02-review-unit.md` and `content/_prompts/workflows/unit/03-finalize-unit.md`. |
+| Lesson `status` and final verification row | `content/_prompts/workflows/lessons/07-verify-finalize.md`. |
+| Exercise design/statement evidence | `content/_prompts/workflows/exercises/05-review-exercise-quality.md`. |
+| Exercise solution evidence | `content/_prompts/workflows/exercises/06-review-solutions.md`. |
+| Quiz item-quality evidence | `content/_prompts/workflows/quizzes/05-review-item-quality.md`. |
+| Quiz answer-key evidence | `content/_prompts/workflows/quizzes/06-review-answer-keys.md`. |
+| Quiz feedback/remediation evidence | `content/_prompts/workflows/quizzes/07-review-feedback-remediation.md`. |
+| Exercise design-card status | `content/_prompts/workflows/exercises/02-curate-design-cards.md` or `content/_prompts/commands/change-existing-content.md` for a bounded card edit. |
+| Quiz item-card status | `content/_prompts/workflows/quizzes/03-curate-item-design-cards.md` or `content/_prompts/commands/change-existing-content.md` for a bounded card edit. |
+| Top-level `status: reviewed` or `status: published` | The owning artifact review/finalization evidence must support it; publication still requires explicit human decision where the workflow says so. |
+
+Combined dashboard rows summarize multiple underlying fields but do not erase ownership. Exercise `Quality review` is `reviewed` only when both design and statement evidence are reviewed; it is `partial` when one is reviewed and the other is still draft or incomplete; it is `needs-review` when either field is stale; it is `blocked` when either field has a failed-review state such as `needs-redesign` or `needs-rewrite`.
+
+Quiz `Feedback/remediation review` is `reviewed` only when both `feedback_status` and `remediation_status` are reviewed; it is `partial` when one side is reviewed and the other is still draft or incomplete; it is `needs-review` when either field is stale; it is `blocked` when either field has `needs-correction`.
 
 ## Workstream routing
 

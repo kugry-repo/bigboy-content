@@ -55,6 +55,7 @@ The validator checks:
 - warning-level reverse traceability for planning cards marked `used-in-exercise` or `used-in-quiz` when no final artifact in the same unit references them;
 - `## Production dashboard` rows from the canonical initialized scaffold as the authoritative initialized/published unit workstream tracker;
 - artifact-family `Scope` rows limited to `not-started`, `not-in-scope`, and `deferred`, with ordinary dashboard progress/review statuses checked separately;
+- `## Inventaire des fichiers finaux` rows and links for final lesson, exercise, and quiz navigation, including sparse-aware `none`, `not-in-scope`, and `deferred` states;
 - `## Journal de production` as the historical log;
 - the non-production initialized-unit reference fixture under `content/_fixtures/initialized-unit/`;
 - intentional invalid contract fixtures under `content/_fixtures/contracts/`, run in isolation as fault-injection checks;
@@ -85,6 +86,7 @@ The validator checks:
 - target-resolution prompt sections against `content/_prompts/_shared/prompt-contract.md`;
 - current-unit producer/consumer/mutation boundaries: `set-current-unit` writes, `next-action` verifies read-only, and lifecycle/mutation prompts invalidate or request a rerun instead of synthesizing cache entries;
 - unit review/finalize prompt contracts that require lesson, exercise, and quiz guide references plus targeted review routes for lesson verification, exercise quality, exercise solutions, quiz item quality, quiz answer keys, and quiz feedback/remediation;
+- routing guardrails that keep content-studio as bounded patching, change-existing-content as dependency-aware editing, and artifact review prompts as the owners of stale review-evidence refresh;
 
 ## Scaffold warnings
 
@@ -112,7 +114,7 @@ Serious structural problems are errors.
 
 Content-completeness gaps in planned/draft scaffolds are warnings.
 
-The validator enforces one canonical multi-program content system. It accepts stub unit indexes only in the current lightweight lifecycle shape and accepts full dashboards only for initialized or published units. For initialized scaffolds, the source of truth is `content/_templates/unit-index.template.md`; validation reads that template to enforce current headings, planning subsections, and dashboard rows.
+The validator enforces one canonical multi-program content system. It accepts stub unit indexes only in the current lightweight lifecycle shape and accepts full dashboards only for initialized or published units. For initialized scaffolds, the source of truth is `content/_templates/unit-index.template.md`; validation reads that template to enforce current headings, planning subsections, final-artifact inventory, and dashboard rows.
 
 It does not accept older unit-index structures, table-only exercise or quiz planning, alternate planning notes, old prompt layouts, obsolete lesson prompt names, old single-program roots, or old folder schemes.
 
@@ -127,8 +129,8 @@ content/_fixtures/contracts/
 These fixtures are intentionally invalid and must be named `invalid-*`. They
 prove validator behavior for target precedence, current-unit cache boundaries,
 content-object schema alignment, official-unit map/folder/index agreement,
-stub-vs-initialized scaffold boundaries, exercise-set `exercise_ids`, and
-removed content-object types.
+stub-vs-initialized scaffold boundaries, final-artifact inventory, routing
+ownership, exercise-set `exercise_ids`, and removed content-object types.
 
 The validator runs each fixture in isolation and expects a specific diagnostic.
 Those intentional diagnostics are removed before production results are
@@ -172,9 +174,9 @@ The validator checks references whose format is clear:
 
 The validator intentionally does not provide a full graph validator for
 arbitrary Markdown links, wikilinks, or prose mentions. It does check the
-mechanical planning-card IDs and source-card references where the format is
-explicit. Use the mutation prompts' reference-search checklist for broader
-planned-ID prose references.
+mechanical unit final-artifact inventory, planning-card IDs, and source-card
+references where the format is explicit. Use the mutation prompts'
+reference-search checklist for broader planned-ID prose references.
 
 ## Permanent anti-regression guards
 

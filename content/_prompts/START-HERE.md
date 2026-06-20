@@ -33,6 +33,8 @@ Use unit workflow prompts by intent. They are not a global ladder, and they do n
 
 For edits to existing reviewed content, use the revision freshness contract in `content/_guides/schema/frontmatter-schema.md`: material edits invalidate only affected review evidence with `needs-review`; non-material edits may preserve status only with an explicit reason.
 
+Use `content/_prompts/commands/content-studio.md` for bounded patching or critique. Use the owning review prompt when content already changed and the task is to refresh stale review evidence. Use `content/_prompts/commands/change-existing-content.md` when the edit may affect dependencies, planning objects, dashboard state, contracts, or multiple files.
+
 Route review by artifact ownership:
 
 - Lesson substance or verification changed: `content/_prompts/workflows/lessons/07-verify-finalize.md`.

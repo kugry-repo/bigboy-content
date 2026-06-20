@@ -55,6 +55,7 @@ Prompt-specific requirements:
 - Keep `status: planned` unless the unit already has a stronger valid status.
 - Replace the stub body with the initialized dashboard body.
 - Do not create artifact files under `lessons/`, `exercises/`, `quizzes/`, or `sets/`.
+- Do not add fake final-artifact links to `## Inventaire des fichiers finaux`; use the template's `none` rows until real files exist.
 - Do not add fake lesson rows, exercise design cards, quiz intent cards, quiz item design cards, or generic placeholder tables.
 - Do not initialize every unit in the program. Initialize only the resolved target.
 - If the unit already has `planning_state: initialized` or `planning_state: published`, do not recreate the dashboard. Report that it is already initialized and offer the smallest targeted patch if the dashboard is malformed.

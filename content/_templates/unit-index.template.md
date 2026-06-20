@@ -55,6 +55,18 @@ No mini-lesson plan recorded yet.
 
 No unit-specific misconceptions recorded yet.
 
+## Inventaire des fichiers finaux
+
+This inventory lists final student-facing or publishable artifacts only. Planning cards stay in the planning sections below.
+
+Use the `Scope` value from the matching production-dashboard family row. Use `none` when an in-scope family has no final files yet, `not-in-scope` when the family is intentionally absent, and `deferred` when the family is intentionally postponed. When final files exist, list unit-relative Obsidian links such as `[[lessons/{{unit_code}}-lesson-001|Lesson title]]`.
+
+| Family | Scope | Final artifacts | Notes |
+|---|---|---|---|
+| lessons | not-started | none | No lesson files created yet. |
+| exercises | not-started | none | No exercise files created yet. |
+| quizzes | not-started | none | No quiz files created yet. |
+
 ## Leçons
 
 No lesson files created yet.

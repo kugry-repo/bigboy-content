@@ -227,7 +227,7 @@ For ordinary sparse units, this review standard calibrates quality inside each a
 
 ## Golden Unit Tracking
 
-A candidate golden unit must be initialized and uses the same canonical `## Production dashboard` tracker and `## Journal de production` log as every other initialized or published content unit.
+A candidate golden unit must be initialized and uses the same canonical `## Inventaire des fichiers finaux`, `## Production dashboard` tracker, and `## Journal de production` log as every other initialized or published content unit.
 
 Golden-unit readiness is a review judgment, not a separate unit-index tracker.
 

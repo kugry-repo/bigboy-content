@@ -27,6 +27,8 @@ Do not add new `00-*` control prompts, `q01-*` quiz prompts, or letter suffix pr
 - `content/_prompts/commands/content-studio.md` supports conversational critique, diagnosis, proposals, grilling, and targeted patches across content artifacts.
 - `content/_prompts/commands/change-existing-content.md` handles targeted revision, stale-file sync, and workflow/template/schema changes.
 
+Content-studio is for bounded patching or critique. Review prompts refresh stale review evidence after content already changed. Change-existing-content owns dependency-aware edits that can touch contracts, planning objects, dashboard state, or multiple files.
+
 ## Local Prompt Workflows
 
 Unit workflow:
