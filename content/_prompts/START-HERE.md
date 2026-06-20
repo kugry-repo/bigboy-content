@@ -38,6 +38,12 @@ Use the full exercise or quiz workflows instead when the request is broad covera
 
 Use unit workflow prompts by intent. They are not a global ladder, and they do not force lesson -> exercise -> quiz order. A unit may be intentionally sparse, so route by declared scope and the user's requested workstream. Initialized dashboards express sparse scope with `Scope: not-started`, `Scope: not-in-scope`, or `Scope: deferred` under the relevant artifact family; artifact frontmatter records artifact status and review freshness.
 
+For future learner navigation and export boundaries, read
+`content/_guides/core/learner-product-model.md`. Prompts should treat final
+artifacts and explicit unit summary/navigation as learner-facing candidates, and
+keep raw dumps, seeds, planning cards, dashboards, journals, source-analysis
+notes, TODOs, blockers, and prompt/validator metadata author-only by default.
+
 For edits to existing reviewed content, use the revision freshness contract in `content/_guides/schema/frontmatter-schema.md`: material edits invalidate only affected review evidence with `needs-review`; non-material edits may preserve status only with an explicit reason.
 
 Use `content/_prompts/commands/content-studio.md` for bounded patching or critique while editing Markdown. Select a paragraph, solution block, quiz option, feedback block, set note, or unit-index planning card when possible; otherwise use the active file path. The current-unit cache is only fallback context.

@@ -37,6 +37,15 @@ When using a national exam:
 - Prefer creating original exam-inspired exercises.
 - If an active artifact is directly based on a national exam, mark `source_type: national-exam` and cite the source in `source_ref`.
 
+Exam-style practice should normally become original or permitted
+exam-inspired exercises, quiz items, or exercise sets. Full exam papers are not
+a first-class content type yet; do not invent a full-exam artifact contract
+without a later system-design pass.
+
+Detailed source analysis, source anchors, and copying-risk notes are author-only
+unless a learner-facing artifact intentionally includes a short source/context
+summary.
+
 ## Third-party websites and books
 
 Do not paste third-party content into the repo.

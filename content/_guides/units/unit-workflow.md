@@ -15,6 +15,11 @@ Each unit belongs to exactly one program. Program metadata comes from `content/p
 
 There is no canonical global unit sequence. Do not invent numbered unit ladders, extra global gates, or split labels such as `5a` and `5b`. Numbered prompt files inside a workflow folder are local operating procedures for that workstream only.
 
+For future learner navigation and export boundaries, use
+`content/_guides/core/learner-product-model.md`. This unit workflow guide owns
+the authoring structure; the learner product model explains what parts of that
+structure can be shown to students.
+
 ## Entry-point model
 
 Use `content/_prompts/START-HERE.md` as the prompt-library landing page.
@@ -65,6 +70,11 @@ All unit-level planning belongs in the unit `_index.md`, including:
 - production journal entries for meaningful decisions and blockers.
 
 Do not create or use a second planning-note convention. Do not preemptively expand every stub when the dashboard shape changes.
+
+The unit `_index.md` is a mixed authoring file. Only explicitly learner-facing
+summary/navigation sections are candidates for public rendering. Planning,
+dashboard, review, journal, source-analysis, and raw-material sections are
+author-only by default.
 
 Skill coverage is content-derived. Track it locally through the unit skill map, artifact frontmatter `skills`, exercise design cards, quiz intent/item design cards, and review notes. A generated coverage report may be added later, but no manually maintained global file is a source of truth.
 
@@ -206,6 +216,37 @@ artifact has `status: published`. Published public IDs are stable and must not
 be rewritten automatically. Initialized but unpublished content may still be
 destructively renamed through `content/_prompts/commands/manage-unit.md`.
 
+## Learner-Facing Navigation Model
+
+The learner product uses the repository artifacts in this relationship:
+
+- Official curriculum units are the main curriculum spine.
+- Unofficial specific topics are cross-cutting, skill-focused, method,
+  synthesis, revision, or exam-prep paths. They can contain their own artifacts
+  and link to official-unit artifacts, but they do not become official units.
+- Global revision is modeled as unofficial topics with
+  `content_scope: global-revision` or related synthesis/revision scopes.
+- Exam-style practice is modeled through exercises, quizzes, and sets in an
+  official unit, a specific topic, a global revision topic, or an `exam-prep`
+  topic. Full exam papers are not first-class artifacts yet.
+
+The intended learner journey is:
+
+```text
+program index
+-> official unit or specific topic
+-> mini-lesson or revision page
+-> guided exercises
+-> independent exercise set
+-> diagnostic quiz
+-> remediation from quiz feedback
+-> global revision
+-> exam-style practice
+```
+
+This journey is not an authoring order. Workstreams remain independent and
+sparse units remain valid when their declared scope says so.
+
 ## Canonical initialized unit index scaffold
 
 `content/_templates/unit-index.template.md` is the canonical authored scaffold for an initialized unit `_index.md`.
@@ -218,11 +259,27 @@ At a high level, an initialized or published unit index contains placement notes
 
 The exercise planning area stores the cluster map, raw seeds, and exercise design cards. The quiz planning area stores quiz intent cards, raw item pools, and quiz item design cards.
 
+Export boundary for initialized or published unit indexes:
+
+- Learner-facing candidates: `## Place dans le programme`, `## Objectifs et
+  plan de l'unite`, `## Prerequis`, `## Competences`, `## Inventaire des
+  fichiers finaux`, and `## Lecons`, but only when their content is written as
+  clean learner orientation or navigation.
+- Author-only by default: mini-lesson planning, misconceptions-to-treat,
+  exercise planning, set planning, quiz planning, diagram planning,
+  exam-alignment/source notes, production dashboard, production journal, author
+  notes, raw dumps, seeds, cards, TODOs, blockers, review notes, and source
+  analysis.
+
+Do not add a frontmatter flag for every section. The boundary is semantic:
+public rendering should opt in to learner-facing summary/navigation sections,
+not export the whole `_index.md`.
+
 New registered units should use `content/_templates/unit-index-stub.template.md` unless the user explicitly asks to initialize the unit immediately. Use `content/_prompts/commands/initialize-unit.md` to instantiate the canonical initialized scaffold for one target unit.
 
 ## Final artifact inventory
 
-`## Inventaire des fichiers finaux` is the canonical unit-local navigation table for final student-facing or publishable artifacts. It is separate from planning cards and must not become a second status database.
+`## Inventaire des fichiers finaux` is the canonical unit-local navigation table for final learner-facing or publishable artifacts. It is separate from planning cards and must not become a second status database.
 
 Use one row for each independent artifact family:
 
@@ -238,11 +295,11 @@ The row `Scope` value must mirror the matching dashboard family `Scope` row. The
 - `deferred` when the family is intentionally postponed;
 - unit-relative Obsidian links such as `[[lessons/lc-lesson-001|Lesson title]]` when final files exist.
 
-Final artifact links point only to files under the matching family folder. Do not list exercise design cards, quiz item design cards, raw seeds, intent cards, or other planning objects in this inventory. Exercise sets are final navigation artifacts when they exist under `sets/`, so list them in the `sets` row. Planning cards remain under `### Design cards des exercices` and `### Design cards des items de quiz`; final exercises and quiz questions refer back to them with `source_design_card` or `Source item card`.
+Final artifact links point only to files under the matching family folder. Do not list exercise design cards, quiz item design cards, raw seeds, intent cards, source-analysis notes, dashboard rows, or other planning objects in this inventory. Exercise sets are learner-facing practice paths when they exist under `sets/`, so list them in the `sets` row. Planning cards remain under `### Design cards des exercices` and `### Design cards des items de quiz`; final exercises and quiz questions refer back to them with `source_design_card` or `Source item card`.
 
 The intended navigation chain is:
 
-- program `_index.md` -> unit `_index.md`;
+- program `_index.md` -> learner-facing unit/topic summary or navigation in the unit `_index.md`;
 - unit `## Inventaire des fichiers finaux` -> available final lessons, exercises, sets, and quizzes;
 - unit planning sections -> exercise design cards and quiz item design cards;
 - final exercise/quiz artifacts -> source planning cards where the artifact contract requires traceability.

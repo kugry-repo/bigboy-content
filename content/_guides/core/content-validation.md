@@ -85,6 +85,12 @@ Example non-actionable notice:
 
 If a warning seems like noise, do not silence it by weakening the content contract. First decide whether it is truly learner-facing or workflow-critical. If it is allowed repository housekeeping, reclassify it as a notice with a stable code and update this guide.
 
+Use `content/_guides/core/learner-product-model.md` for that distinction. Raw
+dumps, seeds, planning cards, dashboards, journals, source-analysis notes,
+TODOs, blockers, prompt instructions, and validator metadata are author-only by
+default; final artifact files and explicit learner summary/navigation sections
+are the public-rendering candidates.
+
 ## What the validator enforces
 
 The validator checks:

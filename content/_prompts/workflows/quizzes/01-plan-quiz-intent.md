@@ -65,6 +65,10 @@ Do not create a quiz with no clear diagnostic goal.
 
 Do not create exam-readiness quizzes if actionable remediation paths cannot be sketched from available, planned, or explicitly deferred support. Local lessons and exercises are useful targets when they exist or are intentionally planned, but they are not global prerequisites for every quiz intent.
 
+Exam-readiness quizzes are exam-style practice, not full exam papers. Until a
+full-exam schema exists, keep exam preparation inside quiz files, exercise
+files, learner-facing sets, or revision/exam-prep topics.
+
 ## Quiz Intent Card Format
 
 ```md

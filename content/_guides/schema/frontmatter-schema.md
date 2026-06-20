@@ -182,6 +182,20 @@ Unofficial topics:
 
 Both unit kinds use the same unit index lifecycle, production dashboard rules after initialization, artifact workflow prompts, subfolders, naming rules, ID rules, and validator logic.
 
+Learner-facing product roles:
+
+- `official-curriculum` units are the curriculum spine.
+- `cross-chapter-method`, `synthesis`, `global-revision`, `exam-prep`, and
+  `custom` unofficial topics are learner paths outside the official spine.
+- Exam-style practice is represented through exercises, quizzes, and exercise
+  sets inside those units or topics. Full exam papers are not first-class
+  schema objects yet.
+
+The unit `_index.md` is a mixed authoring file. Frontmatter fields can support
+future routing, but public rendering should opt in to learner-facing
+summary/navigation sections and final artifact files instead of exporting every
+planning section.
+
 ## Topic Catalog
 
 The topic catalog is not itself a content unit.
@@ -534,6 +548,10 @@ Quiz item design cards are Markdown planning objects in the unit `_index.md` und
 Exercise set files use `type: exercise-set` and live under the unit `sets/` folder. The folder is named `sets/`; the frontmatter type remains `exercise-set`.
 
 Exercise sets inherit all common content-object fields, including `skills`.
+
+Exercise sets are learner-facing practice paths when they exist as final files.
+They organize and link same-unit exercise files; they are not author-only set
+plans and should appear in the unit final-artifact inventory when in scope.
 
 Type-specific required fields:
 

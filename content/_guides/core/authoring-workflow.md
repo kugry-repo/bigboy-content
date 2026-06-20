@@ -20,6 +20,18 @@ Every lesson, exercise, standalone quiz, set, and solution should be:
 
 Artifact workstreams are independent. A unit may be lesson-only, exercise-only, quiz-only, set-only, or otherwise partial by design when the unit plan declares that scope.
 
+For the learner-facing product boundary, use
+`content/_guides/core/learner-product-model.md`. The short rule is:
+
+- final lessons, exercises, exercise sets, quizzes, learner summaries,
+  revision pages, and exam-style practice routes are learner-facing candidates;
+- raw dumps, seeds, planning cards, dashboards, journals, review notes,
+  source-analysis notes, TODOs, blockers, prompt instructions, and validator
+  metadata are author-only by default.
+
+Do not treat a full unit `_index.md` as a public page. Only explicitly
+learner-facing summary/navigation sections are candidates for public rendering.
+
 ## Content units
 
 The repository uses one content-unit system.
@@ -36,6 +48,15 @@ Both unit kinds use:
 
 Unofficial topics may contain topic-native content and links to official-unit content, but they must not pretend to be official curriculum units.
 
+Learner-facing roles:
+
+- Official curriculum units are the curriculum spine.
+- Specific unofficial topics are cross-cutting or skill-focused paths that may
+  connect several official units.
+- Global revision topics review broadly across the program.
+- Exam-style practice is organized through exercises, quizzes, sets, or
+  exam-prep/revision topics. Full exam papers are not first-class artifacts yet.
+
 ## Planning source of truth
 
 The unit `_index.md` is the only unit-planning artifact.
@@ -51,6 +72,11 @@ Artifact frontmatter is the source of truth for artifact-level status and review
 Initialized dashboards use `Scope` rows under `### Lessons`, `### Exercises`, `### Sets`, and `### Quizzes` to make sparse units mechanical: `not-started` is the in-scope/open declaration, `not-in-scope` means intentionally absent, and `deferred` means intentionally postponed. Family-local rows summarize blockers, planning readiness, and review needs only when they help choose the next action.
 
 Initialized and published unit indexes also use `## Inventaire des fichiers finaux` as the navigation inventory for final lessons, exercises, sets, and quizzes. It mirrors those Scope rows and stays separate from exercise and quiz planning cards.
+
+Only the inventory and explicitly learner-facing unit summary/navigation
+sections are public-rendering candidates. The mini-lesson plan, raw material,
+exercise seeds, design cards, quiz intent/cards, dashboards, journal, exam
+source-analysis notes, and author notes are author-only by default.
 
 After initialization, use it for:
 
@@ -112,6 +138,12 @@ Design cards are contract-bearing planning artifacts. A ready exercise card must
 Quality review checks statement/design/progression/hints/mistakes/learner experience. Solution review checks mathematical correctness and solution pedagogy.
 
 Each exercise lives in its own Markdown file under `exercises/`.
+
+Exercise sets are learner-facing practice paths when they exist under `sets/`.
+They organize individual exercises by progression, role, difficulty, time,
+prerequisites, revision value, or exam-pattern readiness. They do not duplicate
+exercise statements or solutions, and they are listed in the final-artifact
+inventory through the `sets` row.
 
 Final exercise files record the source planning object with `source_design_card` in frontmatter and in `## Notes auteur`. Use only `ready-for-exercise-batch` or `used-in-exercise` source cards; update a card to `used-in-exercise` only after the final exercise references it.
 

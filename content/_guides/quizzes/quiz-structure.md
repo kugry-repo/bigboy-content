@@ -10,6 +10,11 @@ Standalone quizzes are not embedded lesson checks. They live as their own Markdo
 
 Do not build frontend, app rendering, or interaction logic as part of quiz authoring. This guide defines the Markdown content system only.
 
+Final quiz files are learner-facing diagnostic artifacts. Their feedback,
+mastery criteria, and remediation sections are part of the learner product, not
+author-only notes. Quiz intents, raw item pools, item design cards, source
+analysis, review notes, and dashboard rows remain author-only planning material.
+
 ## Core Relationship
 
 ```text
@@ -41,6 +46,11 @@ Do not confuse the planning artifacts.
 | Feedback/remediation | The teaching response and next-step routing after each answer and after the whole quiz. | Type-specific item feedback, mastery criteria, and remediation section. |
 
 Raw item seeds are exploratory. Item design cards are the curated bridge. Final quiz files remain drafts until item quality, answer keys, feedback, and remediation have been reviewed separately.
+
+Exam-readiness quizzes are exam-style practice artifacts. They should not claim
+official exam frequency, official status, or full-paper coverage unless a
+checked source supports that claim. Full exam papers are not first-class quiz
+artifacts.
 
 After a material edit to a quiz file, use `needs-review` on only the affected review substatus fields. Stem, item-type, MCQ/MR option or distractor, match-prompt, sequence-criterion, or hotspot-target edits invalidate item-quality review; correct-answer, accepted-alternative, pairing, order, or region edits invalidate answer-key review; option, diagnostic-signal, misconception, or non-choice wrong-response edits may invalidate feedback review; feedback edits invalidate feedback review; remediation edits invalidate remediation review.
 

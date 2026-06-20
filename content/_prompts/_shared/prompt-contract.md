@@ -163,6 +163,12 @@ Follow `content/_prompts/_shared/prompt-contract.md`.
 - Use `TARGET_CURRICULUM_MAP`, not a global curriculum map, for official curriculum alignment.
 - Do not ask for a global production marker.
 - Do not create frontend rendering, app logic, or deployment work unless explicitly requested.
+- Preserve the learner/export boundary from
+  `content/_guides/core/learner-product-model.md`: final artifacts and
+  explicitly learner-facing summary/navigation sections are public-rendering
+  candidates; raw dumps, seeds, planning cards, dashboards, journals, review
+  notes, source-analysis notes, TODOs, blockers, prompt instructions, and
+  validator metadata are author-only by default.
 
 ## Output And Validation
 
@@ -196,6 +202,8 @@ At minimum, check:
 - Obsidian-compatible links and callouts;
 - visible LaTeX syntax where math was touched;
 - no generated frontend, app, or deployment work unless explicitly requested.
+- author-only planning material was not polished, exported, or described as
+  learner-facing content unless the user explicitly asked for that conversion.
 
 For content edits, also check unit `_index.md` tracker consistency, lesson/exercise/quiz/set IDs, relevant links, status fields, revision freshness from `content/_guides/schema/frontmatter-schema.md`, sync notes, and source-safety notes for official or exam claims.
 

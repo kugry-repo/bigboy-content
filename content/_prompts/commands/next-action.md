@@ -86,6 +86,11 @@ Do not:
 
 For initialized or published units, answer current-state questions from a small authoritative set: unit scope/planning notes in the unit index, final-file navigation in `## Inventaire des fichiers finaux`, artifact status and review freshness in artifact frontmatter, blockers/next-decision notes in `## Production dashboard`, and meaningful decisions in `## Journal de production`. Compare those sources with actual files on disk and note mismatches.
 
+When describing learner-facing readiness, use only final artifact files and
+explicitly learner-facing summary/navigation sections. Do not count raw dumps,
+seeds, planning cards, dashboards, journals, source-analysis notes, or author
+notes as learner-facing output.
+
 If `TARGET_PLANNING_STATE` is `stub`, do not expect a dashboard. Recommend `content/_prompts/commands/initialize-unit.md` as the next action unless the user's request is only to manage, rename, delete, or inspect the stub.
 
 Identify the requested artifact/workstream when present:
@@ -95,6 +100,7 @@ Identify the requested artifact/workstream when present:
 - exercises;
 - exercise sets;
 - quizzes;
+- learner navigation/export boundary;
 - unit review;
 - metadata/link cleanup;
 - existing-content revision;
@@ -104,6 +110,7 @@ If the user request is open-ended, choose based on:
 
 - dashboard status;
 - final-artifact inventory;
+- the intended learner path for the declared scope;
 - missing required inputs;
 - existing files;
 - obvious blockers;
@@ -262,7 +269,7 @@ State the requested artifact/workstream if one was present. If the request was o
 
 ## Dashboard snapshot
 
-If the unit is a stub, say that no dashboard exists yet and summarize artifact folder contents. If the unit is initialized or published, summarize the visible `## Inventaire des fichiers finaux`, the compact `## Production dashboard` rows that affect next action, artifact frontmatter statuses/review needs, and the files that exist under `lessons/`, `exercises/`, `sets/`, and `quizzes/`.
+If the unit is a stub, say that no dashboard exists yet and summarize artifact folder contents. If the unit is initialized or published, summarize the visible `## Inventaire des fichiers finaux`, the compact `## Production dashboard` rows that affect next action, artifact frontmatter statuses/review needs, and the files that exist under `lessons/`, `exercises/`, `sets/`, and `quizzes/`. Separate actual learner-facing routes from author-only planning material.
 
 ## Ready or complete work
 

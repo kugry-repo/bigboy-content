@@ -32,4 +32,6 @@ entielles
 
 This unit is registered but not initialized yet.
 
+This stub is an authoring registration, not a learner-facing page.
+
 Run `content/_prompts/commands/initialize-unit.md` before planning lessons, exercises, quizzes, sets, or the initialized planning scaffold.

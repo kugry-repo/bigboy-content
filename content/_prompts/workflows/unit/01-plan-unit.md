@@ -62,6 +62,12 @@ This is unit-map work only.
 
 Planning records declared scope. It may plan one artifact family, several artifact families, all artifact families, or an intentionally sparse unit. Include the canonical planning sections, and use the dashboard `Scope` rows under `### Lessons`, `### Exercises`, `### Sets`, and `### Quizzes` to mark each family as `not-started`, `not-in-scope`, or `deferred`. Do not use the `Scope` row for progress or review status. Use family-local rows only for blockers, planning readiness, review needs, or next decisions that help the author choose what to do.
 
+Keep the learner/export boundary explicit. Learner-facing candidates are concise
+unit orientation/navigation plus final lessons, exercises, sets, quizzes,
+revision pages, and exam-style practice routes. Raw dumps, seeds, planning
+cards, dashboards, journals, source-analysis notes, TODOs, and blockers are
+author-only by default.
+
 Do not create:
 
 - mini-lesson files;
@@ -91,7 +97,7 @@ The unit plan must include:
 16. Quiz planning areas: quiz intent cards, raw item pools, and rich item design-card areas when there are real decisions to record.
 17. Planned quiz progression for diagnostic checkpoints inside quiz intent cards and item design cards.
 18. Planned diagrams and future interactions.
-19. Exam-style patterns, with unsupported official claims marked for verification.
+19. Exam-style patterns, with unsupported official claims marked for verification. Model them as exercises, quizzes, or sets; do not invent full exam-paper support.
 20. Compact production dashboard, only for scope, blockers, and next decisions.
 21. Author notes and uncertainty markers.
 

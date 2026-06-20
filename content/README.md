@@ -4,7 +4,7 @@ This folder is the Markdown source for a shared authoring system across Moroccan
 
 ## Main Folders
 
-- `_guides/`: categorized authoring rules, workflow semantics, notation, structure, validation, and review. Start with `_guides/README.md`.
+- `_guides/`: categorized authoring rules, learner product boundaries, workflow semantics, notation, structure, validation, and review. Start with `_guides/README.md`.
 - `_templates/`: reusable templates for program-aware units, mini-lessons, exercises, quizzes, and sets.
 - `_references/`: shared source references, exam patterns, misconception maps, notation decisions, and glossary material.
 - `_prompts/`: reusable Codex prompts.
@@ -54,6 +54,29 @@ codes, folders, slugs, titles, and domains. Official `unit_order` values are
 contiguous from `1`, row order in the map matches `unit_order`, and official
 folders are derived as `<two-digit unit_order>-<unit_slug>`.
 
+## Learner Product Boundary
+
+Use `content/_guides/core/learner-product-model.md` as the compact source of
+truth for future learner navigation and export boundaries.
+
+The repository is the authoring source, not the public site tree. Only
+explicitly learner-facing summary/navigation sections and final artifact files
+are candidates for public rendering. Planning cards, raw dumps, seeds,
+dashboards, production journals, review notes, source-analysis notes, TODOs,
+blockers, prompt instructions, and validator metadata are author-only by
+default.
+
+The learner-facing artifact families are mini-lessons, exercises, exercise
+sets, standalone quizzes, revision/synthesis topic pages, and exam-style
+practice represented through exercises, quizzes, or sets. Full exam papers are
+not a first-class content type yet; record that as later-phase work instead of
+inventing an `exams/` contract.
+
+The intended learner path is practical rather than waterfall: official topic or
+specific topic -> lesson/revision page -> guided exercises -> independent set
+-> diagnostic quiz -> remediation -> global revision -> exam-style practice.
+Authors still choose workstreams by declared scope and local prerequisites.
+
 Deleted or retired frontmatter IDs are recorded in
 `_references/deleted-ids.md`; validation rejects active reuse.
 
@@ -67,7 +90,7 @@ Artifact frontmatter is the source of truth for artifact-level status and review
 
 Initialized dashboards declare artifact-family scope with the `Scope` rows under `### Lessons`, `### Exercises`, `### Sets`, and `### Quizzes`: `not-started` is the in-scope/open declaration, `not-in-scope` means intentionally absent, and `deferred` means intentionally postponed. Family-local rows summarize blockers and next decisions; artifact status stays in frontmatter.
 
-Initialized and published unit indexes also contain `## Inventaire des fichiers finaux`. This is the canonical navigation inventory for final student-facing or publishable lessons, exercises, exercise sets, and standalone quizzes. It mirrors the dashboard Scope rows, uses `none`, `not-in-scope`, or `deferred` when a family has no links, and lists real final files with unit-relative Obsidian links when they exist. Planning cards stay in the planning sections; they are not final-artifact inventory rows.
+Initialized and published unit indexes also contain `## Inventaire des fichiers finaux`. This is the canonical navigation inventory for final learner-facing or publishable lessons, exercises, exercise sets, and standalone quizzes. It mirrors the dashboard Scope rows, uses `none`, `not-in-scope`, or `deferred` when a family has no links, and lists real final files with unit-relative Obsidian links when they exist. Planning cards stay in the planning sections; they are not final-artifact inventory rows.
 
 `planning_state: published` is set only by explicit human instruction after review and cleanup. Review/finalize prompts can report readiness for declared scope, but they do not publish automatically.
 
@@ -79,7 +102,7 @@ Use `content/_fixtures/initialized-unit/_index.md` only as a checked-in structur
 
 After initialization, lesson preparation, exercise clusters, raw exercise seeds, exercise design cards, quiz intent cards, raw item pools, quiz item design cards, set planning, scope decisions, blockers, and meaningful production decisions all live in the unit `_index.md`.
 
-Navigation flows from program index to unit index, then from the unit inventory to available final lesson, exercise, set, and quiz files. The same unit index also links authors to planning-card sections when those planning objects exist.
+Navigation flows from program index to unit index, then from the unit inventory to available final lesson, exercise, set, and quiz files. Only the intentionally learner-facing summary/navigation parts of the unit index are public-rendering candidates; the same unit index also links authors to planning-card sections when those planning objects exist.
 
 Exercise design cards and quiz item design cards are contract-bearing planning artifacts. Ready cards need stable H4 IDs, allowed statuses, target skills, answer/solution or feedback/remediation contracts, verification/source notes, and readiness notes before final files are created. Final exercises trace back with `source_design_card`; final quiz questions trace back with `Source item card`.
 

@@ -345,6 +345,8 @@ TODO.
 
 ## Notes auteur
 
+TODO: Author-only notes. Not learner-facing.
+
 - Design card:
 - Source item cards: use `ready-for-quiz-file` before drafting, then `used-in-quiz` only after each final question references its card.
 - Item quality status:

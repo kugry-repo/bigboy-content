@@ -110,6 +110,8 @@ TODO.
 
 ## Notes auteur
 
+TODO: Author-only notes. Not learner-facing.
+
 - Design card : `{{unit_code}}-ex-001`
 - Source card status at creation : `ready-for-exercise-batch` before drafting, then `used-in-exercise` only after this file references it.
 - Student decision point :

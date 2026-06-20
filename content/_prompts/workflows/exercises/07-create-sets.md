@@ -4,6 +4,10 @@ Use this prompt after reviewed exercises exist or after precise reviewed design 
 
 Exercise sets organize existing reviewed exercises into learner paths. They should link to exercises, not duplicate content.
 
+Exercise sets are learner-facing final artifacts when created under `sets/`.
+The author-only material is the set planning inside the unit `_index.md`, not
+the final set file.
+
 ## Target
 
 Input:
@@ -87,6 +91,11 @@ Possible set types:
 - exam-pattern path;
 - synthesis path;
 - revision path.
+
+Sets may appear in official curriculum units, specific unofficial topics,
+global revision topics, synthesis topics, or exam-prep paths. Exam-pattern sets
+must avoid unsupported official claims and should link original or permitted
+exam-inspired exercises.
 
 Use frontmatter values derived from `TARGET_UNIT_INDEX`, including the resolved unit code, program, unit folder, order, domain, tracks, language, and relevant skills.
 

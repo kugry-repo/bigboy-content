@@ -9,6 +9,12 @@ Set creates progression.
 
 An exercise is the main ability-building unit of the content system.
 
+Exercise files are learner-facing artifacts. Their detailed solutions are
+learner-facing when the intended product mode includes solved practice,
+collapsible solutions, remediation, or teacher-mode reveal. A future renderer
+may gate or collapse solutions, but the solution section is not an author-only
+planning note.
+
 Use one Markdown file per exercise. Each exercise file contains the statement, training target, preparation notes, progressive hints, detailed solution, method explanation, common mistakes, verification, variants, and author notes.
 
 Each exercise lives in its own file, but exercise files are usually created in small batches of 3 to 5 unless explicitly requested otherwise.
@@ -231,6 +237,10 @@ Author-facing:
 
 Future rendering can hide author-facing sections when needed.
 
+Source design-card IDs, review notes, remaining risks, and provenance details
+belong in `## Notes auteur` unless the learner-facing exercise intentionally
+summarizes a source or exam context.
+
 ## Hints
 
 Use collapsible Obsidian callouts:
@@ -262,7 +272,8 @@ A solution should:
 
 ## Exercise Sets
 
-An exercise set should not duplicate exercise content.
+An exercise set is a learner-facing practice path when it exists as a final file
+under `sets/`. It should not duplicate exercise content.
 
 It should link to exercise files and organize them by progression, using:
 
@@ -272,6 +283,11 @@ It should link to exercise files and organize them by progression, using:
 - skill ladder;
 - prerequisites;
 - revision value.
+
+Sets may belong to official curriculum units, specific unofficial topics,
+global revision topics, synthesis topics, or exam-prep paths. Their role should
+be clear from title, frontmatter skills/difficulty range, progression notes,
+and the unit final-artifact inventory.
 
 Example:
 

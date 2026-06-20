@@ -86,6 +86,12 @@ Shortcuts are for small authoring tasks. Substantial exercise coverage, balanced
 
 - `content/_prompts/_shared/prompt-contract.md` defines shared prompt behavior, target resolution, `_workflow/current-unit.md` schema, current-unit behavior, prompt path style, read/write boundaries, output/reporting rules, validation expectations, and global prompt discipline.
 
+It also inherits the learner/export boundary from
+`content/_guides/core/learner-product-model.md`: final artifacts and explicit
+summary/navigation sections are learner-facing candidates; raw planning,
+dashboards, journals, source-analysis notes, TODOs, blockers, prompts, and
+validator metadata are author-only by default.
+
 Operating prompts should inherit `content/_prompts/_shared/prompt-contract.md`. If a prompt needs target details, write a short `## Target Resolution` section that starts with:
 
 ```md

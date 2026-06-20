@@ -29,6 +29,17 @@ updated: 2026-06-19
 
 # Reference initialized unit
 
+Authoring/export boundary:
+
+- Learner-facing candidates: concise unit orientation, learner goals,
+  prerequisites, skills, final-artifact inventory, and navigation to existing
+  lessons, exercises, sets, and quizzes.
+- Author-only by default: mini-lesson plans, misconceptions-to-treat, raw
+  dumps, seeds, design cards, quiz intent cards, source/exam analysis,
+  dashboard rows, journal entries, TODOs, blockers, and author notes.
+- Only explicitly learner-facing summary/navigation sections are candidates for
+  public rendering. Do not export the whole `_index.md` as a learner page.
+
 ## Place dans le programme
 
 Reference-only fixture. This is not a production unit and contains no educational content.
@@ -55,9 +66,9 @@ No unit-specific misconceptions recorded yet.
 
 ## Inventaire des fichiers finaux
 
-This inventory is for navigation, not status bookkeeping. List final student-facing or publishable files only; planning cards stay in the planning sections below.
+This inventory is for navigation, not status bookkeeping. List final learner-facing or publishable files only; planning cards stay in the planning sections below.
 
-Use the `Scope` value from the matching production-dashboard family row. Use `none` when an in-scope family has no final files yet, `not-in-scope` when the family is intentionally absent, and `deferred` when the family is intentionally postponed. When final files exist, list unit-relative Obsidian links such as `[[lessons/ref-lesson-001|Lesson title]]`. Exam-style material should be listed through its actual artifact family: exercise files, quiz files, or exercise sets.
+Use the `Scope` value from the matching production-dashboard family row. Use `none` when an in-scope family has no final files yet, `not-in-scope` when the family is intentionally absent, and `deferred` when the family is intentionally postponed. When final files exist, list unit-relative Obsidian links such as `[[lessons/ref-lesson-001|Lesson title]]`. Exam-style material should be listed through its actual artifact family: exercise files, quiz files, or learner-facing exercise sets. Full exams are not first-class artifacts yet.
 
 | Family | Scope | Final artifacts | Notes |
 |---|---|---|---|
@@ -88,7 +99,7 @@ When created, use H4 cards from `content/_guides/exercises/exercise-design-guide
 
 ## Planification des séries d'exercices
 
-No exercise-set plan recorded yet.
+No exercise-set plan recorded yet. This planning section is author-only. Final set files under `sets/` are learner-facing practice paths when they exist.
 
 ## Planification des quiz
 
@@ -112,7 +123,7 @@ No diagram or interaction decisions recorded yet.
 
 ## Notes d'alignement examen
 
-No exam-alignment notes recorded yet.
+No exam-alignment notes recorded yet. Keep source/provenance analysis author-only unless a future learner-facing summary is intentionally written. Model exam-style practice as exercises, quizzes, or sets; full exam papers are not first-class artifacts yet.
 
 ## Production dashboard
 

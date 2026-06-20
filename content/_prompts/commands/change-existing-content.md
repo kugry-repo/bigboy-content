@@ -222,6 +222,13 @@ Distinguish:
 
 For structural changes, every affected existing source file must move to the new source of truth in the same change. Do not leave old files on an old schema.
 
+Preserve the learner/export boundary while migrating. Final artifact files and
+explicit learner summary/navigation sections may be public-rendering candidates;
+raw dumps, seeds, planning cards, dashboards, journals, source-analysis notes,
+TODOs, blockers, prompt instructions, and validator metadata are author-only by
+default. Do not rewrite author-only material as learner-facing copy unless the
+requested change explicitly asks for that conversion.
+
 ## Safety rules
 
 - Do not assume the user knows affected files.

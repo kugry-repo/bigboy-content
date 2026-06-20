@@ -6,7 +6,7 @@ Use the category folders to pick the smallest relevant guide set for the task.
 
 ## Taxonomy
 
-- `core/` = global authoring behavior, style, source safety, Obsidian conventions, validation, and review checklists.
+- `core/` = global authoring behavior, learner product boundaries, style, source safety, Obsidian conventions, validation, and review checklists.
 - `schema/` = frontmatter, IDs, naming, and math notation.
 - `units/` = unit-level planning, curriculum structure, lifecycle, and the golden unit standard.
 - `lessons/` = lesson-specific editorial pipeline, structure, voice, and quality review.

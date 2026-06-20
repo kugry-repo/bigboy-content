@@ -93,6 +93,11 @@ Use the curated material from `TARGET_UNIT_INDEX` and `content/_templates/mini-l
 
 Do not blindly re-add all possible raw-dump blocks. If the human curation marked material as delete, too much, future exercise, or useful but not student-facing, keep it out of the student-facing lesson.
 
+Raw dumps, curation notes, source-analysis notes, and planning decisions remain
+author-only in the unit `_index.md`. The final lesson file should contain only
+the selected learner-facing explanation plus `## Notes auteur` for internal
+traceability.
+
 The assembled mini-lesson should:
 
 - use `tu`;

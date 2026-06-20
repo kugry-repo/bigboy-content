@@ -35,6 +35,35 @@ Unofficial topics are extra learning, revision, method, synthesis, or exam-prep 
 
 Both unit groups use unit metadata, not hardcoded separate official/topic schemas.
 
+## Learner Navigation Model
+
+Learners can enter this program through two routes:
+
+- Official curriculum units: the main curriculum spine for learning and
+  practicing each official topic.
+- Unofficial topic units: specific paths for methods, cross-cutting skills,
+  synthesis, global revision, or exam-style preparation.
+
+Official units and unofficial topics can each contain or link to mini-lessons,
+exercises, learner-facing exercise sets, standalone quizzes, and exam-style
+practice. Exam-style practice is represented through those artifact families;
+full exam papers are not first-class artifacts yet.
+
+The normal product path is:
+
+```text
+official unit or topic
+-> lesson / revision page
+-> guided exercises
+-> exercise set
+-> diagnostic quiz
+-> remediation
+-> global revision
+-> exam-style practice
+```
+
+This is navigation guidance, not a required authoring order.
+
 ## Official Curriculum Units
 
 Derived navigation summary. The canonical official unit list, order, folders, slugs, titles, domains, and codes live in `_curriculum-map.md`.
@@ -57,6 +86,15 @@ Derived navigation summary. The canonical official unit list, order, folders, sl
 ## Unofficial Topic Units
 
 Derived navigation summary. Canonical topic registration lives in each topic unit `_index.md`; topics do not belong in `_curriculum-map.md`.
+
+Use topic units for learner-facing paths that should not be forced into the
+official-unit spine:
+
+- `global-revision`: broad review across official units.
+- `synthesis`: mixed problems and cross-topic exercise paths.
+- `cross-chapter-method`: specific skill or method pages.
+- `exam-prep`: future exam-preparation paths if needed; until full exams are
+  modeled, use exercises, quizzes, and sets for exam-style practice.
 
 | Ordre | Unite topic | Code | Scope | Role |
 |---:|---|---|---|---|

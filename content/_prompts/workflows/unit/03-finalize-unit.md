@@ -74,6 +74,12 @@ This is cleanup work only.
 
 First, read `TARGET_UNIT_INDEX`, inspect `## Inventaire des fichiers finaux` and the compact `## Production dashboard`, determine the unit's declared scope from the `Scope` rows under `### Lessons`, `### Exercises`, `### Sets`, and `### Quizzes`, and identify which existing artifacts can be cleaned safely. Interpret `not-started` as the in-scope/open declaration, `not-in-scope` as intentionally absent, and `deferred` as intentionally postponed. Use artifact frontmatter and existing files, not dashboard copies, to judge artifact status and review freshness. If major work is missing, report it as a declared-scope gap only when a local contract requires it. Otherwise report the absent artifact family using its canonical dashboard scope state.
 
+Assess the learner-facing route separately from author-only planning. Only final
+artifact files and explicitly learner-facing unit summary/navigation sections
+are public-rendering candidates. Dashboards, journals, raw dumps, seeds,
+planning cards, source-analysis notes, TODOs, blockers, and `## Notes auteur`
+remain author-only by default.
+
 Finalize only the artifact families that are in scope for the declared unit scope or requested publish target. Use each family-specific completion contract:
 
 - Lessons: verify intended mini-lesson files exist, lesson `status` is acceptable, lesson structure and metadata satisfy the lesson contract, and known review issues are resolved or explicitly deferred.
@@ -143,6 +149,8 @@ Check:
 - quizzes in scope have acceptable item-quality, answer-key, feedback, remediation, and type-specific item contract evidence according to `content/_guides/quizzes/quiz-quality-rubric.md`;
 - quiz `answer_key_status`, `feedback_status`, and `remediation_status` fields are accurate and not treated as interchangeable;
 - standalone quizzes are not treated as lesson checkpoints or compressed exercises;
+- exam-style practice is represented by exercises, quizzes, or sets; full exam
+  papers are not first-class artifacts yet;
 - files remain ready for future app parsing.
 
 Assess publish-readiness for the declared scope:

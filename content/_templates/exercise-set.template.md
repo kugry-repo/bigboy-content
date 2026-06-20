@@ -29,6 +29,12 @@ updated: YYYY-MM-DD
 
 # SET_TITLE
 
+<!--
+Exercise sets are learner-facing practice paths. They link to existing exercise
+files and describe a useful progression without duplicating statements, hints,
+or solutions. Keep planning risks and source notes in "## Notes auteur".
+-->
+
 ## Objectif de la série
 
 TODO.
@@ -52,4 +58,4 @@ TODO.
 
 ## Notes auteur
 
-TODO.
+TODO. Author-only. Not learner-facing.

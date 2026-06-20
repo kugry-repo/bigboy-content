@@ -23,6 +23,12 @@ It works for:
 
 It patches existing bounded content. It does not create exercise batches, full quiz files, full quiz banks, or broad planning coverage.
 
+For learner-facing polish, target final artifact sections or explicitly
+learner-facing unit summary/navigation sections. Do not polish raw dumps, seeds,
+planning cards, dashboards, journals, source-analysis notes, TODOs, or blockers
+as if they were learner-facing content unless the user explicitly asks to
+convert author-only material into a public summary.
+
 ## Normal Usage
 
 ```text
@@ -363,6 +369,11 @@ Focus on progression logic, same-unit `exercise_ids`, set-level `skills`, diffic
 Use unit guides.
 
 Focus on unit scope, lesson/exercise/set/quiz plan, dependencies, sequencing, dashboard `Scope` rows, what should exist now vs later, avoiding generic placeholder dashboards, and making planning decisions concrete. Use `not-started`, `not-in-scope`, and `deferred` for sparse artifact-family scope. Do not use content-studio for routine journal entries or dashboard bookkeeping after tiny wording edits.
+
+Only the intentionally learner-facing summary/navigation sections of a unit
+index are public-rendering candidates. Preserve planning cards, raw material,
+dashboards, journals, source-analysis notes, and `## Notes auteur` as
+author-only unless the requested edit names those sections.
 
 For a stub unit index, diagnose or propose only. Use `content/_prompts/commands/initialize-unit.md` before creating initialized planning sections.
 

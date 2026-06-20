@@ -152,6 +152,13 @@ This section is not student-facing and should be hidden or removed in future lea
 
 Do not mix author planning notes into learner-facing sections.
 
+For unit `_index.md` files, `## Notes auteur` is not the only author-only
+material. Planning sections, raw dumps, seeds, design cards, production
+dashboard rows, production journal entries, source-analysis notes, TODOs, and
+blockers are also author-only by default. Only explicitly learner-facing
+summary/navigation sections and final artifact links are public-rendering
+candidates.
+
 ## Tags
 
 Prefer frontmatter fields over inline hashtags.

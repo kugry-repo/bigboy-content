@@ -8,6 +8,11 @@ It defines an aspirational complete-unit quality target: structure, voice, workf
 
 It is not the required shape for every unit. Ordinary units may be lesson-only, exercise-only, quiz-only, set-only, or otherwise sparse when their unit plan declares that scope. A sparse unit can be high quality when it is complete for its declared scope.
 
+The learner/export boundary still applies to a golden unit: final lessons,
+exercises, learner-facing sets, quizzes, revision/exam-style routes, and clean
+summary/navigation are public candidates; raw planning, dashboards, journals,
+review notes, and source analysis remain author-only by default.
+
 Do not mass-generate other units until at least one golden unit exists and has been reviewed.
 
 Unit review and finalization prompts must not use this guide as proof that every unit needs every artifact family. Use `content/_guides/units/unit-workflow.md` and the unit dashboard `Scope` rows to decide what is in scope.
@@ -72,6 +77,7 @@ A golden unit should include the following because it is deliberately complete:
 - quiz intent cards, raw item pools, and item design cards for important diagnostic checkpoints;
 - draft quiz files with item quality, answer keys, feedback, and remediation reviewed before learner use;
 - at least 3 exercise sets;
+- exam-style practice through exercises, quizzes, or sets when appropriate;
 - full mathematical review;
 - full pedagogical review;
 - compression, taste, and voice review;

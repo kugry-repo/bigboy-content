@@ -23,6 +23,14 @@ It works for:
 Both are content units. The difference is authority, metadata, folder location,
 catalog placement, and mutation safety rules.
 
+Learner-facing role is also different:
+
+- official curriculum units form the curriculum spine;
+- unofficial topics are learner paths for cross-cutting methods, synthesis,
+  global revision, or exam-style practice;
+- exam-style practice belongs in exercises, quizzes, or learner-facing sets
+  until full exam papers have a first-class schema.
+
 For official curriculum units, `content/programs/<TARGET_PROGRAM>/_curriculum-map.md`
 is the canonical structure file. It owns official unit list, order, code,
 folder, slug, title, domain, and official curriculum presence. Program

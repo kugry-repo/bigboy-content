@@ -106,6 +106,8 @@ When doing unit-level work:
 
 Initialized and published unit indexes use `## Inventaire des fichiers finaux` as the sparse-aware navigation inventory for final lessons, exercises, quizzes, and exercise sets. Keep it separate from planning-card sections. When final artifact files exist in an in-scope family, list them there with unit-relative Obsidian links; use `none`, `not-in-scope`, or `deferred` when links are not expected.
 
+The learner/export boundary is defined in `content/_guides/core/learner-product-model.md`. Only final artifacts and explicitly learner-facing unit summary/navigation sections are public-rendering candidates. Raw dumps, seeds, planning cards, dashboards, journals, source-analysis notes, TODOs, blockers, prompt instructions, and validator metadata are author-only by default.
+
 Exercises may be created from the unit map, skill map, official curriculum notes, misconception map, exam patterns, exercise cluster map, raw seeds, exercise design cards, or existing lessons when available. Existing lessons are useful references, not a universal prerequisite. Exercises are ability-building devices; batch-created exercises still need exercise quality review and solution review before reviewed status.
 
 Final exercise creation uses either canonical exercise design cards from the full workflow or the lightweight direct exercise shortcut when the request is narrow and specific. Do not draft final exercise files from vague seeds or incomplete cards; repair or create the smallest source planning object first. Final exercise files record the source card with `source_design_card`.

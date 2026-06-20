@@ -69,6 +69,10 @@ Preserve each card's item type in the final question metadata. A final question 
 
 Do not block quiz creation merely because local lessons or exercises are absent when the quiz intent and item design cards mark those support families `not-in-scope` or `deferred`. Keep remediation actionable through the support that is available, planned, or explicitly postponed.
 
+The final quiz's questions, feedback, mastery criteria, and remediation are
+learner-facing. Source item card IDs, source/provenance risks, review status
+notes, and planning history belong in `## Notes auteur`.
+
 Fill the new frontmatter fields:
 
 - `quiz_kind`
