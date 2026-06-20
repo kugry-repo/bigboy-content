@@ -28,6 +28,26 @@ It is detailed enough that batch creation can write the final file without inven
 
 Exercise design cards are local prerequisites for final exercise files. Linked mini-lessons are optional support references. If the unit intentionally has no local lessons, write `not-in-scope` in the linked mini-lessons field. If local lessons are planned later, write `deferred` and describe any temporary support in review notes.
 
+The card heading is the stable card ID. In a unit `_index.md`, exercise design cards live under `### Design cards des exercices` and use H4 headings:
+
+```md
+#### <card-id> - <working title>
+```
+
+Use lowercase ASCII IDs with hyphen separators. A direct exercise blueprint uses this same card contract; it is not a looser planning format.
+
+Allowed exercise design-card statuses:
+
+- `planned`: drafted design card, not ready for final exercise creation.
+- `needs-review`: a material edit made prior readiness stale or the card needs targeted review.
+- `needs-redesign`: review found a design problem.
+- `needs-verification`: math, source, parameter, or feasibility risk must be checked first.
+- `ready-for-exercise-batch`: complete enough for final exercise batch creation.
+- `used-in-exercise`: a final exercise file was created from the card.
+- `rejected`: deliberately not used.
+
+Raw seeds are not design cards. They remain exploratory and use their own curation decision fields until upgraded into this canonical card format.
+
 ### Final file
 
 A final exercise file is learner-facing training material under `exercises/`.
@@ -183,9 +203,9 @@ Even compact exercises keep the canonical headings for consistent parsing and re
 ## Canonical Design Card Format
 
 ```md
-### <planned-exercise-id> — <working title>
+#### <card-id> - <working title>
 
-Status: planned | ready-for-exercise-batch | needs-review | needs-redesign | needs-verification | rejected
+Status: planned | needs-review | needs-redesign | needs-verification | ready-for-exercise-batch | used-in-exercise | rejected
 
 Cluster:
 - <cluster id/title>
@@ -205,6 +225,9 @@ Exercise type:
 Linked skills:
 - <skill id>
 
+Prerequisites:
+- <needed prior skill, `none`, `not-in-scope`, or `deferred`>
+
 Linked mini-lessons:
 - `<lesson-file-or-title>` when available, `not-in-scope` for exercise-only units, or `deferred` when lesson support is planned later
 
@@ -219,6 +242,9 @@ Why this exercise deserves to exist:
 
 Student-facing exercise shape:
 - Rough statement shape, not final polished text.
+
+Expected answer form:
+- <number, expression, proof conclusion, graph/table reading, model, etc.>
 
 Parameter/design constraints:
 - Values, domains, intervals, signs, or assumptions required so the exercise works cleanly.
@@ -245,6 +271,9 @@ Solution feasibility sketch:
 Verification strategy:
 - How the student or reviewer can check the result.
 
+Source/provenance:
+- original | exam-inspired | adapted | source note, with source-anchor notes when applicable
+
 Variants:
 - Easier:
 - Parallel:
@@ -263,8 +292,11 @@ Review notes:
 - Source/exam claim risk:
 - Freshness note:
 
+Batch/readiness note:
+- Why this card is or is not ready for final exercise drafting.
+
 Keep/reject decision:
 - Keep because...
 ```
 
-Use `needs-review` when a material edit makes a previously ready design card's review/readiness evidence stale. Use `needs-redesign` when review found a design failure, and `needs-verification` when the card is blocked by math, source, or feasibility uncertainty.
+Use `needs-review` when a material edit makes a previously ready design card's review/readiness evidence stale. Use `needs-redesign` when review found a design failure, `needs-verification` when the card is blocked by math, source, or feasibility uncertainty, `used-in-exercise` after the final file is created, and `rejected` when the idea should not remain in the exercise ladder.

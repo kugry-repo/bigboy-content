@@ -71,6 +71,8 @@ No raw exercise seeds recorded yet.
 
 No exercise design cards recorded yet.
 
+When created, use H4 cards from `content/_guides/exercises/exercise-design-guide.md`; the H4 heading is the stable `source_design_card` ID for final exercise files.
+
 ## Planification des séries d'exercices
 
 No exercise-set plan recorded yet.
@@ -88,6 +90,8 @@ No raw quiz item pools recorded yet.
 ### Design cards des items de quiz
 
 No quiz item design cards recorded yet.
+
+When created, use H4 item cards from `content/_guides/quizzes/quiz-structure.md`; final quiz questions reference them with `Source item card`.
 
 ## Diagrammes et interactions à prévoir
 

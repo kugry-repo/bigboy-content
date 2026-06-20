@@ -47,7 +47,9 @@ Prompt-specific requirements:
 
 ## Task
 
-Curate raw seeds into item design cards for one planned quiz.
+Curate raw seeds into canonical item design cards for one planned quiz.
+
+Use raw seeds as options, not as a list to preserve. Keep, merge, reject, defer, or mark for verification.
 
 Use the worth-including filter below. Reject or merge a raw item if:
 
@@ -69,13 +71,44 @@ Do not create:
 - exercise set files;
 - frontend or app code.
 
-## Item Design Card Format
+Every curated item card must include:
+
+- stable item-card ID in the H4 heading;
+- allowed status/readiness value;
+- quiz intent context;
+- item type and cognitive role;
+- difficulty;
+- skill target;
+- stem/task design;
+- correct answer contract;
+- verification check;
+- explanation goal;
+- feedback design;
+- remediation plan;
+- source/provenance notes;
+- batch/readiness note.
+
+For `multiple-choice` and `multiple-response` cards, also include:
+
+- choices or choice design;
+- correct choice(s);
+- distractor rationale;
+- per-choice feedback plan;
+- misconception targeted by each wrong choice where appropriate.
+
+For non-choice item types, do not force per-choice feedback. Require the appropriate answer contract, verification check, feedback design, and remediation plan for that item type.
+
+## Canonical Item Design Card Format
+
+Use the canonical item-card format from `content/_guides/quizzes/quiz-structure.md`:
 
 ```md
-#### Item <number> — <working title>
+#### <item-card-id> - <working title>
 
-Status:
-- planned | ready-for-quiz-file | needs-redesign | needs-verification | rejected
+Status: planned | needs-review | needs-redesign | needs-verification | ready-for-quiz-file | used-in-quiz | rejected
+
+Quiz intent:
+- <intent id/title or planned quiz file>
 
 Item type:
 - multiple-choice | multiple-response | true-false | fill-blank | match | sequence | hotspot
@@ -83,62 +116,56 @@ Item type:
 Cognitive role:
 - recognition | method-choice | micro-calculation | error-diagnosis | missing-step | representation | transfer | theorem-condition | graph-reading | proof-order
 
+Difficulty:
+- decouverte | application-directe | application-guidee | probleme-type | approfondissement
+
 Skill target:
-- TODO
+- <skill id/objective>
 
-Question purpose:
-- This item checks whether the student can...
+Stem/task design:
+- Rough stem or interaction shape, not final polished wording.
 
-Stem shape:
-- TODO
+Correct answer contract:
+- Correct answer, accepted alternatives, partial-credit rule, or target region/order/pairs as appropriate.
 
-Correct answer:
-- TODO
+Verification check:
+- How the author will verify the answer and ambiguity constraints.
 
-Why the correct answer is correct:
-- TODO
+Explanation goal:
+- What the final explanation must teach.
 
-Distractors / wrong answers:
-- Choice A:
-  - Answer:
-  - Diagnostic signal:
-  - Why it is tempting:
-  - Why it is wrong:
-  - Feedback:
-  - Remediation:
-- Choice B:
-  - Answer:
-  - Diagnostic signal:
-  - Why it is tempting:
-  - Why it is wrong:
-  - Feedback:
-  - Remediation:
-- Choice C:
-  - Answer:
-  - Diagnostic signal:
-  - Why it is tempting:
-  - Why it is wrong:
-  - Feedback:
-  - Remediation:
+Feedback design:
+- What feedback must diagnose and teach.
 
-Accepted alternatives, if needed:
-- TODO
+Remediation plan:
+- Available support, or `not-in-scope`/`deferred` when local lessons or exercises are intentionally absent or postponed.
 
-Misconception tags:
-- TODO
+Source/provenance:
+- original | exam-inspired | adapted | source note, with source-anchor notes when applicable
 
-Linked remediation:
-- Lesson: <lesson path/title, `not-in-scope`, or `deferred`>
-- Exercise: <exercise path/id, `not-in-scope`, or `deferred`>
-- Mini-review:
-- Retry item type:
+Choices / interaction design:
+- For MCQ/MR: planned choices. For non-choice items: answer-input, matching, sequence, or hotspot interaction design.
+
+Correct choice(s):
+- For MCQ/MR only.
+
+Distractor rationale:
+- For MCQ/MR only: why each wrong choice is plausible and what it reveals.
+
+Per-choice feedback plan:
+- For MCQ/MR only: feedback for each choice, including selected-wrong and missed-correct feedback for multiple-response.
+
+Misconceptions by wrong choice:
+- For MCQ/MR only, where appropriate.
 
 Mismath / ambiguity risks:
-- TODO
+- <risks to check before final drafting>
 
-Keep rationale:
-- Why this item deserves to be in the quiz.
+Batch/readiness note:
+- Why this card is or is not ready for final quiz drafting.
 ```
+
+Cards that are ready for final quiz creation should use `Status: ready-for-quiz-file`. Use `planned` for drafted but not-ready cards, `needs-review` when a material edit made prior readiness stale, `needs-redesign` for design failures, `needs-verification` for math/source/ambiguity uncertainty, `used-in-quiz` after final quiz creation, or `rejected` honestly when the seed is not worth keeping.
 
 ## Finish
 

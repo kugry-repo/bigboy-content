@@ -123,6 +123,7 @@ Here, "solution clarity" means the combined quality of solution pedagogy, final 
 A reviewed exercise must have:
 
 - precise skill IDs;
+- traceability to its source design card through `source_design_card`;
 - honest difficulty;
 - clear statement;
 - no ambiguity;

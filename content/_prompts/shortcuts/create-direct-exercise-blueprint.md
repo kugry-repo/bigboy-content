@@ -22,7 +22,7 @@ The direct route is allowed only when:
 
 If the unit is substantial and no cluster raw seeds exist, stop and recommend `content/_prompts/workflows/exercises/01-generate-raw-seeds.md` instead of inventing the whole exercise plan directly.
 
-If used, the direct blueprint must still satisfy the same worth-existing and skill-ladder standards as the curated workflow.
+If used, the direct blueprint must still satisfy the same worth-existing, skill-ladder, and canonical exercise design-card contract as the curated workflow. It is a direct route to the same card format, not a separate looser planning object.
 
 No final exercise files are created by this shortcut.
 
@@ -104,12 +104,12 @@ Apply the worth-existing filter:
 - reject ideas whose solution is identical to another exercise;
 - reject exercises that only exist because "we need more exercises."
 
-Add rich exercise design cards using the canonical design-card format:
+Add rich exercise design cards using the canonical design-card format. Each card must include stable H4 card ID, allowed status/readiness value, cluster/local scope, difficulty, exercise role/type, linked skills, prerequisites, linked-mini-lesson convention, target ability, decision point, statement shape, expected answer form, intended method, traps, hint ladder, verification strategy, source/provenance notes, and batch/readiness note:
 
 ```md
-### <planned-exercise-id> — <working title>
+#### <card-id> - <working title>
 
-Status: planned | ready-for-exercise-batch | needs-review | needs-redesign | needs-verification | rejected
+Status: planned | needs-review | needs-redesign | needs-verification | ready-for-exercise-batch | used-in-exercise | rejected
 
 Cluster:
 - <cluster id/title>
@@ -129,6 +129,9 @@ Exercise type:
 Linked skills:
 - <skill id>
 
+Prerequisites:
+- <needed prior skill, `none`, `not-in-scope`, or `deferred`>
+
 Linked mini-lessons:
 - `<lesson-file-or-title>` when available, `not-in-scope` for exercise-only units, or `deferred` when lesson support is planned later
 
@@ -143,6 +146,9 @@ Why this exercise deserves to exist:
 
 Student-facing exercise shape:
 - Rough statement shape, not final polished text.
+
+Expected answer form:
+- <number, expression, proof conclusion, graph/table reading, model, etc.>
 
 Parameter/design constraints:
 - Values, domains, intervals, signs, or assumptions required so the exercise works cleanly.
@@ -169,6 +175,9 @@ Solution feasibility sketch:
 Verification strategy:
 - How the student or reviewer can check the result.
 
+Source/provenance:
+- original | exam-inspired | adapted | source note, with source-anchor notes when applicable
+
 Variants:
 - Easier:
 - Parallel:
@@ -185,6 +194,10 @@ Review notes:
 - Math risk:
 - Pedagogy risk:
 - Source/exam claim risk:
+- Freshness note:
+
+Batch/readiness note:
+- Why this card is or is not ready for final exercise drafting.
 
 Keep/reject decision:
 - Keep because...

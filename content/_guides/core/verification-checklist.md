@@ -44,6 +44,7 @@ Use this checklist before marking a file as `reviewed` or `published`.
 - [ ] The file is under the unit `exercises/` folder.
 - [ ] The filename follows `{unit_code}-ex-###.md`.
 - [ ] The ID follows `{id_prefix}-{unit_code}-ex-###`.
+- [ ] `source_design_card` references the canonical exercise design card used to create the exercise.
 - [ ] `exercise_role`, `estimated_time_min`, `requires_graph`, `has_hints`, `has_common_mistakes`, `has_verification`, `design_status`, `statement_status`, and `solution_status` are filled.
 - [ ] `skills` contains precise skill IDs.
 - [ ] The exercise answers what ability it builds, what decision it trains, what mistake it prevents, where it sits in the progression, and how the solution teaches the method.
@@ -71,6 +72,7 @@ Use this checklist before marking a file as `reviewed` or `published`.
 - [ ] The quiz has a clear purpose and place in the quiz series.
 - [ ] The diagnostic map explains what student states the results reveal.
 - [ ] Item types and cognitive roles are recorded.
+- [ ] Each final question records its planning source with `Source item card`.
 - [ ] Each item has a precise skill target and cognitive role.
 - [ ] Item types fit the intended diagnostic signal.
 - [ ] MCQ/MR choices have answer-specific feedback.
@@ -159,10 +161,13 @@ For full lesson review, use `_guides/lessons/lesson-quality-rubric.md`.
 - [ ] Families marked `not-in-scope` are not treated as missing mini-lesson plans, exercise design cards, quiz files, or remediation targets.
 - [ ] Families marked `deferred` are reported as deferred future work or open planning decisions, not accidental omissions.
 - [ ] For lessons in scope, the unit `_index.md` has a mini-lesson plan and the unit does not rely on one huge root-level `lesson.md`.
-- [ ] For exercises in scope, the unit `_index.md` has an exercise cluster map, raw exercise seeds or a clear direct-design justification, curated exercise design cards, and balance notes or card statuses when several clusters exist.
+- [ ] For exercises in scope, the unit `_index.md` has an exercise cluster map, raw exercise seeds or a clear direct-design justification, curated canonical exercise design cards, and balance notes or card statuses when several clusters exist.
+- [ ] Ready exercise design cards have stable H4 card IDs, allowed statuses, target skills, exercise role/type, difficulty, prerequisites, statement shape, expected answer form, solution strategy, traps, verification checks, source/provenance notes, linked-mini-lesson convention, and batch/readiness notes.
 - [ ] For exercises in scope, exercise files are one exercise per file, created in small batches unless explicitly requested otherwise, and reviewed through exercise quality and solution review before reviewed status.
 - [ ] For exercises in scope, no exercise marked `reviewed` or `published` has `design_status`, `statement_status`, or `solution_status` still at `needs-review`.
 - [ ] For quizzes in scope, the unit `_index.md` has quiz intent cards, raw item pools, and item design cards before final standalone quiz files are created.
+- [ ] Ready quiz item design cards have stable H4 item-card IDs, allowed statuses, quiz intent context, target skills, item types, difficulty, stem/task design, answer contracts, verification checks, explanation goals, feedback design, remediation plans, and source/provenance notes.
+- [ ] Ready MCQ/MR item cards include choices, correct choice(s), distractor rationale, per-choice feedback planning, and misconception mapping where appropriate.
 - [ ] For quizzes in scope, quiz files are standalone files under `quizzes/`, usually created one at a time, and reviewed separately for item quality, answer keys, feedback, and remediation.
 - [ ] The unit `_index.md` has a misconception map for the declared scope.
 - [ ] The unit `_index.md` has diagram/interactivity planning when the declared scope needs diagrams or interactions.

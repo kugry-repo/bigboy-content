@@ -103,9 +103,13 @@ raw exercise seeds
 
 Exercise design cards are the source of truth for final exercise creation. A table-only exercise summary is not enough to create an exercise.
 
+Design cards are contract-bearing planning artifacts. A ready exercise card must have a stable H4 card ID, allowed status, target skill, exercise role/type, difficulty, prerequisites, statement shape, expected answer form, intended method, traps, verification check, source/provenance notes, linked-mini-lesson convention, and readiness note. Direct exercise blueprints use the same card contract.
+
 Quality review checks statement/design/progression/hints/mistakes/learner experience. Solution review checks mathematical correctness and solution pedagogy.
 
 Each exercise lives in its own Markdown file under `exercises/`.
+
+Final exercise files record the source planning object with `source_design_card` in frontmatter and in `## Notes auteur`.
 
 ## Standalone quizzes
 
@@ -125,7 +129,11 @@ quiz intent
 
 Quiz item design cards are the source of truth for quiz creation. A table-only quiz summary is not enough to create a quiz.
 
+Quiz item design cards are contract-bearing planning artifacts. A ready item card must have a stable H4 item-card ID, allowed status, quiz intent context, target skill, item type, difficulty, stem/task design, answer contract, verification check, explanation goal, feedback design, remediation plan, and source/provenance notes. MCQ/MR item cards also need choices, correct choice(s), distractor rationale, per-choice feedback planning, and misconception mapping where appropriate. Non-choice item cards keep item-type-specific answer, feedback, and remediation contracts without fake per-choice fields.
+
 Every MCQ/MR option should have answer-specific feedback. Wrong choices should map to real misconceptions.
+
+Final quiz questions record their source planning object with `Source item card` in the question metadata.
 
 ## Targeted revision
 

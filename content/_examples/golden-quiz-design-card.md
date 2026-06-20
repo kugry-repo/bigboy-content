@@ -12,10 +12,12 @@ source_ref: null
 
 This is an example/reference file only. It is not real unit content.
 
-#### Item 3 — Le piège du $0/0$
+#### lc-quiz-001-item-003 - Le piege du $0/0$
 
-Status:
-- ready-for-quiz-file
+Status: ready-for-quiz-file
+
+Quiz intent:
+- `lc-quiz-001` - Limites : reconnaitre une forme indeterminee
 
 Item type:
 - multiple-choice
@@ -23,60 +25,71 @@ Item type:
 Cognitive role:
 - error-diagnosis
 
+Difficulty:
+- application-directe
+
 Skill target:
 - `lc-forme-indeterminee`
 
-Question purpose:
-- This item checks whether the student understands that $0/0$ is a signal to transform the expression, not a final conclusion.
-
-Stem shape:
+Stem/task design:
 - A short student solution claims that because direct substitution gives $0/0$, the limit is $0$.
 
-Correct answer:
-- The conclusion is invalid: $0/0$ is an indeterminate form, so the expression must be transformed before concluding.
+Correct answer contract:
+- Correct choice C: the conclusion is invalid because $0/0$ is an indeterminate form, so the expression must be transformed before concluding.
 
-Why the correct answer is correct:
-- Direct substitution can identify the form, but an indeterminate form does not determine the limit value.
+Verification check:
+- Verify that the displayed expression really gives $0/0$ by direct substitution and that no wording suggests $0/0$ is a value.
 
-Distractors / wrong answers:
+Explanation goal:
+- Teach that direct substitution can identify the form, but an indeterminate form does not determine the limit value.
+
+Feedback design:
+- Feedback must distinguish "looked only at the numerator", "treated $0/0$ as a number", and "recognized the need to transform first".
+
+Remediation plan:
+- Route wrong choices to a mini-review on indeterminate quotient forms and a retry item on the first transformation step.
+
+Source/provenance:
+- Original diagnostic item design; no copied source.
+
+Choices / interaction design:
+- Choice A: The student is correct because the numerator tends to $0$.
+- Choice B: The student is correct because $0/0=0$.
+- Choice C: The conclusion is invalid; factorize or transform first.
+
+Correct choice(s):
+- C
+
+Distractor rationale:
+- Choice A targets ignoring the denominator and treating one side of the quotient alone.
+- Choice B targets treating an undefined expression as a number.
+
+Per-choice feedback plan:
 - Choice A:
-  - Answer: The student is correct because the numerator tends to $0$.
   - Diagnostic signal: ignores the denominator and treats one side of the quotient alone.
   - Why it is tempting: the numerator really does tend to $0$.
   - Why it is wrong: the denominator also tends to $0$, so the quotient needs transformation.
-  - Feedback: Le numérateur seul ne décide pas la limite du quotient.
+  - Feedback: Le numerateur seul ne decide pas la limite du quotient.
   - Remediation: Refaire un item sur les formes de quotient.
 - Choice B:
-  - Answer: The student is correct because $0/0=0$.
   - Diagnostic signal: treats an undefined expression as a number.
   - Why it is tempting: the symbol contains zeros.
   - Why it is wrong: $0/0$ is not a number and does not give a limit.
-  - Feedback: $0/0$ annonce une transformation à faire.
-  - Remediation: Relire la mini-revue sur les formes indéterminées.
+  - Feedback: $0/0$ annonce une transformation a faire.
+  - Remediation: Relire la mini-revue sur les formes indeterminees.
 - Choice C:
-  - Answer: The conclusion is invalid; factorize or transform first.
   - Diagnostic signal: correct recognition of the indeterminate form.
   - Why it is tempting: this is the safe method.
   - Why it is wrong: not wrong.
-  - Feedback: C'est le bon réflexe : on transforme avant de conclure.
+  - Feedback: C'est le bon reflexe : on transforme avant de conclure.
   - Remediation: Continuer vers les exercices de factorisation.
 
-Accepted alternatives, if needed:
-- Any wording that clearly says "$0/0$ is indeterminate" and "transform before concluding."
-
-Misconception tags:
-- `zero-sur-zero-valeur`
-- `substitution-directe-toujours`
-
-Linked remediation:
-- Lesson: `lessons/lc-lesson-formes-indeterminees.md` placeholder.
-- Exercise: targeted factorization exercise placeholder.
-- Mini-review: short reminder on quotient forms.
-- Retry item type: fill-blank on the missing factorization step.
+Misconceptions by wrong choice:
+- Choice A: `quotient-numerateur-seul`
+- Choice B: `zero-sur-zero-valeur`
 
 Mismath / ambiguity risks:
 - Ensure the expression really gives $0/0$ by direct substitution.
 
-Keep rationale:
-- This item deserves to be in the quiz because it separates a dangerous misconception from a simple calculation slip.
-
+Batch/readiness note:
+- Ready because the item type, correct answer, distractor rationale, per-choice feedback, remediation, and ambiguity check are explicit.

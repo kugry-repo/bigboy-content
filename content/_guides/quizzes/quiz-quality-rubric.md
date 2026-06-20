@@ -99,6 +99,7 @@ Do not create exam-readiness quizzes before enough support and remediation paths
 A reviewed quiz must have:
 
 - precise skill targets;
+- visible `Source item card` traceability for each final question;
 - clear quiz purpose;
 - coherent place in the quiz series;
 - diagnostic item mix;

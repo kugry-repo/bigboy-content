@@ -25,6 +25,7 @@ requires_graph: false
 has_hints: true
 has_common_mistakes: true
 has_verification: true
+source_design_card: "{{unit_code}}-ex-001"
 # Freshness: material edits demote only affected review substatuses to needs-review.
 design_status: draft
 statement_status: draft
@@ -109,7 +110,7 @@ TODO.
 
 ## Notes auteur
 
-- Design card :
+- Design card : `{{unit_code}}-ex-001`
 - Student decision point :
 - Misconception :
 - Review status :

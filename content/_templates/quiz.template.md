@@ -76,6 +76,9 @@ Cognitive role:
 Skill tested:
 - TODO
 
+Source item card:
+- "{{unit_code}}-quiz-001-item-001"
+
 Misconception target:
 - TODO
 

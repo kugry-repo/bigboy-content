@@ -76,13 +76,15 @@ An exercise design card is curated exercise planning material.
 
 It is the main source of truth for exercise batch creation. It should be detailed enough that the batch creation step can create a high-quality final exercise without inventing the pedagogical goal, method, traps, hint ladder, or verification concerns from scratch.
 
-Use the canonical format in `content/_guides/exercises/exercise-design-guide.md`.
+Use the canonical H4 card format in `content/_guides/exercises/exercise-design-guide.md`. The card heading is the stable card ID, and `Status: ready-for-exercise-batch` means the card has its target skill, exercise role/type, difficulty, prerequisites, statement shape, expected answer form, solution strategy, traps, verification check, source/provenance notes, linked-mini-lesson convention, and batch/readiness note filled. A direct exercise blueprint uses the same card contract.
 
 ### Final exercise file
 
 A final exercise file is exercise batch output.
 
 It lives under the unit `exercises/` folder, uses `content/_templates/exercise.template.md`, and contains learner-facing sections plus author notes.
+
+Every final exercise created from a card records `source_design_card` in frontmatter and repeats the card ID in `## Notes auteur`. If the source card is incomplete or not `ready-for-exercise-batch`, stop and repair the planning object first.
 
 Exercise batch files start as:
 

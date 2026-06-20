@@ -78,11 +78,98 @@ Turn raw item seeds into curated item design cards. Keep, merge, reject, defer, 
 
 An item deserves to be included only if it checks a precise skill, creates a useful diagnostic signal, has plausible wrong answers, supports answer-specific feedback, and fits the quiz purpose.
 
+Item design cards are contract-bearing planning artifacts, not informal notes. The card heading is the stable item-card ID. In a unit `_index.md`, cards live under `### Design cards des items de quiz` and use H4 headings:
+
+```md
+#### <item-card-id> - <working title>
+```
+
+Use lowercase ASCII IDs with hyphen separators.
+
+Allowed quiz item design-card statuses:
+
+- `planned`: drafted item design card, not ready for final quiz creation.
+- `needs-review`: a material edit made prior readiness stale or the card needs targeted review.
+- `needs-redesign`: review found an item-design problem.
+- `needs-verification`: math, source, ambiguity, or feasibility risk must be checked first.
+- `ready-for-quiz-file`: complete enough for final quiz file creation.
+- `used-in-quiz`: a final quiz item was created from the card.
+- `rejected`: deliberately not used.
+
+Raw item seeds are not item design cards. They remain exploratory until curated into this canonical format.
+
+Canonical item design card format:
+
+```md
+#### <item-card-id> - <working title>
+
+Status: planned | needs-review | needs-redesign | needs-verification | ready-for-quiz-file | used-in-quiz | rejected
+
+Quiz intent:
+- <intent id/title or planned quiz file>
+
+Item type:
+- multiple-choice | multiple-response | true-false | fill-blank | match | sequence | hotspot
+
+Cognitive role:
+- recognition | method-choice | micro-calculation | error-diagnosis | missing-step | representation | transfer | theorem-condition | graph-reading | proof-order
+
+Difficulty:
+- decouverte | application-directe | application-guidee | probleme-type | approfondissement
+
+Skill target:
+- <skill id/objective>
+
+Stem/task design:
+- Rough stem or interaction shape, not final polished wording.
+
+Correct answer contract:
+- Correct answer, accepted alternatives, partial-credit rule, or target region/order/pairs as appropriate.
+
+Verification check:
+- How the author will verify the answer and ambiguity constraints.
+
+Explanation goal:
+- What the final explanation must teach.
+
+Feedback design:
+- What feedback must diagnose and teach.
+
+Remediation plan:
+- Available support, or `not-in-scope`/`deferred` when local lessons or exercises are intentionally absent or postponed.
+
+Source/provenance:
+- original | exam-inspired | adapted | source note, with source-anchor notes when applicable
+
+Choices / interaction design:
+- For MCQ/MR: planned choices. For non-choice items: answer-input, matching, sequence, or hotspot interaction design.
+
+Correct choice(s):
+- For MCQ/MR only.
+
+Distractor rationale:
+- For MCQ/MR only: why each wrong choice is plausible and what it reveals.
+
+Per-choice feedback plan:
+- For MCQ/MR only: feedback for each choice, including selected-wrong and missed-correct feedback for multiple-response.
+
+Misconceptions by wrong choice:
+- For MCQ/MR only, where appropriate.
+
+Mismath / ambiguity risks:
+- <risks to check before final drafting>
+
+Batch/readiness note:
+- Why this card is or is not ready for final quiz drafting.
+```
+
+For non-choice item types, keep the answer contract, verification check, explanation goal, feedback design, and remediation plan specific to that item type. Do not invent per-choice feedback where there are no choices.
+
 ### 04-create-quiz-file
 
 Create one final quiz file from ready item design cards. Use `content/_templates/quiz.template.md`.
 
-Do not invent diagnostic design from scratch during final file creation.
+Do not invent diagnostic design from scratch during final file creation. If a ready item design card is missing its target skill, item type, answer contract, feedback design, remediation plan, or MCQ/MR distractor and per-choice feedback planning, repair the card first instead of drafting a weak final item.
 
 ### 05-review-item-quality
 

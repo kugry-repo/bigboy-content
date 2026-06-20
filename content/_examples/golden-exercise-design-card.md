@@ -12,7 +12,7 @@ source_ref: null
 
 This is an example/reference file only. It is not real unit content.
 
-### lc-ex-014 — Choisir la quantité conjuguée
+#### lc-ex-014 - Choisir la quantité conjuguée
 
 Status: ready-for-exercise-batch
 
@@ -35,6 +35,10 @@ Linked skills:
 - lc-forme-indeterminee
 - lc-quantite-conjuguee
 
+Prerequisites:
+- Savoir substituer dans une expression.
+- Savoir reconnaitre une forme $0/0$.
+
 Linked mini-lessons:
 - `lc-lesson-003`
 
@@ -49,6 +53,9 @@ Why this exercise deserves to exist:
 
 Student-facing exercise shape:
 - Calculer une limite en $x \to 1$ for an expression of the form $\dfrac{\sqrt{x+3}-2}{x-1}$, then explain why the conjugate is the efficient method.
+
+Expected answer form:
+- A finite limit value and a short method-choice explanation.
 
 Parameter/design constraints:
 - Use $x+3$ so the square root is defined near $1$ and the numerator vanishes at $x=1$.
@@ -79,6 +86,9 @@ Solution feasibility sketch:
 Verification strategy:
 - Check plausibility by evaluating near $x=1$, for example $x=1{,}04$, where the value should be close to $0{,}25$.
 
+Source/provenance:
+- Original exercise design; no copied source.
+
 Variants:
 - Easier: Give the conjugate in the statement.
 - Parallel: Replace $x+3$ by $2x+2$ and adapt the denominator.
@@ -96,6 +106,9 @@ Review notes:
 - Math risk: Low, but verify the domain around $x=1$.
 - Pedagogy risk: Keep the decision point visible; do not turn it into a named-method drill.
 - Source/exam claim risk: No official claim; "exam-style" variant is only a pattern note.
+
+Batch/readiness note:
+- Ready because the target skill, method choice, answer form, trap, hints, verification, and source notes are explicit.
 
 Keep/reject decision:
 - Keep because it fills the method-choice rung for square-root limits and prevents a common invalid cancellation.

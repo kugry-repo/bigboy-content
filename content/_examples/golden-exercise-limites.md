@@ -39,6 +39,7 @@ requires_graph: false
 has_hints: true
 has_common_mistakes: true
 has_verification: true
+source_design_card: lc-ex-014
 design_status: reviewed
 statement_status: reviewed
 solution_status: reviewed

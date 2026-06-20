@@ -114,13 +114,24 @@ Default target:
 
 Every curated card must include:
 
+- stable card ID in the H4 heading;
+- allowed status/readiness value;
+- cluster/local scope;
+- difficulty, exercise role, and exercise type;
+- linked skills;
+- prerequisites, even if `none`;
+- linked mini-lessons, using `not-in-scope` or `deferred` when appropriate;
 - target ability;
 - student decision point;
 - why this exercise deserves to exist;
+- expected answer form;
+- intended solution strategy;
 - main traps with why tempting, why wrong, and how corrected;
 - hint ladder;
 - verification strategy;
+- source/provenance notes;
 - potential sets;
+- batch/readiness note;
 - keep/reject decision.
 
 ## Canonical Design Card Format
@@ -128,9 +139,9 @@ Every curated card must include:
 Use the rich design card format from `content/_guides/exercises/exercise-design-guide.md`:
 
 ```md
-### <planned-exercise-id> — <working title>
+#### <card-id> - <working title>
 
-Status: planned | ready-for-exercise-batch | needs-review | needs-redesign | needs-verification | rejected
+Status: planned | needs-review | needs-redesign | needs-verification | ready-for-exercise-batch | used-in-exercise | rejected
 
 Cluster:
 - <cluster id/title>
@@ -150,6 +161,9 @@ Exercise type:
 Linked skills:
 - <skill id>
 
+Prerequisites:
+- <needed prior skill, `none`, `not-in-scope`, or `deferred`>
+
 Linked mini-lessons:
 - `<lesson-file-or-title>` when available, `not-in-scope` for exercise-only units, or `deferred` when lesson support is planned later
 
@@ -164,6 +178,9 @@ Why this exercise deserves to exist:
 
 Student-facing exercise shape:
 - Rough statement shape, not final polished text.
+
+Expected answer form:
+- <number, expression, proof conclusion, graph/table reading, model, etc.>
 
 Parameter/design constraints:
 - Values, domains, intervals, signs, or assumptions required so the exercise works cleanly.
@@ -190,6 +207,9 @@ Solution feasibility sketch:
 Verification strategy:
 - How the student or reviewer can check the result.
 
+Source/provenance:
+- original | exam-inspired | adapted | source note, with source-anchor notes when applicable
+
 Variants:
 - Easier:
 - Parallel:
@@ -206,12 +226,16 @@ Review notes:
 - Math risk:
 - Pedagogy risk:
 - Source/exam claim risk:
+- Freshness note:
+
+Batch/readiness note:
+- Why this card is or is not ready for final exercise drafting.
 
 Keep/reject decision:
 - Keep because...
 ```
 
-Cards that are ready for batch creation should use `Status: ready-for-exercise-batch`. Use `needs-review` when a material edit made prior readiness stale, `needs-redesign` for design failures, `needs-verification` for math/source/feasibility uncertainty, or `rejected` honestly when the seed is not worth keeping.
+Cards that are ready for batch creation should use `Status: ready-for-exercise-batch`. Use `planned` for drafted but not-ready cards, `needs-review` when a material edit made prior readiness stale, `needs-redesign` for design failures, `needs-verification` for math/source/feasibility uncertainty, `used-in-exercise` after final exercise creation, or `rejected` honestly when the seed is not worth keeping.
 
 Mark unsupported official curriculum or exam-frame claims as needing verification unless documented in `content/_references/official-sources.md`.
 

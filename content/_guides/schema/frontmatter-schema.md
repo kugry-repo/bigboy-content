@@ -372,6 +372,7 @@ Type-specific required fields:
 - `has_hints`
 - `has_common_mistakes`
 - `has_verification`
+- `source_design_card`: stable exercise design-card ID from the unit `_index.md`
 - `design_status`
 - `statement_status`
 - `solution_status`
@@ -419,6 +420,7 @@ requires_graph: false
 has_hints: true
 has_common_mistakes: true
 has_verification: true
+source_design_card: "{{unit_code}}-ex-001"
 design_status: draft
 statement_status: draft
 solution_status: draft
@@ -432,6 +434,8 @@ created: YYYY-MM-DD
 updated: YYYY-MM-DD
 ---
 ```
+
+Exercise design cards are not frontmatter objects. They are Markdown planning objects in the unit `_index.md` under `### Design cards des exercices`, using the canonical H4 card contract in `content/_guides/exercises/exercise-design-guide.md`. Final exercise files must reference the source card with `source_design_card`.
 
 ## Quiz
 
@@ -503,6 +507,8 @@ created: YYYY-MM-DD
 updated: YYYY-MM-DD
 ---
 ```
+
+Quiz item design cards are Markdown planning objects in the unit `_index.md` under `### Design cards des items de quiz`, using the canonical H4 item-card contract in `content/_guides/quizzes/quiz-structure.md`. Final quiz questions must reference the source planning item with a `Source item card` line in the question metadata.
 
 ## Exercise Set
 

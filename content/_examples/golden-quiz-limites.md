@@ -90,6 +90,9 @@ Cognitive role:
 Skill tested:
 - `lc-forme-indeterminee`
 
+Source item card:
+- `lc-quiz-001-item-001`
+
 Misconception target:
 - `zero-sur-zero-valeur`
 
@@ -116,6 +119,9 @@ Cognitive role:
 Skill tested:
 - `lc-factorisation`
 
+Source item card:
+- `lc-quiz-001-item-002`
+
 Misconception target:
 - `developpement-automatique`
 
@@ -138,6 +144,9 @@ Cognitive role:
 
 Skill tested:
 - `lc-forme-indeterminee`
+
+Source item card:
+- `lc-quiz-001-item-003`
 
 Misconception target:
 - `substitution-directe-toujours`
@@ -270,4 +279,3 @@ Reprendre la substitution directe dans des expressions simples avant les quotien
 - Remediation status: reviewed for example purposes.
 - Mismath risks: expression checked; simplification requires $x \ne 1$.
 - Source/exam claim risks: original example, no official claim.
-

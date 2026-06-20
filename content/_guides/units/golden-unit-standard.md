@@ -111,7 +111,7 @@ raw exercise seeds for one cluster
 -> exercise sets
 ```
 
-Raw seeds are exploratory. Exercise design cards are the source of truth for exercise batch creation and should record the target ability, linked skills, student decision point, intended method, traps, hint ladder, parameter constraints, verification strategy, variants, and risks.
+Raw seeds are exploratory. Exercise design cards are the source of truth for exercise batch creation and should use the canonical H4 card contract: stable card ID, status, local scope, target skill, difficulty, exercise role/type, prerequisites, statement shape, expected answer form, intended method, traps, hint ladder, parameter constraints, verification strategy, source/provenance, variants, risks, and readiness note.
 
 Exercises should progress from:
 
@@ -184,6 +184,8 @@ Quizzes should be diagnostic instruments, not short exercise sheets. They should
 Each quiz belongs to a quiz series and lives under `quizzes/`. Normal quizzes usually contain 8 to 12 questions; exam-readiness quizzes may contain 12 to 20.
 
 Every MCQ/MR choice should have answer-specific feedback. Wrong choices should map to real misconceptions and explain why the choice is tempting, why it fails, and what idea to use instead.
+
+Ready quiz item design cards should use the canonical H4 item-card contract. MCQ/MR cards need choices, correct choice(s), distractor rationale, per-choice feedback planning, and misconception mapping before final quiz file creation. Non-choice cards need item-type-specific answer, feedback, verification, and remediation contracts without fake per-choice requirements.
 
 Quiz remediation should route by mastery level and by misconception. A correct answer key alone is not enough for reviewed quiz status.
 

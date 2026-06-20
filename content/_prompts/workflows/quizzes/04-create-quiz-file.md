@@ -28,6 +28,8 @@ Prompt-specific requirements:
 - Locate exactly one quiz intent and its item design cards in `TARGET_UNIT_INDEX`.
 - Use only item cards with `Status: ready-for-quiz-file`.
 - If the target is missing, ambiguous, or has no ready item cards, stop and report the blocker.
+- If a selected item card is missing its stable item-card ID, target skill, item type, difficulty, stem/task design, answer contract, verification check, explanation goal, feedback design, remediation plan, source/provenance notes, or batch/readiness note, stop and repair the card before drafting the quiz.
+- For `multiple-choice` and `multiple-response` cards, also require choices, correct choice(s), distractor rationale, per-choice feedback planning, and misconception mapping where appropriate.
 
 ## Read First
 
@@ -56,7 +58,7 @@ TARGET_UNIT_PATH/quizzes/
 
 Use the new quiz template.
 
-Do not invent diagnostic design from scratch.
+Do not invent diagnostic design from scratch. The item type, stem/task design, answer contract, distractors, explanation goal, feedback design, remediation plan, and verification risks must come from the item design cards.
 
 Do not block quiz creation merely because local lessons or exercises are absent when the quiz intent and item design cards mark those support families `not-in-scope` or `deferred`. Keep remediation actionable through the support that is available, planned, or explicitly postponed.
 
@@ -91,7 +93,7 @@ Required final quiz qualities:
 - place in series;
 - prerequisites;
 - diagnostic map;
-- questions;
+- questions with `Source item card` metadata;
 - answer key;
 - per-choice feedback for MCQ/MR;
 - misconception tags where relevant;
@@ -99,6 +101,15 @@ Required final quiz qualities:
 - author notes with risks/statuses.
 
 Do not create lessons, exercises, sets, or app code.
+
+For each final question, write:
+
+```md
+Source item card:
+- `<item-card-id>`
+```
+
+Use the H4 item-card ID from `TARGET_UNIT_INDEX`.
 
 ## Finish
 

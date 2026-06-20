@@ -106,7 +106,11 @@ When doing unit-level work:
 
 Exercises may be created from the unit map, skill map, official curriculum notes, misconception map, exam patterns, exercise cluster map, raw seeds, exercise design cards, or existing lessons when available. Existing lessons are useful references, not a universal prerequisite. Exercises are ability-building devices; batch-created exercises still need exercise quality review and solution review before reviewed status.
 
+Final exercise creation requires canonical exercise design cards or direct blueprints that use the same card contract. Do not draft final exercise files from vague seeds or incomplete cards; repair the planning object first. Final exercise files record the source card with `source_design_card`.
+
 Quizzes may be created from quiz intent cards, skill targets, misconceptions, lessons, exercises, exam patterns, raw item pools, or curated item design cards. Lessons and exercises are optional remediation references unless the specific quiz intent depends on them.
+
+Final standalone quiz creation requires ready quiz item design cards. MCQ/MR cards must include distractor rationale and per-choice feedback planning; non-choice cards need the appropriate answer, feedback, and remediation contract for their item type. Final quiz questions record the source card with `Source item card`.
 
 For unit planning or plan refresh, use `_prompts/workflows/unit/01-plan-unit.md`. For unit-wide consistency review, use `_prompts/workflows/unit/02-review-unit.md`. For metadata/link/todo/status/source-safety cleanup before publication consideration, use `_prompts/workflows/unit/03-finalize-unit.md`.
 

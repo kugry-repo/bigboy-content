@@ -290,9 +290,59 @@ const REQUIRED_EXERCISE_FIELDS = [
   "has_hints",
   "has_common_mistakes",
   "has_verification",
+  "source_design_card",
   "design_status",
   "statement_status",
   "solution_status",
+];
+
+const ALLOWED_EXERCISE_PLANNING_STATUSES = new Set([
+  "planned",
+  "needs-review",
+  "needs-redesign",
+  "needs-verification",
+  "ready-for-exercise-batch",
+  "used-in-exercise",
+  "rejected",
+]);
+
+const READY_EXERCISE_PLANNING_STATUSES = new Set([
+  "ready-for-exercise-batch",
+  "used-in-exercise",
+]);
+
+const EXERCISE_DESIGN_CARD_SECTION = "Design cards des exercices";
+
+const EXERCISE_DESIGN_CARD_REQUIRED_FIELDS = [
+  { label: "Status", aliases: ["status"] },
+  { label: "Cluster", aliases: ["cluster"] },
+  { label: "Planned file", aliases: ["planned-file"] },
+  { label: "Difficulty", aliases: ["difficulty"] },
+  { label: "Exercise role", aliases: ["exercise-role"] },
+  { label: "Exercise type", aliases: ["exercise-type"] },
+  { label: "Linked skills", aliases: ["linked-skills"] },
+  { label: "Prerequisites", aliases: ["prerequisites"] },
+  { label: "Linked mini-lessons", aliases: ["linked-mini-lessons"] },
+  { label: "Target ability", aliases: ["target-ability"] },
+  { label: "Student decision point", aliases: ["student-decision-point"] },
+  {
+    label: "Student-facing exercise shape",
+    aliases: ["student-facing-exercise-shape"],
+  },
+  { label: "Expected answer form", aliases: ["expected-answer-form"] },
+  {
+    label: "Parameter/design constraints",
+    aliases: ["parameter-design-constraints"],
+  },
+  { label: "Expected method", aliases: ["expected-method"] },
+  { label: "Main traps/misconceptions", aliases: ["main-traps-misconceptions"] },
+  { label: "Hint ladder", aliases: ["hint-ladder"] },
+  { label: "Solution feasibility sketch", aliases: ["solution-feasibility-sketch"] },
+  { label: "Verification strategy", aliases: ["verification-strategy"] },
+  { label: "Source/provenance", aliases: ["source-provenance"] },
+  { label: "Review notes", aliases: ["review-notes"] },
+  { label: "Batch/readiness note", aliases: ["batch-readiness-note"] },
+  { label: "Keep/reject decision", aliases: ["keep-reject-decision"] },
 ];
 
 const ALLOWED_QUIZ_KINDS = new Set([
@@ -334,6 +384,60 @@ const ALLOWED_QUIZ_REVIEW_STATUSES = new Set([
   "reviewed",
   "needs-correction",
 ]);
+
+const ALLOWED_QUIZ_ITEM_PLANNING_STATUSES = new Set([
+  "planned",
+  "needs-review",
+  "needs-redesign",
+  "needs-verification",
+  "ready-for-quiz-file",
+  "used-in-quiz",
+  "rejected",
+]);
+
+const READY_QUIZ_ITEM_PLANNING_STATUSES = new Set([
+  "ready-for-quiz-file",
+  "used-in-quiz",
+]);
+
+const CHOICE_BASED_QUIZ_ITEM_TYPES = new Set([
+  "multiple-choice",
+  "multiple-response",
+]);
+
+const QUIZ_ITEM_CARD_SECTION = "Design cards des items de quiz";
+
+const QUIZ_ITEM_CARD_REQUIRED_FIELDS = [
+  { label: "Status", aliases: ["status"] },
+  { label: "Quiz intent", aliases: ["quiz-intent"] },
+  { label: "Item type", aliases: ["item-type"] },
+  { label: "Cognitive role", aliases: ["cognitive-role"] },
+  { label: "Difficulty", aliases: ["difficulty"] },
+  { label: "Skill target", aliases: ["skill-target"] },
+  { label: "Stem/task design", aliases: ["stem-task-design"] },
+  { label: "Correct answer contract", aliases: ["correct-answer-contract"] },
+  { label: "Verification check", aliases: ["verification-check"] },
+  { label: "Explanation goal", aliases: ["explanation-goal"] },
+  { label: "Feedback design", aliases: ["feedback-design"] },
+  { label: "Remediation plan", aliases: ["remediation-plan"] },
+  { label: "Source/provenance", aliases: ["source-provenance"] },
+  {
+    label: "Choices / interaction design",
+    aliases: ["choices-interaction-design"],
+  },
+  { label: "Mismath / ambiguity risks", aliases: ["mismath-ambiguity-risks"] },
+  { label: "Batch/readiness note", aliases: ["batch-readiness-note"] },
+];
+
+const QUIZ_CHOICE_ITEM_CARD_REQUIRED_FIELDS = [
+  { label: "Correct choice(s)", aliases: ["correct-choice-s", "correct-choices"] },
+  { label: "Distractor rationale", aliases: ["distractor-rationale"] },
+  { label: "Per-choice feedback plan", aliases: ["per-choice-feedback-plan"] },
+  {
+    label: "Misconceptions by wrong choice",
+    aliases: ["misconceptions-by-wrong-choice"],
+  },
+];
 
 const REQUIRED_QUIZ_FIELDS = [
   "quiz_kind",
@@ -754,6 +858,10 @@ const CONTRACT_FIXTURES = {
     "content/_fixtures/contracts/invalid-curriculum-map-missing-unit-index.md",
   stubDashboardResidue:
     "content/_fixtures/contracts/invalid-stub-dashboard-residue.md",
+  exerciseDesignCardContract:
+    "content/_fixtures/contracts/invalid-exercise-design-card-contract.md",
+  quizItemCardContract:
+    "content/_fixtures/contracts/invalid-quiz-item-card-contract.md",
   exerciseSetBadExerciseId:
     "content/_fixtures/contracts/invalid-exercise-set-bad-exercise-id.md",
   unsupportedObjectType:
@@ -1419,6 +1527,189 @@ function getSectionsByHeadings(body, level, headings) {
   return sections;
 }
 
+function stripFencedCodeBlocks(text) {
+  return text.replace(/```[\s\S]*?```/g, "");
+}
+
+function parsePlanningCards(sectionText, headingLevel) {
+  const text = stripFencedCodeBlocks(sectionText);
+  const headingPattern = new RegExp(
+    `^${"#".repeat(headingLevel)}\\s+(.+?)\\s*$`,
+    "gm",
+  );
+  const headingMatches = [...text.matchAll(headingPattern)];
+  const cards = [];
+
+  for (let index = 0; index < headingMatches.length; index += 1) {
+    const match = headingMatches[index];
+    const heading = match[1].trim();
+    const bodyStart = match.index + match[0].length;
+    const bodyEnd =
+      index + 1 < headingMatches.length
+        ? headingMatches[index + 1].index
+        : text.length;
+    const id = planningCardIdFromHeading(heading);
+
+    cards.push({
+      heading,
+      id,
+      text: text.slice(bodyStart, bodyEnd),
+      fields: parsePlanningCardFields(text.slice(bodyStart, bodyEnd)),
+    });
+  }
+
+  return cards;
+}
+
+function planningCardIdFromHeading(heading) {
+  const match = heading.match(/^([a-z0-9]+(?:-[a-z0-9]+)*)\b/);
+  return match ? match[1] : "";
+}
+
+function parsePlanningCardFields(cardText) {
+  const lines = cardText.split(/\r?\n/);
+  const fields = new Map();
+  let current = null;
+
+  const commit = () => {
+    if (!current) return;
+    const value = [current.inline, ...current.lines].join("\n").trim();
+    fields.set(normalizePlanningLabel(current.label), {
+      label: current.label,
+      value,
+    });
+  };
+
+  for (const line of lines) {
+    const fieldMatch = line.match(/^([A-Za-z][A-Za-z0-9 /()'_-]*):\s*(.*)$/);
+    if (fieldMatch) {
+      commit();
+      current = {
+        label: fieldMatch[1].trim(),
+        inline: fieldMatch[2].trim(),
+        lines: [],
+      };
+      continue;
+    }
+
+    if (!current) continue;
+
+    if (/^#{1,6}\s+/.test(line)) {
+      commit();
+      current = null;
+      continue;
+    }
+
+    current.lines.push(line);
+  }
+
+  commit();
+  return fields;
+}
+
+function normalizePlanningLabel(label) {
+  return normalizeTableHeader(label.replace(/&/g, " and "));
+}
+
+function planningField(card, aliases) {
+  for (const alias of aliases) {
+    const value = card.fields.get(alias);
+    if (value) return value;
+  }
+
+  return null;
+}
+
+function isPlanningFieldComplete(field) {
+  if (!field) return false;
+  const cleaned = cleanPlanningFieldValue(field.value);
+  return Boolean(cleaned) && !/^TODO\b/i.test(cleaned);
+}
+
+function cleanPlanningFieldValue(value) {
+  return String(value ?? "")
+    .split(/\r?\n/)
+    .map((line) => line.trim().replace(/^[-*]\s*/, "").trim())
+    .filter(Boolean)
+    .join(" ")
+    .replace(/`/g, "")
+    .trim();
+}
+
+function firstPlanningFieldToken(field) {
+  const cleaned = cleanPlanningFieldValue(field?.value ?? "");
+  if (!cleaned) return "";
+
+  return cleaned
+    .split("|")[0]
+    .split(",")[0]
+    .trim()
+    .split(/\s+/)[0]
+    .replace(/^["']|["']$/g, "")
+    .replace(/[.。]$/, "");
+}
+
+function addPlanningCardDiagnostic(filePath, kind, card, severity, message) {
+  const fullMessage = `${kind} "${card.id || card.heading}": ${message}`;
+  if (severity === "error") addError(filePath, fullMessage);
+  else addWarning(filePath, fullMessage);
+}
+
+function requiredPlanningFieldSeverity(status, readyStatuses) {
+  return readyStatuses.has(status) ? "error" : "warning";
+}
+
+function checkRequiredPlanningFields(
+  filePath,
+  kind,
+  card,
+  requiredFields,
+  severity,
+) {
+  for (const requiredField of requiredFields) {
+    const field = planningField(card, requiredField.aliases);
+    if (isPlanningFieldComplete(field)) continue;
+
+    addPlanningCardDiagnostic(
+      filePath,
+      kind,
+      card,
+      severity,
+      `missing or empty "${requiredField.label}" field`,
+    );
+  }
+}
+
+function checkPlanningCardIds(filePath, kind, cards) {
+  const ids = new Map();
+
+  for (const card of cards) {
+    if (!card.id || !isSlug(card.id)) {
+      addPlanningCardDiagnostic(
+        filePath,
+        kind,
+        card,
+        "error",
+        "heading must start with a stable lowercase ASCII hyphenated ID",
+      );
+      continue;
+    }
+
+    const previous = ids.get(card.id);
+    if (previous) {
+      addError(
+        filePath,
+        `${kind} "${card.id}" duplicates another card heading in this unit`,
+      );
+      continue;
+    }
+
+    ids.set(card.id, card);
+  }
+
+  return ids;
+}
+
 function textIncludesInOrder(text, snippets) {
   let cursor = 0;
 
@@ -1533,6 +1824,137 @@ function checkProductionDashboard(filePath, dashboardSection, data = {}) {
       );
     }
   }
+}
+
+function checkExerciseDesignCardContracts(filePath, body) {
+  const exercisePlanning = getSection(body, 2, "Planification des exercices");
+  const designCardSection = getSection(
+    exercisePlanning,
+    3,
+    EXERCISE_DESIGN_CARD_SECTION,
+  );
+  const cards = parsePlanningCards(designCardSection, 4);
+  const cardById = checkPlanningCardIds(filePath, "exercise design card", cards);
+
+  for (const card of cards) {
+    const statusField = planningField(card, ["status"]);
+    if (!isPlanningFieldComplete(statusField)) {
+      addPlanningCardDiagnostic(
+        filePath,
+        "exercise design card",
+        card,
+        "error",
+        'missing or empty "Status" field',
+      );
+      continue;
+    }
+
+    const status = firstPlanningFieldToken(statusField);
+    if (!ALLOWED_EXERCISE_PLANNING_STATUSES.has(status)) {
+      addPlanningCardDiagnostic(
+        filePath,
+        "exercise design card",
+        card,
+        "error",
+        `invalid status "${status}"; expected one of ${[...ALLOWED_EXERCISE_PLANNING_STATUSES].join(", ")}`,
+      );
+      continue;
+    }
+
+    const fieldSeverity = requiredPlanningFieldSeverity(
+      status,
+      READY_EXERCISE_PLANNING_STATUSES,
+    );
+    checkRequiredPlanningFields(
+      filePath,
+      "exercise design card",
+      card,
+      EXERCISE_DESIGN_CARD_REQUIRED_FIELDS,
+      fieldSeverity,
+    );
+  }
+
+  return cardById;
+}
+
+function checkQuizItemDesignCardContracts(filePath, body) {
+  const quizPlanning = getSection(body, 2, "Planification des quiz");
+  const designCardSection = getSection(
+    quizPlanning,
+    3,
+    QUIZ_ITEM_CARD_SECTION,
+  );
+  const cards = parsePlanningCards(designCardSection, 4);
+  const cardById = checkPlanningCardIds(filePath, "quiz item design card", cards);
+
+  for (const card of cards) {
+    const statusField = planningField(card, ["status"]);
+    if (!isPlanningFieldComplete(statusField)) {
+      addPlanningCardDiagnostic(
+        filePath,
+        "quiz item design card",
+        card,
+        "error",
+        'missing or empty "Status" field',
+      );
+      continue;
+    }
+
+    const status = firstPlanningFieldToken(statusField);
+    if (!ALLOWED_QUIZ_ITEM_PLANNING_STATUSES.has(status)) {
+      addPlanningCardDiagnostic(
+        filePath,
+        "quiz item design card",
+        card,
+        "error",
+        `invalid status "${status}"; expected one of ${[...ALLOWED_QUIZ_ITEM_PLANNING_STATUSES].join(", ")}`,
+      );
+      continue;
+    }
+
+    const itemTypeField = planningField(card, ["item-type"]);
+    const itemType = firstPlanningFieldToken(itemTypeField);
+    if (itemType && !ALLOWED_QUIZ_ITEM_TYPES.has(itemType)) {
+      addPlanningCardDiagnostic(
+        filePath,
+        "quiz item design card",
+        card,
+        "error",
+        `invalid item type "${itemType}"; expected one of ${[...ALLOWED_QUIZ_ITEM_TYPES].join(", ")}`,
+      );
+    }
+
+    const fieldSeverity = requiredPlanningFieldSeverity(
+      status,
+      READY_QUIZ_ITEM_PLANNING_STATUSES,
+    );
+    checkRequiredPlanningFields(
+      filePath,
+      "quiz item design card",
+      card,
+      QUIZ_ITEM_CARD_REQUIRED_FIELDS,
+      fieldSeverity,
+    );
+
+    if (CHOICE_BASED_QUIZ_ITEM_TYPES.has(itemType)) {
+      checkRequiredPlanningFields(
+        filePath,
+        "quiz item design card",
+        card,
+        QUIZ_CHOICE_ITEM_CARD_REQUIRED_FIELDS,
+        fieldSeverity,
+      );
+    }
+  }
+
+  return cardById;
+}
+
+function checkPlanningObjectContracts(filePath, body) {
+  return {
+    exerciseDesignCards: checkExerciseDesignCardContracts(filePath, body),
+    quizItemDesignCards: checkQuizItemDesignCardContracts(filePath, body),
+  };
 }
 
 function checkLegacyGlobalProductionText(filePath, text) {
@@ -1968,7 +2390,10 @@ function checkStubUnitBody(indexPath, body) {
 function checkCanonicalUnitBody(indexPath, body, data) {
   if (data.planning_state === "stub") {
     checkStubUnitBody(indexPath, body);
-    return;
+    return {
+      exerciseDesignCards: new Map(),
+      quizItemDesignCards: new Map(),
+    };
   }
 
   compareLists(
@@ -2007,6 +2432,7 @@ function checkCanonicalUnitBody(indexPath, body, data) {
 
   const dashboardSection = getSection(body, 2, DASHBOARD_HEADING);
   checkProductionDashboard(indexPath, dashboardSection, data);
+  const planningObjects = checkPlanningObjectContracts(indexPath, body);
   checkLegacyGlobalProductionText(indexPath, body);
 
   if (!getSection(body, 2, "Journal de production").trim()) {
@@ -2019,6 +2445,8 @@ function checkCanonicalUnitBody(indexPath, body, data) {
   ) {
     addError(indexPath, 'published unit index contains unresolved TODO placeholders');
   }
+
+  return planningObjects;
 }
 
 function checkCanonicalInitializedUnitTemplate() {
@@ -2558,6 +2986,45 @@ function checkContractFixtures() {
   );
 
   expectInvalidContractFixture(
+    CONTRACT_FIXTURES.exerciseDesignCardContract,
+    "exercise design-card contract",
+    () => {
+      const parsed = readFixtureFrontmatter(
+        CONTRACT_FIXTURES.exerciseDesignCardContract,
+        "exercise design-card contract fixture",
+      );
+      checkCanonicalUnitBody(
+        fullPathFromRepoPath(CONTRACT_FIXTURES.exerciseDesignCardContract),
+        parsed.body,
+        parsed.data,
+      );
+    },
+    [
+      /exercise design card "bad-ex-001": missing or empty "Expected answer form" field/,
+      /exercise design card "bad-ex-001" duplicates another card heading in this unit/,
+    ],
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.quizItemCardContract,
+    "quiz item design-card contract",
+    () => {
+      const parsed = readFixtureFrontmatter(
+        CONTRACT_FIXTURES.quizItemCardContract,
+        "quiz item design-card contract fixture",
+      );
+      checkCanonicalUnitBody(
+        fullPathFromRepoPath(CONTRACT_FIXTURES.quizItemCardContract),
+        parsed.body,
+        parsed.data,
+      );
+    },
+    [
+      /quiz item design card "badquiz-item-001": missing or empty "Per-choice feedback plan" field/,
+    ],
+  );
+
+  expectInvalidContractFixture(
     CONTRACT_FIXTURES.exerciseSetBadExerciseId,
     "exercise-set exercise_ids shape",
     () => {
@@ -2608,7 +3075,11 @@ function checkUnitIndex(unitDir, expectedGroup, program) {
   }
 
   checkUnitFrontmatter(indexPath, unitDir, expectedGroup, parsed.data, program);
-  checkCanonicalUnitBody(indexPath, parsed.body, parsed.data);
+  const planningObjects = checkCanonicalUnitBody(
+    indexPath,
+    parsed.body,
+    parsed.data,
+  );
 
   return {
     indexPath,
@@ -2622,6 +3093,7 @@ function checkUnitIndex(unitDir, expectedGroup, program) {
     kind: parsed.data.unit_kind,
     planningState: parsed.data.planning_state,
     data: parsed.data,
+    planningObjects,
   };
 }
 
@@ -2854,6 +3326,25 @@ function checkExerciseFile(unit, filePath) {
   checkAllowedValue(filePath, data, "statement_status", ALLOWED_STATEMENT_STATUSES);
   checkAllowedValue(filePath, data, "solution_status", ALLOWED_SOLUTION_STATUSES);
 
+  if (Object.hasOwn(data, "source_design_card")) {
+    if (isEmptyValue(data.source_design_card)) {
+      addError(filePath, 'frontmatter "source_design_card" must reference a design-card ID');
+    } else if (!isSlug(data.source_design_card)) {
+      addError(
+        filePath,
+        'frontmatter "source_design_card" must be a lowercase ASCII hyphenated design-card ID',
+      );
+    } else {
+      const exerciseCards = unit.planningObjects?.exerciseDesignCards ?? new Map();
+      if (!exerciseCards.has(data.source_design_card)) {
+        addWarning(
+          filePath,
+          `frontmatter "source_design_card" references missing exercise design card "${data.source_design_card}" in the unit _index.md`,
+        );
+      }
+    }
+  }
+
   for (const field of ["requires_graph", "has_hints", "has_common_mistakes", "has_verification"]) {
     checkBooleanField(filePath, data, field);
   }
@@ -2988,6 +3479,65 @@ function checkExerciseFile(unit, filePath) {
   }
 }
 
+function parseQuizQuestionSourceItemCards(body) {
+  const questionsSection = stripFencedCodeBlocks(
+    getSection(body, 2, "Questions"),
+  );
+  const questionMatches = [...questionsSection.matchAll(/^###\s+(Question\b.+?)\s*$/gm)];
+  const questions = [];
+
+  for (let index = 0; index < questionMatches.length; index += 1) {
+    const match = questionMatches[index];
+    const heading = match[1].trim();
+    const bodyStart = match.index + match[0].length;
+    const bodyEnd =
+      index + 1 < questionMatches.length
+        ? questionMatches[index + 1].index
+        : questionsSection.length;
+    const fields = parsePlanningCardFields(
+      questionsSection.slice(bodyStart, bodyEnd),
+    );
+    const sourceField = planningField({ fields }, ["source-item-card"]);
+
+    questions.push({
+      heading,
+      sourceItemCard: firstPlanningFieldToken(sourceField),
+    });
+  }
+
+  return questions;
+}
+
+function checkQuizSourceItemCards(unit, filePath, body) {
+  const questions = parseQuizQuestionSourceItemCards(body);
+  const itemCards = unit.planningObjects?.quizItemDesignCards ?? new Map();
+
+  for (const question of questions) {
+    if (!question.sourceItemCard) {
+      addWarning(
+        filePath,
+        `"${question.heading}" is missing "Source item card" metadata`,
+      );
+      continue;
+    }
+
+    if (!isSlug(question.sourceItemCard)) {
+      addWarning(
+        filePath,
+        `"${question.heading}" has invalid Source item card "${question.sourceItemCard}"; expected lowercase ASCII hyphenated item-card ID`,
+      );
+      continue;
+    }
+
+    if (!itemCards.has(question.sourceItemCard)) {
+      addWarning(
+        filePath,
+        `"${question.heading}" references missing quiz item design card "${question.sourceItemCard}" in the unit _index.md`,
+      );
+    }
+  }
+}
+
 function checkQuizFile(unit, filePath) {
   const fileName = path.basename(filePath);
   const nameMatch = fileName.match(new RegExp(`^${escapeRegex(unit.code)}-quiz-(\\d{3})\\.md$`));
@@ -3091,6 +3641,8 @@ function checkQuizFile(unit, filePath) {
       `frontmatter "question_count" is ${data.question_count} but found ${questionHeadingCount} "### Question" heading(s)`,
     );
   }
+
+  checkQuizSourceItemCards(unit, filePath, parsed.body);
 
   if (data.quiz_kind === "method-choice" && !cognitiveRoles.includes("method-choice")) {
     addWarning(filePath, 'frontmatter "quiz_kind: method-choice" but cognitive_roles does not include "method-choice"');

@@ -50,6 +50,8 @@ The validator checks:
 - exact canonical initialized/published unit `_index.md` structure as derived from `content/_templates/unit-index.template.md`;
 - required exercise cluster, raw-seed, and design-card areas from the canonical initialized scaffold;
 - required quiz raw-material and design-card areas from the canonical initialized scaffold;
+- canonical exercise design-card IDs, duplicate IDs, allowed statuses, required field labels, ready-card completeness, and final exercise `source_design_card` references when enough local planning data exists;
+- canonical quiz item design-card IDs, duplicate IDs, allowed statuses, required field labels, MCQ/MR distractor and per-choice feedback planning fields, ready-card completeness, and final quiz `Source item card` references when enough local planning data exists;
 - `## Production dashboard` rows from the canonical initialized scaffold as the authoritative initialized/published unit workstream tracker;
 - allowed dashboard statuses including the sparse-family states `not-started`, `not-in-scope`, and `deferred`;
 - `## Journal de production` as the historical log;
@@ -166,9 +168,11 @@ The validator checks references whose format is clear:
 - official program catalog rows and topic catalog rows must match canonical map or topic unit data;
 - deleted IDs must not remain active.
 
-The validator intentionally does not yet provide a full graph validator for
-arbitrary Markdown links, wikilinks, prose mentions, or planned IDs in design
-cards. Use the mutation prompts' reference-search checklist for those.
+The validator intentionally does not provide a full graph validator for
+arbitrary Markdown links, wikilinks, or prose mentions. It does check the
+mechanical planning-card IDs and source-card references where the format is
+explicit. Use the mutation prompts' reference-search checklist for broader
+planned-ID prose references.
 
 ## Permanent anti-regression guards
 

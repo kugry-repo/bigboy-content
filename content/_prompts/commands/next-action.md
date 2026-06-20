@@ -167,7 +167,7 @@ For exercise requests:
 
 1. If no exercise cluster map exists and the request is broad, recommend `content/_prompts/workflows/exercises/01-generate-raw-seeds.md`.
 2. If a selected cluster has no raw seeds and the user did not provide enough direct design information, recommend `content/_prompts/workflows/exercises/01-generate-raw-seeds.md`.
-3. If raw seeds exist but design cards are missing or incomplete, recommend `content/_prompts/workflows/exercises/02-curate-design-cards.md`.
+3. If raw seeds exist but canonical design cards are missing, incomplete, duplicated, or not `ready-for-exercise-batch`, recommend `content/_prompts/workflows/exercises/02-curate-design-cards.md`.
 4. If multiple clusters/cards exist but balance is unclear, recommend `content/_prompts/workflows/exercises/03-check-unit-balance.md`.
 5. If ready design cards exist and requested files are missing, recommend `content/_prompts/workflows/exercises/04-create-batch.md`.
 6. If exercise files exist with draft or `needs-review` design or statement statuses, recommend `content/_prompts/workflows/exercises/05-review-exercise-quality.md`.
@@ -180,7 +180,7 @@ For quiz requests:
 
 1. If quiz intent, target skill area, or series is missing, recommend `content/_prompts/workflows/quizzes/01-plan-quiz-intent.md` or a small unit-map patch if the intent is genuinely unclear.
 2. If a quiz intent exists but raw item seeds are missing or thin, recommend `content/_prompts/workflows/quizzes/02-generate-raw-item-pool.md`.
-3. If raw item seeds exist but item design cards are missing or incomplete, recommend `content/_prompts/workflows/quizzes/03-curate-item-design-cards.md`.
+3. If raw item seeds exist but canonical item design cards are missing, incomplete, duplicated, or not `ready-for-quiz-file`, recommend `content/_prompts/workflows/quizzes/03-curate-item-design-cards.md`.
 4. If ready item design cards exist and the quiz file is missing, recommend `content/_prompts/workflows/quizzes/04-create-quiz-file.md`.
 5. If quiz files exist with draft, `needs-review`, or weak item quality, recommend `content/_prompts/workflows/quizzes/05-review-item-quality.md`.
 6. If quiz files exist with draft or `needs-review` answer keys, recommend `content/_prompts/workflows/quizzes/06-review-answer-keys.md`.
