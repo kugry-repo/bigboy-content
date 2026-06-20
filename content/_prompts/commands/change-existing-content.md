@@ -137,6 +137,7 @@ After a material edit, invalidate only the affected review evidence with `needs-
 - quiz item design cards: set card readiness/review state to `needs-review` when a `ready-for-quiz-file` or `used-in-quiz` card became stale, identify derived final quiz questions through `Source item card`, and invalidate only affected item-quality, answer-key, feedback, or remediation evidence;
 - exercise statements: set `statement_status: needs-review`, and also `solution_status: needs-review` when the solution depends on the changed statement;
 - exercise solutions: set `solution_status: needs-review` only unless the statement or design also changed or is wrong;
+- exercise sets: material edits to membership, progression, prerequisites, labels, ordering, learner-facing notes, set-level `skills`, `difficulty_range`, or source/exam-pattern claims set `status: needs-review` when the set had been `reviewed` or `published`;
 - quizzes: invalidate `item_quality_status`, `answer_key_status`, `feedback_status`, and/or `remediation_status` according to the changed stem/type/MCQ options/distractors/non-choice interaction, answer logic, feedback, or remediation.
 
 Quiz type-specific implications:
@@ -153,7 +154,7 @@ Quiz type-specific implications:
 - Hotspot target-region changes affect answer-key review and may affect UI-dependent review notes or feedback.
 - Non-choice item edits should not introduce MCQ choices, distractors, or per-choice feedback unless the item type itself is changed and item-quality review is invalidated.
 
-When any exercise or quiz review substatus becomes `needs-review`, demote top-level `status: reviewed` or `status: published` to `status: needs-review`. Do not restart the full pipeline unless the change truly invalidates the whole artifact or unit plan.
+When any exercise or quiz review substatus becomes `needs-review`, or when a set's top-level review status becomes `needs-review`, demote top-level `status: reviewed` or `status: published` to `status: needs-review`. Do not restart the full pipeline unless the change truly invalidates the whole artifact or unit plan.
 
 After a non-material edit, status may be preserved only if the report states why the edit did not affect meaning, math, answer logic, feedback, remediation, or pedagogy.
 
@@ -162,6 +163,7 @@ Targeted review ownership:
 - lesson substance: `content/_prompts/workflows/lessons/07-verify-finalize.md`;
 - exercise design or statement evidence: `content/_prompts/workflows/exercises/05-review-exercise-quality.md`;
 - exercise solution evidence: `content/_prompts/workflows/exercises/06-review-solutions.md`;
+- exercise set status/freshness: `content/_prompts/workflows/exercises/07-create-sets.md`;
 - quiz item-quality evidence: `content/_prompts/workflows/quizzes/05-review-item-quality.md`;
 - quiz answer-key evidence: `content/_prompts/workflows/quizzes/06-review-answer-keys.md`;
 - quiz feedback/remediation evidence: `content/_prompts/workflows/quizzes/07-review-feedback-remediation.md`;

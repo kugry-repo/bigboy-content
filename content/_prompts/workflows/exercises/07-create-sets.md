@@ -1,6 +1,8 @@
 # Prompt - Create Exercise Sets
 
-Use this prompt after reviewed exercises exist or after precise reviewed design cards make a future set plan safe.
+Use this prompt after eligible exercise files exist. Reviewed exercise design
+cards may guide set coverage, but they are planning input only; they are not
+enough to create a final learner-facing set file under `sets/`.
 
 Exercise sets organize existing reviewed exercises into learner paths. They should link to exercises, not duplicate content.
 
@@ -56,11 +58,25 @@ If `TARGET_UNIT_INDEX` has `planning_state: stub`, stop before changing unit pla
 
 ## Task
 
-Create or update exercise set files under `TARGET_UNIT_PATH/sets/`.
+Create, update, or review exercise set files under `TARGET_UNIT_PATH/sets/`.
 
-This is exercise-set assembly work only.
+This prompt owns exercise-set assembly and set-specific review/freshness.
 
-Exercise sets should organize existing exercises, preferably exercises whose design, statement, and solution statuses are reviewed. If using planned design cards, the set must be clearly marked as future planning and must not pretend linked exercise files exist.
+Exercise sets organize existing exercises, preferably exercises whose design,
+statement, and solution statuses are reviewed. Final set entries must reference
+existing same-unit exercise files through `exercise_ids`; planned design cards
+can inform coverage, ordering, and missing-exercise notes, but they cannot be
+listed as final set membership.
+
+If no eligible exercise files exist, stop before creating or updating any final
+set file under `sets/`. Recommend the next exact action:
+
+- create or review the needed exercises first with the exercise workflow; or
+- keep the set idea as author-only unit planning, not as a final set file.
+
+If existing exercise files are too weak for learner-facing grouping, stop and
+recommend the smallest exercise quality or solution review needed before set
+assembly.
 
 Do not create:
 
@@ -71,6 +87,7 @@ Do not create:
 
 Set logic must use:
 
+- same-unit `exercise_ids`;
 - exercise role;
 - difficulty;
 - estimated time;
@@ -103,9 +120,40 @@ whole-paper timing unless a future full-exam artifact contract exists.
 
 Use frontmatter values derived from `TARGET_UNIT_INDEX`, including the resolved unit code, program, unit folder, order, domain, tracks, language, and relevant skills.
 
-If no exercises exist and the design cards are not specific enough to build sets safely, stop and ask for clarification.
+Do not create missing exercise files during exercise-set assembly. If a useful
+set needs exercises that do not exist yet, record the missing planned IDs or
+design-card references in unit planning only, and recommend exercise batch
+creation before final set creation.
 
-Do not create missing exercise files during exercise-set assembly. If a useful set needs exercises that do not exist yet, record the missing planned IDs and recommend exercise batch creation.
+## Set Review And Freshness
+
+New final set files normally start with `status: draft`. Use `status:
+needs-review` when a set exists but still needs set-specific review before it
+can be trusted as a learner-facing path.
+
+This prompt may promote a set to `status: reviewed` only after checking:
+
+- every `exercise_ids` entry points to an existing same-unit exercise file;
+- the exercise family is in scope, not `Scope: not-in-scope`;
+- the set progression, order, prerequisites, labels, difficulty range, and
+  set-level `skills` match the referenced exercises;
+- learner-facing notes are useful without duplicating exercise statements,
+  hints, or solutions;
+- source/exam-pattern claims are safe and recorded in author notes when needed.
+
+Material edits to set progression, membership, prerequisites, labels, ordering,
+learner-facing notes, set-level `skills`, `difficulty_range`, or exam/source
+claims make reviewed evidence stale. If the set had `status: reviewed` or
+`status: published`, set `status: needs-review` until this prompt reviews the
+current version again. Non-material typo, punctuation, formatting, or link-text
+edits may preserve reviewed/published status only when the report explains why
+membership, progression, math, pedagogy, source claims, and learner guidance did
+not change.
+
+Unit review and finalization may notice stale set status, but they do not
+refresh set-specific review evidence. `content/_prompts/commands/content-studio.md`
+may patch a bounded set slice; after a material set edit, route freshness back
+to this prompt.
 
 After creating or updating set files, update the `sets` row in `## Inventaire des fichiers finaux`. Update the set-family dashboard only if scope, blockers, review needs, or the next decision changed. Do not duplicate each set frontmatter status in the dashboard.
 

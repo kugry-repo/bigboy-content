@@ -18,7 +18,7 @@ Every lesson, exercise, standalone quiz, set, and solution should be:
 - easy to improve;
 - safe to render later in an app.
 
-Artifact workstreams are independent. A unit may be lesson-only, exercise-only, quiz-only, set-only, or otherwise partial by design when the unit plan declares that scope.
+Artifact workstreams are independent. A unit may be lesson-only, exercise-only, quiz-only, set-focused, or otherwise partial by design when the unit plan declares that scope. Set-focused means sets may be prioritized in planning, but final learner-facing set files still require existing same-unit exercises and an in-scope exercise family.
 
 For the learner-facing product boundary, use
 `content/_guides/core/learner-product-model.md`. The short rule is:
@@ -158,6 +158,11 @@ They organize individual exercises by progression, role, difficulty, time,
 prerequisites, revision value, or exam-pattern readiness. They do not duplicate
 exercise statements or solutions, and they are listed in the final-artifact
 inventory through the `sets` row.
+
+Reviewed exercise design cards may guide future set coverage, but a final set
+file under `sets/` must reference real same-unit exercise files. If no eligible
+exercise files exist yet, keep the set idea in author-only planning and create
+the needed exercises before assembling the final learner-facing set.
 
 Final exercise files record the source planning object with `source_design_card` in frontmatter and in `## Notes auteur`. Use only `ready-for-exercise-batch` or `used-in-exercise` source cards; update a card to `used-in-exercise` only after the final exercise references it.
 

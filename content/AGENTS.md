@@ -120,7 +120,7 @@ For unit planning or plan refresh, use `_prompts/workflows/unit/01-plan-unit.md`
 
 Unit review and finalization are artifact-specific. Lessons are reviewed with lesson editorial/structure/rubric standards; exercises are reviewed with exercise structure, design-card, quality, and solution-style standards; standalone quizzes are reviewed with quiz structure, item-writing, quality, answer-key, feedback, and remediation standards. Do not judge exercises by lesson flow standards, do not treat standalone quizzes as compressed lessons, and do not require `not-in-scope` or `deferred` artifact families for sparse-unit readiness.
 
-Route stale review evidence to the smallest owning review: lesson `status` to the lesson verify/finalize prompt; exercise `design_status` or `statement_status` to exercise quality review; exercise `solution_status` to solution review; quiz `item_quality_status` to item-quality review; quiz `answer_key_status` to answer-key review; quiz `feedback_status` and `remediation_status` to feedback/remediation review.
+Route stale review evidence to the smallest owning review: lesson `status` to the lesson verify/finalize prompt; exercise `design_status` or `statement_status` to exercise quality review; exercise `solution_status` to solution review; exercise set `status` to exercise set creation/update review; quiz `item_quality_status` to item-quality review; quiz `answer_key_status` to answer-key review; quiz `feedback_status` and `remediation_status` to feedback/remediation review.
 
 When revising existing content, syncing stale files, or responding to an upstream plan/template/guide change, use `_prompts/commands/change-existing-content.md`. Discover the blast radius and patch only affected files or produce an impact plan.
 

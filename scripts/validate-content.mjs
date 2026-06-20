@@ -799,6 +799,7 @@ const FAMILY_SPECIFIC_TARGETED_REVIEW_PROMPTS = [
   "content/_prompts/workflows/lessons/07-verify-finalize.md",
   "content/_prompts/workflows/exercises/05-review-exercise-quality.md",
   "content/_prompts/workflows/exercises/06-review-solutions.md",
+  "content/_prompts/workflows/exercises/07-create-sets.md",
   "content/_prompts/workflows/quizzes/05-review-item-quality.md",
   "content/_prompts/workflows/quizzes/06-review-answer-keys.md",
   "content/_prompts/workflows/quizzes/07-review-feedback-remediation.md",
@@ -1023,8 +1024,8 @@ const CONTRACT_FIXTURES = {
     "content/_fixtures/contracts/valid-sparse-lesson-only-unit.md",
   sparseExerciseOnlyUnit:
     "content/_fixtures/contracts/valid-sparse-exercise-only-unit.md",
-  sparseSetOnlyUnit:
-    "content/_fixtures/contracts/valid-sparse-set-only-unit.md",
+  sparseSetFocusedPlanningUnit:
+    "content/_fixtures/contracts/valid-sparse-set-focused-planning-unit.md",
   sparseQuizOnlyUnit:
     "content/_fixtures/contracts/valid-sparse-quiz-only-unit.md",
   sparseLessonsQuizzesUnit:
@@ -1045,8 +1046,8 @@ const CONTRACT_FIXTURES = {
     "content/_fixtures/contracts/valid-final-inventory-lesson-only.md",
   validFinalInventoryExerciseOnly:
     "content/_fixtures/contracts/valid-final-inventory-exercise-only.md",
-  validFinalInventorySetOnly:
-    "content/_fixtures/contracts/valid-final-inventory-set-only.md",
+  validFinalInventorySetFocusedWithExercises:
+    "content/_fixtures/contracts/valid-final-inventory-set-focused-with-exercises.md",
   validFinalInventoryQuizOnly:
     "content/_fixtures/contracts/valid-final-inventory-quiz-only.md",
   validFinalInventorySparseNotInScope:
@@ -1067,6 +1068,10 @@ const CONTRACT_FIXTURES = {
     "content/_fixtures/contracts/warning-only-draft-quiz.md",
   exerciseSetBadExerciseId:
     "content/_fixtures/contracts/invalid-exercise-set-bad-exercise-id.md",
+  exerciseSetMissingExerciseFile:
+    "content/_fixtures/contracts/invalid-exercise-set-missing-exercise-file.md",
+  exerciseSetExercisesNotInScope:
+    "content/_fixtures/contracts/invalid-exercise-set-exercises-not-in-scope.md",
   unsupportedObjectType:
     "content/_fixtures/contracts/invalid-schema-unsupported-object-type.md",
 };
@@ -4917,11 +4922,11 @@ function checkContractFixtures() {
   );
 
   expectValidContractFixture(
-    CONTRACT_FIXTURES.sparseSetOnlyUnit,
-    "set-only sparse unit finalizes with lessons, exercises, and quizzes out of scope",
+    CONTRACT_FIXTURES.sparseSetFocusedPlanningUnit,
+    "set-focused planning unit stays valid before final set creation",
     () => checkDashboardContractFixture(
-      CONTRACT_FIXTURES.sparseSetOnlyUnit,
-      { status: "reviewed" },
+      CONTRACT_FIXTURES.sparseSetFocusedPlanningUnit,
+      { status: "planned" },
     ),
   );
 
@@ -5062,18 +5067,19 @@ function checkContractFixtures() {
   );
 
   expectValidContractFixture(
-    CONTRACT_FIXTURES.validFinalInventorySetOnly,
-    "set-only final-artifact inventory passes",
+    CONTRACT_FIXTURES.validFinalInventorySetFocusedWithExercises,
+    "set-focused final-artifact inventory passes with exercises in scope",
     () => checkFinalArtifactInventoryContractFixture(
-      CONTRACT_FIXTURES.validFinalInventorySetOnly,
+      CONTRACT_FIXTURES.validFinalInventorySetFocusedWithExercises,
       {
         scopes: {
           lessons: "not-in-scope",
-          exercises: "not-in-scope",
+          exercises: "not-started",
           sets: "not-started",
           quizzes: "not-in-scope",
         },
         files: {
+          exercises: ["exercises/fixture-ex-001.md"],
           sets: ["sets/fixture-set-core.md"],
         },
       },
@@ -5293,6 +5299,43 @@ function checkContractFixtures() {
       );
     },
     [/frontmatter "exercise_ids" value "fixture-other-ex-001" must match "fixture-bad-ex-###"/],
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.exerciseSetMissingExerciseFile,
+    "exercise-set exercise_ids require existing same-unit exercise files",
+    () => {
+      const parsed = readFixtureFrontmatter(
+        CONTRACT_FIXTURES.exerciseSetMissingExerciseFile,
+        "exercise-set missing exercise fixture",
+      );
+      checkExerciseSetExerciseIds(
+        fullPathFromRepoPath(CONTRACT_FIXTURES.exerciseSetMissingExerciseFile),
+        parsed.data,
+        {
+          program: fixtureProgram(),
+          code: parsed.data.unit_code,
+          dir: path.dirname(fullPathFromRepoPath(CONTRACT_FIXTURES.exerciseSetMissingExerciseFile)),
+        },
+      );
+    },
+    [/frontmatter "exercise_ids" references missing exercise file "miss-ex-001\.md" in the same unit exercises\/ folder/],
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.exerciseSetExercisesNotInScope,
+    "final exercise set requires Exercises family in scope",
+    () => {
+      const filePath = fullPathFromRepoPath(CONTRACT_FIXTURES.exerciseSetExercisesNotInScope);
+      checkSetFilesRequireExerciseScope(
+        {
+          folder: "invalid-exercise-set-exercises-not-in-scope",
+          familyScopes: new Map([["Exercises", "not-in-scope"]]),
+        },
+        [filePath],
+      );
+    },
+    [/final exercise set file .* requires family "Exercises" Scope to be "not-started"/],
   );
 
   expectInvalidContractFixture(
@@ -7423,6 +7466,20 @@ function checkNotInScopeArtifactFiles(unit, family, files) {
   }
 }
 
+function checkSetFilesRequireExerciseScope(unit, setFiles) {
+  if (setFiles.length === 0) return;
+
+  const exerciseScope = unit.familyScopes?.get("Exercises");
+  if (!exerciseScope || exerciseScope === "not-started") return;
+
+  for (const filePath of setFiles) {
+    addError(
+      filePath,
+      `unit "${unit.folder}" final exercise set file "${rel(filePath)}" requires family "Exercises" Scope to be "not-started"; final sets organize existing same-unit exercise files, so use author-only set planning until exercises are in scope`,
+    );
+  }
+}
+
 function checkFinalArtifactInventoryFiles(unit, family, files) {
   if (unit.planningState === "stub") return;
 
@@ -7482,6 +7539,7 @@ function checkUnitContentFiles(unit) {
   checkNotInScopeArtifactFiles(unit, "Exercises", exerciseFiles);
   checkNotInScopeArtifactFiles(unit, "Sets", setFiles);
   checkNotInScopeArtifactFiles(unit, "Quizzes", quizFiles);
+  checkSetFilesRequireExerciseScope(unit, setFiles);
 
   checkFinalArtifactInventoryFiles(
     unit,

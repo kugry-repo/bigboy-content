@@ -6,7 +6,7 @@ A golden unit is the first deliberately complete content unit used as the model 
 
 It defines an aspirational complete-unit quality target: structure, voice, workflow evidence, lesson quality, exercise quality, quiz quality, sets, source safety, and review discipline.
 
-It is not the required shape for every unit. Ordinary units may be lesson-only, exercise-only, quiz-only, set-only, or otherwise sparse when their unit plan declares that scope. A sparse unit can be high quality when it is complete for its declared scope.
+It is not the required shape for every unit. Ordinary units may be lesson-only, exercise-only, quiz-only, set-focused, or otherwise sparse when their unit plan declares that scope. A sparse unit can be high quality when it is complete for its declared scope. Set-focused units may prioritize set planning or assembly, but final learner-facing sets still require existing same-unit exercises.
 
 The learner/export boundary still applies to a golden unit: final lessons,
 exercises, learner-facing sets, quizzes, revision/exam-style routes, and clean

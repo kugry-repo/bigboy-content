@@ -82,7 +82,7 @@ Skill coverage is content-derived. Track it locally through the unit skill map, 
 
 Units are allowed to be intentionally sparse.
 
-Lessons, exercises, standalone quizzes, and exercise sets are independent artifact workstreams. A unit may be lesson-only, exercise-only, quiz-only, set-only, or otherwise partial by design when the unit plan, content scope, or user request declares that shape.
+Lessons, exercises, standalone quizzes, and exercise sets are independent artifact workstreams. A unit may be lesson-only, exercise-only, quiz-only, set-focused, or otherwise partial by design when the unit plan, content scope, or user request declares that shape. Set-focused means set planning or set assembly is prioritized; it does not mean a final learner-facing set can exist without real same-unit exercise files.
 
 There is no required lesson -> exercise -> quiz order. Review, cleanup, and finalize prompts operate on what exists and what the unit plan claims, not on a universal artifact-family checklist.
 
@@ -106,6 +106,11 @@ Canonical sparse-family states:
 Use these hyphenated values in dashboard rows and status reports. Do not write prose variants such as `not in scope` as dashboard statuses. The `Scope` row is not a progress, review, or readiness row.
 
 When a family is `not-in-scope`, mark the family `Scope` row and its family-local dashboard rows `not-in-scope` for mechanical clarity. Do not keep design cards, final files, or active local dashboard rows in a family marked `not-in-scope`.
+
+Because final exercise sets organize exercise files, a unit with final set files
+must keep the exercise family in scope. If the useful work is only future set
+coverage from design cards, record that as author-only set planning rather than
+a final `sets/` artifact.
 
 When a family is `deferred`, mark the `Scope` row `deferred`; family-local rows must be `deferred` or `not-started`. Do not mix `Scope: deferred` with `ready`, `complete`, `needs-review`, `partial`, or `blocked` local rows. If real work is active enough to carry progress or review status, change the `Scope` row back to `not-started` and let the local rows report progress honestly.
 
@@ -352,6 +357,7 @@ Status ownership is local and evidence-based:
 | Lesson `status` and final verification row | `content/_prompts/workflows/lessons/07-verify-finalize.md`. |
 | Exercise design/statement evidence | `content/_prompts/workflows/exercises/05-review-exercise-quality.md`. |
 | Exercise solution evidence | `content/_prompts/workflows/exercises/06-review-solutions.md`. |
+| Exercise set status and freshness | `content/_prompts/workflows/exercises/07-create-sets.md`. |
 | Quiz item-quality evidence | `content/_prompts/workflows/quizzes/05-review-item-quality.md`. |
 | Quiz answer-key evidence | `content/_prompts/workflows/quizzes/06-review-answer-keys.md`. |
 | Quiz feedback/remediation evidence | `content/_prompts/workflows/quizzes/07-review-feedback-remediation.md`. |
@@ -359,7 +365,7 @@ Status ownership is local and evidence-based:
 | Quiz item-card status | `content/_prompts/workflows/quizzes/03-curate-item-design-cards.md` or `content/_prompts/commands/change-existing-content.md` for a bounded card edit. |
 | Top-level `status: reviewed` or `status: published` | The owning artifact review/finalization evidence must support it; publication still requires explicit human decision where the workflow says so. |
 
-Combined dashboard rows summarize next-action needs but do not erase ownership. For example, an exercise-family row may say `needs-review` because one or more exercise files have stale `design_status`, `statement_status`, or `solution_status`; the exact stale fields remain in the exercise frontmatter. A quiz-family row may say `needs-review` because one or more quiz files have stale item-quality, answer-key, feedback, or remediation evidence; the exact stale fields remain in quiz frontmatter.
+Combined dashboard rows summarize next-action needs but do not erase ownership. For example, an exercise-family row may say `needs-review` because one or more exercise files have stale `design_status`, `statement_status`, or `solution_status`; the exact stale fields remain in the exercise frontmatter. A set-family row may say `needs-review` because one or more set files have stale `status`; the set file frontmatter remains authoritative. A quiz-family row may say `needs-review` because one or more quiz files have stale item-quality, answer-key, feedback, or remediation evidence; the exact stale fields remain in quiz frontmatter.
 
 ## Workstream routing
 
@@ -394,7 +400,7 @@ Exercise batch creation requires canonical exercise design cards for the selecte
 
 Full quiz file creation requires a quiz intent card and ready item design cards. Lightweight quiz work may create or update the smallest compact intent/card needed for one item, one distractor/feedback slice, one added item, or a short focused quiz. Quizzes may link to lessons or exercises for remediation, but those links are optional unless the quiz intent depends on them.
 
-Exercise set creation requires existing exercise files or precise exercise design cards. Sets should link to exercise files instead of duplicating full exercise content.
+Final exercise set creation requires existing same-unit exercise files. Reviewed exercise design cards may plan future set coverage, identify useful groupings, or reveal missing exercises, but they are not enough to create a final learner-facing set under `sets/`. Sets link to exercise files instead of duplicating full exercise content.
 
 Unit review and cleanup operate on whatever exists. They should report absent artifact families using `not-in-scope`, `deferred`, or `not-started` from the dashboard `Scope` rows unless a local contract makes the absence a blocker.
 
@@ -534,6 +540,7 @@ Finalization checks are family-specific:
 - Lessons: intended files exist, lesson status/review evidence is acceptable, lesson metadata and structure satisfy the lesson contract, and known lesson review issues are resolved or explicitly deferred.
 - Exercises: intended exercise files exist, statement/design review and solution review are both acceptable, design cards or lightweight direct exercise cards are ready/used/resolved when present, solution review is not assumed from statement review, and batch balance has been handled when required by declared scope.
 - Quizzes: intended standalone quiz files exist, item-quality, answer-key, feedback, and remediation review evidence are acceptable, required type-specific answer/feedback/remediation contracts exist, standalone quizzes are not treated as lesson checkpoints, and remediation uses available, planned, `not-in-scope`, or `deferred` support honestly.
+- Sets: final set files exist only when they reference existing same-unit exercise files, the exercise family is in scope, set progression/membership/prerequisites/labels are current, and set `status` is not stale.
 
 Do not use `content/_guides/units/golden-unit-standard.md` as a mandatory finalization checklist for every unit. Golden-unit completeness is aspirational; ordinary sparse units can be ready for their declared scope.
 

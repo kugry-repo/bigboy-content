@@ -71,13 +71,14 @@ Review the unit plan, declared scope, and existing artifacts.
 
 This is unit-review work only.
 
-Lessons, exercises, and standalone quizzes are first-class artifact families. Review each in-scope family by its own contract:
+Lessons, exercises, exercise sets, and standalone quizzes are first-class artifact families. Review each in-scope family by its own contract:
 
 - Lessons: use `content/_guides/lessons/lesson-editorial-pipeline.md`, `content/_guides/lessons/lesson-structure.md`, and `content/_guides/lessons/lesson-quality-rubric.md` for lesson clarity, structure, coherence, compression, voice, mathematical correctness, and learning flow.
 - Exercises: use `content/_guides/exercises/exercise-structure.md`, `content/_guides/exercises/exercise-design-guide.md`, `content/_guides/exercises/exercise-quality-rubric.md`, and `content/_guides/exercises/solution-style.md` for statement quality, target skill, difficulty, trap design, design-card readiness, solution correctness, solution pedagogy, and batch balance.
+- Sets: use `content/_guides/exercises/exercise-structure.md`, `content/_guides/exercises/exercise-design-guide.md`, and `content/_prompts/workflows/exercises/07-create-sets.md` for same-unit exercise references, progression, membership, prerequisites, labels, set-level skills, difficulty range, and learner-facing usefulness.
 - Quizzes: use `content/_guides/quizzes/quiz-structure.md`, `content/_guides/quizzes/quiz-item-writing-guide.md`, `content/_guides/quizzes/quiz-quality-rubric.md`, and `content/_guides/quizzes/quiz-remediation-guide.md` for diagnostic intent, item quality, item-type contracts, answer keys, MCQ/MR distractors, non-choice wrong-response patterns, feedback, explanation, remediation, and quiz-level coherence.
 
-Do not judge exercises by lesson flow standards. Do not judge standalone quizzes as compressed lessons or in-lesson checks. Use lesson standards only for lesson artifacts, exercise standards only for exercise artifacts and exercise design cards, and quiz standards only for quiz artifacts and quiz planning cards.
+Do not judge exercises by lesson flow standards. Do not judge standalone quizzes as compressed lessons or in-lesson checks. Use lesson standards only for lesson artifacts, exercise standards only for exercise artifacts and exercise design cards, set standards only for exercise-set files, and quiz standards only for quiz artifacts and quiz planning cards.
 
 Review the learner-facing product path separately from author-only planning.
 Only final artifact files and explicitly learner-facing unit summary/navigation
@@ -139,6 +140,7 @@ Check:
 - frontmatter fields and IDs are consistent;
 - declared skills are covered, practiced, quizzed, deferred, or intentionally `not-in-scope` in a way that matches the declared scope;
 - when exercises are in scope, exercise files, design cards or lightweight direct exercise cards, statement/design statuses, solution statuses, source design-card links, and batch-balance notes satisfy the exercise workflow contract at a review-signal level;
+- when sets are in scope, set files reference existing same-unit exercise files, the exercise family is in scope, set status is fresh, and set progression, prerequisites, labels, set-level skills, and difficulty range match the referenced exercises;
 - when quizzes are in scope, standalone quiz files, quiz intent cards, item design cards, item-quality status, answer-key status, feedback status, remediation status, canonical item types, and required type-specific answer/feedback/remediation sections satisfy the quiz workflow contract at a review-signal level;
 - exercises align with lessons only when both streams exist or the unit plan says they should align;
 - standalone quizzes align with lessons, exercises, quiz intent cards, or item design cards only when those streams/cards exist or the unit plan says they should align;
@@ -189,6 +191,7 @@ Use these targeted review routes when reporting stale evidence:
 - lesson `status: needs-review` or lesson verification issues: `content/_prompts/workflows/lessons/07-verify-finalize.md`;
 - exercise `design_status` or `statement_status: needs-review`: `content/_prompts/workflows/exercises/05-review-exercise-quality.md`;
 - exercise `solution_status: needs-review`: `content/_prompts/workflows/exercises/06-review-solutions.md`;
+- exercise set `status: needs-review`: `content/_prompts/workflows/exercises/07-create-sets.md`;
 - quiz `item_quality_status: needs-review`: `content/_prompts/workflows/quizzes/05-review-item-quality.md`;
 - quiz `answer_key_status: needs-review`: `content/_prompts/workflows/quizzes/06-review-answer-keys.md`;
 - quiz `feedback_status` or `remediation_status: needs-review`: `content/_prompts/workflows/quizzes/07-review-feedback-remediation.md`.

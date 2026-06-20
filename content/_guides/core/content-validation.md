@@ -138,7 +138,7 @@ The validator checks:
 - required common fields on active content objects, including `skills`, `unit_code`, `domain`, and source/status metadata;
 - required exercise frontmatter fields, allowed exercise values, required exercise headings, and quality-signal warnings;
 - exercise review freshness values, including `needs-review` for stale design, statement, or solution evidence;
-- required exercise-set frontmatter fields, allowed difficulty ranges, same-unit exercise IDs, and set ID consistency;
+- required exercise-set frontmatter fields, allowed difficulty ranges, same-unit exercise IDs, existing exercise-file references, exercise-family scope for final sets, and set ID consistency;
 - unit identity consistency between frontmatter and containing folder;
 - prompt-folder layout so old flat prompt systems cannot return;
 - canonical seven-step lesson prompt family under `content/_prompts/workflows/lessons/`;
@@ -156,7 +156,7 @@ The validator checks:
 - golden example YAML blocks for active content-object fields, enum values, and obvious ID/number/reference shape drift;
 - editor-first target-resolution prompt sections against `content/_prompts/_shared/prompt-contract.md`;
 - current-unit producer/consumer/mutation boundaries: `set-current-unit` writes, `next-action` verifies read-only, and lifecycle/mutation prompts invalidate or request a rerun instead of synthesizing cache entries;
-- unit review/finalize prompt contracts that require lesson, exercise, and quiz guide references plus targeted review routes for lesson verification, exercise quality, exercise solutions, quiz item quality, quiz answer keys, and quiz feedback/remediation;
+- unit review/finalize prompt contracts that require lesson, exercise, set, and quiz guidance plus targeted review routes for lesson verification, exercise quality, exercise solutions, exercise set freshness, quiz item quality, quiz answer keys, and quiz feedback/remediation;
 - routing guardrails that keep content-studio as bounded patching, change-existing-content as dependency-aware editing, and artifact review prompts as the owners of stale review-evidence refresh;
 
 ## Warnings and notices
@@ -249,7 +249,7 @@ production files.
 The validator checks references whose format is clear:
 
 - unit `related_units` must point to known unit folders in the same program;
-- exercise-set `exercise_ids` must use the same program prefix and unit code, and production sets must point to existing exercise files;
+- exercise-set `exercise_ids` must use the same program prefix and unit code, production sets must point to existing exercise files, and units with final set files must keep the exercise family in scope;
 - official program catalog rows and topic catalog rows must match canonical map or topic unit data;
 - deleted IDs must not remain active.
 

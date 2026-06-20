@@ -94,9 +94,9 @@ Initialized and published unit indexes also contain `## Inventaire des fichiers 
 
 `planning_state: published` is set only by explicit human instruction after review and cleanup. Review/finalize prompts can report readiness for declared scope, but they do not publish automatically.
 
-Review statuses are version evidence, not decorations. After a material edit to reviewed lesson, exercise, or quiz substance, set only the affected review status fields to `needs-review` and run the relevant targeted review again. Non-material typo, formatting, punctuation, or link-formatting edits may preserve reviewed/published status only when the report explains why the edit did not affect meaning, math, answer logic, feedback, remediation, or pedagogy. The full contract lives in `content/_guides/schema/frontmatter-schema.md`.
+Review statuses are version evidence, not decorations. After a material edit to reviewed lesson, exercise, exercise set, or quiz substance, set only the affected review status fields to `needs-review` and run the relevant targeted review again. Non-material typo, formatting, punctuation, or link-formatting edits may preserve reviewed/published status only when the report explains why the edit did not affect meaning, math, answer logic, feedback, remediation, or pedagogy. The full contract lives in `content/_guides/schema/frontmatter-schema.md`.
 
-Review and finalization are artifact-specific. Unit review should use lesson standards for lessons, exercise and solution standards for exercises, and quiz item/answer/feedback/remediation standards for standalone quizzes. It should not judge exercises by lesson flow standards, treat standalone quizzes as compressed lessons, or require artifact families marked `not-in-scope` or `deferred`.
+Review and finalization are artifact-specific. Unit review should use lesson standards for lessons, exercise and solution standards for exercises, exercise-set progression/reference checks for sets, and quiz item/answer/feedback/remediation standards for standalone quizzes. It should not judge exercises by lesson flow standards, treat standalone quizzes as compressed lessons, or require artifact families marked `not-in-scope` or `deferred`.
 
 Use `content/_fixtures/initialized-unit/_index.md` only as a checked-in structural reference for the initialized scaffold. It is not educational content.
 
@@ -145,7 +145,7 @@ path is known, the author should not need to provide `TARGET_UNIT`.
 
 Create final files only through the appropriate workflow prompts and in small batches. Do not create whole units, full exercise libraries, quiz libraries, or app/frontend work unless explicitly requested.
 
-Changed artifacts route to the smallest owning review: lesson verification for lesson substance, exercise quality review for exercise statement/design changes, solution review for exercise solution changes, quiz item-quality review for item/stem/MCQ-distractor/non-choice interaction changes, answer-key review for answer logic, accepted forms, pairings, order, or hotspot regions, and feedback/remediation review for next-step routing.
+Changed artifacts route to the smallest owning review: lesson verification for lesson substance, exercise quality review for exercise statement/design changes, solution review for exercise solution changes, exercise set creation/update review for set membership/progression changes, quiz item-quality review for item/stem/MCQ-distractor/non-choice interaction changes, answer-key review for answer logic, accepted forms, pairings, order, or hotspot regions, and feedback/remediation review for next-step routing.
 
 ## Validation
 

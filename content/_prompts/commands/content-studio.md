@@ -10,7 +10,7 @@ For small creation tasks, use the lightweight shortcuts instead of content-studi
 
 For unit-wide consistency review, use `content/_prompts/workflows/unit/02-review-unit.md`. For metadata/link/todo/status/source-safety cleanup before publication consideration, use `content/_prompts/workflows/unit/03-finalize-unit.md`.
 
-Use content-studio to patch or discuss bounded content. When content already changed and the task is to verify correctness or refresh stale review evidence, use the owning lesson, exercise, or quiz review prompt instead.
+Use content-studio to patch or discuss bounded content. When content already changed and the task is to verify correctness or refresh stale review evidence, use the owning lesson, exercise, exercise set, or quiz review prompt instead.
 
 It works for:
 
@@ -205,6 +205,7 @@ Human-readable invalidation map:
 | Lesson explanation, example, definition, method, or checkpoint | Relevant lesson review slice; set lesson `status: needs-review` when it was reviewed or published |
 | Exercise statement, givens, target, constraints, hints, or mistake block | `statement_status: needs-review`; solution review too only when the solution depends on the changed statement |
 | Exercise solution, final answer, verification, or solution pedagogy | `solution_status: needs-review` only, unless the statement/design is also wrong |
+| Exercise set membership, progression, prerequisites, labels, learner-facing notes, set-level skills, or difficulty range | Set `status: needs-review` when it was reviewed or published |
 | Quiz stem, item type, distractor, option wording, diagnostic signal, match/sequence/hotspot interaction | `item_quality_status: needs-review` for that item |
 | Quiz correct answer, accepted answer form, pairing, sequence order, or hotspot region | `answer_key_status: needs-review` |
 | Quiz per-choice feedback, wrong-response feedback, mastery note, or remediation | `feedback_status: needs-review` and/or `remediation_status: needs-review` |
@@ -216,6 +217,7 @@ Freshness invalidation rules:
 - Quiz item design cards or item intent: material edits set the card readiness/review state to `needs-review` when it had been `ready-for-quiz-file` or `used-in-quiz`, identify derived final quiz questions through `Source item card`, and flag only item-quality, answer-key, feedback, or remediation evidence that depends on the changed card.
 - Exercise statements: material edits set `statement_status: needs-review`; also set `solution_status: needs-review` when the solution depends on the changed statement. Demote exercise `status` to `needs-review` when it had been `reviewed` or `published`.
 - Exercise solutions: material edits set `solution_status: needs-review` only, unless the edit reveals the statement or design is also wrong. Demote exercise `status` to `needs-review` when it had been `reviewed` or `published`.
+- Exercise sets: material edits to membership, progression, prerequisites, labels, ordering, learner-facing notes, set-level `skills`, `difficulty_range`, or source/exam-pattern claims set `status: needs-review` when the set had been `reviewed` or `published`.
 - Quiz stems, item types, MCQ/MR options or distractors, match prompt structure, sequence ordering criterion, or hotspot target wording: material edits set `item_quality_status: needs-review`.
 - Quiz correct-answer logic: set `answer_key_status: needs-review`.
 - Quiz option, diagnostic-signal, or misconception changes: set `feedback_status: needs-review` when feedback depends on those choices.
@@ -373,6 +375,12 @@ Use exercise guides and the frontmatter schema.
 Content studio supports targeted diagnosis, proposals, and patches for exercise set files under `sets/`.
 
 Focus on progression logic, same-unit `exercise_ids`, set-level `skills`, difficulty range, prerequisite fit, revision value, and whether the set links to exercises without duplicating their statements, hints, or solutions.
+
+Final set files under `sets/` must reference existing same-unit exercise files;
+design cards may inform future set coverage but are not final set membership.
+After a material set edit, set `status: needs-review` when the set had been
+reviewed or published, and route set-specific freshness to
+`content/_prompts/workflows/exercises/07-create-sets.md`.
 
 ### Unit `_index.md`
 

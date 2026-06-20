@@ -81,6 +81,7 @@ Route review by artifact ownership:
 - Lesson substance or verification changed: `content/_prompts/workflows/lessons/07-verify-finalize.md`.
 - Exercise statement, design, hints, mistakes, or verification changed: `content/_prompts/workflows/exercises/05-review-exercise-quality.md`.
 - Exercise solution or final answer changed: `content/_prompts/workflows/exercises/06-review-solutions.md`.
+- Exercise set membership, progression, prerequisites, labels, learner-facing notes, or set-level skills changed: `content/_prompts/workflows/exercises/07-create-sets.md`.
 - Quiz stems, item types, MCQ/MR options or distractors, match pairings, sequence ordering criterion, hotspot target definition, diagnostic signals, or item order changed: `content/_prompts/workflows/quizzes/05-review-item-quality.md`.
 - Quiz correct answers, accepted fill-blank alternatives, match pairings, sequence order, hotspot region, partial correctness, or answer logic changed: `content/_prompts/workflows/quizzes/06-review-answer-keys.md`.
 - Quiz feedback, per-choice MCQ/MR feedback, non-choice wrong-response feedback, mastery criteria, or remediation changed: `content/_prompts/workflows/quizzes/07-review-feedback-remediation.md`.

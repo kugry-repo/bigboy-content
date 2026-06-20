@@ -84,6 +84,7 @@ Finalize only the artifact families that are in scope for the declared unit scop
 
 - Lessons: verify intended mini-lesson files exist, lesson `status` is acceptable, lesson structure and metadata satisfy the lesson contract, and known review issues are resolved or explicitly deferred.
 - Exercises: verify final exercise files exist for intended exercise batches or direct exercise tasks, statements and solutions have acceptable independent review states, design cards or lightweight direct exercise cards are ready/used/resolved when present, `solution_status` is not assumed from `statement_status`, and exercise batch balance has been handled when the unit scope requires it.
+- Sets: verify final set files reference existing same-unit exercise files, the exercise family is in scope, set `status` is acceptable, set progression/membership/prerequisites/labels are current, and learner-facing set notes do not duplicate exercise statements, hints, or solutions.
 - Quizzes: verify standalone quiz files exist for intended quiz work, item quality, answer key, feedback, and remediation review states are acceptable, canonical item types and required type-specific answer/feedback/remediation contracts are present, quizzes are not treated as in-lesson mini-checks, and remediation uses available, planned, `not-in-scope`, or `deferred` support honestly.
 
 Finalization may report artifact-specific stale evidence, but it must not silently refresh it. Block publication readiness on stale in-scope artifact evidence until the owning review prompt refreshes it.
@@ -145,6 +146,7 @@ Check:
 - lessons in scope have acceptable lesson review evidence according to `content/_guides/lessons/lesson-quality-rubric.md`;
 - exercises in scope have one exercise per file, source design-card traceability, acceptable statement/design evidence, acceptable solution evidence, and no top-level reviewed/published claim while any exercise substatus is stale or failed;
 - exercise solution review is checked separately from statement/design review;
+- sets in scope reference existing same-unit exercise files, keep the exercise family in scope, have acceptable set `status`, and do not duplicate exercise statements, hints, or solutions;
 - standalone quizzes live under `quizzes/`;
 - quizzes in scope have acceptable item-quality, answer-key, feedback, remediation, and type-specific item contract evidence according to `content/_guides/quizzes/quiz-quality-rubric.md`;
 - quiz `answer_key_status`, `feedback_status`, and `remediation_status` fields are accurate and not treated as interchangeable;
@@ -170,7 +172,7 @@ Block or clearly report:
 
 - in-scope stale or `needs-review` artifacts;
 - in-scope missing review evidence;
-- final/reviewed/published artifacts with unresolved lesson, exercise, quiz, source, link, or status-contract problems;
+- final/reviewed/published artifacts with unresolved lesson, exercise, set, quiz, source, link, or status-contract problems;
 - artifact families whose absence is accidental because the unit plan, publish target, existing references, or workflow prerequisites require them.
 
 Do not block:
@@ -199,6 +201,7 @@ Use these targeted review routes for unresolved in-scope evidence:
 - lesson final verification: `content/_prompts/workflows/lessons/07-verify-finalize.md`;
 - exercise statement/design quality: `content/_prompts/workflows/exercises/05-review-exercise-quality.md`;
 - exercise solution review: `content/_prompts/workflows/exercises/06-review-solutions.md`;
+- exercise set status/freshness: `content/_prompts/workflows/exercises/07-create-sets.md`;
 - quiz item-quality review: `content/_prompts/workflows/quizzes/05-review-item-quality.md`;
 - quiz answer-key review: `content/_prompts/workflows/quizzes/06-review-answer-keys.md`;
 - quiz feedback/remediation review: `content/_prompts/workflows/quizzes/07-review-feedback-remediation.md`.

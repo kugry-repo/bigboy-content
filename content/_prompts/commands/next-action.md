@@ -147,6 +147,7 @@ Routing rules:
 - If lesson files changed materially, recommend targeted lesson review through `content/_prompts/workflows/lessons/07-verify-finalize.md`.
 - If exercise statements, design intent, hints, mistake blocks, or verification changed materially, recommend `content/_prompts/workflows/exercises/05-review-exercise-quality.md`.
 - If exercise solutions, final answers, theorem-condition checks, or solution pedagogy changed materially, recommend `content/_prompts/workflows/exercises/06-review-solutions.md`.
+- If exercise set membership, progression, prerequisites, labels, learner-facing notes, set-level skills, difficulty range, or source/exam-pattern claims changed materially, recommend `content/_prompts/workflows/exercises/07-create-sets.md`.
 - If quiz stems, item types, MCQ/MR options or distractors, match prompt structure, sequence ordering criterion, hotspot target wording, diagnostic signals, misconceptions, or item order changed materially, recommend `content/_prompts/workflows/quizzes/05-review-item-quality.md`.
 - If quiz correct answers, accepted fill-blank alternatives, match pairings, sequence correct order, hotspot correct region, partial correctness, or answer constraints changed materially, recommend `content/_prompts/workflows/quizzes/06-review-answer-keys.md`.
 - If quiz per-choice MCQ/MR feedback, non-choice wrong-response feedback, mastery criteria, remediation, or next-step routing changed materially, recommend `content/_prompts/workflows/quizzes/07-review-feedback-remediation.md`.
@@ -154,7 +155,7 @@ Routing rules:
 - If the user wants exercises only, route directly into the exercise workflow. Existing lessons are optional references unless the requested exercise depends on a specific lesson.
 - If the user wants quizzes only, route directly into the quiz workflow. Lessons and exercises are optional remediation links unless the quiz intent depends on them.
 - If the user wants lessons only, route into the lesson workflow for the selected or first useful mini-lesson.
-- If the user wants exercise sets only, check for existing exercise files or precise reviewed design cards, then recommend `content/_prompts/workflows/exercises/07-create-sets.md` when safe.
+- If the user wants exercise sets only, first check for existing eligible exercise files. Recommend `content/_prompts/workflows/exercises/07-create-sets.md` only when final set entries can reference real same-unit exercise files. If there are reviewed design cards but no exercise files, distinguish "plan future set coverage from cards" from "create/update final exercise set from existing exercises": route to exercise batch creation or unit planning for future set coverage, not final set creation.
 - If the user asks to move `planning_state: stub` to `planning_state: initialized`, recommend `content/_prompts/commands/initialize-unit.md`.
 - Do not recommend a lesson -> exercise -> quiz sequence unless the user's request actually asks for that production order.
 
@@ -224,7 +225,7 @@ Use the full exercise workflow when the author asks for a whole topic exercise u
 5. If ready design cards exist and requested files are missing, recommend `content/_prompts/workflows/exercises/04-create-batch.md`.
 6. If exercise files exist with draft or `needs-review` design or statement statuses and the user wants review evidence refreshed, recommend `content/_prompts/workflows/exercises/05-review-exercise-quality.md`.
 7. If exercise files exist with draft or `needs-review` solutions and the user wants solution review evidence refreshed, recommend `content/_prompts/workflows/exercises/06-review-solutions.md`.
-8. If the request is about learner paths or grouped practice, recommend `content/_prompts/workflows/exercises/07-create-sets.md`.
+8. If the request is about learner paths or grouped practice, inspect existing exercise files first. If eligible same-unit exercise files exist, recommend `content/_prompts/workflows/exercises/07-create-sets.md`. If only reviewed design cards exist, recommend exercise batch creation for the needed cards or a unit-planning pass to record future set coverage; do not route to final set creation from cards alone.
 
 ## Quiz diagnosis
 
