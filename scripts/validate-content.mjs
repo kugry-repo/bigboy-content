@@ -534,6 +534,11 @@ const LEGACY_GLOBAL_PATTERNS = [
   },
 ];
 
+const STATIC_PROGRAM_NEXT_STEP_PATTERNS = [
+  /La prochaine etape recommandee est de creer le premier plan d'unite de reference/i,
+  /next step.{0,80}(?:create|creer).{0,80}first.{0,80}unit plan/i,
+];
+
 const REQUIRED_LESSON_WORKFLOW_PROMPTS = [
   "content/_prompts/workflows/lessons/01-prepare-source.md",
   "content/_prompts/workflows/lessons/02-generate-raw-dump.md",
@@ -569,6 +574,11 @@ const REQUIRED_CONTENT_STUDIO_COMMAND =
 
 const SHARED_PROMPT_CONTRACT_PATH =
   "content/_prompts/_shared/prompt-contract.md";
+
+const REMOVED_SHARED_PROMPT_FILES = [
+  "content/_prompts/_shared/output-rules.md",
+  "content/_prompts/_shared/validation-rules.md",
+];
 
 const SET_CURRENT_UNIT_COMMAND =
   "content/_prompts/commands/set-current-unit.md";
@@ -1163,6 +1173,39 @@ function isGuidePromptOrReference(filePath) {
   return /^content\/_(guides|prompts|references)\//.test(rel(filePath));
 }
 
+function isProductionProgramFile(filePath) {
+  return rel(filePath).startsWith("content/programs/");
+}
+
+function allowsFrontmatterPlaceholderDates(filePath) {
+  const relative = rel(filePath);
+  return (
+    relative.startsWith("content/_templates/") ||
+    relative.startsWith("content/_fixtures/")
+  );
+}
+
+function checkFrontmatterPlaceholderDates(filePath, parsed) {
+  if (!parsed.hasFrontmatter) return;
+
+  for (const field of ["created", "updated"]) {
+    if (String(parsed.data?.[field] ?? "") !== "YYYY-MM-DD") continue;
+    if (allowsFrontmatterPlaceholderDates(filePath)) continue;
+
+    if (isProductionProgramFile(filePath)) {
+      addError(
+        filePath,
+        `frontmatter "${field}" must use a real ISO date; YYYY-MM-DD is allowed only in templates and non-production fixtures`,
+      );
+    } else {
+      addWarning(
+        filePath,
+        `frontmatter "${field}" uses placeholder YYYY-MM-DD outside a template or fixture`,
+      );
+    }
+  }
+}
+
 function isTemplatePlaceholderId(filePath, id) {
   return (
     rel(filePath).startsWith("content/_templates/") &&
@@ -1527,6 +1570,16 @@ function checkProgramIndex(programDir) {
   const parsed = parseFrontmatter(indexPath, text);
   if (!requireFrontmatter(indexPath, parsed, "program _index.md")) {
     return null;
+  }
+
+  for (const pattern of STATIC_PROGRAM_NEXT_STEP_PATTERNS) {
+    if (pattern.test(text)) {
+      addError(
+        indexPath,
+        `program index contains static next-step routing; use ${NEXT_ACTION_COMMAND} for state-aware next actions`,
+      );
+      break;
+    }
   }
 
   const { data } = parsed;
@@ -4285,6 +4338,30 @@ function checkPromptLayout() {
   }
 }
 
+function checkRemovedSharedPromptFiles() {
+  for (const repoPath of REMOVED_SHARED_PROMPT_FILES) {
+    const filePath = fullPathFromRepoPath(repoPath);
+    if (isFile(filePath)) {
+      addError(
+        filePath,
+        `removed shared prompt fragment must not exist; shared output and validation rules belong in ${SHARED_PROMPT_CONTRACT_PATH}`,
+      );
+    }
+  }
+
+  for (const filePath of walkMarkdownFiles(CONTENT_DIR)) {
+    const text = fs.readFileSync(filePath, "utf8");
+    for (const repoPath of REMOVED_SHARED_PROMPT_FILES) {
+      if (text.includes(repoPath)) {
+        addError(
+          filePath,
+          `references removed shared prompt fragment "${repoPath}"; use ${SHARED_PROMPT_CONTRACT_PATH}`,
+        );
+      }
+    }
+  }
+}
+
 function checkRemovedGuideText() {
   for (const filePath of walkMarkdownFiles(path.join(CONTENT_DIR, "_guides"))) {
     const text = fs.readFileSync(filePath, "utf8");
@@ -4396,13 +4473,7 @@ function collectIdsAndWarnings() {
       }
     }
 
-    if (/^created:\s*YYYY-MM-DD\s*$/m.test(text)) {
-      addWarning(filePath, 'uses placeholder "created: YYYY-MM-DD"');
-    }
-
-    if (/^updated:\s*YYYY-MM-DD\s*$/m.test(text)) {
-      addWarning(filePath, 'uses placeholder "updated: YYYY-MM-DD"');
-    }
+    checkFrontmatterPlaceholderDates(filePath, parsed);
 
     if (!parsed.hasFrontmatter) {
       if (isGuidePromptOrReference(filePath)) {
@@ -4554,6 +4625,7 @@ function main() {
   checkUnitUniqueness();
   checkCatalogs();
   checkPromptLayout();
+  checkRemovedSharedPromptFiles();
   checkCurrentUnitPromptContracts();
   checkLessonPromptFamily();
   checkExercisePromptFamily();

@@ -15,8 +15,8 @@ status: active
 version: 0.1.0
 source_type: official-reference
 source_ref: "_references/official-sources.md"
-created: YYYY-MM-DD
-updated: YYYY-MM-DD
+created: 2026-06-20
+updated: 2026-06-20
 ---
 
 # Mathematiques 2BAC PC/SVT
@@ -85,6 +85,4 @@ Le champ `domain` reste une metadonnee pedagogique dans le frontmatter.
 
 Ce programme est actif et en phase de structuration.
 
-La prochaine etape recommandee est de creer le premier plan d'unite de reference :
-
-- `01-limites-continuite/_index.md`
+Les tableaux ci-dessus servent de navigation et de catalogue derive. Pour choisir une action selon l'etat reel d'une unite, utiliser `content/_prompts/commands/next-action.md`.

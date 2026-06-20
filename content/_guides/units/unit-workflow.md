@@ -68,15 +68,34 @@ Do not create or use a second planning-note convention. Do not preemptively expa
 
 Skill coverage is content-derived. Track it locally through the unit skill map, artifact frontmatter `skills`, exercise design cards, quiz intent/item design cards, and review notes. A generated coverage report may be added later, but no manually maintained global file is a source of truth.
 
+## Sparse and declared-scope model
+
+Units are allowed to be intentionally sparse.
+
+Lessons, exercises, standalone quizzes, and exercise sets are independent artifact workstreams. A unit may be lesson-only, exercise-only, quiz-only, set-only, or otherwise partial by design when the unit plan, content scope, or user request declares that shape.
+
+There is no required lesson -> exercise -> quiz order. Review, cleanup, and finalize prompts operate on what exists and what the unit plan claims, not on a universal artifact-family checklist.
+
+A missing artifact family is a blocker only when one of these local contracts requires it:
+
+- the unit plan or production dashboard explicitly promised that artifact family for the current scope;
+- the publish target requires that artifact family;
+- an existing artifact links to or depends on the missing artifact family;
+- a workflow prerequisite says the artifact is locally required for the requested operation.
+
+Otherwise, absence is reported as `not present`, `not in scope`, or `intentionally absent`, not as a defect.
+
 ## Unit index lifecycle
 
 Use `planning_state` in unit-index frontmatter:
 
 - `stub`: the unit is registered but not initialized. The body stays tiny and has no planning dashboard.
-- `initialized`: the full planning dashboard exists and can be developed.
-- `published`: reserved/manual state for a unit whose dashboard exists and whose authored content has passed explicit human publication review.
+- `initialized`: the full planning dashboard exists and can be developed. It does not mean the unit is complete.
+- `published`: reserved/manual state for a unit whose dashboard exists and whose declared scope has passed explicit human publication review.
 
 `status` remains content maturity. `planning_state` is the shape and lifecycle of the unit index itself.
+
+A stub is not a failed unit. It is a registered unit awaiting initialization.
 
 Stub body:
 
@@ -93,6 +112,22 @@ Use `content/_prompts/commands/initialize-unit.md` to expand one stub into the c
 Content creation workflows must not create lessons, exercises, quizzes, sets, or full planning sections inside a stub. They must stop and ask for unit initialization first, or initialize the target only when the user explicitly asked for initialization.
 
 No current workflow prompt owns an automatic transition from `planning_state: initialized` to `planning_state: published`. Treat `published` as reserved for an explicit human publication decision after review and cleanup. `content/_prompts/workflows/unit/03-finalize-unit.md` can prepare and report publish readiness, but it must not automatically set `planning_state: published`.
+
+Sparse units can be publish-ready for their declared scope. Publication readiness does not require all artifact families unless the declared scope requires all artifact families.
+
+## Review, cleanup, and readiness vocabulary
+
+Use these readiness labels in unit review and finalize outputs:
+
+- `Ready for declared scope`: no blocking structural issues and no declared-scope gaps remain for the current publish target.
+- `Not ready: structural blockers`: frontmatter, folders, links, IDs, dashboard shape, validator errors, source-safety, or Markdown structure block readiness.
+- `Not ready: declared-scope gaps`: the unit plan, dashboard, publish target, existing references, or local workflow prerequisites require work that is missing or incomplete.
+- `Partial/sparse by design`: the unit intentionally contains only selected artifact workstreams, and absent artifact families are outside the current scope.
+- `Needs human publication decision`: review or cleanup found readiness evidence, but `planning_state: published` still requires an explicit human instruction.
+
+Use `blocker` only for an issue that prevents the requested operation or the declared publish target. Use `recommendation`, `polish`, or `future work` for improvements that would make the unit stronger but are not required by a local contract.
+
+Unit review diagnoses. Cleanup fixes small structural, metadata, link, status, todo, and source-safety issues when the prompt allows edits. Finalize performs cleanup plus a publish-readiness assessment for the declared scope. None of these prompts decides the whole project roadmap; state-aware routing belongs to `content/_prompts/commands/next-action.md`.
 
 ## Canonical artifact folders
 
@@ -220,7 +255,7 @@ Quiz file creation requires a quiz intent card and ready item design cards. Quiz
 
 Exercise set creation requires existing exercise files or precise exercise design cards. Sets should link to exercise files instead of duplicating full exercise content.
 
-Unit review and cleanup operate on whatever exists. They should report missing artifacts as gaps, not treat them as reasons to stop.
+Unit review and cleanup operate on whatever exists. They should report absent artifact families as `not present`, `not in scope`, or `intentionally absent` unless a local contract makes the absence a blocker.
 
 ## Design-card rule
 
@@ -297,7 +332,7 @@ Quizzes can exist independently. They can be prerequisite, skill, method-choice,
 
 ### Unit review
 
-Use `content/_prompts/workflows/unit/02-review-unit.md` to review the full unit sequence across:
+Use `content/_prompts/workflows/unit/02-review-unit.md` to review the unit plan and existing artifacts across:
 
 ```text
 _index.md
@@ -307,19 +342,19 @@ quizzes/
 sets/
 ```
 
-Check progression, metadata, links, statuses, skill coverage, quiz alignment, solution quality, notation, source safety, and unresolved TODOs.
+Check structural contracts, declared-scope consistency, broken references, metadata, links, statuses, skill coverage, notation, source safety, unresolved TODOs, and readiness observations for existing workstreams.
 
-For skill coverage, synthesize from the unit `_index.md`, lesson files, exercise files, quiz files, declared `skills`, design cards, and visible progression gaps. Report skills taught but not practiced, practiced but not taught, quizzed without enough exercise preparation, over-covered or under-covered, and missing prerequisites. Do not update any manual global coverage file.
+For skill coverage, synthesize from the unit `_index.md`, lesson files, exercise files, quiz files, declared `skills`, design cards, and visible progression gaps. Compare streams only when multiple streams exist or when the unit plan explicitly says they should align. Report skills taught, practiced, quizzed, over-covered, under-covered, or missing prerequisites in terms of declared scope. Do not update any manual global coverage file.
 
-This is a unit-wide consistency review. It may make small targeted consistency fixes to dashboard rows, links, statuses, and obvious metadata problems. It is not the conversational studio for selected text, not a broad migration command, and not the publication transition.
+This is a unit-wide consistency review. It may make small targeted consistency fixes to dashboard rows, links, statuses, and obvious metadata problems. It must not create missing artifact families unless their absence violates an explicit local contract. It is not the conversational studio for selected text, not a broad migration command, not deep pedagogical review, and not the publication transition.
 
 ### Metadata and link cleanup
 
 Use `content/_prompts/workflows/unit/03-finalize-unit.md` for targeted cleanup of metadata, links, status fields, TODOs, author notes, quiz answer-key states, feedback states, Markdown cleanliness, and source-safety notes.
 
-This prompt is publish-readiness cleanup, not automatic publication. It should report remaining gaps and blockers instead of forcing unrelated workstreams to be completed first. It must not automatically set unit `planning_state: published`; that state is reserved for an explicit human publication decision.
+This prompt is a cleanup pass, consistency pass, publish-readiness assessment, and blocker report for the declared scope. It should report intentionally absent workstreams separately from blockers, and it should not force unrelated workstreams to be completed first.
 
-Do not mark files `published` unless explicitly requested and the relevant review evidence already supports it.
+It must not automatically set unit `planning_state: published`; that state is reserved for an explicit human publication decision. It must not mark files `published` unless explicitly requested and the relevant review evidence already supports it.
 
 ### Targeted revision
 
@@ -349,4 +384,4 @@ Every initialized or published unit `_index.md` also contains:
 | YYYY-MM-DD | Unit initialized | Stub expanded into the current planning dashboard. |
 ```
 
-Use the journal for historical authoring notes, not as a current-state tracker.
+Use the journal for historical authoring notes, not as a current-state tracker. Keep `YYYY-MM-DD` only in templates and examples of the scaffold; real unit journal entries use real ISO dates.

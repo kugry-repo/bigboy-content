@@ -141,14 +141,16 @@ updated: YYYY-MM-DD
 Unit indexes have a lifecycle controlled by `planning_state`:
 
 - `stub`: the unit is registered but not initialized. The body is a lightweight stub with no H2 planning dashboard.
-- `initialized`: the full planning dashboard exists and can be developed.
-- `published`: reserved/manual state for a unit whose full dashboard exists and whose authored content has passed explicit human publication review.
+- `initialized`: the full planning dashboard exists and can be developed. It does not mean the unit is complete.
+- `published`: reserved/manual state for a unit whose full dashboard exists and whose declared scope has passed explicit human publication review.
+
+A stub is not a failed unit. Sparse units can be publish-ready for their declared scope.
 
 The initialized body and production dashboard scaffold are authored in `content/_templates/unit-index.template.md`. Do not maintain a separate full body copy in schema docs.
 
 `content/_prompts/commands/initialize-unit.md` owns the transition from `stub` to `initialized`.
 
-No current workflow prompt automatically owns the transition from `initialized` to `published`. Use `published` only after an explicit human publication decision. `content/_prompts/workflows/unit/03-finalize-unit.md` may prepare and report publication readiness, but it must not automatically set `planning_state: published`.
+No current workflow prompt automatically owns the transition from `initialized` to `published`. Use `published` only after an explicit human publication decision. `content/_prompts/workflows/unit/03-finalize-unit.md` may prepare and report publication readiness for declared scope, but it must not automatically set `planning_state: published`.
 
 Official curriculum units:
 
@@ -524,4 +526,4 @@ Use ISO format:
 YYYY-MM-DD
 ```
 
-When creating a template, keep the placeholder. When creating a real file, use the current date if known.
+Keep `YYYY-MM-DD` only in templates and non-production fixtures. When creating or updating a real file under `content/programs/`, use a real ISO date. Production stubs use real dates even when their bodies stay lightweight.

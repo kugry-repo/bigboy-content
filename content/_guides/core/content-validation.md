@@ -41,6 +41,8 @@ The validator checks:
 - unit-index `planning_state` values: `stub`, `initialized`, and `published`;
 - stub unit indexes as lightweight registered units without dashboards;
 - `planning_state: published` as a structurally valid but manual/reserved lifecycle state, with warnings when it is not paired with `status: published`;
+- placeholder dates as allowed only in templates and non-production fixtures, not production program files;
+- program indexes as durable navigation pages without static "next step" routing text;
 - permitted unit kinds and content scopes;
 - folder/frontmatter consistency;
 - numeric prefixes for official unit folders as errors;
@@ -139,9 +141,12 @@ strictly. Invalid fixtures must never be added to a production program tree.
 ## Template And Example Boundaries
 
 Templates may keep documented placeholders such as `YYYY-MM-DD`, todo markers,
-and `{{unit_code}}`. Production files may still report placeholder dates or
-todo markers as warnings while the system is in buildout, and published files
-turn unresolved todo markers into errors.
+and `{{unit_code}}`. Non-production fixtures may keep placeholders when they are
+part of the fixture contract. Production files under `content/programs/` must
+use real ISO dates in frontmatter, including stubs.
+
+Production TODO markers are warnings while content is planned, draft, or under
+review. Published files turn unresolved TODO markers into errors.
 
 Golden examples are reference material, not competing schemas. When an example
 contains a YAML block for `lesson`, `exercise`, `quiz`, or `exercise-set`, the

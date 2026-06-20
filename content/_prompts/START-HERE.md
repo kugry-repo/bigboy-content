@@ -1,8 +1,10 @@
 # Start Here
 
-Use this file when you are unsure which prompt to run.
+Use this file when you are unsure which prompt family exists.
 
-For an existing current or target unit, most "what should I do next?" requests should run the state-aware router:
+This file orients the operator. It does not inspect repository state and does not decide the next operation for a unit.
+
+For an existing current or target unit, "what should I do next?" requests should run the state-aware router:
 
 `content/_prompts/commands/next-action.md`
 
@@ -27,7 +29,7 @@ Use workflow prompts when you already know what you are producing:
 - `content/_prompts/workflows/exercises/` - exercise seeds, design cards, balance, batch creation, quality review, solution review, and sets.
 - `content/_prompts/workflows/quizzes/` - quiz intent, raw item pools, item design cards, quiz file creation, item-quality review, answer-key review, and feedback/remediation review.
 
-Use unit workflow prompts by intent. They are not a global ladder, and they do not force lesson -> exercise -> quiz order.
+Use unit workflow prompts by intent. They are not a global ladder, and they do not force lesson -> exercise -> quiz order. A unit may be intentionally sparse, so route by declared scope and the user's requested workstream.
 
 Use shortcuts only for special cases:
 

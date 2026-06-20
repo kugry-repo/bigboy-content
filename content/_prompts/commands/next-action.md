@@ -4,6 +4,8 @@ Use this command when you are unsure where a content unit stands, whether existi
 
 This command is read-only. It diagnoses the current unit state, identifies the requested artifact/workstream when the user gave one, and names the smallest valuable next action.
 
+This command owns state-aware "what should I do next?" routing. `content/_prompts/START-HERE.md` orients the operator to the prompt library; unit review and finalize prompts assess one unit and should not decide the whole project roadmap.
+
 ## Target
 
 Input:
@@ -100,6 +102,8 @@ If the user request is open-ended, choose based on:
 - the most useful small action for the likely current goal.
 
 Do not force unrelated workstreams to run first.
+
+Sparse units are valid. Report absent artifact families as `not present`, `not in scope`, or `intentionally absent` unless the unit plan, dashboard, requested publish target, existing artifact references, or local workflow prerequisites make the absence a blocker.
 
 Routing rules:
 
@@ -206,6 +210,10 @@ If the unit is a stub, say that no dashboard exists yet and summarize artifact f
 ## Ready or complete work
 
 List dashboard rows or artifacts that appear ready or complete because their expected planning areas or files exist.
+
+## Absent by design
+
+List artifact families that are not present but appear outside the requested or declared scope. If none are clearly absent by design, say so.
 
 ## Partial or blocked work
 

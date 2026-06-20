@@ -258,7 +258,7 @@ For official units:
    - `quizzes/.gitkeep`;
    - `sets/.gitkeep`.
 8. Copy program metadata and curriculum-map identity fields into the unit `_index.md`.
-9. Use current ISO dates for new real files. Keep `YYYY-MM-DD` only inside reusable templates or when deliberately matching an existing placeholder-only scaffold in the same program.
+9. Use current ISO dates for new real files. Keep `YYYY-MM-DD` only inside reusable templates or non-production fixtures.
 10. Regenerate the official-unit table in `content/programs/<TARGET_PROGRAM>/_index.md` from the curriculum map.
 11. Update only examples that explicitly list affected unit codes or folders.
 12. Run validation.

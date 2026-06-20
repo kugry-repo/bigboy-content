@@ -23,8 +23,8 @@ sync_reason: null
 version: 0.1.0
 source_type: original
 source_ref: null
-created: YYYY-MM-DD
-updated: YYYY-MM-DD
+created: 2026-06-20
+updated: 2026-06-20
 ---
 
 # Limites et continuité

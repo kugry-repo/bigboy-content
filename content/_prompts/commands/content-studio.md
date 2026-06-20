@@ -2,7 +2,7 @@
 
 Use this command for conversational polishing, critique, diagnosis, proposals, and targeted patches across content artifacts.
 
-This is not a pipeline step. It is an authoring studio for back-and-forth work while drafting or revising.
+This is not a pipeline step. It is an authoring studio for back-and-forth work while drafting or revising. It does not replace unit-wide review, publish-readiness cleanup, or state-aware next-action routing.
 
 Use this command when the user wants selected-fragment work, taste/voice discussion, diagnosis, proposals, grilling, or a small local patch. If the user already knows a bounded change that may affect multiple files, stale downstream artifacts, prompts, guides, templates, schemas, or validators, use `content/_prompts/commands/change-existing-content.md` instead.
 

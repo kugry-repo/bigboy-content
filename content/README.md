@@ -61,6 +61,10 @@ The unit `_index.md` is the only unit-planning artifact. Unstarted units stay li
 
 Use `content/_templates/unit-index.template.md` as the canonical initialized scaffold. Use `content/_prompts/commands/initialize-unit.md` to expand one stub before planning lessons, exercises, quizzes, sets, or dashboard work. Do not expand every unit index just because the dashboard shape changes.
 
+Artifact workstreams are independent. A unit may be intentionally sparse, and missing lessons, exercises, quizzes, or sets are blockers only when the declared scope, publish target, existing references, or local workflow prerequisites require them.
+
+`planning_state: published` is set only by explicit human instruction after review and cleanup. Review/finalize prompts can report readiness for declared scope, but they do not publish automatically.
+
 Use `content/_fixtures/initialized-unit/_index.md` only as a checked-in structural reference for the initialized scaffold. It is not educational content.
 
 After initialization, lesson preparation, exercise clusters, raw exercise seeds, exercise design cards, quiz intent cards, raw item pools, quiz item design cards, set planning, production dashboard state, and production journal entries all live in the unit `_index.md`.
@@ -79,6 +83,8 @@ Start with:
 - `content/_prompts/commands/content-studio.md` for conversational polishing, critique, diagnosis, proposals, and targeted patches.
 - `content/_guides/programs/program-lifecycle.md` for program lifecycle operations.
 - `content/_guides/units/unit-workflow.md` for the canonical dashboard model and workstream meanings.
+
+`START-HERE.md` orients prompt choice. `next-action.md` owns state-aware "what next?" routing.
 
 Create final files only through the appropriate workflow prompts and in small batches. Do not create whole units, full exercise libraries, quiz libraries, or app/frontend work unless explicitly requested.
 

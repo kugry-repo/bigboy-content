@@ -1,8 +1,10 @@
-# Prompt - Publish-Readiness Cleanup
+# Prompt - Unit Cleanup And Publish-Readiness Assessment
 
-Use this prompt for metadata, link, status, todo, and publish-readiness cleanup on existing unit artifacts.
+Use this prompt for metadata, link, status, todo, source-safety, and publish-readiness cleanup on existing unit artifacts.
 
-This prompt is not an automatic publication prompt. It prepares and reports readiness. It must not set unit `planning_state: published`; that state is reserved for an explicit human publication decision outside the normal workflow.
+This prompt is not an automatic publication prompt. It performs a cleanup pass, consistency pass, publish-readiness assessment, and blocker report. It must not set unit `planning_state: published`; that state is reserved for an explicit human publication decision outside the normal workflow.
+
+Finalize is non-waterfall. It assesses the unit's declared scope and existing artifacts. It does not require every artifact family to exist unless the unit plan, publish target, existing references, or local workflow prerequisites require them.
 
 ## Target
 
@@ -54,11 +56,11 @@ If `TARGET_UNIT_INDEX` has `planning_state: stub`, stop before changing unit pla
 
 ## Task
 
-Perform publish-ready cleanup for `TARGET_UNIT_PATH`.
+Perform cleanup and publish-readiness assessment for `TARGET_UNIT_PATH`.
 
 This is cleanup work only.
 
-First, read `TARGET_UNIT_INDEX`, inspect `## Production dashboard`, and identify which existing artifacts can be cleaned safely. If major work is missing, report it as a gap or blocker instead of forcing unrelated workstreams to run first.
+First, read `TARGET_UNIT_INDEX`, inspect `## Production dashboard`, determine the unit's declared scope, and identify which existing artifacts can be cleaned safely. If major work is missing, report it as a declared-scope gap only when a local contract requires it. Otherwise report the absent artifact family as `not present`, `not in scope`, or `intentionally absent`.
 
 Do not:
 
@@ -73,6 +75,29 @@ Do not:
 - set unit `planning_state: published`;
 - set unit `status: published`;
 - build frontend or app code.
+
+Use the readiness vocabulary from `content/_guides/units/unit-workflow.md`:
+
+- `Ready for declared scope`
+- `Not ready: structural blockers`
+- `Not ready: declared-scope gaps`
+- `Partial/sparse by design`
+- `Needs human publication decision`
+
+Classify findings as:
+
+- blocking structural issues;
+- blocking declared-scope issues;
+- non-blocking polish issues;
+- intentionally absent workstreams;
+- deferred future work.
+
+A missing artifact family is a blocker only when:
+
+- the unit plan or dashboard explicitly promised it for the current scope;
+- the publish target requires it;
+- an existing artifact references it;
+- a workflow prerequisite says it is locally required.
 
 Check:
 
@@ -91,6 +116,15 @@ Check:
 - quiz `answer_key_status` and `feedback_status` fields are accurate;
 - files remain ready for future app parsing.
 
+Assess publish-readiness for the declared scope:
+
+- structural contracts are satisfied;
+- declared-scope artifacts exist or are explicitly deferred;
+- existing references resolve or are marked as unresolved blockers;
+- unresolved TODOs, author notes, and verification needs are either cleared or explicitly classified;
+- source-safety risks are marked and not hidden;
+- sparse or intentionally absent workstreams are not treated as defects.
+
 Make only targeted cleanup edits.
 
 Allowed cleanup changes:
@@ -102,14 +136,17 @@ Allowed cleanup changes:
 - production journal notes for cleanup performed;
 - source-safety notes and unresolved-blocker notes.
 
-If the user explicitly asks whether the unit can be published, report readiness, blockers, and the evidence checked. Do not change `planning_state` to `published`.
+Always report readiness, blockers, and the evidence checked. Do not change `planning_state` to `published`. If the result is `Ready for declared scope`, also report `Needs human publication decision` unless the user separately gave explicit publication instructions.
 
 Finish with:
 
 - files cleaned;
 - status changes made;
 - whether unit publication readiness was assessed;
+- readiness label using the vocabulary above;
+- sparse-unit handling: artifact families present, absent by design, or absent because of a blocker;
 - remaining TODOs or author notes;
 - source-safety items still needing human review;
-- blockers before any manual `planning_state: published` decision;
+- blockers before any manual `planning_state: published` decision, split into structural blockers and declared-scope gaps;
+- deferred future work that is not blocking the declared scope;
 - final cleanup summary.

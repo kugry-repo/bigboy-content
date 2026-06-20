@@ -63,6 +63,8 @@ Program-specific files own:
 
 Program `_index.md` catalog tables are derived navigation summaries. Do not edit them as independent official curriculum authority.
 
+Program `_index.md` files are not state-aware routers. Keep them durable: program context, navigation, derived catalogs, and stable status notes belong there. Current-state "what next?" decisions belong to `content/_prompts/commands/next-action.md`.
+
 Official unit mutation rules live in
 `content/_prompts/commands/manage-unit.md`. For official units, order is
 contiguous from `1`, curriculum-map row order matches `unit_order`, and
@@ -142,6 +144,8 @@ Official unit creation registers stubs. A stub unit stays lightweight until init
 Use `content/_prompts/commands/initialize-unit.md` for one target unit when the user wants a full planning dashboard. The command must infer or require `TARGET_PROGRAM`, then resolve `TARGET_UNIT` inside that program.
 
 Unofficial topics live under `content/programs/<program_id>/topics/` and follow the same unit lifecycle.
+
+`planning_state: initialized` means the unit dashboard exists; it does not mean all artifact workstreams are complete. `planning_state: published` is set only by explicit human instruction after review and cleanup. Sparse units may be publish-ready for their declared scope.
 
 ## Local Current-Unit Cache
 

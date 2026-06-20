@@ -18,6 +18,8 @@ Every lesson, exercise, standalone quiz, set, and solution should be:
 - easy to improve;
 - safe to render later in an app.
 
+Artifact workstreams are independent. A unit may be lesson-only, exercise-only, quiz-only, set-only, or otherwise partial by design when the unit plan declares that scope.
+
 ## Content units
 
 The repository uses one content-unit system.
@@ -40,7 +42,9 @@ The unit `_index.md` is the only unit-planning artifact.
 
 Unstarted units should remain lightweight stubs with `planning_state: stub`. Use `content/_prompts/commands/initialize-unit.md` to expand one unit into an initialized dashboard before planning lessons, exercises, quizzes, or sets.
 
-`planning_state: published` is reserved for an explicit human publication decision after review and cleanup. Current workflow prompts can prepare readiness, but they do not automatically publish a unit.
+`planning_state: initialized` means the dashboard exists; it does not mean the unit is complete. `planning_state: stub` is not a failure state. `planning_state: published` is reserved for an explicit human publication decision after review and cleanup. Current workflow prompts can prepare readiness, but they do not automatically publish a unit.
+
+Sparse units can be ready for their declared scope. Missing artifact families are blockers only when the unit plan, publish target, existing references, or local workflow prerequisites require them.
 
 After initialization, use it for:
 
@@ -141,9 +145,9 @@ content/_prompts/commands/content-studio.md
 
 The studio command is not a generation pipeline. It should infer the target from selected text, active file, path, and frontmatter when possible.
 
-For unit-wide consistency review, use `content/_prompts/workflows/unit/02-review-unit.md`.
+For unit-wide consistency review, use `content/_prompts/workflows/unit/02-review-unit.md`. It reviews what exists and what the unit plan claims.
 
-For metadata, link, todo, status, and source-safety cleanup before publication consideration, use `content/_prompts/workflows/unit/03-finalize-unit.md`. This cleanup prompt does not automatically set `planning_state: published`.
+For metadata, link, todo, status, source-safety cleanup, and publish-readiness assessment, use `content/_prompts/workflows/unit/03-finalize-unit.md`. This cleanup prompt reports blockers and readiness for declared scope; it does not automatically set `planning_state: published`.
 
 ## Good Codex task size
 

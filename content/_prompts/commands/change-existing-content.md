@@ -4,6 +4,8 @@ Use this command when the user wants to modify existing content, sync stale file
 
 This command is parallel to the creation workflows. Use the relevant artifact workflow prompts for first creation. Use this command when existing files may need targeted updates or structural migration.
 
+This command handles bounded edits and migrations. It does not replace unit review, publish-readiness cleanup, or state-aware next-action routing.
+
 Use this command when the desired change is already known, even if the user does not know every affected file. For conversational critique, diagnosis, taste/voice exploration, grilling, proposals, or a small selected-fragment patch, use `content/_prompts/commands/content-studio.md`. For unit-wide consistency review, use `content/_prompts/workflows/unit/02-review-unit.md`. For publish-readiness cleanup, use `content/_prompts/workflows/unit/03-finalize-unit.md`.
 
 The user may write naturally, for example:
@@ -172,6 +174,7 @@ For structural changes, every affected existing source file must move to the new
 - Do not assume the user knows affected files.
 - Do not ask the user to list affected files.
 - Do not restart unrelated workstreams just because an earlier artifact changed.
+- Do not create missing artifact families unless the requested migration explicitly requires them.
 - Do not rewrite unrelated student-facing content.
 - Do not silently re-add raw-dump material that was marked delete, too much, future exercise, or useful but not student-facing.
 - Do not mark content as `published` unless explicitly requested.

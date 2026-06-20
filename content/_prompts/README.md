@@ -12,7 +12,7 @@ Start with:
 - `content/_prompts/commands/` contains prompts the user runs directly to decide, manage, or revise work.
 - `content/_prompts/workflows/` contains step-by-step workflow prompts grouped by content type.
 - `content/_prompts/shortcuts/` contains optional direct prompts for special cases.
-- `content/_prompts/_shared/` contains reusable prompt contracts, output rules, and validation rules.
+- `content/_prompts/_shared/` contains the shared prompt contract inherited by operating prompts.
 
 Numbered prompt files are only meaningful inside their own workflow folder. There is no global flat prompt numbering anymore.
 
@@ -75,9 +75,7 @@ Quiz workflow:
 
 ## Shared Contract
 
-- `content/_prompts/_shared/prompt-contract.md` defines shared prompt behavior, target resolution, `_workflow/current-unit.md` schema, current-unit behavior, prompt path style, read/write boundaries, and global prompt discipline.
-- `content/_prompts/_shared/output-rules.md` defines final-response and reporting conventions.
-- `content/_prompts/_shared/validation-rules.md` defines checks to run or report after prompt-driven edits.
+- `content/_prompts/_shared/prompt-contract.md` defines shared prompt behavior, target resolution, `_workflow/current-unit.md` schema, current-unit behavior, prompt path style, read/write boundaries, output/reporting rules, validation expectations, and global prompt discipline.
 
 Operating prompts should inherit `content/_prompts/_shared/prompt-contract.md`. If a prompt needs target details, write a short `## Target Resolution` section that starts with:
 

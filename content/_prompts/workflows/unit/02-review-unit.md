@@ -1,8 +1,10 @@
-# Prompt - Full Unit Review
+# Prompt - Unit Consistency Review
 
-Use this prompt when a unit has enough planned or created material to review as a learning sequence.
+Use this prompt to review a unit's declared plan and existing artifacts.
 
-This prompt owns unit-wide consistency review and small targeted unit-level fixes. It is not the conversational studio for selected text, not a broad migration command, and not publish-readiness cleanup.
+This prompt owns unit-wide consistency diagnosis and small targeted unit-level fixes. It is not the conversational studio for selected text, not a broad migration command, not deep pedagogical review, and not publish-readiness cleanup.
+
+Review is non-waterfall. Lessons, exercises, quizzes, and sets are independent workstreams. A unit may be intentionally sparse.
 
 ## Target
 
@@ -59,7 +61,7 @@ If `TARGET_UNIT_INDEX` has `planning_state: stub`, stop before changing unit pla
 
 ## Task
 
-Review the full unit as a learning sequence.
+Review the unit plan, declared scope, and existing artifacts.
 
 This is unit-review work only.
 
@@ -72,26 +74,52 @@ Do not:
 - mass rewrite the unit;
 - mark files as `published` unless explicitly requested;
 - set unit `planning_state: published`;
+- tell the operator to create missing lessons, exercises, quizzes, or sets unless their absence violates an explicit local contract;
 - build frontend or app code.
+
+Use the readiness vocabulary from `content/_guides/units/unit-workflow.md`:
+
+- `Ready for declared scope`
+- `Not ready: structural blockers`
+- `Not ready: declared-scope gaps`
+- `Partial/sparse by design`
+- `Needs human publication decision`
+
+Distinguish:
+
+- structural contract errors;
+- broken references;
+- inconsistencies with the declared unit plan, dashboard, or existing artifact links;
+- quality/readiness observations about existing artifacts;
+- optional future improvements.
+
+A missing artifact family is a blocker only when:
+
+- the unit plan or dashboard explicitly promised it for the current scope;
+- the publish target requires it;
+- an existing artifact references it;
+- a workflow prerequisite says it is locally required.
+
+Otherwise report the family as `not present`, `not in scope`, or `intentionally absent`, not as a defect.
 
 Check:
 
 - unit plan matches created files;
 - mini-lesson architecture is respected: no root-level `lesson.md`, and mini-lessons live under `lessons/`;
-- mini-lessons have good progression;
-- mini-lessons follow the editorial pipeline and do not feel like rigid templates;
-- lessons have clear purpose, coherence, precision, useful checks or practice direction when appropriate, and no unnecessary ceremony;
+- existing mini-lessons have coherent local progression and do not break declared plan expectations;
+- existing mini-lessons follow the editorial pipeline at a high level and do not feel like rigid templates;
+- existing lessons have clear purpose, coherence, precision, useful checks or practice direction when appropriate, and no unnecessary ceremony;
 - frontmatter fields and IDs are consistent;
-- all major skills are covered or clearly planned;
-- exercises match mini-lessons;
-- standalone quizzes match mini-lessons, exercises, quiz intent cards, and item design cards;
-- difficulty progression is reasonable;
-- solutions are clear and correct;
-- quiz item quality, answer keys, feedback, and remediation are clear, correct, useful, and misconception-based;
+- declared skills are covered, practiced, quizzed, deferred, or absent in a way that matches the declared scope;
+- exercises align with lessons only when both streams exist or the unit plan says they should align;
+- standalone quizzes align with lessons, exercises, quiz intent cards, or item design cards only when those streams/cards exist or the unit plan says they should align;
+- difficulty progression is reasonable inside each existing stream and across streams that explicitly interact;
+- existing solutions are clear and correct at a review-signal level;
+- existing quiz item quality, answer keys, feedback, and remediation are clear, correct, useful, and misconception-based at a review-signal level;
 - notation is consistent;
-- diagrams/interactions are planned where useful;
+- diagrams/interactions are planned where declared useful;
 - internal links and status fields look consistent;
-- exam patterns are present without exaggeration;
+- exam patterns that exist avoid exaggeration;
 - source safety: no unsupported official claims, no exaggerated exam claims, and no accidental copied third-party content.
 
 Synthesize skill coverage from the actual unit files, not from any global manual file:
@@ -106,22 +134,25 @@ Synthesize skill coverage from the actual unit files, not from any global manual
 - quiz intent cards and item design cards;
 - visible gaps in the learning progression.
 
-Report:
+Report skill evidence by declared scope:
 
-- skills taught but not practiced;
-- skills practiced but not taught;
-- skills quizzed without enough exercise preparation;
+- skills taught, practiced, quizzed, or set-based;
+- skills promised by the unit plan but not represented in the promised stream;
+- skills practiced without a planned or existing teaching reference when the exercise design expects one;
+- skills quizzed without exercise preparation only when the quiz kind or unit plan makes exercise preparation part of the local contract;
 - over-covered or under-covered skills;
-- missing prerequisite skills.
+- missing prerequisite skills that block existing or declared work.
 
 This is review output only. Do not create or maintain a repository-wide coverage file.
 
-Make only targeted edits to unit dashboard rows, statuses, links, and small consistency issues. For larger rewrites, report recommendations instead of doing them. For metadata/link/todo/source-safety cleanup before publication consideration, recommend `content/_prompts/workflows/unit/03-finalize-unit.md`.
+Make only targeted edits to unit dashboard rows, statuses, links, and small consistency issues. For larger rewrites or missing declared-scope work, report blockers or recommendations instead of doing them. For metadata/link/todo/source-safety cleanup before publication consideration, recommend `content/_prompts/workflows/unit/03-finalize-unit.md`.
 
 Finish with:
 
 - unit quality summary;
 - files touched;
-- missing work;
+- sparse-unit handling: artifact families present, absent by design, or absent because of a blocker;
+- blocker classification: structural blockers, declared-scope gaps, quality/readiness observations, optional future improvements;
+- readiness label using the vocabulary above;
 - recommended next actions;
 - warnings or verification needs.

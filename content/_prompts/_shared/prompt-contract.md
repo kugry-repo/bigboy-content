@@ -140,3 +140,44 @@ Follow `content/_prompts/_shared/prompt-contract.md`.
 - Use `TARGET_CURRICULUM_MAP`, not a global curriculum map, for official curriculum alignment.
 - Do not ask for a global production marker.
 - Do not create frontend rendering, app logic, or deployment work unless explicitly requested.
+
+## Output And Validation
+
+Every operating prompt must finish with a concise report that names:
+
+- files created;
+- files changed;
+- files moved or renamed;
+- files deleted;
+- validation or review performed;
+- unresolved human decisions or verification needs.
+
+For read-only prompts, report:
+
+- resolved target;
+- current state;
+- recommended next action;
+- exact prompt to run next when a prompt is appropriate;
+- likely files affected by that next action;
+- warnings or uncertainties.
+
+Use repository-relative POSIX paths unless an external tool requires an absolute path.
+
+After prompt-driven edits, run the narrowest relevant checks. For structural, prompt-system, template, schema, or content-system changes, run `npm run validate`.
+
+At minimum, check:
+
+- file paths and names;
+- YAML frontmatter consistency when frontmatter exists;
+- Markdown heading structure;
+- Obsidian-compatible links and callouts;
+- visible LaTeX syntax where math was touched;
+- no generated frontend, app, or deployment work unless explicitly requested.
+
+For content edits, also check unit `_index.md` tracker consistency, lesson/exercise/quiz/set IDs, relevant links, status fields, sync notes, and source-safety notes for official or exam claims.
+
+For prompt-system edits, also check that operating prompts inherit this shared contract, prompt paths use repository-relative POSIX paths, and removed prompt layouts or old workflow names have not returned.
+
+Do not hide uncertainty. Mark unsupported official curriculum, exam-frame, source, or mathematical claims as needing verification.
+
+Review and cleanup prompts may assess readiness, but they must not set `planning_state: published`. That lifecycle state is reserved for an explicit human publication decision.
