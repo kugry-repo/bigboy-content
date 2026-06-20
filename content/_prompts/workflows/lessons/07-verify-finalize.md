@@ -4,6 +4,8 @@ Use this prompt after coherence and compression/taste/voice review are complete.
 
 This prompt owns final verification and final workflow updates.
 
+This is lesson review only. It does not review exercise statement quality, exercise solution quality, quiz item quality, quiz answer keys, quiz feedback, or quiz remediation, and it must not require downstream exercise or quiz creation.
+
 ## Target
 
 Input:
@@ -101,6 +103,7 @@ Check:
 Rules:
 
 - Do not repeat full coherence or compression rewrites unless verification discovers a blocking defect.
+- Do not mark exercise or quiz review evidence as refreshed.
 - If correctness or curriculum alignment is uncertain, keep `status: needs-review` and record the issue in `## Notes auteur`.
 - Use `reviewed` only when the file genuinely meets the rubric.
 - If only a narrow changed area was reviewed, do not imply unrelated stale review evidence was refreshed.

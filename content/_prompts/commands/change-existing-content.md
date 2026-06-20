@@ -138,6 +138,16 @@ When any exercise or quiz review substatus becomes `needs-review`, demote top-le
 
 After a non-material edit, status may be preserved only if the report states why the edit did not affect meaning, math, answer logic, feedback, remediation, or pedagogy.
 
+Targeted review ownership:
+
+- lesson substance: `content/_prompts/workflows/lessons/07-verify-finalize.md`;
+- exercise design or statement evidence: `content/_prompts/workflows/exercises/05-review-exercise-quality.md`;
+- exercise solution evidence: `content/_prompts/workflows/exercises/06-review-solutions.md`;
+- quiz item-quality evidence: `content/_prompts/workflows/quizzes/05-review-item-quality.md`;
+- quiz answer-key evidence: `content/_prompts/workflows/quizzes/06-review-answer-keys.md`;
+- quiz feedback/remediation evidence: `content/_prompts/workflows/quizzes/07-review-feedback-remediation.md`;
+- unit scope, dashboard, or readiness evidence: `content/_prompts/workflows/unit/02-review-unit.md` or `content/_prompts/workflows/unit/03-finalize-unit.md`.
+
 ## Change classification
 
 Classify every request into one of these categories.

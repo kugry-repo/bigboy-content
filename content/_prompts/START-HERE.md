@@ -33,6 +33,16 @@ Use unit workflow prompts by intent. They are not a global ladder, and they do n
 
 For edits to existing reviewed content, use the revision freshness contract in `content/_guides/schema/frontmatter-schema.md`: material edits invalidate only affected review evidence with `needs-review`; non-material edits may preserve status only with an explicit reason.
 
+Route review by artifact ownership:
+
+- Lesson substance or verification changed: `content/_prompts/workflows/lessons/07-verify-finalize.md`.
+- Exercise statement, design, hints, mistakes, or verification changed: `content/_prompts/workflows/exercises/05-review-exercise-quality.md`.
+- Exercise solution or final answer changed: `content/_prompts/workflows/exercises/06-review-solutions.md`.
+- Quiz stems, item types, options, distractors, diagnostic signals, or item order changed: `content/_prompts/workflows/quizzes/05-review-item-quality.md`.
+- Quiz answer keys, accepted alternatives, or answer logic changed: `content/_prompts/workflows/quizzes/06-review-answer-keys.md`.
+- Quiz feedback, mastery criteria, or remediation changed: `content/_prompts/workflows/quizzes/07-review-feedback-remediation.md`.
+- Unit scope, dashboard, cross-family consistency, or publication-readiness changed: `content/_prompts/workflows/unit/02-review-unit.md` or `content/_prompts/workflows/unit/03-finalize-unit.md`.
+
 Use shortcuts only for special cases:
 
 - `content/_prompts/shortcuts/create-direct-exercise-blueprint.md`

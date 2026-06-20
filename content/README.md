@@ -69,6 +69,8 @@ Initialized dashboards declare artifact-family scope with the `Scope` rows under
 
 Review statuses are version evidence, not decorations. After a material edit to reviewed lesson, exercise, or quiz substance, set only the affected review status fields to `needs-review` and run the relevant targeted review again. Non-material typo, formatting, punctuation, or link-formatting edits may preserve reviewed/published status only when the report explains why the edit did not affect meaning, math, answer logic, feedback, remediation, or pedagogy. The full contract lives in `content/_guides/schema/frontmatter-schema.md`.
 
+Review and finalization are artifact-specific. Unit review should use lesson standards for lessons, exercise and solution standards for exercises, and quiz item/answer/feedback/remediation standards for standalone quizzes. It should not judge exercises by lesson flow standards, treat standalone quizzes as compressed lessons, or require artifact families marked `not-in-scope` or `deferred`.
+
 Use `content/_fixtures/initialized-unit/_index.md` only as a checked-in structural reference for the initialized scaffold. It is not educational content.
 
 After initialization, lesson preparation, exercise clusters, raw exercise seeds, exercise design cards, quiz intent cards, raw item pools, quiz item design cards, set planning, production dashboard state, and production journal entries all live in the unit `_index.md`.
@@ -93,6 +95,8 @@ Start with:
 `START-HERE.md` orients prompt choice. `next-action.md` owns state-aware "what next?" routing.
 
 Create final files only through the appropriate workflow prompts and in small batches. Do not create whole units, full exercise libraries, quiz libraries, or app/frontend work unless explicitly requested.
+
+Changed artifacts route to the smallest owning review: lesson verification for lesson substance, exercise quality review for exercise statement/design changes, solution review for exercise solution changes, quiz item-quality review for item/stem/distractor changes, answer-key review for answer logic, and feedback/remediation review for next-step routing.
 
 ## Validation
 

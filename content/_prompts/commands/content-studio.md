@@ -236,6 +236,8 @@ Use lesson guides.
 
 Focus on clarity, flow, voice, motivation, intuition, formal precision, examples, exam usefulness, avoiding repetitive ceremony, and keeping only the amount of structure the concept needs.
 
+Lesson studio work does not certify exercise statements, exercise solutions, quiz item quality, quiz answer keys, feedback, or remediation, and it should not require downstream exercise or quiz creation.
+
 After a material lesson edit, mark the lesson `status: needs-review` unless it was already draft/planned/needs-review. The next targeted review is `content/_prompts/workflows/lessons/07-verify-finalize.md` when the changed area needs correctness/finality review; use studio or lesson review notes for narrower critique before that.
 
 ### Exercises
@@ -245,6 +247,8 @@ Use exercise guides: exercise-quality-rubric, exercise-design-guide, exercise-st
 Content studio supports exercise modes across `diagnose`, `propose`, `patch`, and `patch-and-review`.
 
 Focus on target skill precision, worth-existing value, student decision point, exercise role, progression, difficulty honesty, exam/source claim safety, solution steps, hints, common mistake recovery, verification usefulness, design-card alignment when present, and avoiding mechanical low-value exercises.
+
+Do not apply lesson-flow or lesson-voice ceremony as the main standard for exercise quality. Exercises are training devices; judge them by the exercise quality rubric and solution-style guide.
 
 When the active file or selection is inside an exercise file, infer the target unit from the path when possible, then use frontmatter and the parent unit `_index.md` to confirm.
 
@@ -261,6 +265,8 @@ Content studio supports quiz modes across `diagnose`, `propose`, `patch`, and `p
 When the active file or selection is inside a quiz file, infer the target unit from the path when possible, then use frontmatter and the parent unit `_index.md` to confirm.
 
 Focus on quiz purpose, place in series, exact skill target, diagnostic signal, distractor quality, wrong-answer feedback, correct-answer feedback, misconceptions, item-type suitability, pacing, standalone usefulness, mastery criteria, remediation paths, and supported item types: multiple choice, multiple response, true/false, fill in blanks, matching, sequence, and hotspot when the system supports them.
+
+Do not treat standalone quizzes as lesson mini-checks or compressed exercise sheets. Judge them by diagnostic value, answer-key correctness, feedback, and remediation.
 
 Use these critique questions for quiz selections:
 

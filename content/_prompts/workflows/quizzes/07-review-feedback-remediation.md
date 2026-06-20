@@ -6,6 +6,8 @@ This step does not create new quiz files.
 
 Do not build frontend or app code.
 
+This prompt owns feedback and remediation evidence only. It does not refresh item-quality evidence or answer-key evidence unless the task is explicitly rerouted to the owning quiz review prompt.
+
 ## Target
 
 Input:

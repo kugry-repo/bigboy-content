@@ -6,6 +6,8 @@ This pass checks whether the exercise is a strong training device: statement, de
 
 It does not mark `solution_status: reviewed`; that belongs to `06-review-solutions.md`.
 
+This prompt reviews exercises by the exercise contract, not by lesson ceremony. Use lesson files only as optional support references when they exist or when the exercise design depends on them.
+
 ## Target
 
 Input:
@@ -95,6 +97,8 @@ Check:
 Use `content/_guides/exercises/exercise-quality-rubric.md`. Apply the hard rule: an exercise cannot be marked reviewed if mathematical correctness, target skill precision, student decision point, solution clarity, or verification score below 4.
 
 Because this prompt is not the mathematical solution review, treat mathematical correctness issues as blockers or notes unless they can be fixed locally and safely.
+
+Do not require a lesson-like learning flow. Exercises are ability-building devices; review whether the statement, design, hints, traps, verification, and learner decision point serve that purpose.
 
 ## Allowed Updates
 

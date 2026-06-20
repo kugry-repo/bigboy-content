@@ -6,6 +6,8 @@ This step focuses on answer keys. It does not create new quiz files.
 
 Do not build frontend or app code.
 
+This prompt owns answer-key evidence only. It must not treat a correct answer key as proof that feedback, remediation, or item diagnostic quality is reviewed.
+
 ## Target
 
 Input:

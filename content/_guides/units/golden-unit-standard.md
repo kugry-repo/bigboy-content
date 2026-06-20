@@ -2,15 +2,19 @@
 
 ## Purpose
 
-A golden unit is the first complete content unit used as the model for future units.
+A golden unit is the first deliberately complete content unit used as the model for future units.
 
-It defines the expected quality, structure, voice, and workflow for the rest of the project.
+It defines an aspirational complete-unit quality target: structure, voice, workflow evidence, lesson quality, exercise quality, quiz quality, sets, source safety, and review discipline.
+
+It is not the required shape for every unit. Ordinary units may be lesson-only, exercise-only, quiz-only, set-only, or otherwise sparse when their unit plan declares that scope. A sparse unit can be high quality when it is complete for its declared scope.
 
 Do not mass-generate other units until at least one golden unit exists and has been reviewed.
 
+Unit review and finalization prompts must not use this guide as proof that every unit needs every artifact family. Use `content/_guides/units/unit-workflow.md` and the unit dashboard `Scope` rows to decide what is in scope.
+
 ## Architecture
 
-A golden unit uses this structure:
+A golden unit uses this complete structure:
 
 ```text
 content/programs/<program_id>/<unit-folder>/
@@ -46,7 +50,7 @@ source / target
 
 ## Minimum Golden Unit Contents
 
-A golden unit should include:
+A golden unit should include the following because it is deliberately complete:
 
 - a detailed `_index.md` unit plan;
 - complete source/target notes, raw dump, and curation decisions for key mini-lessons;
@@ -75,6 +79,8 @@ A golden unit should include:
 - no major unresolved TODOs.
 
 The first version does not need to reach all targets immediately.
+
+Do not copy this minimum list into ordinary unit finalization. For non-golden units, missing lessons, exercises, quizzes, or sets are blockers only when the declared scope, publish target, existing references, or local workflow prerequisites require them.
 
 Use the production dashboard workstreams.
 
@@ -216,6 +222,8 @@ Before a unit becomes the model for future units, review:
 - Obsidian rendering.
 
 Do not mark a unit as golden if any major file is only a raw draft.
+
+For ordinary sparse units, this review standard calibrates quality inside each artifact family that exists or is in scope. It does not require absent families to be created.
 
 ## Golden Unit Tracking
 

@@ -6,6 +6,8 @@ This step does not create new quiz files.
 
 Do not build frontend or app code.
 
+This prompt reviews standalone quiz item quality. It does not treat quizzes as lesson checkpoints or compressed exercises, and it does not certify answer keys, feedback, or remediation.
+
 ## Target
 
 Input:

@@ -685,6 +685,35 @@ const REQUIRED_QUIZ_WORKFLOW_PROMPTS = [
   "content/_prompts/workflows/quizzes/07-review-feedback-remediation.md",
 ];
 
+const UNIT_REVIEW_WORKFLOW_PROMPT =
+  "content/_prompts/workflows/unit/02-review-unit.md";
+
+const UNIT_FINALIZE_WORKFLOW_PROMPT =
+  "content/_prompts/workflows/unit/03-finalize-unit.md";
+
+const FAMILY_SPECIFIC_REVIEW_GUIDES = [
+  "content/_guides/lessons/lesson-editorial-pipeline.md",
+  "content/_guides/lessons/lesson-structure.md",
+  "content/_guides/lessons/lesson-quality-rubric.md",
+  "content/_guides/exercises/exercise-structure.md",
+  "content/_guides/exercises/exercise-design-guide.md",
+  "content/_guides/exercises/exercise-quality-rubric.md",
+  "content/_guides/exercises/solution-style.md",
+  "content/_guides/quizzes/quiz-structure.md",
+  "content/_guides/quizzes/quiz-item-writing-guide.md",
+  "content/_guides/quizzes/quiz-quality-rubric.md",
+  "content/_guides/quizzes/quiz-remediation-guide.md",
+];
+
+const FAMILY_SPECIFIC_TARGETED_REVIEW_PROMPTS = [
+  "content/_prompts/workflows/lessons/07-verify-finalize.md",
+  "content/_prompts/workflows/exercises/05-review-exercise-quality.md",
+  "content/_prompts/workflows/exercises/06-review-solutions.md",
+  "content/_prompts/workflows/quizzes/05-review-item-quality.md",
+  "content/_prompts/workflows/quizzes/06-review-answer-keys.md",
+  "content/_prompts/workflows/quizzes/07-review-feedback-remediation.md",
+];
+
 const REQUIRED_CONTENT_STUDIO_COMMAND =
   "content/_prompts/commands/content-studio.md";
 
@@ -4784,6 +4813,52 @@ function checkCurrentUnitPromptContracts() {
   }
 }
 
+function requireTextSnippets(filePath, text, snippets, label) {
+  for (const snippet of snippets) {
+    if (!text.includes(snippet)) {
+      addError(filePath, `${label} is missing "${snippet}"`);
+    }
+  }
+}
+
+function checkUnitReviewFinalizePromptContract(filePath, text, relative) {
+  if (relative === UNIT_REVIEW_WORKFLOW_PROMPT) {
+    requireTextSnippets(
+      filePath,
+      text,
+      [
+        ...FAMILY_SPECIFIC_REVIEW_GUIDES,
+        ...FAMILY_SPECIFIC_TARGETED_REVIEW_PROMPTS,
+        "Do not judge exercises by lesson flow standards",
+        "Do not judge standalone quizzes as compressed lessons",
+        "Do not require absent artifact families",
+        "families as deferred scope",
+        "incomplete, stale, or not-ready design cards",
+      ],
+      "unit review prompt artifact-symmetry contract",
+    );
+  }
+
+  if (relative === UNIT_FINALIZE_WORKFLOW_PROMPT) {
+    requireTextSnippets(
+      filePath,
+      text,
+      [
+        ...FAMILY_SPECIFIC_REVIEW_GUIDES,
+        ...FAMILY_SPECIFIC_TARGETED_REVIEW_PROMPTS,
+        "Finalize only the artifact families that are in scope",
+        "`solution_status` is not assumed from `statement_status`",
+        "item_quality_status",
+        "feedback_status",
+        "remediation_status",
+        "Do not use `content/_guides/units/golden-unit-standard.md` as a mandatory checklist",
+        "Do not block:",
+      ],
+      "unit finalize prompt artifact-specific contract",
+    );
+  }
+}
+
 function checkPromptFileContract(
   filePath,
   text,
@@ -4841,6 +4916,8 @@ function checkPromptFileContract(
   if (relative === SET_CURRENT_UNIT_COMMAND) {
     checkSetCurrentUnitPrompt(filePath, text);
   }
+
+  checkUnitReviewFinalizePromptContract(filePath, text, relative);
 
   if (relative !== SHARED_PROMPT_CONTRACT_PATH) {
     for (const field of OBSOLETE_TARGET_FIELDS) {

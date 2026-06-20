@@ -48,10 +48,16 @@ If `TARGET_UNIT_INDEX` has `planning_state: stub`, stop before changing unit pla
 - `content/_guides/schema/id-and-naming.md`
 - `content/_guides/lessons/lesson-editorial-pipeline.md`
 - `content/_guides/lessons/lesson-structure.md`
-- `content/_guides/exercises/exercise-structure.md`
-- `content/_guides/quizzes/quiz-structure.md`
-- `content/_guides/core/verification-checklist.md`
 - `content/_guides/lessons/lesson-quality-rubric.md`
+- `content/_guides/exercises/exercise-structure.md`
+- `content/_guides/exercises/exercise-design-guide.md`
+- `content/_guides/exercises/exercise-quality-rubric.md`
+- `content/_guides/exercises/solution-style.md`
+- `content/_guides/quizzes/quiz-structure.md`
+- `content/_guides/quizzes/quiz-item-writing-guide.md`
+- `content/_guides/quizzes/quiz-quality-rubric.md`
+- `content/_guides/quizzes/quiz-remediation-guide.md`
+- `content/_guides/core/verification-checklist.md`
 - `content/_guides/core/source-policy.md`
 - `TARGET_UNIT_INDEX`
 - all mini-lessons under `TARGET_UNIT_PATH/lessons/`
@@ -65,7 +71,19 @@ Review the unit plan, declared scope, and existing artifacts.
 
 This is unit-review work only.
 
+Lessons, exercises, and standalone quizzes are first-class artifact families. Review each in-scope family by its own contract:
+
+- Lessons: use `content/_guides/lessons/lesson-editorial-pipeline.md`, `content/_guides/lessons/lesson-structure.md`, and `content/_guides/lessons/lesson-quality-rubric.md` for lesson clarity, structure, coherence, compression, voice, mathematical correctness, and learning flow.
+- Exercises: use `content/_guides/exercises/exercise-structure.md`, `content/_guides/exercises/exercise-design-guide.md`, `content/_guides/exercises/exercise-quality-rubric.md`, and `content/_guides/exercises/solution-style.md` for statement quality, target skill, difficulty, trap design, design-card readiness, solution correctness, solution pedagogy, and batch balance.
+- Quizzes: use `content/_guides/quizzes/quiz-structure.md`, `content/_guides/quizzes/quiz-item-writing-guide.md`, `content/_guides/quizzes/quiz-quality-rubric.md`, and `content/_guides/quizzes/quiz-remediation-guide.md` for diagnostic intent, item quality, answer keys, distractors, feedback, explanation, remediation, and quiz-level coherence.
+
+Do not judge exercises by lesson flow standards. Do not judge standalone quizzes as compressed lessons or in-lesson checks. Use lesson standards only for lesson artifacts, exercise standards only for exercise artifacts and exercise design cards, and quiz standards only for quiz artifacts and quiz planning cards.
+
 Before classifying missing work, read the dashboard `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes`. Interpret them canonically: `not-started` means intended but not begun, `not-in-scope` means intentionally absent, and `deferred` means intentionally postponed.
+
+Do not require absent artifact families when their `Scope` row is `not-in-scope`. Report `deferred` families as deferred scope, not accidental missing work. If a family is `not-started`, decide whether it is an intended declared-scope gap or simply outside the current request/publish target.
+
+If Phase 2 freshness fields are present, surface stale or `needs-review` statuses as targeted review work. If Phase 3 planning objects are present, surface incomplete, stale, or not-ready design cards, blueprints, quiz intent cards, raw pools, or item design cards as planning-object blockers only for families in scope.
 
 Do not:
 
@@ -108,16 +126,16 @@ Check:
 
 - unit plan matches created files;
 - mini-lesson architecture is respected: no root-level `lesson.md`, and mini-lessons live under `lessons/`;
-- existing mini-lessons have coherent local progression and do not break declared plan expectations;
-- existing mini-lessons follow the editorial pipeline at a high level and do not feel like rigid templates;
-- existing lessons have clear purpose, coherence, precision, useful checks or practice direction when appropriate, and no unnecessary ceremony;
+- when lessons are in scope, lesson files exist as declared, have coherent local progression, follow the editorial pipeline at a review-signal level, and satisfy the lesson rubric without unnecessary ceremony;
 - frontmatter fields and IDs are consistent;
 - declared skills are covered, practiced, quizzed, deferred, or intentionally `not-in-scope` in a way that matches the declared scope;
+- when exercises are in scope, exercise files, design cards or direct blueprints, statement/design statuses, solution statuses, source design-card links, and batch-balance notes satisfy the exercise workflow contract at a review-signal level;
+- when quizzes are in scope, standalone quiz files, quiz intent cards, item design cards, item-quality status, answer-key status, feedback status, remediation status, and required answer/feedback/remediation sections satisfy the quiz workflow contract at a review-signal level;
 - exercises align with lessons only when both streams exist or the unit plan says they should align;
 - standalone quizzes align with lessons, exercises, quiz intent cards, or item design cards only when those streams/cards exist or the unit plan says they should align;
 - difficulty progression is reasonable inside each existing stream and across streams that explicitly interact;
-- existing solutions are clear and correct at a review-signal level;
-- existing quiz item quality, answer keys, feedback, and remediation are clear, correct, useful, and misconception-based at a review-signal level;
+- existing exercise solutions are clear and correct at a review-signal level, without assuming solution review from statement/design review;
+- existing quiz item quality, answer keys, feedback, and remediation are clear, correct, useful, and misconception-based at a review-signal level, without assuming feedback/remediation review from answer-key review;
 - no in-scope artifact claims readiness while lesson status, exercise substatuses, quiz substatuses, or dashboard review rows are `needs-review`;
 - notation is consistent;
 - diagrams/interactions are planned where declared useful;
@@ -151,6 +169,15 @@ This is review output only. Do not create or maintain a repository-wide coverage
 Make only targeted edits to unit dashboard rows, statuses, links, and small consistency issues. For larger rewrites or missing declared-scope work, report blockers or recommendations instead of doing them. For metadata/link/todo/source-safety cleanup before publication consideration, recommend `content/_prompts/workflows/unit/03-finalize-unit.md`.
 
 Treat `needs-review` review evidence as unresolved targeted review, not as clean readiness. Report the exact targeted review that would refresh it; do not restart unrelated families when a local review is enough.
+
+Use these targeted review routes when reporting stale evidence:
+
+- lesson `status: needs-review` or lesson verification issues: `content/_prompts/workflows/lessons/07-verify-finalize.md`;
+- exercise `design_status` or `statement_status: needs-review`: `content/_prompts/workflows/exercises/05-review-exercise-quality.md`;
+- exercise `solution_status: needs-review`: `content/_prompts/workflows/exercises/06-review-solutions.md`;
+- quiz `item_quality_status: needs-review`: `content/_prompts/workflows/quizzes/05-review-item-quality.md`;
+- quiz `answer_key_status: needs-review`: `content/_prompts/workflows/quizzes/06-review-answer-keys.md`;
+- quiz `feedback_status` or `remediation_status: needs-review`: `content/_prompts/workflows/quizzes/07-review-feedback-remediation.md`.
 
 Finish with:
 

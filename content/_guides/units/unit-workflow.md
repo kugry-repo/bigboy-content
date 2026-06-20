@@ -275,6 +275,16 @@ Exercise set creation requires existing exercise files or precise exercise desig
 
 Unit review and cleanup operate on whatever exists. They should report absent artifact families using `not-in-scope`, `deferred`, or `not-started` from the dashboard `Scope` rows unless a local contract makes the absence a blocker.
 
+Unit review and finalization are artifact-symmetric. Lessons, exercises, standalone quizzes, and sets are independent artifact families, so unit-level prompts must apply the standards that belong to each family rather than using lesson standards as the default for everything.
+
+Use the family-specific guides when reviewing or finalizing:
+
+- Lessons: lesson editorial pipeline, lesson structure, and lesson quality rubric.
+- Exercises: exercise structure, exercise design guide, exercise quality rubric, and solution style.
+- Quizzes: quiz structure, quiz item writing guide, quiz quality rubric, and quiz remediation guide.
+
+Do not judge exercises by lesson flow standards. Do not judge standalone quizzes as compressed lessons or in-lesson checks. Cross-family alignment is useful only when the artifact actually depends on another family or when multiple families are in scope.
+
 ## Design-card rule
 
 Exercise design cards are the stored source of truth for creating exercise files. A table-only exercise plan is not sufficient for exercise batch creation.
@@ -370,6 +380,14 @@ sets/
 
 Check structural contracts, declared-scope consistency, broken references, metadata, links, statuses, skill coverage, notation, source safety, unresolved TODOs, and readiness observations for existing workstreams.
 
+For artifact quality signals, use the correct family contract:
+
+- lesson clarity, coherence, compression, voice, learning flow, and mathematical correctness come from lesson guides;
+- exercise statement quality, design-card readiness, target skill, difficulty, trap design, solution correctness, solution pedagogy, and batch balance come from exercise guides;
+- quiz diagnostic intent, item quality, answer keys, distractors, feedback, explanations, remediation, and quiz-level coherence come from quiz guides.
+
+Unit review may surface family-specific contract violations, stale statuses, or incomplete planning objects. It should point to the targeted review/fix workflow that owns the affected evidence instead of broadly rerunning unrelated families.
+
 For skill coverage, synthesize from the unit `_index.md`, lesson files, exercise files, quiz files, declared `skills`, design cards, and visible progression gaps. Compare streams only when multiple streams exist or when the unit plan explicitly says they should align. Report skills taught, practiced, quizzed, over-covered, under-covered, or missing prerequisites in terms of declared scope. Do not update any manual global coverage file.
 
 This is a unit-wide consistency review. It may make small targeted consistency fixes to dashboard rows, links, statuses, and obvious metadata problems. It must not create missing artifact families unless their absence violates an explicit local contract. It is not the conversational studio for selected text, not a broad migration command, not deep pedagogical review, and not the publication transition.
@@ -382,7 +400,15 @@ This prompt is a cleanup pass, consistency pass, publish-readiness assessment, a
 
 It must not automatically set unit `planning_state: published`; that state is reserved for an explicit human publication decision. It must not mark files `published` unless explicitly requested and the relevant review evidence already supports it.
 
-Finalize must block or report any in-scope lesson, exercise, quiz, or dashboard row whose review evidence is `needs-review`. Sparse families marked `not-in-scope` may still be absent, but stale review evidence inside declared scope is unresolved work.
+Finalize must block or report any in-scope lesson, exercise, quiz, or dashboard row whose review evidence is `needs-review`. Sparse families marked `not-in-scope` may still be absent, and families marked `deferred` remain known future scope, but stale review evidence inside declared scope is unresolved work.
+
+Finalization checks are family-specific:
+
+- Lessons: intended files exist, lesson status/review evidence is acceptable, lesson metadata and structure satisfy the lesson contract, and known lesson review issues are resolved or explicitly deferred.
+- Exercises: intended exercise files exist, statement/design review and solution review are both acceptable, design cards or direct blueprints are ready/used/resolved when present, solution review is not assumed from statement review, and batch balance has been handled when required by declared scope.
+- Quizzes: intended standalone quiz files exist, item-quality, answer-key, feedback, and remediation review evidence are acceptable, required answer/feedback/remediation contracts exist, standalone quizzes are not treated as lesson checkpoints, and remediation uses available, planned, `not-in-scope`, or `deferred` support honestly.
+
+Do not use `content/_guides/units/golden-unit-standard.md` as a mandatory finalization checklist for every unit. Golden-unit completeness is aspirational; ordinary sparse units can be ready for their declared scope.
 
 ### Targeted revision
 

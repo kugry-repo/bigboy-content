@@ -4,6 +4,8 @@ Use this prompt to review existing draft exercise solutions after exercise files
 
 This pass focuses on mathematical correctness and solution pedagogy.
 
+This prompt owns `solution_status` only. It does not refresh exercise design or statement review evidence unless the task is explicitly rerouted through `content/_prompts/workflows/exercises/05-review-exercise-quality.md`.
+
 ## Target
 
 Input:
@@ -118,6 +120,8 @@ solution_status: reviewed
 only when the math and pedagogy pass.
 
 It should not mark `design_status` or `statement_status` as reviewed unless explicitly routed through the quality review criteria from `05-review-exercise-quality.md`.
+
+Do not judge the solution by lesson voice or lesson-flow standards. A good solution teaches the reasoning needed for this exercise: method choice, conditions, important steps, final answer, and verification.
 
 If a solution fails, use:
 

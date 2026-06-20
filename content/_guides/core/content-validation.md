@@ -83,6 +83,7 @@ The validator checks:
 - golden example YAML blocks for active content-object fields, enum values, and obvious ID/number/reference shape drift;
 - target-resolution prompt sections against `content/_prompts/_shared/prompt-contract.md`;
 - current-unit producer/consumer/mutation boundaries: `set-current-unit` writes, `next-action` verifies read-only, and lifecycle/mutation prompts invalidate or request a rerun instead of synthesizing cache entries;
+- unit review/finalize prompt contracts that require lesson, exercise, and quiz guide references plus targeted review routes for lesson verification, exercise quality, exercise solutions, quiz item quality, quiz answer keys, and quiz feedback/remediation;
 
 ## Scaffold warnings
 
