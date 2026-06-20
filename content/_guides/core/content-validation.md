@@ -51,6 +51,7 @@ The validator checks:
 - `## Production dashboard` rows from the canonical initialized scaffold as the authoritative initialized/published unit workstream tracker;
 - `## Journal de production` as the historical log;
 - the non-production initialized-unit reference fixture under `content/_fixtures/initialized-unit/`;
+- intentional invalid contract fixtures under `content/_fixtures/contracts/`, run in isolation as fault-injection checks;
 - absence of removed duplicate tracker headings;
 - absence of old planned-exercise or planned-quiz table sections;
 - absence of old `chapter_*` and `topic_*` frontmatter fields;
@@ -72,6 +73,9 @@ The validator checks:
 - official-unit frontmatter and program-index catalog rows against the owning curriculum map;
 - topic catalog references against topic unit frontmatter inside the owning program.
 - active frontmatter IDs against `content/_references/deleted-ids.md`;
+- golden example YAML blocks for active content-object fields, enum values, and obvious ID/number/reference shape drift;
+- target-resolution prompt sections against `content/_prompts/_shared/prompt-contract.md`;
+- current-unit producer/consumer/mutation boundaries: `set-current-unit` writes, `next-action` verifies read-only, and lifecycle/mutation prompts invalidate or request a rerun instead of synthesizing cache entries;
 
 ## Scaffold warnings
 
@@ -102,6 +106,61 @@ Content-completeness gaps in planned/draft scaffolds are warnings.
 The validator enforces one canonical multi-program content system. It accepts stub unit indexes only in the current lightweight lifecycle shape and accepts full dashboards only for initialized or published units. For initialized scaffolds, the source of truth is `content/_templates/unit-index.template.md`; validation reads that template to enforce current headings, planning subsections, and dashboard rows.
 
 It does not accept older unit-index structures, table-only exercise or quiz planning, alternate planning notes, old prompt layouts, obsolete lesson prompt names, old single-program roots, or old folder schemes.
+
+## Contract Fixtures
+
+`npm run validate` also runs focused fault-injection fixtures from:
+
+```text
+content/_fixtures/contracts/
+```
+
+These fixtures are intentionally invalid and must be named `invalid-*`. They
+prove validator behavior for target precedence, current-unit cache boundaries,
+content-object schema alignment, official-unit map/folder/index agreement,
+stub-vs-initialized scaffold boundaries, exercise-set `exercise_ids`, and
+removed content-object types.
+
+The validator runs each fixture in isolation and expects a specific diagnostic.
+Those intentional diagnostics are removed before production results are
+reported. Do not treat contract fixtures as examples, templates, migration
+shims, or alternate schemas.
+
+To add a fixture:
+
+1. Add one small `invalid-*` file under `content/_fixtures/contracts/`.
+2. Make the file fail one contract clearly.
+3. Add one matching `expectInvalidContractFixture(...)` case in `scripts/validate-content.mjs`.
+4. Run `npm run validate` and confirm the fixture count increases.
+
+Normal validation still validates production content under `content/programs/`
+strictly. Invalid fixtures must never be added to a production program tree.
+
+## Template And Example Boundaries
+
+Templates may keep documented placeholders such as `YYYY-MM-DD`, todo markers,
+and `{{unit_code}}`. Production files may still report placeholder dates or
+todo markers as warnings while the system is in buildout, and published files
+turn unresolved todo markers into errors.
+
+Golden examples are reference material, not competing schemas. When an example
+contains a YAML block for `lesson`, `exercise`, `quiz`, or `exercise-set`, the
+validator checks the block against the active content-object fields and obvious
+mechanical relationships. It does not require example exercise IDs to exist as
+production files.
+
+## Mechanically Checked References
+
+The validator checks references whose format is clear:
+
+- unit `related_units` must point to known unit folders in the same program;
+- exercise-set `exercise_ids` must use the same program prefix and unit code, and production sets must point to existing exercise files;
+- official program catalog rows and topic catalog rows must match canonical map or topic unit data;
+- deleted IDs must not remain active.
+
+The validator intentionally does not yet provide a full graph validator for
+arbitrary Markdown links, wikilinks, prose mentions, or planned IDs in design
+cards. Use the mutation prompts' reference-search checklist for those.
 
 ## Permanent anti-regression guards
 

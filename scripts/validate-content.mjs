@@ -8,6 +8,7 @@ const ROOT = process.cwd();
 const CONTENT_DIR = path.join(ROOT, "content");
 const PROGRAMS_DIR = path.join(CONTENT_DIR, "programs");
 const FIXTURES_DIR = path.join(CONTENT_DIR, "_fixtures");
+const EXAMPLES_DIR = path.join(CONTENT_DIR, "_examples");
 const PROMPTS_DIR = path.join(CONTENT_DIR, "_prompts");
 const LESSON_WORKFLOW_DIR = path.join(PROMPTS_DIR, "workflows", "lessons");
 const EXERCISE_WORKFLOW_DIR = path.join(PROMPTS_DIR, "workflows", "exercises");
@@ -17,6 +18,7 @@ const CANONICAL_INITIALIZED_UNIT_TEMPLATE_PATH =
   "content/_templates/unit-index.template.md";
 const INITIALIZED_UNIT_REFERENCE_FIXTURE_PATH =
   "content/_fixtures/initialized-unit/_index.md";
+const CONTRACT_FIXTURES_DIR_PATH = "content/_fixtures/contracts";
 const DELETED_IDS_REGISTRY_PATH = "content/_references/deleted-ids.md";
 
 const REQUIRED_BASE_DIRS = [
@@ -34,6 +36,7 @@ const REQUIRED_BASE_DIRS = [
   "content/_references",
   "content/_examples",
   "content/_fixtures",
+  "content/_fixtures/contracts",
   "content/programs",
 ];
 
@@ -570,6 +573,18 @@ const SHARED_PROMPT_CONTRACT_PATH =
 const SET_CURRENT_UNIT_COMMAND =
   "content/_prompts/commands/set-current-unit.md";
 
+const NEXT_ACTION_COMMAND =
+  "content/_prompts/commands/next-action.md";
+
+const INITIALIZE_UNIT_COMMAND =
+  "content/_prompts/commands/initialize-unit.md";
+
+const MANAGE_UNIT_COMMAND =
+  "content/_prompts/commands/manage-unit.md";
+
+const MANAGE_PROGRAM_COMMAND =
+  "content/_prompts/commands/manage-program.md";
+
 const OBSOLETE_COMMAND_PROMPTS = [
   `content/_prompts/commands/${"review"}-${"existing"}-${"lesson"}.md`,
 ];
@@ -638,6 +653,19 @@ const CANONICAL_TARGET_FIELDS = [
 
 const OBSOLETE_TARGET_FIELDS = [
   "TARGET_PROGRAM_ROOT",
+  "TARGET_ROOT",
+  "TARGET_UNIT_ROOT",
+  "TARGET_CHAPTER",
+  "TARGET_CHAPTER_CODE",
+  "TARGET_CHAPTER_FOLDER",
+  "TARGET_CHAPTER_PATH",
+  "TARGET_TOPIC",
+  "TARGET_TOPIC_CODE",
+  "TARGET_TOPIC_FOLDER",
+  "TARGET_TOPIC_PATH",
+  "CURRENT_UNIT",
+  "CURRENT_UNIT_PATH",
+  "CURRENT_UNIT_INDEX",
 ];
 
 const TARGET_CONTRACT_SECTION_HEADINGS = [
@@ -666,17 +694,49 @@ const GENERIC_TARGET_RESOLUTION_PATTERNS = [
 const TARGET_PRECEDENCE_DRIFT_PATTERNS = [
   /Resolve the target in this order:/i,
   /Infer the target in this order:/i,
+  /Resolve target identity in this order:/i,
   /Use explicit `TARGET_UNIT` only as an override/i,
   /selected text as the primary target/i,
+  /selected text.*wins over explicit `TARGET_/is,
   /active file path, active file frontmatter, selected path, explicit `TARGET_PROGRAM`/i,
   /If no explicit target is provided,\s*read `_workflow\/current-unit\.md`/i,
 ];
 
+const CURRENT_UNIT_SOURCE_DRIFT_PATTERNS = [
+  /`?_workflow\/current-unit\.md`?.{0,80}\b(?:is|as)\b.{0,40}\bsource of truth\b/is,
+  /\b(?:treat|use|read)\s+`?_workflow\/current-unit\.md`?.{0,80}\bsource of truth\b/is,
+  /`?_workflow\/current-unit\.md`?.{0,80}\b(?:authoritative|canonical)\b/is,
+  /\b(?:authoritative|canonical)\b.{0,80}`?_workflow\/current-unit\.md`?/is,
+];
+
 const CURRENT_UNIT_WRITE_DRIFT_PATTERNS = [
   /Create or update `_workflow\/current-unit\.md`/i,
+  /\b(?:write|create|rewrite|update|overwrite)\s+(?:a\s+)?(?:new\s+)?(?:canonical\s+)?`?_workflow\/current-unit\.md`?/i,
+  /\b(?:write|create|rewrite|update|overwrite)\s+(?:a\s+)?(?:new\s+)?(?:canonical\s+)?current-unit (?:entry|cache|state)\b/i,
   /create or update only:\s*```text\s*_workflow\/current-unit\.md/i,
   /clear it or update it to a safe state/i,
 ];
+
+const CONTRACT_FIXTURES = {
+  targetPrecedencePrompt:
+    "content/_fixtures/contracts/invalid-prompt-target-precedence.md",
+  currentUnitSourcePrompt:
+    "content/_fixtures/contracts/invalid-prompt-current-unit-source.md",
+  currentUnitWriterPrompt:
+    "content/_fixtures/contracts/invalid-prompt-current-unit-writer.md",
+  missingCommonFieldTemplate:
+    "content/_fixtures/contracts/invalid-template-missing-common-field.md",
+  officialUnitFolderPrefix:
+    "content/_fixtures/contracts/invalid-official-unit-folder-prefix.md",
+  missingOfficialUnitIndex:
+    "content/_fixtures/contracts/invalid-curriculum-map-missing-unit-index.md",
+  stubDashboardResidue:
+    "content/_fixtures/contracts/invalid-stub-dashboard-residue.md",
+  exerciseSetBadExerciseId:
+    "content/_fixtures/contracts/invalid-exercise-set-bad-exercise-id.md",
+  unsupportedObjectType:
+    "content/_fixtures/contracts/invalid-schema-unsupported-object-type.md",
+};
 
 const LESSON_QUALITY_SIGNAL_CHECKS = [
   {
@@ -757,6 +817,7 @@ const programs = [];
 const units = [];
 let checkedOfficialUnits = 0;
 let checkedUnofficialUnits = 0;
+let checkedContractFixtures = 0;
 
 function toPosix(filePath) {
   return filePath.split(path.sep).join("/");
@@ -772,6 +833,64 @@ function addError(filePath, message) {
 
 function addWarning(filePath, message) {
   warnings.push(filePath ? `${rel(filePath)}: ${message}` : message);
+}
+
+function runIsolatedDiagnostics(check) {
+  const errorStart = errors.length;
+  const warningStart = warnings.length;
+
+  try {
+    check();
+  } catch (error) {
+    errors.push(`isolated validation threw: ${error.message}`);
+  }
+
+  const isolatedErrors = errors.slice(errorStart);
+  const isolatedWarnings = warnings.slice(warningStart);
+  errors.length = errorStart;
+  warnings.length = warningStart;
+
+  return { errors: isolatedErrors, warnings: isolatedWarnings };
+}
+
+function diagnosticMatches(diagnostic, expected) {
+  if (expected instanceof RegExp) {
+    return expected.test(diagnostic);
+  }
+
+  return diagnostic.includes(expected);
+}
+
+function expectInvalidContractFixture(repoPath, contractLabel, check, expectedDiagnostics) {
+  const fixturePath = fullPathFromRepoPath(repoPath);
+
+  if (!isFile(fixturePath)) {
+    addError(
+      fixturePath,
+      `missing invalid contract fixture for "${contractLabel}"; expected non-production fixture under ${CONTRACT_FIXTURES_DIR_PATH}`,
+    );
+    return;
+  }
+
+  checkedContractFixtures += 1;
+  const result = runIsolatedDiagnostics(check);
+
+  if (result.errors.length === 0) {
+    addError(
+      fixturePath,
+      `contract fixture "${contractLabel}" unexpectedly passed; this fixture must fail to prove the validator still enforces the contract`,
+    );
+    return;
+  }
+
+  for (const expected of expectedDiagnostics) {
+    if (!result.errors.some((error) => diagnosticMatches(error, expected))) {
+      addError(
+        fixturePath,
+        `contract fixture "${contractLabel}" did not produce expected diagnostic ${expected}; actual isolated errors: ${result.errors.join(" | ")}`,
+      );
+    }
+  }
 }
 
 function isDirectory(dirPath) {
@@ -1999,6 +2118,389 @@ function checkCanonicalContentTemplates() {
   }
 }
 
+function activeContentObjectRequiredFields(type) {
+  if (type === "lesson") return REQUIRED_LESSON_FIELDS;
+  if (type === "exercise") return REQUIRED_EXERCISE_FIELDS;
+  if (type === "quiz") return REQUIRED_QUIZ_FIELDS;
+  if (type === "exercise-set") return REQUIRED_SET_FIELDS;
+  return [];
+}
+
+function parseYamlCodeBlocks(filePath, text) {
+  const blocks = [];
+
+  for (const match of text.matchAll(/```yaml\s*([\s\S]*?)```/g)) {
+    try {
+      blocks.push(parseYaml(match[1]) ?? {});
+    } catch (error) {
+      addError(
+        filePath,
+        `YAML example block cannot be parsed: ${error.message}`,
+      );
+    }
+  }
+
+  return blocks;
+}
+
+function programForContentObjectData(filePath, data) {
+  const program = programs.find((candidate) => candidate.id === data.program);
+  if (!program) {
+    addError(
+      filePath,
+      `example content-object YAML references unknown program "${data.program}"; expected a discovered content/programs/<program_id> program`,
+    );
+  }
+
+  return program;
+}
+
+function checkExampleContentObjectId(filePath, data, program) {
+  if (!program || !data.unit_code || !data.id) return;
+
+  const prefix = `${program.idPrefix}-${data.unit_code}`;
+  const type = data.type;
+
+  if (type === "lesson") {
+    const match = String(data.id).match(new RegExp(`^${escapeRegex(prefix)}-lesson-(\\d{3})$`));
+    if (!match) {
+      addError(filePath, `example lesson id "${data.id}" must match "${prefix}-lesson-###"`);
+      return;
+    }
+
+    if (Object.hasOwn(data, "lesson_number")) {
+      const expectedLessonNumber = Number.parseInt(match[1], 10);
+      if (data.lesson_number !== expectedLessonNumber) {
+        addError(filePath, `example lesson_number must be ${expectedLessonNumber} to match id "${data.id}"`);
+      }
+    }
+  }
+
+  if (type === "exercise" && !new RegExp(`^${escapeRegex(prefix)}-ex-\\d{3}$`).test(String(data.id))) {
+    addError(filePath, `example exercise id "${data.id}" must match "${prefix}-ex-###"`);
+  }
+
+  if (type === "quiz") {
+    const match = String(data.id).match(new RegExp(`^${escapeRegex(prefix)}-quiz-(\\d{3})$`));
+    if (!match) {
+      addError(filePath, `example quiz id "${data.id}" must match "${prefix}-quiz-###"`);
+      return;
+    }
+
+    if (Object.hasOwn(data, "quiz_number")) {
+      const expectedQuizNumber = Number.parseInt(match[1], 10);
+      if (data.quiz_number !== expectedQuizNumber) {
+        addError(filePath, `example quiz_number must be ${expectedQuizNumber} to match id "${data.id}"`);
+      }
+    }
+  }
+
+  if (type === "exercise-set" && !new RegExp(`^${escapeRegex(prefix)}-set-[a-z0-9][a-z0-9-]*$`).test(String(data.id))) {
+    addError(filePath, `example exercise-set id "${data.id}" must match "${prefix}-set-<slug>"`);
+  }
+}
+
+function checkExampleContentObjectData(filePath, data) {
+  if (!ACTIVE_CONTENT_OBJECT_TYPES.has(data.type)) return;
+
+  requireFields(filePath, data, [
+    ...COMMON_CONTENT_FIELDS,
+    ...activeContentObjectRequiredFields(data.type),
+  ]);
+
+  checkRequiredStringArrayField(filePath, data, "skills");
+  checkAllowedValue(filePath, data, "unit_kind", ALLOWED_UNIT_KINDS);
+  checkAllowedValue(filePath, data, "content_scope", ALLOWED_CONTENT_SCOPES);
+  checkAllowedValue(filePath, data, "domain", ALLOWED_DOMAINS);
+  checkAllowedValue(filePath, data, "status", ALLOWED_STATUS_VALUES);
+  checkAllowedValue(filePath, data, "sync_status", ALLOWED_SYNC_STATUSES);
+  checkAllowedValue(filePath, data, "source_type", ALLOWED_SOURCE_TYPES);
+  checkBooleanField(filePath, data, "official");
+
+  const program = programForContentObjectData(filePath, data);
+  checkExampleContentObjectId(filePath, data, program);
+
+  if (data.type === "lesson") {
+    if (data.lesson_kind !== "mini-lesson") {
+      addError(filePath, 'example lesson must use "lesson_kind: mini-lesson"');
+    }
+    checkAllowedValue(filePath, data, "difficulty", ALLOWED_EXERCISE_DIFFICULTIES);
+  }
+
+  if (data.type === "exercise") {
+    checkAllowedValue(filePath, data, "difficulty", ALLOWED_EXERCISE_DIFFICULTIES);
+    checkAllowedArrayValues(filePath, data, "exercise_type", ALLOWED_EXERCISE_TYPES);
+    checkAllowedValue(filePath, data, "exercise_role", ALLOWED_EXERCISE_ROLES);
+    checkAllowedValue(filePath, data, "exam_relevance", ALLOWED_EXAM_RELEVANCE);
+    checkAllowedValue(filePath, data, "calculator", ALLOWED_CALCULATOR_VALUES);
+    checkAllowedValue(filePath, data, "design_status", ALLOWED_DESIGN_STATUSES);
+    checkAllowedValue(filePath, data, "statement_status", ALLOWED_STATEMENT_STATUSES);
+    checkAllowedValue(filePath, data, "solution_status", ALLOWED_SOLUTION_STATUSES);
+    for (const field of ["requires_graph", "has_hints", "has_common_mistakes", "has_verification"]) {
+      checkBooleanField(filePath, data, field);
+    }
+  }
+
+  if (data.type === "quiz") {
+    checkAllowedValue(filePath, data, "quiz_kind", ALLOWED_QUIZ_KINDS);
+    checkAllowedArrayValues(filePath, data, "item_types", ALLOWED_QUIZ_ITEM_TYPES);
+    checkAllowedArrayValues(filePath, data, "cognitive_roles", ALLOWED_QUIZ_COGNITIVE_ROLES);
+    checkAllowedValue(filePath, data, "item_quality_status", ALLOWED_QUIZ_REVIEW_STATUSES);
+    checkAllowedValue(filePath, data, "answer_key_status", ALLOWED_QUIZ_REVIEW_STATUSES);
+    checkAllowedValue(filePath, data, "feedback_status", ALLOWED_QUIZ_REVIEW_STATUSES);
+    checkAllowedValue(filePath, data, "remediation_status", ALLOWED_QUIZ_REVIEW_STATUSES);
+    checkAllowedValue(filePath, data, "difficulty", ALLOWED_EXERCISE_DIFFICULTIES);
+  }
+
+  if (data.type === "exercise-set") {
+    checkRequiredStringArrayField(filePath, data, "difficulty_range");
+    if (Array.isArray(data.difficulty_range)) {
+      for (const difficulty of data.difficulty_range) {
+        if (!ALLOWED_EXERCISE_DIFFICULTIES.has(difficulty)) {
+          addError(
+            filePath,
+            `example difficulty_range has invalid value "${difficulty}"; expected one of ${[...ALLOWED_EXERCISE_DIFFICULTIES].join(", ")}`,
+          );
+        }
+      }
+    }
+
+    if (program) {
+      checkExerciseSetExerciseIds(
+        filePath,
+        data,
+        {
+          program,
+          code: data.unit_code,
+        },
+        { requireExistingFiles: false },
+      );
+    }
+  }
+}
+
+function checkGoldenExampleContracts() {
+  for (const filePath of walkMarkdownFiles(EXAMPLES_DIR)) {
+    const text = fs.readFileSync(filePath, "utf8");
+    for (const data of parseYamlCodeBlocks(filePath, text)) {
+      checkExampleContentObjectData(filePath, data);
+    }
+  }
+}
+
+function readFixtureFrontmatter(repoPath, label) {
+  const filePath = fullPathFromRepoPath(repoPath);
+  const text = fs.readFileSync(filePath, "utf8");
+  const parsed = parseFrontmatter(filePath, text);
+  requireFrontmatter(filePath, parsed, label);
+  return parsed;
+}
+
+function fixtureProgram() {
+  return {
+    id: "fixture-program",
+    dir: path.join(FIXTURES_DIR, "contracts", "fixture-program"),
+    topicsDir: path.join(FIXTURES_DIR, "contracts", "fixture-program", "topics"),
+    indexPath: path.join(FIXTURES_DIR, "contracts", "fixture-program", "_index.md"),
+    data: {
+      level: "2bac",
+      tracks: ["pc", "svt"],
+      language: "fr",
+    },
+    idPrefix: "fixture",
+    curriculumMapPath: fullPathFromRepoPath(
+      CONTRACT_FIXTURES.missingOfficialUnitIndex,
+    ),
+    curriculumUnits: [],
+    curriculumUnitsByFolder: new Map(),
+  };
+}
+
+function checkContractFixtureBoundaries() {
+  const contractsDir = fullPathFromRepoPath(CONTRACT_FIXTURES_DIR_PATH);
+
+  if (!isDirectory(contractsDir)) {
+    addError(
+      contractsDir,
+      "missing non-production validator contract fixture directory",
+    );
+    return;
+  }
+
+  for (const filePath of walkMarkdownFiles(contractsDir)) {
+    const basename = path.basename(filePath);
+    if (basename === "README.md") continue;
+
+    if (!basename.startsWith("invalid-")) {
+      addError(
+        filePath,
+        "contract fixture filenames must start with invalid- so intentional failures cannot be mistaken for production examples",
+      );
+    }
+  }
+}
+
+function checkContractFixtures() {
+  checkContractFixtureBoundaries();
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.targetPrecedencePrompt,
+    "prompt target precedence stays shared-contract-first",
+    () => {
+      const filePath = fullPathFromRepoPath(CONTRACT_FIXTURES.targetPrecedencePrompt);
+      checkPromptFileContract(
+        filePath,
+        fs.readFileSync(filePath, "utf8"),
+        {
+          relative: "content/_prompts/commands/invalid-target-precedence-fixture.md",
+          basename: "invalid-target-precedence-fixture.md",
+          parent: "commands",
+          isOperatingPrompt: true,
+        },
+      );
+    },
+    [/duplicates or contradicts target-resolution precedence/],
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.currentUnitSourcePrompt,
+    "current-unit cache is not source of truth",
+    () => {
+      const filePath = fullPathFromRepoPath(CONTRACT_FIXTURES.currentUnitSourcePrompt);
+      checkPromptFileContract(
+        filePath,
+        fs.readFileSync(filePath, "utf8"),
+        {
+          relative: "content/_prompts/commands/invalid-current-unit-source-fixture.md",
+          basename: "invalid-current-unit-source-fixture.md",
+          parent: "commands",
+          isOperatingPrompt: true,
+        },
+      );
+    },
+    [/current-unit cache contract violation/],
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.currentUnitWriterPrompt,
+    "only set-current-unit writes current-unit cache",
+    () => {
+      const filePath = fullPathFromRepoPath(CONTRACT_FIXTURES.currentUnitWriterPrompt);
+      checkPromptFileContract(
+        filePath,
+        fs.readFileSync(filePath, "utf8"),
+        {
+          relative: "content/_prompts/commands/invalid-current-unit-writer-fixture.md",
+          basename: "invalid-current-unit-writer-fixture.md",
+          parent: "commands",
+          isOperatingPrompt: true,
+        },
+      );
+    },
+    [/current-unit writer boundary violation/],
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.missingCommonFieldTemplate,
+    "active content template common fields",
+    () => checkCanonicalContentTemplate(
+      CONTRACT_FIXTURES.missingCommonFieldTemplate,
+      "exercise",
+      REQUIRED_EXERCISE_FIELDS,
+    ),
+    [/missing frontmatter field "program"/],
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.officialUnitFolderPrefix,
+    "official folder prefix matches unit_order",
+    () => {
+      const parsed = readFixtureFrontmatter(
+        CONTRACT_FIXTURES.officialUnitFolderPrefix,
+        "official unit prefix fixture",
+      );
+      const program = fixtureProgram();
+      const unitDir = path.join(program.dir, parsed.data.unit_folder);
+      checkUnitFrontmatter(
+        fullPathFromRepoPath(CONTRACT_FIXTURES.officialUnitFolderPrefix),
+        unitDir,
+        "official",
+        parsed.data,
+        program,
+      );
+    },
+    [/official unit folder prefix 01 must match frontmatter "unit_order" 2/],
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.missingOfficialUnitIndex,
+    "curriculum map row requires unit index",
+    () => {
+      const filePath = fullPathFromRepoPath(CONTRACT_FIXTURES.missingOfficialUnitIndex);
+      const parsedMap = parseCurriculumMap(filePath);
+      const program = {
+        ...fixtureProgram(),
+        curriculumMapPath: filePath,
+        curriculumUnits: parsedMap.units,
+        curriculumUnitsByFolder: parsedMap.byFolder,
+      };
+      checkCurriculumMapAlignmentForProgram(program);
+    },
+    [/curriculum-map official unit "01-missing-index" has no matching official unit _index\.md/],
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.stubDashboardResidue,
+    "stub unit stays lightweight",
+    () => {
+      const parsed = readFixtureFrontmatter(
+        CONTRACT_FIXTURES.stubDashboardResidue,
+        "stub dashboard residue fixture",
+      );
+      checkCanonicalUnitBody(
+        fullPathFromRepoPath(CONTRACT_FIXTURES.stubDashboardResidue),
+        parsed.body,
+        parsed.data,
+      );
+    },
+    [/stub unit index must not contain planning dashboard H2 sections/],
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.exerciseSetBadExerciseId,
+    "exercise-set exercise_ids shape",
+    () => {
+      const parsed = readFixtureFrontmatter(
+        CONTRACT_FIXTURES.exerciseSetBadExerciseId,
+        "exercise-set reference fixture",
+      );
+      checkExerciseSetExerciseIds(
+        fullPathFromRepoPath(CONTRACT_FIXTURES.exerciseSetBadExerciseId),
+        parsed.data,
+        {
+          program: fixtureProgram(),
+          code: parsed.data.unit_code,
+        },
+        { requireExistingFiles: false },
+      );
+    },
+    [/frontmatter "exercise_ids" value "fixture-other-ex-001" must match "fixture-bad-ex-###"/],
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.unsupportedObjectType,
+    "removed content-object type stays inactive",
+    () => {
+      const filePath = fullPathFromRepoPath(CONTRACT_FIXTURES.unsupportedObjectType);
+      checkRemovedContentObjectContractText(
+        filePath,
+        fs.readFileSync(filePath, "utf8"),
+      );
+    },
+    [/contains removed correction content-object contract text/],
+  );
+}
+
 function checkUnitIndex(unitDir, expectedGroup, program) {
   const indexPath = path.join(unitDir, "_index.md");
 
@@ -2647,6 +3149,51 @@ function checkQuizFile(unit, filePath) {
   }
 }
 
+function checkExerciseSetExerciseIds(
+  filePath,
+  data,
+  unit,
+  { requireExistingFiles = true } = {},
+) {
+  checkRequiredStringArrayField(filePath, data, "exercise_ids");
+
+  if (!Array.isArray(data.exercise_ids)) return;
+
+  if (data.exercise_ids.length === 0) {
+    addError(filePath, 'frontmatter "exercise_ids" must contain at least one exercise ID');
+  }
+
+  const expectedExerciseIdPattern = new RegExp(
+    `^${escapeRegex(unit.program.idPrefix)}-${escapeRegex(unit.code)}-ex-\\d{3}$`,
+  );
+
+  for (const exerciseId of data.exercise_ids) {
+    const exerciseIdMatch = exerciseId.match(expectedExerciseIdPattern);
+    if (!exerciseIdMatch) {
+      addError(
+        filePath,
+        `frontmatter "exercise_ids" value "${exerciseId}" must match "${unit.program.idPrefix}-${unit.code}-ex-###"; source of truth is content/_guides/schema/frontmatter-schema.md`,
+      );
+      continue;
+    }
+
+    if (!requireExistingFiles) continue;
+
+    const exerciseNumber = exerciseId.slice(-3);
+    const exercisePath = path.join(
+      unit.dir,
+      "exercises",
+      `${unit.code}-ex-${exerciseNumber}.md`,
+    );
+    if (!isFile(exercisePath)) {
+      addError(
+        filePath,
+        `frontmatter "exercise_ids" references missing exercise file "${unit.code}-ex-${exerciseNumber}.md" in the same unit exercises/ folder`,
+      );
+    }
+  }
+}
+
 function checkSetFile(unit, filePath) {
   const fileName = path.basename(filePath);
   const nameMatch = fileName.match(new RegExp(`^${escapeRegex(unit.code)}-set-([a-z0-9][a-z0-9-]*)\\.md$`));
@@ -2674,7 +3221,6 @@ function checkSetFile(unit, filePath) {
 
   requireFields(filePath, data, REQUIRED_SET_FIELDS);
   checkRequiredStringArrayField(filePath, data, "difficulty_range");
-  checkRequiredStringArrayField(filePath, data, "exercise_ids");
 
   if (Array.isArray(data.difficulty_range)) {
     if (data.difficulty_range.length === 0) {
@@ -2703,39 +3249,7 @@ function checkSetFile(unit, filePath) {
     }
   }
 
-  if (Array.isArray(data.exercise_ids)) {
-    if (data.exercise_ids.length === 0) {
-      addError(filePath, 'frontmatter "exercise_ids" must contain at least one exercise ID');
-    }
-
-    const expectedExerciseIdPattern = new RegExp(
-      `^${escapeRegex(unit.program.idPrefix)}-${escapeRegex(unit.code)}-ex-\\d{3}$`,
-    );
-
-    for (const exerciseId of data.exercise_ids) {
-      const exerciseIdMatch = exerciseId.match(expectedExerciseIdPattern);
-      if (!exerciseIdMatch) {
-        addError(
-          filePath,
-          `frontmatter "exercise_ids" value "${exerciseId}" must match "${unit.program.idPrefix}-${unit.code}-ex-###"`,
-        );
-        continue;
-      }
-
-      const exerciseNumber = exerciseId.slice(-3);
-      const exercisePath = path.join(
-        unit.dir,
-        "exercises",
-        `${unit.code}-ex-${exerciseNumber}.md`,
-      );
-      if (!isFile(exercisePath)) {
-        addError(
-          filePath,
-          `frontmatter "exercise_ids" references missing exercise file "${unit.code}-ex-${exerciseNumber}.md"`,
-        );
-      }
-    }
-  }
+  checkExerciseSetExerciseIds(filePath, data, unit);
 
   if (isEmptyValue(data.skills)) {
     addWarning(filePath, 'frontmatter "skills" is empty');
@@ -3495,6 +4009,262 @@ function checkSetCurrentUnitPrompt(filePath, text) {
   if (!/Derive `TARGET_PLANNING_STATE`.*actual unit index/i.test(text)) {
     addError(filePath, "set-current-unit prompt must derive TARGET_PLANNING_STATE from the actual unit index");
   }
+
+  const requiredProducerSnippets = [
+    "canonical writer",
+    "may create or update only",
+    "_workflow/current-unit.md",
+    "Do not edit any file under `content/`",
+  ];
+
+  for (const snippet of requiredProducerSnippets) {
+    if (!text.includes(snippet)) {
+      addError(
+        filePath,
+        `set-current-unit producer contract is missing "${snippet}"; ${SET_CURRENT_UNIT_COMMAND} is the sole normal writer for _workflow/current-unit.md`,
+      );
+    }
+  }
+}
+
+function checkNextActionPrompt(filePath, text) {
+  const requiredConsumerSnippets = [
+    "This command is read-only",
+    "Verify `_workflow/current-unit.md`",
+    "do not write a replacement",
+    "rerun `content/_prompts/commands/set-current-unit.md`",
+  ];
+
+  for (const snippet of requiredConsumerSnippets) {
+    if (!text.includes(snippet)) {
+      addError(
+        filePath,
+        `next-action current-unit consumer contract is missing "${snippet}"; expected read-only verification and stale-cache reporting, not cache production`,
+      );
+    }
+  }
+}
+
+function checkCurrentUnitMutationPrompt(filePath, text, label) {
+  if (!text.includes("_workflow/current-unit.md")) {
+    addError(
+      filePath,
+      `${label} must document stale current-unit handling; expected invalidation/reporting against ${SET_CURRENT_UNIT_COMMAND}`,
+    );
+    return;
+  }
+
+  const hasInvalidationRule =
+    /treat (?:it|.*current-unit.*) as stale/i.test(text) ||
+    /consider (?:that )?cache stale/i.test(text) ||
+    /consider `_workflow\/current-unit\.md` stale/i.test(text) ||
+    /Invalidate stale current-unit cache/i.test(text) ||
+    /stale local workflow cache/i.test(text);
+
+  if (!hasInvalidationRule) {
+    addError(
+      filePath,
+      `${label} must treat affected _workflow/current-unit.md entries as stale when identity, path, order, or planning_state changes`,
+    );
+  }
+
+  const hasNoSynthesisRule =
+    /Do not synthesize a new\s+canonical current-unit entry/i.test(text) ||
+    /Do not synthesize a new `_workflow\/current-unit\.md`/i.test(text) ||
+    /Do not rewrite it from this command/i.test(text) ||
+    /must not create\s+a new canonical current-unit entry/i.test(text);
+
+  if (!hasNoSynthesisRule) {
+    addError(
+      filePath,
+      `${label} must not synthesize or rewrite a canonical current-unit entry; expected invalidation or rerun of ${SET_CURRENT_UNIT_COMMAND}`,
+    );
+  }
+}
+
+function checkCurrentUnitPromptContracts() {
+  const checks = [
+    {
+      repoPath: SET_CURRENT_UNIT_COMMAND,
+      check: checkSetCurrentUnitPrompt,
+    },
+    {
+      repoPath: NEXT_ACTION_COMMAND,
+      check: checkNextActionPrompt,
+    },
+    {
+      repoPath: INITIALIZE_UNIT_COMMAND,
+      check: (filePath, text) =>
+        checkCurrentUnitMutationPrompt(filePath, text, "initialize-unit lifecycle command"),
+    },
+    {
+      repoPath: MANAGE_UNIT_COMMAND,
+      check: (filePath, text) =>
+        checkCurrentUnitMutationPrompt(filePath, text, "manage-unit mutation command"),
+    },
+    {
+      repoPath: MANAGE_PROGRAM_COMMAND,
+      check: (filePath, text) =>
+        checkCurrentUnitMutationPrompt(filePath, text, "manage-program lifecycle command"),
+    },
+  ];
+
+  for (const { repoPath, check } of checks) {
+    const filePath = fullPathFromRepoPath(repoPath);
+    if (!isFile(filePath)) {
+      addError(filePath, "missing current-unit contract prompt");
+      continue;
+    }
+
+    check(filePath, fs.readFileSync(filePath, "utf8"));
+  }
+}
+
+function checkPromptFileContract(
+  filePath,
+  text,
+  {
+    relative = rel(filePath),
+    basename = path.basename(filePath),
+    parent = "",
+    isOperatingPrompt = false,
+  } = {},
+) {
+  if (/^00-/.test(basename)) {
+    addError(filePath, 'obsolete prompt filename pattern "00-*" is not allowed');
+  }
+
+  if (/^q\d{1,2}[-_]/i.test(basename) || /^q-\d/i.test(basename)) {
+    addError(filePath, 'obsolete flat quiz prompt filename pattern like "q01-*" is not allowed');
+  }
+
+  if (/^\d{2}[a-z]-/i.test(basename)) {
+    addError(filePath, 'obsolete number-plus-letter prompt filename pattern like "02a-*" is not allowed');
+  }
+
+  if (/^\d{2}-/.test(basename) && !parent.startsWith("workflows/")) {
+    addError(filePath, "numbered prompt files are only allowed inside workflow folders");
+  }
+
+  const deletedPathReference =
+    /content\/_prompts\/(?:00-|q\d{1,2}[-_]|[^`\s)]*\/\d{2}[a-z]-)/i;
+  if (deletedPathReference.test(text)) {
+    addError(filePath, "references an obsolete prompt path");
+  }
+
+  for (const pattern of REMOVED_ACTIVE_TEXT) {
+    if (pattern.test(text)) {
+      addError(filePath, `contains removed planning/creation compatibility text matching ${pattern}`);
+    }
+  }
+
+  const promptRootRelativePathReference =
+    /(?:^|[\s`(])(?:commands|workflows|shortcuts|_shared)\/[^\s`)]*\.md\b/i;
+  const promptBackslashPathReference =
+    /content\\_prompts\\|(?:^|[\s`(])(?:commands|workflows|shortcuts|_shared)\\[^\s`)]*\.md\b/i;
+
+  if (
+    promptRootRelativePathReference.test(text) ||
+    promptBackslashPathReference.test(text)
+  ) {
+    addError(filePath, "prompt references must use repository-relative POSIX paths like content/_prompts/commands/next-action.md");
+  }
+
+  if (relative === SHARED_PROMPT_CONTRACT_PATH) {
+    checkSharedPromptContract(filePath, text);
+  }
+
+  if (relative === SET_CURRENT_UNIT_COMMAND) {
+    checkSetCurrentUnitPrompt(filePath, text);
+  }
+
+  if (relative !== SHARED_PROMPT_CONTRACT_PATH) {
+    for (const field of OBSOLETE_TARGET_FIELDS) {
+      if (text.includes(field)) {
+        addError(
+          filePath,
+          `prompt uses obsolete target field "${field}"; expected canonical fields from ${SHARED_PROMPT_CONTRACT_PATH}`,
+        );
+      }
+    }
+  }
+
+  const targetContractSections = getSectionsByHeadings(
+    text,
+    2,
+    TARGET_CONTRACT_SECTION_HEADINGS,
+  );
+
+  if (targetContractSections.length && relative !== SHARED_PROMPT_CONTRACT_PATH) {
+    for (const section of targetContractSections) {
+      if (!section.text.includes(SHARED_PROMPT_CONTRACT_PATH)) {
+        addError(
+          filePath,
+          `prompt-specific ${section.heading} must inherit ${SHARED_PROMPT_CONTRACT_PATH}; keep generic target precedence in the shared contract`,
+        );
+      }
+    }
+  }
+
+  const targetDriftSections = getSectionsByHeadings(
+    text,
+    2,
+    TARGET_DRIFT_SCAN_SECTION_HEADINGS,
+  );
+
+  if (relative !== SHARED_PROMPT_CONTRACT_PATH) {
+    for (const section of targetDriftSections) {
+      for (const pattern of [
+        ...GENERIC_TARGET_RESOLUTION_PATTERNS,
+        ...TARGET_PRECEDENCE_DRIFT_PATTERNS,
+      ]) {
+        if (pattern.test(section.text)) {
+          addError(
+            filePath,
+            `prompt-specific ${section.heading} duplicates or contradicts target-resolution precedence from ${SHARED_PROMPT_CONTRACT_PATH}; local scope rules may only narrow artifact/file selection after TARGET_* identity wins`,
+          );
+          break;
+        }
+      }
+    }
+  }
+
+  if (relative !== SHARED_PROMPT_CONTRACT_PATH) {
+    for (const pattern of CURRENT_UNIT_SOURCE_DRIFT_PATTERNS) {
+      if (pattern.test(text)) {
+        addError(
+          filePath,
+          `current-unit cache contract violation: _workflow/current-unit.md is only an ephemeral cache; expected source of truth is TARGET_PROGRAM_INDEX and TARGET_UNIT_INDEX from ${SHARED_PROMPT_CONTRACT_PATH}`,
+        );
+        break;
+      }
+    }
+  }
+
+  if (
+    relative !== SHARED_PROMPT_CONTRACT_PATH &&
+    relative !== SET_CURRENT_UNIT_COMMAND
+  ) {
+    for (const pattern of CURRENT_UNIT_WRITE_DRIFT_PATTERNS) {
+      if (pattern.test(text)) {
+        addError(
+          filePath,
+          `current-unit writer boundary violation: only ${SET_CURRENT_UNIT_COMMAND} may write _workflow/current-unit.md; other prompts may only invalidate, clear when safe, or tell the user to rerun set-current-unit`,
+        );
+        break;
+      }
+    }
+  }
+
+  const usesUnitTargetContract =
+    /\bTARGET_UNIT\b|\bTARGET_PROGRAM_PATH\b|_workflow\/current-unit\.md|^## Target (?:Resolution|Inference|Fields|Detection|Selection)|^## Current Unit|^## Scope Resolution/m.test(text);
+  if (
+    isOperatingPrompt &&
+    usesUnitTargetContract &&
+    !text.includes(SHARED_PROMPT_CONTRACT_PATH)
+  ) {
+    addError(filePath, `unit-target prompt must inherit ${SHARED_PROMPT_CONTRACT_PATH}`);
+  }
 }
 
 function checkPromptLayout() {
@@ -3507,127 +4277,11 @@ function checkPromptLayout() {
       relative.startsWith("content/_prompts/workflows/") ||
       relative.startsWith("content/_prompts/shortcuts/");
 
-    if (/^00-/.test(basename)) {
-      addError(filePath, 'obsolete prompt filename pattern "00-*" is not allowed');
-    }
-
-    if (/^q\d{1,2}[-_]/i.test(basename) || /^q-\d/i.test(basename)) {
-      addError(filePath, 'obsolete flat quiz prompt filename pattern like "q01-*" is not allowed');
-    }
-
-    if (/^\d{2}[a-z]-/i.test(basename)) {
-      addError(filePath, 'obsolete number-plus-letter prompt filename pattern like "02a-*" is not allowed');
-    }
-
-    if (/^\d{2}-/.test(basename) && !parent.startsWith("workflows/")) {
-      addError(filePath, "numbered prompt files are only allowed inside workflow folders");
-    }
-
-    const text = fs.readFileSync(filePath, "utf8");
-    const deletedPathReference =
-      /content\/_prompts\/(?:00-|q\d{1,2}[-_]|[^`\s)]*\/\d{2}[a-z]-)/i;
-    if (deletedPathReference.test(text)) {
-      addError(filePath, "references an obsolete prompt path");
-    }
-
-    for (const pattern of REMOVED_ACTIVE_TEXT) {
-      if (pattern.test(text)) {
-        addError(filePath, `contains removed planning/creation compatibility text matching ${pattern}`);
-      }
-    }
-
-    const promptRootRelativePathReference =
-      /(?:^|[\s`(])(?:commands|workflows|shortcuts|_shared)\/[^\s`)]*\.md\b/i;
-    const promptBackslashPathReference =
-      /content\\_prompts\\|(?:^|[\s`(])(?:commands|workflows|shortcuts|_shared)\\[^\s`)]*\.md\b/i;
-
-    if (
-      promptRootRelativePathReference.test(text) ||
-      promptBackslashPathReference.test(text)
-    ) {
-      addError(filePath, "prompt references must use repository-relative POSIX paths like content/_prompts/commands/next-action.md");
-    }
-
-    if (relative === SHARED_PROMPT_CONTRACT_PATH) {
-      checkSharedPromptContract(filePath, text);
-    }
-
-    if (relative === SET_CURRENT_UNIT_COMMAND) {
-      checkSetCurrentUnitPrompt(filePath, text);
-    }
-
-    if (relative !== SHARED_PROMPT_CONTRACT_PATH) {
-      for (const field of OBSOLETE_TARGET_FIELDS) {
-        if (text.includes(field)) {
-          addError(filePath, `prompt uses obsolete target field "${field}"`);
-        }
-      }
-    }
-
-    const targetContractSections = getSectionsByHeadings(
-      text,
-      2,
-      TARGET_CONTRACT_SECTION_HEADINGS,
+    checkPromptFileContract(
+      filePath,
+      fs.readFileSync(filePath, "utf8"),
+      { relative, basename, parent, isOperatingPrompt },
     );
-
-    if (targetContractSections.length && relative !== SHARED_PROMPT_CONTRACT_PATH) {
-      for (const section of targetContractSections) {
-        if (!section.text.includes(SHARED_PROMPT_CONTRACT_PATH)) {
-          addError(
-            filePath,
-            `prompt-specific ${section.heading} must inherit content/_prompts/_shared/prompt-contract.md`,
-          );
-        }
-      }
-    }
-
-    const targetDriftSections = getSectionsByHeadings(
-      text,
-      2,
-      TARGET_DRIFT_SCAN_SECTION_HEADINGS,
-    );
-
-    if (relative !== SHARED_PROMPT_CONTRACT_PATH) {
-      for (const section of targetDriftSections) {
-        for (const pattern of [
-          ...GENERIC_TARGET_RESOLUTION_PATTERNS,
-          ...TARGET_PRECEDENCE_DRIFT_PATTERNS,
-        ]) {
-          if (pattern.test(section.text)) {
-            addError(
-              filePath,
-              `prompt-specific ${section.heading} duplicates or contradicts shared target-resolution rules`,
-            );
-            break;
-          }
-        }
-      }
-    }
-
-    if (
-      relative !== SHARED_PROMPT_CONTRACT_PATH &&
-      relative !== SET_CURRENT_UNIT_COMMAND
-    ) {
-      for (const pattern of CURRENT_UNIT_WRITE_DRIFT_PATTERNS) {
-        if (pattern.test(text)) {
-          addError(
-            filePath,
-            "only content/_prompts/commands/set-current-unit.md may write _workflow/current-unit.md; other prompts may only invalidate or report stale cache",
-          );
-          break;
-        }
-      }
-    }
-
-    const usesUnitTargetContract =
-      /\bTARGET_UNIT\b|\bTARGET_PROGRAM_PATH\b|_workflow\/current-unit\.md|^## Target (?:Resolution|Inference|Fields|Detection|Selection)|^## Current Unit|^## Scope Resolution/m.test(text);
-    if (
-      isOperatingPrompt &&
-      usesUnitTargetContract &&
-      !text.includes(SHARED_PROMPT_CONTRACT_PATH)
-    ) {
-      addError(filePath, "unit-target prompt must inherit content/_prompts/_shared/prompt-contract.md");
-    }
   }
 }
 
@@ -3675,14 +4329,26 @@ function checkRemovedContentObjectContracts() {
 
   for (const filePath of contentObjectContractFilesForRemovedScan()) {
     const text = fs.readFileSync(filePath, "utf8");
-    for (const pattern of removedContractPatterns) {
-      if (pattern.test(text)) {
-        addError(
-          filePath,
-          "contains removed correction content-object contract text",
-        );
-        break;
-      }
+    checkRemovedContentObjectContractText(filePath, text, removedContractPatterns);
+  }
+}
+
+function checkRemovedContentObjectContractText(
+  filePath,
+  text,
+  removedContractPatterns = [
+    new RegExp(`\\btype:\\s*${"cor"}${"rection"}\\b`, "i"),
+    /\bcorr-[a-z0-9{]/i,
+    new RegExp(escapeRegex(`${"cor"}${"rection"}.template.md`), "i"),
+  ],
+) {
+  for (const pattern of removedContractPatterns) {
+    if (pattern.test(text)) {
+      addError(
+        filePath,
+        "contains removed correction content-object contract text; active object types are lesson, exercise, quiz, and exercise-set",
+      );
+      break;
     }
   }
 }
@@ -3849,6 +4515,7 @@ function printResults() {
   console.log(`Checked official units: ${checkedOfficialUnits}`);
   console.log(`Checked unofficial units: ${checkedUnofficialUnits}`);
   console.log(`Checked total units: ${units.length}`);
+  console.log(`Checked contract fixtures: ${checkedContractFixtures}`);
   console.log(`Checked IDs: ${ids.size}`);
 
   if (warnings.length) {
@@ -3878,6 +4545,7 @@ function main() {
   checkInitializedUnitReferenceFixture();
   checkCanonicalContentTemplates();
   discoverAndCheckPrograms();
+  checkGoldenExampleContracts();
   for (const program of programs) {
     checkProgramFolderShape(program);
   }
@@ -3886,6 +4554,7 @@ function main() {
   checkUnitUniqueness();
   checkCatalogs();
   checkPromptLayout();
+  checkCurrentUnitPromptContracts();
   checkLessonPromptFamily();
   checkExercisePromptFamily();
   checkQuizPromptFamily();
@@ -3895,6 +4564,7 @@ function main() {
   checkRemovedGuideText();
   checkRemovedContentObjectContracts();
   checkLegacyGlobalProductionReferences();
+  checkContractFixtures();
   collectIdsAndWarnings();
   checkDeletedIdRegistry();
   printResults();
