@@ -115,6 +115,8 @@ Each exercise lives in its own Markdown file under `exercises/`.
 
 Final exercise files record the source planning object with `source_design_card` in frontmatter and in `## Notes auteur`. Use only `ready-for-exercise-batch` or `used-in-exercise` source cards; update a card to `used-in-exercise` only after the final exercise references it.
 
+For small exercise work, use `content/_prompts/shortcuts/create-direct-exercise.md`. It can create one focused exercise, a tiny routine group, or one exercise solution when the idea is already clear. It creates or updates the smallest needed direct design card for traceability, creates final files only when the request is specific enough, and marks new or changed exercise evidence as needing the relevant targeted review.
+
 ## Standalone quizzes
 
 Standalone quizzes are first-class unit content. They live under `quizzes/` and contain multiple questions.
@@ -138,6 +140,25 @@ Quiz item design cards are contract-bearing planning artifacts. A ready item car
 Every MCQ/MR option should have answer-specific feedback. Wrong choices should map to real misconceptions. Fill-blank, match, sequence, and hotspot items should plan common wrong forms, wrong pairings, wrong orders, or wrong regions instead of pretending they have choices.
 
 Final quiz questions record their source planning object with `Source item card` in the question metadata. Use only `ready-for-quiz-file` or `used-in-quiz` source cards; update a card to `used-in-quiz` only after the final question references it.
+
+For small quiz work, use `content/_prompts/shortcuts/lightweight-quiz.md`. It can create one item, add one item to an existing quiz, improve one item, improve one distractor and its feedback, improve one option's feedback/remediation, review one changed slice, or create a short exit-ticket/remediation quiz. It keeps distractor feedback first-class and marks only the affected item, answer, feedback, or remediation evidence as needing review.
+
+## Small Task vs Full Pipeline
+
+Use this quick routing guide before choosing a prompt:
+
+| I want... | Run... | Review invalidated |
+|---|---|---|
+| One focused exercise from a clear idea | `content/_prompts/shortcuts/create-direct-exercise.md` | New exercise needs exercise-quality and solution review. |
+| Three routine practice exercises for one obvious skill | `content/_prompts/shortcuts/create-direct-exercise.md` | Each new exercise needs exercise-quality and solution review. |
+| A whole topic exercise set or broad exercise coverage | Full exercise workflow: seeds -> design cards -> balance -> batch -> reviews -> sets | Review follows the normal exercise workflow. |
+| One exercise solution or one solution improvement | `content/_prompts/shortcuts/create-direct-exercise.md` or `content/_prompts/commands/content-studio.md` for a selected existing slice | Solution review only, unless the statement/design also changed. |
+| One quiz item for a known objective | `content/_prompts/shortcuts/lightweight-quiz.md` | That item needs item-quality, answer-key, and feedback/remediation review. |
+| Fix one distractor and its feedback | `content/_prompts/shortcuts/lightweight-quiz.md` or `content/_prompts/commands/content-studio.md` for a selected existing slice | Item-quality for that item, plus feedback review when feedback changed. |
+| A short exit ticket or remediation quiz | `content/_prompts/shortcuts/lightweight-quiz.md` | That quiz needs item-quality, answer-key, feedback, and remediation review. |
+| A full diagnostic quiz or quiz bank | Full quiz workflow: intent -> raw pool -> item cards -> quiz file -> reviews | Review follows the normal quiz workflow. |
+
+When the content already exists and the user wants a bounded wording, clarity, or local patch, use `content/_prompts/commands/content-studio.md`. When the task is to refresh stale review evidence after content changed, run the owning review prompt instead of rerunning a full pipeline.
 
 ## Targeted revision
 

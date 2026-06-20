@@ -88,8 +88,8 @@ This project is still in the system-design/buildout phase. The priority is a cle
 - Unit `_index.md` files use `planning_state`. Do not create lessons, exercises, quizzes, sets, or full planning sections in a `planning_state: stub` unit; initialize it first with `content/_prompts/commands/initialize-unit.md`.
 - Use `content/_prompts/commands/content-studio.md` for conversational polishing, critique, diagnosis, proposals, and targeted patches across existing content artifacts.
 - Do not create one huge lesson file unless explicitly requested.
-- Each exercise lives in its own file, but exercise files are usually created in small batches of 3 to 5 unless explicitly requested otherwise.
-- Standalone quizzes live under the target unit `quizzes/` folder and are created through quiz intent cards, raw item pools, curated item design cards, one-file quiz creation, item-quality review, answer-key review, and feedback/remediation review.
+- Each exercise lives in its own file. For broad exercise production, create exercise files in small batches of 3 to 5; for one focused exercise, a tiny routine group, or one solution, use `content/_prompts/shortcuts/create-direct-exercise.md`.
+- Standalone quizzes live under the target unit `quizzes/` folder. Use the full quiz pipeline for full quiz banks, high-stakes diagnostics, and broad coverage; use `content/_prompts/shortcuts/lightweight-quiz.md` for one item, one distractor plus feedback, one feedback/remediation slice, one added item, or a short exit-ticket/remediation quiz.
 - Do not mass-generate units unless explicitly asked.
 - Do not treat unofficial topics as official curriculum units. They are curated revision, synthesis, or method units under `content/programs/<program_id>/topics/`.
 - Prefer small, reviewable changes.

@@ -132,7 +132,7 @@ Check:
 - when lessons are in scope, lesson files exist as declared, have coherent local progression, follow the editorial pipeline at a review-signal level, and satisfy the lesson rubric without unnecessary ceremony;
 - frontmatter fields and IDs are consistent;
 - declared skills are covered, practiced, quizzed, deferred, or intentionally `not-in-scope` in a way that matches the declared scope;
-- when exercises are in scope, exercise files, design cards or direct blueprints, statement/design statuses, solution statuses, source design-card links, and batch-balance notes satisfy the exercise workflow contract at a review-signal level;
+- when exercises are in scope, exercise files, design cards or lightweight direct exercise cards, statement/design statuses, solution statuses, source design-card links, and batch-balance notes satisfy the exercise workflow contract at a review-signal level;
 - when quizzes are in scope, standalone quiz files, quiz intent cards, item design cards, item-quality status, answer-key status, feedback status, remediation status, canonical item types, and required type-specific answer/feedback/remediation sections satisfy the quiz workflow contract at a review-signal level;
 - exercises align with lessons only when both streams exist or the unit plan says they should align;
 - standalone quizzes align with lessons, exercises, quiz intent cards, or item design cards only when those streams/cards exist or the unit plan says they should align;

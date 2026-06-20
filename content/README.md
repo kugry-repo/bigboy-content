@@ -85,6 +85,8 @@ Exercise design cards and quiz item design cards are contract-bearing planning a
 
 Standalone quiz item types are canonical and type-specific: `multiple-choice`, `multiple-response`, `true-false`, `fill-blank`, `match`, `sequence`, and `hotspot`. MCQ/MR items require distractor and per-choice feedback planning where diagnostic; non-choice items require their own accepted-answer, pairing, ordering, or hotspot-region contract without fake per-choice fields.
 
+Small authoring tasks have explicit shortcut routes. Use `content/_prompts/shortcuts/create-direct-exercise.md` for one focused exercise, a tiny routine practice group, or one exercise solution when the idea is clear. Use `content/_prompts/shortcuts/lightweight-quiz.md` for one quiz item, one distractor plus feedback, one feedback/remediation slice, one added item, or a short exit-ticket/remediation quiz. Use the full exercise and quiz workflows for broad coverage, balanced sets, full quiz banks, high-stakes diagnostics, and broad exam-prep production.
+
 Skill coverage is content-derived: unit indexes, artifact frontmatter `skills`, exercise and quiz design cards, and unit review notes are the current source of truth. A generated coverage report may be added later; no manually maintained global file is authoritative.
 
 ## Authoring Flow
@@ -97,6 +99,8 @@ Start with:
 - `content/_prompts/commands/manage-unit.md` when creating, renaming, deleting, splitting, or merging units/topics.
 - `content/_prompts/commands/initialize-unit.md` before building a unit that is still a stub.
 - `content/_prompts/commands/content-studio.md` for conversational polishing, critique, diagnosis, proposals, and targeted patches.
+- `content/_prompts/shortcuts/create-direct-exercise.md` for small direct exercise work.
+- `content/_prompts/shortcuts/lightweight-quiz.md` for small quiz item, distractor, feedback, or short-quiz work.
 - `content/_guides/programs/program-lifecycle.md` for program lifecycle operations.
 - `content/_guides/units/unit-workflow.md` for the canonical dashboard model and workstream meanings.
 

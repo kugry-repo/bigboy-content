@@ -73,7 +73,7 @@ Check:
 - [ ] Intended final exercise files exist under the unit `exercises/` folder.
 - [ ] Exercise files use `type: exercise`, one exercise per file.
 - [ ] Filename and ID follow the unit naming contract.
-- [ ] `source_design_card` references the canonical exercise design card or direct blueprint used to create the exercise.
+- [ ] `source_design_card` references the canonical exercise design card or lightweight direct exercise card used to create the exercise.
 - [ ] The referenced exercise source card exists in the same unit, has status `ready-for-exercise-batch` or `used-in-exercise`, is not duplicated, and does not contradict the final exercise difficulty, role/type, estimated time, planned file, or linked skills where those fields exist.
 - [ ] Exercise design cards or blueprints have stable H4 card IDs, allowed statuses (`draft`, `needs-review`, `ready-for-exercise-batch`, `used-in-exercise`, `deferred`, `rejected`), target skills, role/type, difficulty, prerequisites, statement shape, expected answer form, solution strategy, traps, verification strategy, source/provenance notes, linked-support convention, variants, estimated time, potential sets, and readiness notes.
 - [ ] Final exercise files were not created from vague seeds or incomplete cards.

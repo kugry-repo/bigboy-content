@@ -89,6 +89,8 @@ A wrong answer is not acceptable unless it represents a plausible student mistak
 
 For `multiple-choice` and `multiple-response`, per-choice feedback, answer-key agreement, and distractor rationale for every wrong option are required for reviewed/published diagnostic items. `multiple-response` must have a complete correct set with at least two correct options and at least one incorrect option; use `multiple-choice` when exactly one option is correct. For `fill-blank`, `match`, `sequence`, and `hotspot`, do not fake choices; require the appropriate visible blank/input, left/right pairing, ordering, or target-region contract instead.
 
+A distractor is reviewed as a diagnostic object. For each wrong MCQ/MR option, the item should make clear why it is tempting, why it is mathematically wrong, what misconception or error it reveals, and what feedback or remediation the student receives.
+
 Do not use item types just for variety.
 
 Do not turn long exercises into MCQs.
@@ -124,3 +126,9 @@ Use separate status fields intentionally:
 - `remediation_status`: next-step routing.
 
 After a material edit, set only the affected quiz review substatus to `needs-review` until that targeted review passes. Do not treat a reviewed answer key as fresh evidence for changed feedback, or reviewed feedback as fresh evidence for changed distractors.
+
+## Lightweight Route Review
+
+Items and short quizzes created through `content/_prompts/shortcuts/lightweight-quiz.md` must meet the same item-level rubric as full-pipeline quiz items.
+
+Creating one item makes item-quality, answer-key, feedback, and remediation review stale for that item. Because quiz substatus fields live in file frontmatter, set the affected file-level substatus to `needs-review` and identify the item scope in the report or author notes when useful. Editing only a distractor invalidates item-quality for that item and feedback when the feedback depends on the distractor. Editing only feedback or remediation invalidates only feedback/remediation evidence.

@@ -6,6 +6,8 @@ This is not a pipeline step. It is an authoring studio for back-and-forth work w
 
 Use this command when the user wants selected-fragment work, taste/voice discussion, diagnosis, proposals, grilling, or a small local patch. If the user already knows a bounded change that may affect multiple files, stale downstream artifacts, prompts, guides, templates, schemas, or validators, use `content/_prompts/commands/change-existing-content.md` instead.
 
+For small creation tasks, use the lightweight shortcuts instead of content-studio: `content/_prompts/shortcuts/create-direct-exercise.md` for one direct exercise or solution, and `content/_prompts/shortcuts/lightweight-quiz.md` for one quiz item, one distractor plus feedback, one added item, or a short focused quiz.
+
 For unit-wide consistency review, use `content/_prompts/workflows/unit/02-review-unit.md`. For metadata/link/todo/status/source-safety cleanup before publication consideration, use `content/_prompts/workflows/unit/03-finalize-unit.md`.
 
 Use content-studio to patch or discuss bounded content. When content already changed and the task is to verify correctness or refresh stale review evidence, use the owning lesson, exercise, or quiz review prompt instead.
@@ -18,6 +20,8 @@ It works for:
 - a related quiz option and feedback pair, even when they are not adjacent;
 - exercise sets;
 - unit `_index.md` planning sections and author-facing planning cards.
+
+It patches existing bounded content. It does not create exercise batches, full quiz files, full quiz banks, or broad planning coverage.
 
 ## Normal Usage
 
@@ -118,6 +122,8 @@ For these requests:
 3. Do not rewrite the full file or unrelated neighboring sections.
 4. Report exactly which headings, question IDs, options, callouts, or status fields were touched.
 5. Invalidate only the review evidence affected by those touched pieces.
+
+For quiz distractor edits, treat the distractor and its feedback as one diagnostic object when they depend on each other: why the option is tempting, why it is wrong, what misconception it reveals, and what feedback/remediation follows.
 
 ## Read First
 

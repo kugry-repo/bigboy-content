@@ -46,7 +46,7 @@ After a material edit to a quiz file, use `needs-review` on only the affected re
 
 ## Canonical Quiz Workflow
 
-Use this seven-step workflow:
+Use this seven-step workflow for full quiz production, broad quiz banks, high-stakes diagnostic quizzes, and broad unit coverage:
 
 ```text
 01-plan-quiz-intent
@@ -213,6 +213,32 @@ This step may update `feedback_status` and `remediation_status`. It must not mar
 
 Each review step refreshes only the status evidence it actually checks.
 
+## Lightweight Quiz Work
+
+Use `content/_prompts/shortcuts/lightweight-quiz.md` for small focused quiz tasks:
+
+- one quiz item for a known objective;
+- one improved quiz item;
+- one MCQ/MR distractor and its feedback;
+- one option's feedback or remediation;
+- one item added to an existing quiz;
+- a short exit ticket or remediation quiz with a narrow objective;
+- review of only the changed item or feedback slice.
+
+This route may create or update a compact quiz intent or item design card only when traceability or missing design intent requires it. It must not recreate the full quiz pipeline inside the shortcut, produce a full quiz bank, or build a high-stakes diagnostic quiz from scratch.
+
+Lightweight quiz files and items still need the same item-type contracts as full-pipeline quiz files. New short quizzes should make review needs visible:
+
+```yaml
+status: draft
+item_quality_status: needs-review
+answer_key_status: needs-review
+feedback_status: needs-review
+remediation_status: needs-review
+```
+
+For an existing quiz file, frontmatter status fields are file-level. After a one-item edit, set the affected file-level substatus to `needs-review` and record the item or feedback slice that needs review in the change report or `## Notes auteur` when useful. Do not require a whole-unit or whole-pipeline review after a small edit.
+
 ## Quiz Kinds
 
 Use one `quiz_kind` value:
@@ -304,6 +330,8 @@ Use French for learner-facing headings and prose.
 Feedback is part of quiz design, not an afterthought.
 
 For `multiple-choice` and `multiple-response`, each choice must have answer-specific feedback.
+
+A distractor is a diagnostic object, not just a wrong answer. Improving a wrong option means improving the option and its feedback together whenever they depend on each other.
 
 Wrong-choice feedback should explain:
 

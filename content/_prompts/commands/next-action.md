@@ -118,6 +118,7 @@ Routing rules:
 
 - Content-studio patches bounded selected content; it does not refresh stale review evidence.
 - After content already changed, route review-evidence refresh to the owning artifact review prompt.
+- Lightweight shortcuts are allowed for small focused authoring tasks. They do not replace full exercise or quiz pipelines.
 - Use `content/_prompts/commands/change-existing-content.md` when a requested edit may affect contracts, dependencies, planning objects, scope/blocker state, inventory links, or multiple files.
 - If the user wants unit planning, plan refresh, unit-map work, or artifact-planning decisions, recommend `content/_prompts/workflows/unit/01-plan-unit.md`.
 - If the user wants a unit-wide consistency review across the unit plan and existing artifacts, recommend `content/_prompts/workflows/unit/02-review-unit.md`.
@@ -125,6 +126,10 @@ Routing rules:
 - If the user asks whether a unit is ready to publish, recommend `content/_prompts/workflows/unit/03-finalize-unit.md` for readiness cleanup and report that no current prompt automatically sets `planning_state: published`.
 - If the user wants a known bounded change to existing files, stale-file sync, or migration after a prompt/guide/template/schema/validator change, recommend `content/_prompts/commands/change-existing-content.md`.
 - If the user wants conversational critique, diagnosis, proposals, grilling, taste decisions, or a small targeted patch on a selected file/fragment, recommend `content/_prompts/commands/content-studio.md`.
+- If the user wants one focused exercise, a tiny routine exercise group, one narrow exam-style exercise, one exercise solution, or one solution improvement and the target unit is initialized, recommend `content/_prompts/shortcuts/create-direct-exercise.md`.
+- If the user wants one quiz item, one improved quiz item, one MCQ/MR distractor and feedback pair, one option feedback/remediation slice, one item added to an existing quiz, or a short exit-ticket/remediation quiz and the target unit is initialized, recommend `content/_prompts/shortcuts/lightweight-quiz.md`.
+- If the user wants a full exercise universe, broad topic coverage, a balanced exercise set, or broad exam-prep exercise production, recommend the full exercise workflow at the smallest missing prerequisite.
+- If the user wants a full quiz bank, high-stakes diagnostic quiz, broad unit quiz coverage, or broad exam-readiness quiz production, recommend the full quiz workflow at the smallest missing prerequisite.
 - If existing content has `needs-review` review evidence after a material edit, recommend the smallest targeted review prompt that owns that status field.
 - If lesson files changed materially, recommend targeted lesson review through `content/_prompts/workflows/lessons/07-verify-finalize.md`.
 - If exercise statements, design intent, hints, mistake blocks, or verification changed materially, recommend `content/_prompts/workflows/exercises/05-review-exercise-quality.md`.
@@ -184,26 +189,58 @@ For repair, critique, or a bounded patch of already authored lesson text, recomm
 
 For exercise requests:
 
+First classify the request by scope.
+
+Use `content/_prompts/shortcuts/create-direct-exercise.md` when the author asks for:
+
+- one focused exercise from a clear idea;
+- 2 or 3 routine exercises for one obvious narrow skill;
+- one narrow exam-style practice exercise;
+- a worked solution for an existing exercise;
+- one improved exercise solution;
+- a compact source card only because the direct exercise needs traceability.
+
+The direct route may infer the unit from the active file path and may create the complete exercise file when the request is specific enough. It must mark new direct exercises as needing exercise-quality and solution review. Solution-only edits invalidate solution review only unless the statement/design also changed.
+
+Use the full exercise workflow when the author asks for a whole topic exercise universe, broad coverage, balanced set design, systematic unit exercise production, or broad exam-prep exercise coverage:
+
 1. If no exercise cluster map exists and the request is broad, recommend `content/_prompts/workflows/exercises/01-generate-raw-seeds.md`.
 2. If a selected cluster has no raw seeds and the user did not provide enough direct design information, recommend `content/_prompts/workflows/exercises/01-generate-raw-seeds.md`.
 3. If raw seeds exist but canonical design cards are missing, incomplete, duplicated, or not `ready-for-exercise-batch`, recommend `content/_prompts/workflows/exercises/02-curate-design-cards.md`.
 4. If multiple clusters/cards exist but balance is unclear, recommend `content/_prompts/workflows/exercises/03-check-unit-balance.md`.
 5. If ready design cards exist and requested files are missing, recommend `content/_prompts/workflows/exercises/04-create-batch.md`.
-6. If exercise files exist with draft or `needs-review` design or statement statuses, recommend `content/_prompts/workflows/exercises/05-review-exercise-quality.md`.
-7. If exercise files exist with draft or `needs-review` solutions, recommend `content/_prompts/workflows/exercises/06-review-solutions.md`.
+6. If exercise files exist with draft or `needs-review` design or statement statuses and the user wants review evidence refreshed, recommend `content/_prompts/workflows/exercises/05-review-exercise-quality.md`.
+7. If exercise files exist with draft or `needs-review` solutions and the user wants solution review evidence refreshed, recommend `content/_prompts/workflows/exercises/06-review-solutions.md`.
 8. If the request is about learner paths or grouped practice, recommend `content/_prompts/workflows/exercises/07-create-sets.md`.
 
 ## Quiz diagnosis
 
 For quiz requests:
 
+First classify the request by scope.
+
+Use `content/_prompts/shortcuts/lightweight-quiz.md` when the author asks for:
+
+- one quiz item for a known objective;
+- one improved quiz item;
+- one MCQ/MR distractor and its feedback;
+- one option's feedback or remediation;
+- one item added to an existing quiz;
+- a short exit-ticket quiz;
+- a short remediation quiz;
+- review of only the changed item, option, feedback, or remediation slice.
+
+The lightweight route may infer the unit from the active file path and may patch related item/feedback sections even when they are not adjacent. It must treat MCQ/MR distractors as diagnostic objects: why tempting, why wrong, what misconception they reveal, and what feedback/remediation follows.
+
+Use the full quiz workflow when the author asks for a full quiz bank, high-stakes diagnostic quiz, broad unit quiz coverage, broad exam-readiness production, or systematic coverage across a quiz series:
+
 1. If quiz intent, target skill area, or series is missing, recommend `content/_prompts/workflows/quizzes/01-plan-quiz-intent.md` or a small unit-map patch if the intent is genuinely unclear.
 2. If a quiz intent exists but raw item seeds are missing or thin, recommend `content/_prompts/workflows/quizzes/02-generate-raw-item-pool.md`.
 3. If raw item seeds exist but canonical item design cards are missing, incomplete, duplicated, or not `ready-for-quiz-file`, recommend `content/_prompts/workflows/quizzes/03-curate-item-design-cards.md`.
 4. If ready item design cards exist and the quiz file is missing, recommend `content/_prompts/workflows/quizzes/04-create-quiz-file.md`.
-5. If quiz files exist with draft, `needs-review`, or weak item quality, recommend `content/_prompts/workflows/quizzes/05-review-item-quality.md`.
-6. If quiz files exist with draft or `needs-review` answer keys, recommend `content/_prompts/workflows/quizzes/06-review-answer-keys.md`.
-7. If quiz files exist with draft or `needs-review` feedback or remediation, recommend `content/_prompts/workflows/quizzes/07-review-feedback-remediation.md`.
+5. If quiz files exist with draft, `needs-review`, or weak item quality and the user wants item-quality review evidence refreshed, recommend `content/_prompts/workflows/quizzes/05-review-item-quality.md`.
+6. If quiz files exist with draft or `needs-review` answer keys and the user wants answer-key evidence refreshed, recommend `content/_prompts/workflows/quizzes/06-review-answer-keys.md`.
+7. If quiz files exist with draft or `needs-review` feedback or remediation and the user wants feedback/remediation evidence refreshed, recommend `content/_prompts/workflows/quizzes/07-review-feedback-remediation.md`.
 
 ## Report
 

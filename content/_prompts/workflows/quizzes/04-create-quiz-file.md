@@ -2,6 +2,8 @@
 
 Use this prompt to create one final standalone quiz file from curated item design cards.
 
+For one quiz item, one added item, one distractor plus feedback, one feedback/remediation slice, or a short focused exit-ticket/remediation quiz, use `content/_prompts/shortcuts/lightweight-quiz.md` instead.
+
 Default output is one quiz file. Create a maximum of two only if the user explicitly requests it.
 
 Do not build frontend or app code.

@@ -77,7 +77,10 @@ Quiz workflow:
 
 ## Shortcuts
 
-- `content/_prompts/shortcuts/create-direct-exercise-blueprint.md` is only for very small units or explicit direct-blueprint requests. Substantial units should use the normal exercise workflow.
+- `content/_prompts/shortcuts/create-direct-exercise.md` creates or improves one focused exercise, a tiny routine practice group, or one exercise solution when the idea is already narrow enough.
+- `content/_prompts/shortcuts/lightweight-quiz.md` creates or improves one quiz item, one distractor plus feedback, one option's feedback/remediation, one added item, or a short exit-ticket/remediation quiz.
+
+Shortcuts are for small authoring tasks. Substantial exercise coverage, balanced exercise sets, full quiz banks, high-stakes diagnostic quizzes, and broad exam-prep coverage still use the full workflow prompts.
 
 ## Shared Contract
 

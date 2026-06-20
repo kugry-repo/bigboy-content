@@ -327,7 +327,7 @@ Lesson draft creation requires adequate source/target notes, raw material, and c
 
 Exercise batch creation requires canonical exercise design cards for the selected exercises. Exercises may draw from the unit map, skill map, official curriculum notes, misconception map, exam patterns, raw seeds, design cards, or existing lessons when available.
 
-Quiz file creation requires a quiz intent card and ready item design cards. Quizzes may link to lessons or exercises for remediation, but those links are optional unless the quiz intent depends on them.
+Full quiz file creation requires a quiz intent card and ready item design cards. Lightweight quiz work may create or update the smallest compact intent/card needed for one item, one distractor/feedback slice, one added item, or a short focused quiz. Quizzes may link to lessons or exercises for remediation, but those links are optional unless the quiz intent depends on them.
 
 Exercise set creation requires existing exercise files or precise exercise design cards. Sets should link to exercise files instead of duplicating full exercise content.
 
@@ -349,16 +349,16 @@ Exercise design cards are the stored source of truth for creating exercise files
 
 Quiz item design cards are the stored source of truth for creating standalone quiz files. A table-only quiz plan is not sufficient for quiz creation.
 
-Exercise design cards and direct exercise blueprints use one canonical contract: H4 heading as stable card ID, allowed status (`draft`, `needs-review`, `ready-for-exercise-batch`, `used-in-exercise`, `deferred`, or `rejected`), cluster/local scope, planned file, difficulty, exercise role/type, linked skills, prerequisites, linked-mini-lesson convention, target ability, decision point, why the exercise deserves to exist, statement shape, expected answer form, intended method, traps, hint ladder, feasibility sketch, verification strategy, source/provenance, variants, estimated time, potential sets, risks, and batch/readiness note.
+Exercise design cards and lightweight direct exercise cards use one canonical contract: H4 heading as stable card ID, allowed status (`draft`, `needs-review`, `ready-for-exercise-batch`, `used-in-exercise`, `deferred`, or `rejected`), cluster/local scope, planned file, difficulty, exercise role/type, linked skills, prerequisites, linked-mini-lesson convention, target ability, decision point, why the exercise deserves to exist, statement shape, expected answer form, intended method, traps, hint ladder, feasibility sketch, verification strategy, source/provenance, variants, estimated time, potential sets, risks, and batch/readiness note.
 
 Quiz item design cards use one canonical contract: H4 heading as stable item-card ID, allowed status (`draft`, `needs-review`, `ready-for-quiz-file`, `used-in-quiz`, `deferred`, or `rejected`), quiz intent context, item type, cognitive role, difficulty, skill target, stem/task design, answer contract, verification check, explanation goal, feedback design, remediation plan, source/provenance, and batch/readiness note. MCQ/MR cards additionally need choices, correct choice(s), distractor rationale, per-choice feedback planning, and misconception mapping where appropriate. Non-choice cards need the relevant proposition, accepted-answer, pairing, ordering, or hotspot-region planning field.
 
-If a selected exercise or quiz lacks a canonical design card, stop and run the relevant curation prompt before creating final files:
+If a broad exercise or quiz request lacks canonical design cards, stop and run the relevant curation prompt before creating final files:
 
 - `content/_prompts/workflows/exercises/02-curate-design-cards.md`
 - `content/_prompts/workflows/quizzes/03-curate-item-design-cards.md`
 
-If a selected card exists but is incomplete, stale, `draft`, `needs-review`, `deferred`, or `rejected`, repair the planning object first. Do not create final exercises or quiz items by inventing missing target skills, answer contracts, solution strategies, traps, MCQ/MR distractors, non-choice wrong-response patterns, feedback, or remediation during final drafting.
+For a narrow direct task, use `content/_prompts/shortcuts/create-direct-exercise.md` or `content/_prompts/shortcuts/lightweight-quiz.md`; those prompts may create or repair the smallest compact source card before final drafting. If a selected card exists but is incomplete, stale, `draft`, `needs-review`, `deferred`, or `rejected`, repair the planning object first. Do not create final exercises or quiz items by inventing missing target skills, answer contracts, solution strategies, traps, MCQ/MR distractors, non-choice wrong-response patterns, feedback, or remediation during final drafting.
 
 Final artifacts keep source-card traceability: exercises use `source_design_card` in frontmatter; quiz questions use `Source item card` in the question metadata. Final artifacts may reference `ready-for-exercise-batch` / `ready-for-quiz-file` cards during creation or `used-in-exercise` / `used-in-quiz` cards after lifecycle update. A card must not be marked used unless a final artifact actually references it.
 
@@ -406,6 +406,8 @@ Raw seeds are exploratory material, not final exercises. Design cards are the cu
 
 Exercise quality review checks statement/design/progression/hints/mistakes/learner experience. Solution review checks mathematical correctness and solution pedagogy. Keep `design_status`, `statement_status`, and `solution_status` separate.
 
+For one focused exercise, a tiny routine group, a narrow exam-style practice item, or one solution draft/improvement, use `content/_prompts/shortcuts/create-direct-exercise.md`. It creates final exercise files only when the request is specific enough, creates or updates a compact direct design card only when needed, and marks only affected exercise review evidence as `needs-review`.
+
 ### Quizzes
 
 Standalone quizzes are first-class unit content and live under `quizzes/`.
@@ -423,6 +425,8 @@ content/_prompts/workflows/quizzes/07-review-feedback-remediation.md
 ```
 
 Quizzes can exist independently. They can be prerequisite, skill, method-choice, error-clinic, fluency, mixed-review, or exam-readiness. Supported item types are `multiple-choice`, `multiple-response`, `true-false`, `fill-blank`, `match`, `sequence`, and `hotspot`. MCQ/MR choices need answer-specific feedback and wrong choices should map to real misconceptions. Non-choice items need type-specific wrong-response feedback without fake per-choice fields. Item quality, answer key correctness, feedback quality, and remediation quality are reviewed separately. `sequence` and `hotspot` remain optional advanced item types, not required defaults.
+
+For one quiz item, one improved item, one distractor and feedback pair, one option feedback/remediation slice, one added item, or a short focused exit-ticket/remediation quiz, use `content/_prompts/shortcuts/lightweight-quiz.md`. It keeps distractor feedback first-class and invalidates only the affected item-quality, answer-key, feedback, or remediation evidence.
 
 ### Unit review
 
@@ -463,7 +467,7 @@ Finalize must block or report any in-scope lesson, exercise, set, quiz, or dashb
 Finalization checks are family-specific:
 
 - Lessons: intended files exist, lesson status/review evidence is acceptable, lesson metadata and structure satisfy the lesson contract, and known lesson review issues are resolved or explicitly deferred.
-- Exercises: intended exercise files exist, statement/design review and solution review are both acceptable, design cards or direct blueprints are ready/used/resolved when present, solution review is not assumed from statement review, and batch balance has been handled when required by declared scope.
+- Exercises: intended exercise files exist, statement/design review and solution review are both acceptable, design cards or lightweight direct exercise cards are ready/used/resolved when present, solution review is not assumed from statement review, and batch balance has been handled when required by declared scope.
 - Quizzes: intended standalone quiz files exist, item-quality, answer-key, feedback, and remediation review evidence are acceptable, required type-specific answer/feedback/remediation contracts exist, standalone quizzes are not treated as lesson checkpoints, and remediation uses available, planned, `not-in-scope`, or `deferred` support honestly.
 
 Do not use `content/_guides/units/golden-unit-standard.md` as a mandatory finalization checklist for every unit. Golden-unit completeness is aspirational; ordinary sparse units can be ready for their declared scope.

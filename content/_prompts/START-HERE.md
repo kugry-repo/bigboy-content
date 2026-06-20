@@ -29,6 +29,13 @@ Use workflow prompts when you already know what you are producing:
 - `content/_prompts/workflows/exercises/` - exercise seeds, design cards, balance, batch creation, quality review, solution review, and sets.
 - `content/_prompts/workflows/quizzes/` - quiz intent, raw item pools, item design cards, quiz file creation, item-quality review, answer-key review, and feedback/remediation review.
 
+Use shortcuts for small focused authoring tasks:
+
+- `content/_prompts/shortcuts/create-direct-exercise.md` - create one focused exercise, a tiny routine practice group, or one exercise solution without running the whole exercise pipeline.
+- `content/_prompts/shortcuts/lightweight-quiz.md` - create or improve one quiz item, one distractor and feedback pair, one option feedback/remediation slice, one added quiz item, or a short exit-ticket/remediation quiz.
+
+Use the full exercise or quiz workflows instead when the request is broad coverage, a whole topic exercise set, a full quiz bank, a high-stakes diagnostic quiz, or broad exam-prep production.
+
 Use unit workflow prompts by intent. They are not a global ladder, and they do not force lesson -> exercise -> quiz order. A unit may be intentionally sparse, so route by declared scope and the user's requested workstream. Initialized dashboards express sparse scope with `Scope: not-started`, `Scope: not-in-scope`, or `Scope: deferred` under the relevant artifact family; artifact frontmatter records artifact status and review freshness.
 
 For edits to existing reviewed content, use the revision freshness contract in `content/_guides/schema/frontmatter-schema.md`: material edits invalidate only affected review evidence with `needs-review`; non-material edits may preserve status only with an explicit reason.
@@ -63,4 +70,5 @@ Route review by artifact ownership:
 
 Use shortcuts only for special cases:
 
-- `content/_prompts/shortcuts/create-direct-exercise-blueprint.md`
+- `content/_prompts/shortcuts/create-direct-exercise.md`
+- `content/_prompts/shortcuts/lightweight-quiz.md`

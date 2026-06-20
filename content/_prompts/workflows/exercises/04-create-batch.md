@@ -4,6 +4,8 @@ Use this prompt to create a small batch of final exercise files from curated exe
 
 Exercise batch creation outputs final exercise files under `exercises/`. These files start as draft/unreviewed content and must pass exercise quality review and solution review later.
 
+For one focused exercise, a tiny routine group, or one solution draft/improvement from a clear idea, use `content/_prompts/shortcuts/create-direct-exercise.md` instead.
+
 ## Target
 
 Input:

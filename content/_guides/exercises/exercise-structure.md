@@ -17,7 +17,7 @@ A full official curriculum unit may eventually contain 20 to 35 individual exerc
 
 ## Exercise Authoring Workflow
 
-Use this canonical seven-step workflow:
+Use this canonical seven-step workflow for substantial exercise production, broad unit coverage, and balanced exercise-set preparation:
 
 ```text
 01-generate-raw-seeds
@@ -41,7 +41,9 @@ The workflow roles are:
 
 Do not use old workflow names or keep parallel exercise review systems.
 
-Exercise work is local to the exercise family. Raw seeds and exercise design cards are prerequisites for final exercise creation; local mini-lessons are optional support references, not a universal prerequisite. If the unit intentionally has exercises but no local lessons, set the lesson-family dashboard `Scope` row to `not-in-scope` and write `not-in-scope` in mini-lesson link fields instead of inventing lesson links. If lessons are planned later, use `deferred`.
+Exercise work is local to the exercise family. For substantial production, raw seeds and exercise design cards are prerequisites for final exercise creation; local mini-lessons are optional support references, not a universal prerequisite. If the unit intentionally has exercises but no local lessons, set the lesson-family dashboard `Scope` row to `not-in-scope` and write `not-in-scope` in mini-lesson link fields instead of inventing lesson links. If lessons are planned later, use `deferred`.
+
+For small focused tasks, use `content/_prompts/shortcuts/create-direct-exercise.md`. This route is allowed for one clear exercise idea, a tiny routine group where coverage is obvious, a narrow exam-style practice exercise, or one solution draft/improvement. It still requires correct mathematics, worth-existing value, a source design card or compact direct card, a worked solution, and visible review needs. It must not produce a large batch or exercise universe.
 
 ## Raw Seed vs Design Card vs Final File
 
@@ -76,11 +78,11 @@ An exercise design card is curated exercise planning material.
 
 It is the main source of truth for exercise batch creation. It should be detailed enough that the batch creation step can create a high-quality final exercise without inventing the pedagogical goal, method, traps, hint ladder, or verification concerns from scratch.
 
-Use the canonical H4 card format in `content/_guides/exercises/exercise-design-guide.md`. The card heading is the stable card ID. `Status: ready-for-exercise-batch` means the card satisfies the full minimum contract: cluster/local scope, planned file, target skill, exercise role/type, difficulty, prerequisites, linked-mini-lesson convention, target ability, decision point, why the exercise deserves to exist, statement shape, expected answer form, parameter constraints, solution strategy, traps, hint ladder, feasibility sketch, verification check, source/provenance notes, variants, estimated time, potential sets, review notes, and batch/readiness note. A direct exercise blueprint uses the same card contract.
+Use the canonical H4 card format in `content/_guides/exercises/exercise-design-guide.md`. The card heading is the stable card ID. `Status: ready-for-exercise-batch` means the card satisfies the full minimum contract: cluster/local scope, planned file, target skill, exercise role/type, difficulty, prerequisites, linked-mini-lesson convention, target ability, decision point, why the exercise deserves to exist, statement shape, expected answer form, parameter constraints, solution strategy, traps, hint ladder, feasibility sketch, verification check, source/provenance notes, variants, estimated time, potential sets, review notes, and batch/readiness note. A lightweight direct exercise card uses the same contract but may stay compact when it supports only one focused exercise.
 
 ### Final exercise file
 
-A final exercise file is exercise batch output.
+A final exercise file is learner-facing exercise output from either batch creation or the lightweight direct exercise route.
 
 It lives under the unit `exercises/` folder, uses `content/_templates/exercise.template.md`, and contains learner-facing sections plus author notes.
 
@@ -96,6 +98,17 @@ solution_status: draft
 ```
 
 They are not reviewed until both quality review and solution review have passed.
+
+Direct exercise files should make the needed review visible immediately:
+
+```yaml
+status: draft
+design_status: needs-review
+statement_status: needs-review
+solution_status: needs-review
+```
+
+If only an existing solution is drafted or materially improved, invalidate `solution_status` only unless the statement or design also changed.
 
 After a material edit to an exercise, use `needs-review` on only the affected review substatus fields. Statement edits usually invalidate `statement_status` and may invalidate `solution_status`; solution-only edits invalidate `solution_status`; design-card edits invalidate card readiness and any derived exercise design evidence that depends on the changed card. A material edit to a `ready-for-exercise-batch` or `used-in-exercise` card sets the card to `needs-review` and should identify derived exercise files through `source_design_card` for targeted re-review.
 

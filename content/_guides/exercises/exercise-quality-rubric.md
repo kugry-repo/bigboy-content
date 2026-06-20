@@ -141,3 +141,9 @@ A reviewed exercise must have:
 Reviewed means the exercise is a reliable training device, not merely a correct calculation.
 
 After a material edit, the affected evidence is no longer reviewed. Use `needs-review` for stale `design_status`, `statement_status`, or `solution_status` until the relevant targeted review passes.
+
+## Lightweight Route Review
+
+Exercises created through `content/_prompts/shortcuts/create-direct-exercise.md` are not lower-standard exercises. They simply skip broad cluster planning when the requested exercise is narrow and clear.
+
+New direct exercises should start with `design_status`, `statement_status`, and `solution_status` set to `needs-review` so the required quality and solution reviews remain visible. A solution-only edit invalidates `solution_status` only, unless the edit reveals a statement or design defect.

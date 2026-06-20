@@ -34,7 +34,7 @@ The card heading is the stable card ID. In a unit `_index.md`, exercise design c
 #### <card-id> - <working title>
 ```
 
-Use lowercase ASCII IDs with hyphen separators. A direct exercise blueprint uses this same card contract; it is not a looser planning format.
+Use lowercase ASCII IDs with hyphen separators. A lightweight direct exercise card uses this same card contract; it is not a looser planning format.
 
 Allowed exercise design-card statuses:
 
@@ -52,6 +52,8 @@ Raw seeds are not design cards. They remain exploratory and use their own curati
 A final exercise file is learner-facing training material under `exercises/`.
 
 It uses `content/_templates/exercise.template.md`, starts as draft, and is not reviewed until design/statement quality and solution quality have been checked separately.
+
+The lightweight direct exercise shortcut may create a compact direct card and a final exercise in one small task when the exercise idea is already specific enough. The card still preserves traceability and the worth-existing contract; the shortcut does not replace cluster planning for broad coverage.
 
 ## Worth-Existing Filter
 
