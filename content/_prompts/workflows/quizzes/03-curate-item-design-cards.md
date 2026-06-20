@@ -111,7 +111,7 @@ Use the canonical item-card format from `content/_guides/quizzes/quiz-structure.
 ```md
 #### <item-card-id> - <working title>
 
-Status: planned | needs-review | needs-redesign | needs-verification | ready-for-quiz-file | used-in-quiz | rejected
+Status: draft | needs-review | ready-for-quiz-file | used-in-quiz | deferred | rejected
 
 Quiz intent:
 - <intent id/title or planned quiz file>
@@ -186,13 +186,13 @@ Batch/readiness note:
 - Why this card is or is not ready for final quiz drafting.
 ```
 
-Cards that are ready for final quiz creation should use `Status: ready-for-quiz-file`. Use `planned` for drafted but not-ready cards, `needs-review` when a material edit made prior readiness stale, `needs-redesign` for design failures, `needs-verification` for math/source/ambiguity uncertainty, `used-in-quiz` after final quiz creation, or `rejected` honestly when the seed is not worth keeping.
+Cards that are ready for final quiz creation should use `Status: ready-for-quiz-file`. Use `draft` for incomplete item design work, `needs-review` when a material edit made prior readiness stale or math/source/ambiguity must be checked, `deferred` when the item is intentionally postponed, `used-in-quiz` only after a final quiz question actually references the card with `Source item card`, or `rejected` honestly when the seed is not worth keeping. Do not create final quiz items from `draft`, `needs-review`, `deferred`, or `rejected` cards.
 
 ## Finish
 
 Summarize:
 
-- item cards created, merged, rejected, deferred, or marked needs-verification;
+- item cards created, merged, rejected, deferred, or marked needs-review;
 - item type and cognitive role balance;
 - diagnostic signals represented;
 - feedback/remediation gaps;

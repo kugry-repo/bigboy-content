@@ -151,7 +151,8 @@ Material edits change math, meaning, answer logic, feedback, remediation, prereq
 Freshness invalidation rules:
 
 - Lessons: material edits to lesson substance set `status: needs-review` when the lesson had been `reviewed` or `published`.
-- Exercise design cards or design intent: material edits set the card readiness/review state to `needs-review` when it had been ready, and flag derived exercise files whose design evidence depends on the changed card.
+- Exercise design cards or design intent: material edits set the card readiness/review state to `needs-review` when it had been `ready-for-exercise-batch` or `used-in-exercise`, identify derived exercise files through `source_design_card`, and flag only derived exercise evidence that depends on the changed card.
+- Quiz item design cards or item intent: material edits set the card readiness/review state to `needs-review` when it had been `ready-for-quiz-file` or `used-in-quiz`, identify derived final quiz questions through `Source item card`, and flag only item-quality, answer-key, feedback, or remediation evidence that depends on the changed card.
 - Exercise statements: material edits set `statement_status: needs-review`; also set `solution_status: needs-review` when the solution depends on the changed statement. Demote exercise `status` to `needs-review` when it had been `reviewed` or `published`.
 - Exercise solutions: material edits set `solution_status: needs-review` only, unless the edit reveals the statement or design is also wrong. Demote exercise `status` to `needs-review` when it had been `reviewed` or `published`.
 - Quiz stems, item types, MCQ/MR options or distractors, match prompt structure, sequence ordering criterion, or hotspot target wording: material edits set `item_quality_status: needs-review`.

@@ -14,7 +14,7 @@ This is an example/reference file only. It is not real unit content.
 
 #### lc-ex-014 - Choisir la quantité conjuguée
 
-Status: ready-for-exercise-batch
+Status: used-in-exercise
 
 Cluster:
 - Limites avec formes indéterminées
@@ -108,7 +108,7 @@ Review notes:
 - Source/exam claim risk: No official claim; "exam-style" variant is only a pattern note.
 
 Batch/readiness note:
-- Ready because the target skill, method choice, answer form, trap, hints, verification, and source notes are explicit.
+- Used by `golden-exercise-limites.md`, whose `source_design_card` is `lc-ex-014`. The card was ready before drafting and is marked used only because the final exercise points back to it.
 
 Keep/reject decision:
 - Keep because it fills the method-choice rung for square-root limits and prevents a common invalid cancellation.

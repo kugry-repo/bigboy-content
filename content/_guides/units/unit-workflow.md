@@ -297,18 +297,18 @@ Exercise design cards are the stored source of truth for creating exercise files
 
 Quiz item design cards are the stored source of truth for creating standalone quiz files. A table-only quiz plan is not sufficient for quiz creation.
 
-Exercise design cards and direct exercise blueprints use one canonical contract: H4 heading as stable card ID, allowed status, cluster/local scope, planned file, difficulty, exercise role/type, linked skills, prerequisites, linked-mini-lesson convention, target ability, decision point, statement shape, expected answer form, intended method, traps, hint ladder, feasibility sketch, verification strategy, source/provenance, risks, and batch/readiness note.
+Exercise design cards and direct exercise blueprints use one canonical contract: H4 heading as stable card ID, allowed status (`draft`, `needs-review`, `ready-for-exercise-batch`, `used-in-exercise`, `deferred`, or `rejected`), cluster/local scope, planned file, difficulty, exercise role/type, linked skills, prerequisites, linked-mini-lesson convention, target ability, decision point, why the exercise deserves to exist, statement shape, expected answer form, intended method, traps, hint ladder, feasibility sketch, verification strategy, source/provenance, variants, estimated time, potential sets, risks, and batch/readiness note.
 
-Quiz item design cards use one canonical contract: H4 heading as stable item-card ID, allowed status, quiz intent context, item type, cognitive role, difficulty, skill target, stem/task design, answer contract, verification check, explanation goal, feedback design, remediation plan, source/provenance, and batch/readiness note. MCQ/MR cards additionally need choices, correct choice(s), distractor rationale, per-choice feedback planning, and misconception mapping where appropriate. Non-choice cards need the relevant proposition, accepted-answer, pairing, ordering, or hotspot-region planning field.
+Quiz item design cards use one canonical contract: H4 heading as stable item-card ID, allowed status (`draft`, `needs-review`, `ready-for-quiz-file`, `used-in-quiz`, `deferred`, or `rejected`), quiz intent context, item type, cognitive role, difficulty, skill target, stem/task design, answer contract, verification check, explanation goal, feedback design, remediation plan, source/provenance, and batch/readiness note. MCQ/MR cards additionally need choices, correct choice(s), distractor rationale, per-choice feedback planning, and misconception mapping where appropriate. Non-choice cards need the relevant proposition, accepted-answer, pairing, ordering, or hotspot-region planning field.
 
 If a selected exercise or quiz lacks a canonical design card, stop and run the relevant curation prompt before creating final files:
 
 - `content/_prompts/workflows/exercises/02-curate-design-cards.md`
 - `content/_prompts/workflows/quizzes/03-curate-item-design-cards.md`
 
-If a selected card exists but is incomplete or not in its ready status, repair the planning object first. Do not create final exercises or quiz items by inventing missing target skills, answer contracts, solution strategies, traps, MCQ/MR distractors, non-choice wrong-response patterns, feedback, or remediation during final drafting.
+If a selected card exists but is incomplete, stale, `draft`, `needs-review`, `deferred`, or `rejected`, repair the planning object first. Do not create final exercises or quiz items by inventing missing target skills, answer contracts, solution strategies, traps, MCQ/MR distractors, non-choice wrong-response patterns, feedback, or remediation during final drafting.
 
-Final artifacts keep basic traceability: exercises use `source_design_card` in frontmatter; quiz questions use `Source item card` in the question metadata.
+Final artifacts keep source-card traceability: exercises use `source_design_card` in frontmatter; quiz questions use `Source item card` in the question metadata. Final artifacts may reference `ready-for-exercise-batch` / `ready-for-quiz-file` cards during creation or `used-in-exercise` / `used-in-quiz` cards after lifecycle update. A card must not be marked used unless a final artifact actually references it.
 
 ## Local workflows
 

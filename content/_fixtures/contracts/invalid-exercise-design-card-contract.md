@@ -70,6 +70,9 @@ Student decision point:
 Student-facing exercise shape:
 - Rough shape.
 
+Expected answer form:
+- A short expression.
+
 Parameter/design constraints:
 - Keep values simple.
 
@@ -92,6 +95,16 @@ Verification strategy:
 Source/provenance:
 - original
 
+Variants:
+- Easier: give the first step.
+- Parallel: use the same skill with another expression.
+
+Estimated time:
+- 6 min
+
+Potential sets:
+- Fixture set
+
 Review notes:
 - Math risk: low.
 
@@ -103,4 +116,4 @@ Keep/reject decision:
 
 #### bad-ex-001 - Duplicate card ID
 
-Status: planned
+Status: draft

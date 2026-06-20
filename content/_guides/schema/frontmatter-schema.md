@@ -263,7 +263,8 @@ The affected scope is the smallest artifact or sub-artifact whose reviewed evide
 Use `needs-review` as the canonical stale-review value:
 
 - Lesson material edits set lesson `status: needs-review` when the lesson had been `reviewed` or `published`.
-- Exercise design-card or blueprint material edits set the card readiness/review state to `needs-review` when it had been ready, and they should flag any derived exercise files whose design evidence now depends on the changed card.
+- Exercise design-card or blueprint material edits set the card readiness/review state to `needs-review` when it had been `ready-for-exercise-batch` or `used-in-exercise`, and they should identify derived exercise files through `source_design_card` and flag any design, statement, solution, or verification evidence that now depends on the changed card.
+- Quiz item design-card material edits set the card readiness/review state to `needs-review` when it had been `ready-for-quiz-file` or `used-in-quiz`, and they should identify derived final quiz questions through `Source item card` and flag any item-quality, answer-key, feedback, or remediation evidence that now depends on the changed card.
 - Exercise statement material edits set `statement_status: needs-review`; also set `solution_status: needs-review` when the solution depends on the changed statement. If the exercise `status` was `reviewed` or `published`, set it to `needs-review`.
 - Exercise solution material edits set `solution_status: needs-review` unless the edit reveals that the statement or design is also wrong. If the exercise `status` was `reviewed` or `published`, set it to `needs-review`.
 - Quiz stem, item type, MCQ/MR option or distractor, match prompt, sequence criterion, or hotspot target wording material edits set `item_quality_status: needs-review`.
@@ -435,7 +436,7 @@ updated: YYYY-MM-DD
 ---
 ```
 
-Exercise design cards are not frontmatter objects. They are Markdown planning objects in the unit `_index.md` under `### Design cards des exercices`, using the canonical H4 card contract in `content/_guides/exercises/exercise-design-guide.md`. Final exercise files must reference the source card with `source_design_card`.
+Exercise design cards are not frontmatter objects. They are Markdown planning objects in the unit `_index.md` under `### Design cards des exercices`, using the canonical H4 card contract in `content/_guides/exercises/exercise-design-guide.md`. Final exercise files must reference the source card with `source_design_card`. Reviewed or published exercise files may only reference cards in `ready-for-exercise-batch` or `used-in-exercise` status, and their difficulty, role/type, estimated time, planned file, and linked skills should match the card where those fields exist.
 
 ## Quiz
 
@@ -522,7 +523,7 @@ updated: YYYY-MM-DD
 ---
 ```
 
-Quiz item design cards are Markdown planning objects in the unit `_index.md` under `### Design cards des items de quiz`, using the canonical H4 item-card contract in `content/_guides/quizzes/quiz-structure.md`. Final quiz questions must reference the source planning item with a `Source item card` line in the question metadata.
+Quiz item design cards are Markdown planning objects in the unit `_index.md` under `### Design cards des items de quiz`, using the canonical H4 item-card contract in `content/_guides/quizzes/quiz-structure.md`. Final quiz questions must reference the source planning item with a `Source item card` line in the question metadata. Reviewed or published quiz items may only reference cards in `ready-for-quiz-file` or `used-in-quiz` status, and their item type, cognitive role, and skill target should match the card where those fields exist.
 
 ## Exercise Set
 

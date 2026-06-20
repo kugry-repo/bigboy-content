@@ -27,6 +27,7 @@ Prompt-specific requirements:
 - Resolve exactly one target unit before reading or editing unit artifacts.
 - Locate exactly one quiz intent and its item design cards in `TARGET_UNIT_INDEX`.
 - Use only item cards with `Status: ready-for-quiz-file`.
+- Do not create final quiz items from item cards marked `draft`, `needs-review`, `deferred`, or `rejected`. `needs-review` includes stale ready/used cards after a material edit.
 - If the target is missing, ambiguous, or has no ready item cards, stop and report the blocker.
 - If a selected item card is missing its stable item-card ID, target skill, item type, difficulty, stem/task design, answer contract, verification check, explanation goal, feedback design, remediation plan, source/provenance notes, or batch/readiness note, stop and repair the card before drafting the quiz.
 - For `multiple-choice` and `multiple-response` cards, also require choices, correct choice(s), distractor rationale, per-choice feedback planning, and misconception mapping where appropriate.
@@ -115,6 +116,8 @@ Source item card:
 ```
 
 Use the H4 item-card ID from `TARGET_UNIT_INDEX`.
+
+After creating the quiz file, update each used item card from `ready-for-quiz-file` to `used-in-quiz`, but only after the final question exists and its `Source item card` exactly matches the card ID. Do not mark unused item cards as used.
 
 ## Finish
 

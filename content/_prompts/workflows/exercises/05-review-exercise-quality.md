@@ -80,7 +80,7 @@ Check:
 
 - statement clarity;
 - target skill precision;
-- fit with design card;
+- fit with source design card, including same-unit card existence, allowed source status, and matching difficulty, role/type, estimated time, planned file, and linked skills where those fields exist;
 - exercise role;
 - worth-existing test;
 - difficulty honesty;

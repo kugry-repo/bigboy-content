@@ -129,7 +129,8 @@ Classify each content edit:
 After a material edit, invalidate only the affected review evidence with `needs-review`:
 
 - lessons: set `status: needs-review` when reviewed or published lesson substance changed;
-- exercise design cards/blueprints: set card readiness/review state to `needs-review` when prior readiness became stale, and flag derived exercise files whose design evidence depends on the changed card;
+- exercise design cards/blueprints: set card readiness/review state to `needs-review` when a `ready-for-exercise-batch` or `used-in-exercise` card became stale, identify derived exercise files through `source_design_card`, and invalidate only affected exercise design, statement, solution, or verification evidence;
+- quiz item design cards: set card readiness/review state to `needs-review` when a `ready-for-quiz-file` or `used-in-quiz` card became stale, identify derived final quiz questions through `Source item card`, and invalidate only affected item-quality, answer-key, feedback, or remediation evidence;
 - exercise statements: set `statement_status: needs-review`, and also `solution_status: needs-review` when the solution depends on the changed statement;
 - exercise solutions: set `solution_status: needs-review` only unless the statement or design also changed or is wrong;
 - quizzes: invalidate `item_quality_status`, `answer_key_status`, `feedback_status`, and/or `remediation_status` according to the changed stem/type/MCQ options/distractors/non-choice interaction, answer logic, feedback, or remediation.

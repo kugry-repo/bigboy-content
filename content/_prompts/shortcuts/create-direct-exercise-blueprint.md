@@ -104,12 +104,12 @@ Apply the worth-existing filter:
 - reject ideas whose solution is identical to another exercise;
 - reject exercises that only exist because "we need more exercises."
 
-Add rich exercise design cards using the canonical design-card format. Each card must include stable H4 card ID, allowed status/readiness value, cluster/local scope, difficulty, exercise role/type, linked skills, prerequisites, linked-mini-lesson convention, target ability, decision point, statement shape, expected answer form, intended method, traps, hint ladder, verification strategy, source/provenance notes, and batch/readiness note:
+Add rich exercise design cards using the canonical design-card format. Each card must include stable H4 card ID, allowed status/readiness value, cluster/local scope, difficulty, exercise role/type, linked skills, prerequisites, linked-mini-lesson convention, target ability, decision point, why the exercise deserves to exist, statement shape, expected answer form, intended method, traps, hint ladder, verification strategy, source/provenance notes, variants, estimated time, potential sets, and batch/readiness note:
 
 ```md
 #### <card-id> - <working title>
 
-Status: planned | needs-review | needs-redesign | needs-verification | ready-for-exercise-batch | used-in-exercise | rejected
+Status: draft | needs-review | ready-for-exercise-batch | used-in-exercise | deferred | rejected
 
 Cluster:
 - <cluster id/title>

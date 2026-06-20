@@ -68,6 +68,8 @@ Use only design cards with:
 Status: ready-for-exercise-batch
 ```
 
+Do not create final exercise files from cards marked `draft`, `needs-review`, `deferred`, or `rejected`. `needs-review` includes stale ready/used cards after a material edit.
+
 Do not invent the pedagogical design from scratch. The mathematical goal, target ability, student decision point, expected answer form, method, traps, hint ladder, verification strategy, variants, and risks must come from the design card. Linked mini-lessons are optional support references; if the design card records `not-in-scope` or `deferred`, do not block exercise creation just because no local lesson file exists.
 
 If a selected exercise lacks a canonical design card in `TARGET_UNIT_INDEX`, stop with this actionable error:
@@ -77,7 +79,7 @@ Cannot create <planned-exercise-id>: no canonical exercise design card found in 
 Run content/_prompts/workflows/exercises/02-curate-design-cards.md for the selected cluster before exercise batch creation.
 ```
 
-If a selected design card is missing critical information such as stable card ID, ready status, target ability, linked skills, prerequisites, student decision point, expected answer form, intended method, parameter constraints, traps, hint ladder, verification strategy, source/provenance, or batch/readiness note, stop and repair the card or mark it as needing redesign. Do not patch the design silently inside the final file.
+If a selected design card is missing critical information such as stable card ID, ready status, target ability, linked skills, prerequisites, student decision point, why the exercise deserves to exist, expected answer form, intended method, parameter constraints, traps, hint ladder, verification strategy, source/provenance, variants, estimated time, potential sets, or batch/readiness note, stop and repair the card or mark it as `needs-review`. Do not patch the design silently inside the final file.
 
 ## Batch Selection
 
@@ -136,6 +138,8 @@ Set `source_design_card` to the H4 card ID from `TARGET_UNIT_INDEX`, and repeat 
 Use French for learner-facing prose. Use frontmatter values derived from `TARGET_UNIT_INDEX`, including the resolved unit code, program, unit folder, order, domain, tracks, and language.
 
 Use valid `difficulty`, `exercise_type`, `exercise_role`, `exam_relevance`, and `calculator` values from the schema guide.
+
+After creating the files, update each source design card from `ready-for-exercise-batch` to `used-in-exercise`, but only after the final exercise file exists and its frontmatter `source_design_card` exactly matches the card ID. Do not mark unused cards as used.
 
 After creating the files, update the production dashboard only for the created batch. Use `partial` unless all intended exercise files for the current unit target exist.
 

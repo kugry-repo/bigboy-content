@@ -57,6 +57,7 @@ Check:
 
 - quiz purpose;
 - place in series;
+- source item-card traceability, including same-unit card existence, allowed source status, and final item type matching the source card's planned item type;
 - skill coverage;
 - cognitive role balance;
 - item-type fit;

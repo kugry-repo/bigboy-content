@@ -297,12 +297,11 @@ const REQUIRED_EXERCISE_FIELDS = [
 ];
 
 const ALLOWED_EXERCISE_PLANNING_STATUSES = new Set([
-  "planned",
+  "draft",
   "needs-review",
-  "needs-redesign",
-  "needs-verification",
   "ready-for-exercise-batch",
   "used-in-exercise",
+  "deferred",
   "rejected",
 ]);
 
@@ -326,6 +325,10 @@ const EXERCISE_DESIGN_CARD_REQUIRED_FIELDS = [
   { label: "Target ability", aliases: ["target-ability"] },
   { label: "Student decision point", aliases: ["student-decision-point"] },
   {
+    label: "Why this exercise deserves to exist",
+    aliases: ["why-this-exercise-deserves-to-exist"],
+  },
+  {
     label: "Student-facing exercise shape",
     aliases: ["student-facing-exercise-shape"],
   },
@@ -340,6 +343,9 @@ const EXERCISE_DESIGN_CARD_REQUIRED_FIELDS = [
   { label: "Solution feasibility sketch", aliases: ["solution-feasibility-sketch"] },
   { label: "Verification strategy", aliases: ["verification-strategy"] },
   { label: "Source/provenance", aliases: ["source-provenance"] },
+  { label: "Variants", aliases: ["variants"] },
+  { label: "Estimated time", aliases: ["estimated-time"] },
+  { label: "Potential sets", aliases: ["potential-sets"] },
   { label: "Review notes", aliases: ["review-notes"] },
   { label: "Batch/readiness note", aliases: ["batch-readiness-note"] },
   { label: "Keep/reject decision", aliases: ["keep-reject-decision"] },
@@ -386,12 +392,11 @@ const ALLOWED_QUIZ_REVIEW_STATUSES = new Set([
 ]);
 
 const ALLOWED_QUIZ_ITEM_PLANNING_STATUSES = new Set([
-  "planned",
+  "draft",
   "needs-review",
-  "needs-redesign",
-  "needs-verification",
   "ready-for-quiz-file",
   "used-in-quiz",
+  "deferred",
   "rejected",
 ]);
 
@@ -937,6 +942,26 @@ const CONTRACT_FIXTURES = {
     "content/_fixtures/contracts/invalid-quiz-item-card-contract.md",
   quizItemBodyContract:
     "content/_fixtures/contracts/invalid-quiz-item-body-contract.md",
+  exerciseSourceMissingCard:
+    "content/_fixtures/contracts/invalid-exercise-source-missing-card.md",
+  exerciseSourceBadStatus:
+    "content/_fixtures/contracts/invalid-exercise-source-bad-status.md",
+  exerciseSourceReadyCard:
+    "content/_fixtures/contracts/valid-exercise-source-ready-card.md",
+  exerciseSourceUsedCard:
+    "content/_fixtures/contracts/valid-exercise-source-used-card.md",
+  quizSourceMissingCard:
+    "content/_fixtures/contracts/invalid-quiz-source-missing-card.md",
+  quizSourceBadStatus:
+    "content/_fixtures/contracts/invalid-quiz-source-bad-status.md",
+  quizSourceTypeMismatch:
+    "content/_fixtures/contracts/invalid-quiz-source-type-mismatch.md",
+  quizSourceReadyCard:
+    "content/_fixtures/contracts/valid-quiz-source-ready-card.md",
+  quizSourceUsedCard:
+    "content/_fixtures/contracts/valid-quiz-source-used-card.md",
+  usedPlanningCardUnreferenced:
+    "content/_fixtures/contracts/warning-only-used-planning-card-unreferenced.md",
   reviewedExerciseStaleSubstatus:
     "content/_fixtures/contracts/invalid-reviewed-exercise-stale-substatus.md",
   reviewedQuizStaleSubstatus:
@@ -1840,7 +1865,7 @@ function firstPlanningFieldToken(field) {
     .trim()
     .split(/\s+/)[0]
     .replace(/^["']|["']$/g, "")
-    .replace(/[.。]$/, "");
+    .replace(/[.]$/, "");
 }
 
 function addPlanningCardDiagnostic(filePath, kind, card, severity, message) {
@@ -1902,6 +1927,220 @@ function checkPlanningCardIds(filePath, kind, cards) {
   }
 
   return ids;
+}
+
+function planningCardStatus(card) {
+  return firstPlanningFieldToken(planningField(card, ["status"]));
+}
+
+function planningFieldItems(field) {
+  if (!field) return [];
+
+  return String(field.value ?? "")
+    .split(/\r?\n/)
+    .map((line) =>
+      line
+        .trim()
+        .replace(/^[-*]\s*/, "")
+        .replace(/^\d+\.\s*/, "")
+        .replace(/`/g, "")
+        .trim(),
+    )
+    .filter((line) => line && !/^TODO\b/i.test(line));
+}
+
+function planningFieldFirstItemToken(field) {
+  const item = planningFieldItems(field)[0] ?? "";
+  if (!item) return firstPlanningFieldToken(field);
+
+  return item
+    .split("|")[0]
+    .split(",")[0]
+    .trim()
+    .split(/\s+/)[0]
+    .replace(/^["']|["']$/g, "")
+    .replace(/[.。]$/, "");
+}
+
+function planningFieldFirstPath(field) {
+  const item = planningFieldItems(field)[0] ?? cleanPlanningFieldValue(field?.value ?? "");
+  const match = item.match(/\b([a-z0-9][a-z0-9_./-]*\.md)\b/i);
+  return match ? toPosix(match[1]) : "";
+}
+
+function planningFieldFirstNumber(field) {
+  const cleaned = cleanPlanningFieldValue(field?.value ?? "");
+  const match = cleaned.match(/\b(\d+(?:\.\d+)?)\b/);
+  return match ? Number(match[1]) : null;
+}
+
+function dataFieldValues(data, field) {
+  if (!Object.hasOwn(data, field) || isEmptyValue(data[field])) return [];
+  return Array.isArray(data[field]) ? data[field] : [data[field]];
+}
+
+function addSourceTraceabilityDiagnostic(filePath, data, message) {
+  addFinalReadinessDiagnostic(filePath, data, message);
+}
+
+function checkPlanningSourceScalarMatch(
+  filePath,
+  data,
+  {
+    sourceKind,
+    sourceId,
+    card,
+    cardFieldAliases,
+    cardFieldLabel,
+    dataField,
+    dataFieldLabel = dataField,
+  },
+) {
+  const expected = planningFieldFirstItemToken(
+    planningField(card, cardFieldAliases),
+  );
+  if (!expected || !Object.hasOwn(data, dataField) || isEmptyValue(data[dataField])) {
+    return;
+  }
+
+  const actualValues = dataFieldValues(data, dataField).map(String);
+  if (actualValues.includes(expected)) return;
+
+  addSourceTraceabilityDiagnostic(
+    filePath,
+    data,
+    `${sourceKind} "${sourceId}" ${cardFieldLabel} is "${expected}" but frontmatter "${dataFieldLabel}" is "${actualValues.join(", ")}"`,
+  );
+}
+
+function checkPlanningSourceSkillsMatch(filePath, data, sourceKind, sourceId, card) {
+  const cardSkills = planningFieldItems(planningField(card, ["linked-skills", "skill-target"]))
+    .map((item) =>
+      item
+        .split("|")[0]
+        .split(",")[0]
+        .trim()
+        .split(/\s+/)[0]
+        .replace(/^["'`]|["'`]$/g, ""),
+    )
+    .filter((skill) =>
+      isSlug(skill) &&
+      !["none", "not-in-scope", "deferred"].includes(skill),
+    );
+
+  if (cardSkills.length === 0) return;
+
+  const artifactSkills = new Set(
+    dataFieldValues(data, "skills")
+      .map(String)
+      .map((skill) => skill.replace(/`/g, "")),
+  );
+
+  const missing = cardSkills.filter((skill) => !artifactSkills.has(skill));
+  if (missing.length === 0) return;
+
+  addSourceTraceabilityDiagnostic(
+    filePath,
+    data,
+    `${sourceKind} "${sourceId}" lists linked skill(s) ${missing.join(", ")} missing from frontmatter "skills"`,
+  );
+}
+
+function checkExerciseSourceDesignCard(unit, filePath, data) {
+  if (!Object.hasOwn(data, "source_design_card") || isEmptyValue(data.source_design_card)) {
+    addSourceTraceabilityDiagnostic(
+      filePath,
+      data,
+      'frontmatter "source_design_card" must reference an exercise design-card ID from the same unit _index.md',
+    );
+    return;
+  }
+
+  if (!isSlug(data.source_design_card)) {
+    addSourceTraceabilityDiagnostic(
+      filePath,
+      data,
+      'frontmatter "source_design_card" must be a lowercase ASCII hyphenated design-card ID',
+    );
+    return;
+  }
+
+  const exerciseCards = unit.planningObjects?.exerciseDesignCards ?? new Map();
+  const sourceId = data.source_design_card;
+  const card = exerciseCards.get(sourceId);
+  if (!card) {
+    addSourceTraceabilityDiagnostic(
+      filePath,
+      data,
+      `frontmatter "source_design_card" references missing exercise design card "${sourceId}" in the same unit _index.md`,
+    );
+    return;
+  }
+
+  const status = planningCardStatus(card);
+  if (!READY_EXERCISE_PLANNING_STATUSES.has(status)) {
+    addSourceTraceabilityDiagnostic(
+      filePath,
+      data,
+      `frontmatter "source_design_card" references exercise design card "${sourceId}" with status "${status || "missing"}"; expected one of ${[...READY_EXERCISE_PLANNING_STATUSES].join(", ")}`,
+    );
+  }
+
+  const plannedFile = planningFieldFirstPath(planningField(card, ["planned-file"]));
+  if (plannedFile && path.basename(plannedFile) !== path.basename(filePath)) {
+    addSourceTraceabilityDiagnostic(
+      filePath,
+      data,
+      `frontmatter "source_design_card" references exercise design card "${sourceId}" whose Planned file is "${plannedFile}"; expected basename "${path.basename(filePath)}"`,
+    );
+  }
+
+  checkPlanningSourceScalarMatch(filePath, data, {
+    sourceKind: "exercise design card",
+    sourceId,
+    card,
+    cardFieldAliases: ["difficulty"],
+    cardFieldLabel: "Difficulty",
+    dataField: "difficulty",
+  });
+  checkPlanningSourceScalarMatch(filePath, data, {
+    sourceKind: "exercise design card",
+    sourceId,
+    card,
+    cardFieldAliases: ["exercise-role"],
+    cardFieldLabel: "Exercise role",
+    dataField: "exercise_role",
+  });
+  checkPlanningSourceScalarMatch(filePath, data, {
+    sourceKind: "exercise design card",
+    sourceId,
+    card,
+    cardFieldAliases: ["exercise-type"],
+    cardFieldLabel: "Exercise type",
+    dataField: "exercise_type",
+  });
+
+  const expectedTime = planningFieldFirstNumber(planningField(card, ["estimated-time"]));
+  if (
+    expectedTime !== null &&
+    Object.hasOwn(data, "estimated_time_min") &&
+    Number.isFinite(data.estimated_time_min) &&
+    data.estimated_time_min !== expectedTime
+  ) {
+    addSourceTraceabilityDiagnostic(
+      filePath,
+      data,
+      `exercise design card "${sourceId}" Estimated time is ${expectedTime} min but frontmatter "estimated_time_min" is ${data.estimated_time_min}`,
+    );
+  }
+
+  checkPlanningSourceSkillsMatch(
+    filePath,
+    data,
+    "exercise design card",
+    sourceId,
+    card,
+  );
 }
 
 function textIncludesInOrder(text, snippets) {
@@ -3266,6 +3505,85 @@ function fixtureProgram() {
   };
 }
 
+function planningCardFixture(markdown) {
+  const cards = parsePlanningCards(markdown.trim(), 4);
+  return cards[0];
+}
+
+function exerciseSourceCardFixture({
+  id,
+  status,
+  fixtureRepoPath,
+  difficulty = "application-directe",
+  role = "core-skill",
+  type = "calcul",
+  skill = "source-skill",
+  estimatedTime = 6,
+}) {
+  return planningCardFixture(`
+#### ${id} - Fixture exercise source card
+
+Status: ${status}
+
+Planned file:
+- \`exercises/${path.basename(fixtureRepoPath)}\`
+
+Difficulty:
+- ${difficulty}
+
+Exercise role:
+- ${role}
+
+Exercise type:
+- ${type}
+
+Linked skills:
+- ${skill}
+
+Estimated time:
+- ${estimatedTime} min
+`);
+}
+
+function quizSourceCardFixture({
+  id,
+  status,
+  itemType = "multiple-choice",
+  cognitiveRole = "recognition",
+  skill = "source-skill",
+}) {
+  return planningCardFixture(`
+#### ${id} - Fixture quiz item source card
+
+Status: ${status}
+
+Item type:
+- ${itemType}
+
+Cognitive role:
+- ${cognitiveRole}
+
+Skill target:
+- ${skill}
+`);
+}
+
+function fixtureUnitWithPlanningObjects({ exerciseCards = [], quizItemCards = [] } = {}) {
+  return {
+    indexPath: fullPathFromRepoPath(
+      CONTRACT_FIXTURES.usedPlanningCardUnreferenced,
+    ),
+    planningObjects: {
+      exerciseDesignCards: new Map(
+        exerciseCards.map((card) => [card.id, card]),
+      ),
+      quizItemDesignCards: new Map(
+        quizItemCards.map((card) => [card.id, card]),
+      ),
+    },
+  };
+}
+
 function checkContractFixtureBoundaries() {
   const contractsDir = fullPathFromRepoPath(CONTRACT_FIXTURES_DIR_PATH);
 
@@ -3431,7 +3749,7 @@ function checkContractFixtures() {
       );
     },
     [
-      /exercise design card "bad-ex-001": missing or empty "Expected answer form" field/,
+      /exercise design card "bad-ex-001": missing or empty "Why this exercise deserves to exist" field/,
       /exercise design card "bad-ex-001" duplicates another card heading in this unit/,
     ],
   );
@@ -3452,6 +3770,8 @@ function checkContractFixtures() {
     },
     [
       /quiz item design card "badquiz-item-001": missing or empty "Per-choice feedback plan" field/,
+      /quiz item design card "badquiz-item-002": missing or empty "Feedback design" field/,
+      /quiz item design card "badquiz-item-002" duplicates another card heading in this unit/,
     ],
   );
 
@@ -3472,6 +3792,259 @@ function checkContractFixtures() {
     [
       /Question 1 - Bad MCQ: multiple-choice item must have exactly one correct answer/,
       /Question 1 - Bad MCQ: multiple-choice item needs per-choice feedback/,
+    ],
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.exerciseSourceMissingCard,
+    "final exercise source design-card reference must exist",
+    () => {
+      const parsed = readFixtureFrontmatter(
+        CONTRACT_FIXTURES.exerciseSourceMissingCard,
+        "exercise missing source-card fixture",
+      );
+      checkExerciseSourceDesignCard(
+        fixtureUnitWithPlanningObjects(),
+        fullPathFromRepoPath(CONTRACT_FIXTURES.exerciseSourceMissingCard),
+        parsed.data,
+      );
+    },
+    [/source_design_card" references missing exercise design card "missing-exercise-card"/],
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.exerciseSourceBadStatus,
+    "final exercise source design-card reference rejects not-ready statuses",
+    () => {
+      const parsed = readFixtureFrontmatter(
+        CONTRACT_FIXTURES.exerciseSourceBadStatus,
+        "exercise bad source-card status fixture",
+      );
+      const filePath = fullPathFromRepoPath(CONTRACT_FIXTURES.exerciseSourceBadStatus);
+      for (const status of ["draft", "needs-review", "deferred", "rejected"]) {
+        checkExerciseSourceDesignCard(
+          fixtureUnitWithPlanningObjects({
+            exerciseCards: [
+              exerciseSourceCardFixture({
+                id: parsed.data.source_design_card,
+                status,
+                fixtureRepoPath: CONTRACT_FIXTURES.exerciseSourceBadStatus,
+              }),
+            ],
+          }),
+          filePath,
+          parsed.data,
+        );
+      }
+    },
+    [
+      /exercise design card "bad-status-exercise-card" with status "draft"/,
+      /exercise design card "bad-status-exercise-card" with status "needs-review"/,
+      /exercise design card "bad-status-exercise-card" with status "deferred"/,
+      /exercise design card "bad-status-exercise-card" with status "rejected"/,
+    ],
+  );
+
+  expectValidContractFixture(
+    CONTRACT_FIXTURES.exerciseSourceReadyCard,
+    "final exercise source design-card ready status passes",
+    () => {
+      const parsed = readFixtureFrontmatter(
+        CONTRACT_FIXTURES.exerciseSourceReadyCard,
+        "exercise ready source-card fixture",
+      );
+      checkExerciseSourceDesignCard(
+        fixtureUnitWithPlanningObjects({
+          exerciseCards: [
+            exerciseSourceCardFixture({
+              id: parsed.data.source_design_card,
+              status: "ready-for-exercise-batch",
+              fixtureRepoPath: CONTRACT_FIXTURES.exerciseSourceReadyCard,
+            }),
+          ],
+        }),
+        fullPathFromRepoPath(CONTRACT_FIXTURES.exerciseSourceReadyCard),
+        parsed.data,
+      );
+    },
+  );
+
+  expectValidContractFixture(
+    CONTRACT_FIXTURES.exerciseSourceUsedCard,
+    "final exercise source design-card used status passes",
+    () => {
+      const parsed = readFixtureFrontmatter(
+        CONTRACT_FIXTURES.exerciseSourceUsedCard,
+        "exercise used source-card fixture",
+      );
+      checkExerciseSourceDesignCard(
+        fixtureUnitWithPlanningObjects({
+          exerciseCards: [
+            exerciseSourceCardFixture({
+              id: parsed.data.source_design_card,
+              status: "used-in-exercise",
+              fixtureRepoPath: CONTRACT_FIXTURES.exerciseSourceUsedCard,
+            }),
+          ],
+        }),
+        fullPathFromRepoPath(CONTRACT_FIXTURES.exerciseSourceUsedCard),
+        parsed.data,
+      );
+    },
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.quizSourceMissingCard,
+    "final quiz item source card reference must exist",
+    () => {
+      const parsed = readFixtureFrontmatter(
+        CONTRACT_FIXTURES.quizSourceMissingCard,
+        "quiz missing source-card fixture",
+      );
+      checkQuizSourceItemCards(
+        fixtureUnitWithPlanningObjects(),
+        fullPathFromRepoPath(CONTRACT_FIXTURES.quizSourceMissingCard),
+        parsed.body,
+        parsed.data,
+      );
+    },
+    [/"Question 1 - Missing source" references missing quiz item design card "missing-quiz-card"/],
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.quizSourceBadStatus,
+    "final quiz item source card reference rejects not-ready statuses",
+    () => {
+      const parsed = readFixtureFrontmatter(
+        CONTRACT_FIXTURES.quizSourceBadStatus,
+        "quiz bad source-card status fixture",
+      );
+      const filePath = fullPathFromRepoPath(CONTRACT_FIXTURES.quizSourceBadStatus);
+      for (const status of ["draft", "needs-review", "deferred", "rejected"]) {
+        checkQuizSourceItemCards(
+          fixtureUnitWithPlanningObjects({
+            quizItemCards: [
+              quizSourceCardFixture({
+                id: "bad-status-quiz-card",
+                status,
+              }),
+            ],
+          }),
+          filePath,
+          parsed.body,
+          parsed.data,
+        );
+      }
+    },
+    [
+      /quiz item design card "bad-status-quiz-card" with status "draft"/,
+      /quiz item design card "bad-status-quiz-card" with status "needs-review"/,
+      /quiz item design card "bad-status-quiz-card" with status "deferred"/,
+      /quiz item design card "bad-status-quiz-card" with status "rejected"/,
+    ],
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.quizSourceTypeMismatch,
+    "final quiz item type must match source card type",
+    () => {
+      const parsed = readFixtureFrontmatter(
+        CONTRACT_FIXTURES.quizSourceTypeMismatch,
+        "quiz source-card type mismatch fixture",
+      );
+      checkQuizSourceItemCards(
+        fixtureUnitWithPlanningObjects({
+          quizItemCards: [
+            quizSourceCardFixture({
+              id: "type-mismatch-quiz-card",
+              status: "ready-for-quiz-file",
+              itemType: "multiple-choice",
+            }),
+          ],
+        }),
+        fullPathFromRepoPath(CONTRACT_FIXTURES.quizSourceTypeMismatch),
+        parsed.body,
+        parsed.data,
+      );
+    },
+    [/has item type "fill-blank" but source quiz item design card "type-mismatch-quiz-card" plans "multiple-choice"/],
+  );
+
+  expectValidContractFixture(
+    CONTRACT_FIXTURES.quizSourceReadyCard,
+    "final quiz item source card ready status and type pass",
+    () => {
+      const parsed = readFixtureFrontmatter(
+        CONTRACT_FIXTURES.quizSourceReadyCard,
+        "quiz ready source-card fixture",
+      );
+      checkQuizSourceItemCards(
+        fixtureUnitWithPlanningObjects({
+          quizItemCards: [
+            quizSourceCardFixture({
+              id: "ready-quiz-card",
+              status: "ready-for-quiz-file",
+            }),
+          ],
+        }),
+        fullPathFromRepoPath(CONTRACT_FIXTURES.quizSourceReadyCard),
+        parsed.body,
+        parsed.data,
+      );
+    },
+  );
+
+  expectValidContractFixture(
+    CONTRACT_FIXTURES.quizSourceUsedCard,
+    "final quiz item source card used status and type pass",
+    () => {
+      const parsed = readFixtureFrontmatter(
+        CONTRACT_FIXTURES.quizSourceUsedCard,
+        "quiz used source-card fixture",
+      );
+      checkQuizSourceItemCards(
+        fixtureUnitWithPlanningObjects({
+          quizItemCards: [
+            quizSourceCardFixture({
+              id: "used-quiz-card",
+              status: "used-in-quiz",
+            }),
+          ],
+        }),
+        fullPathFromRepoPath(CONTRACT_FIXTURES.quizSourceUsedCard),
+        parsed.body,
+        parsed.data,
+      );
+    },
+  );
+
+  expectWarningOnlyContractFixture(
+    CONTRACT_FIXTURES.usedPlanningCardUnreferenced,
+    "used planning cards should have final artifact references",
+    () => {
+      checkUsedPlanningCardsHaveFinalArtifactReferences(
+        fixtureUnitWithPlanningObjects({
+          exerciseCards: [
+            exerciseSourceCardFixture({
+              id: "unreferenced-exercise-card",
+              status: "used-in-exercise",
+              fixtureRepoPath: CONTRACT_FIXTURES.usedPlanningCardUnreferenced,
+            }),
+          ],
+          quizItemCards: [
+            quizSourceCardFixture({
+              id: "unreferenced-quiz-card",
+              status: "used-in-quiz",
+            }),
+          ],
+        }),
+        [],
+        [],
+      );
+    },
+    [
+      /exercise design card "unreferenced-exercise-card" has status "used-in-exercise" but no exercise file/,
+      /quiz item design card "unreferenced-quiz-card" has status "used-in-quiz" but no quiz question/,
     ],
   );
 
@@ -4058,25 +4631,7 @@ function checkExerciseFile(unit, filePath) {
   checkAllowedValue(filePath, data, "statement_status", ALLOWED_STATEMENT_STATUSES);
   checkAllowedValue(filePath, data, "solution_status", ALLOWED_SOLUTION_STATUSES);
 
-  if (Object.hasOwn(data, "source_design_card")) {
-    if (isEmptyValue(data.source_design_card)) {
-      addError(filePath, 'frontmatter "source_design_card" must reference a design-card ID');
-    } else if (!isSlug(data.source_design_card)) {
-      addError(
-        filePath,
-        'frontmatter "source_design_card" must be a lowercase ASCII hyphenated design-card ID',
-      );
-    } else {
-      const exerciseCards = unit.planningObjects?.exerciseDesignCards ?? new Map();
-      if (!exerciseCards.has(data.source_design_card)) {
-        addFinalReadinessDiagnostic(
-          filePath,
-          data,
-          `frontmatter "source_design_card" references missing exercise design card "${data.source_design_card}" in the unit _index.md`,
-        );
-      }
-    }
-  }
+  checkExerciseSourceDesignCard(unit, filePath, data);
 
   for (const field of ["requires_graph", "has_hints", "has_common_mistakes", "has_verification"]) {
     checkBooleanField(filePath, data, field);
@@ -4191,41 +4746,15 @@ function checkExerciseFile(unit, filePath) {
   }
 }
 
-function parseQuizQuestionSourceItemCards(body) {
-  const questionsSection = stripFencedCodeBlocks(
-    getSection(body, 2, "Questions"),
-  );
-  const questionMatches = [...questionsSection.matchAll(/^###\s+(Question\b.+?)\s*$/gm)];
-  const questions = [];
-
-  for (let index = 0; index < questionMatches.length; index += 1) {
-    const match = questionMatches[index];
-    const heading = match[1].trim();
-    const bodyStart = match.index + match[0].length;
-    const bodyEnd =
-      index + 1 < questionMatches.length
-        ? questionMatches[index + 1].index
-        : questionsSection.length;
-    const fields = parsePlanningCardFields(
-      questionsSection.slice(bodyStart, bodyEnd),
-    );
-    const sourceField = planningField({ fields }, ["source-item-card"]);
-
-    questions.push({
-      heading,
-      sourceItemCard: firstPlanningFieldToken(sourceField),
-    });
-  }
-
-  return questions;
-}
-
 function checkQuizSourceItemCards(unit, filePath, body, data = {}) {
-  const questions = parseQuizQuestionSourceItemCards(body);
+  const questions = parseQuizQuestionBlocks(body);
   const itemCards = unit?.planningObjects?.quizItemDesignCards ?? null;
 
   for (const question of questions) {
-    if (!question.sourceItemCard) {
+    const sourceField = planningField(question, ["source-item-card"]);
+    const sourceItemCard = firstPlanningFieldToken(sourceField);
+
+    if (!sourceItemCard) {
       addFinalReadinessDiagnostic(
         filePath,
         data,
@@ -4234,20 +4763,93 @@ function checkQuizSourceItemCards(unit, filePath, body, data = {}) {
       continue;
     }
 
-    if (!isSlug(question.sourceItemCard)) {
+    if (!isSlug(sourceItemCard)) {
       addFinalReadinessDiagnostic(
         filePath,
         data,
-        `"${question.heading}" has invalid Source item card "${question.sourceItemCard}"; expected lowercase ASCII hyphenated item-card ID`,
+        `"${question.heading}" has invalid Source item card "${sourceItemCard}"; expected lowercase ASCII hyphenated item-card ID`,
       );
       continue;
     }
 
-    if (itemCards && !itemCards.has(question.sourceItemCard)) {
+    if (!itemCards) continue;
+
+    const card = itemCards.get(sourceItemCard);
+    if (!card) {
       addFinalReadinessDiagnostic(
         filePath,
         data,
-        `"${question.heading}" references missing quiz item design card "${question.sourceItemCard}" in the unit _index.md`,
+        `"${question.heading}" references missing quiz item design card "${sourceItemCard}" in the same unit _index.md`,
+      );
+      continue;
+    }
+
+    const status = planningCardStatus(card);
+    if (!READY_QUIZ_ITEM_PLANNING_STATUSES.has(status)) {
+      addFinalReadinessDiagnostic(
+        filePath,
+        data,
+        `"${question.heading}" references quiz item design card "${sourceItemCard}" with status "${status || "missing"}"; expected one of ${[...READY_QUIZ_ITEM_PLANNING_STATUSES].join(", ")}`,
+      );
+    }
+
+    const plannedItemType = planningFieldFirstItemToken(
+      planningField(card, ["item-type"]),
+    );
+    const finalItemType = firstPlanningFieldToken(
+      planningField(question, ["type", "item-type"]),
+    );
+    if (plannedItemType && finalItemType && plannedItemType !== finalItemType) {
+      addFinalReadinessDiagnostic(
+        filePath,
+        data,
+        `"${question.heading}" has item type "${finalItemType}" but source quiz item design card "${sourceItemCard}" plans "${plannedItemType}"`,
+      );
+    }
+
+    const plannedCognitiveRole = planningFieldFirstItemToken(
+      planningField(card, ["cognitive-role"]),
+    );
+    const finalCognitiveRole = firstPlanningFieldToken(
+      planningField(question, ["cognitive-role"]),
+    );
+    if (
+      plannedCognitiveRole &&
+      finalCognitiveRole &&
+      plannedCognitiveRole !== finalCognitiveRole
+    ) {
+      addFinalReadinessDiagnostic(
+        filePath,
+        data,
+        `"${question.heading}" has cognitive role "${finalCognitiveRole}" but source quiz item design card "${sourceItemCard}" plans "${plannedCognitiveRole}"`,
+      );
+    }
+
+    const plannedSkill = planningFieldFirstItemToken(
+      planningField(card, ["skill-target"]),
+    ).replace(/`/g, "");
+    const finalSkills = planningFieldItems(
+      planningField(question, ["skill-tested", "skill-target"]),
+    )
+      .map((item) =>
+        item
+          .split("|")[0]
+          .split(",")[0]
+          .trim()
+          .split(/\s+/)[0]
+          .replace(/^["'`]|["'`]$/g, ""),
+      )
+      .filter(isSlug);
+
+    if (
+      isSlug(plannedSkill) &&
+      finalSkills.length > 0 &&
+      !finalSkills.includes(plannedSkill)
+    ) {
+      addFinalReadinessDiagnostic(
+        filePath,
+        data,
+        `"${question.heading}" tests skill(s) ${finalSkills.join(", ")} but source quiz item design card "${sourceItemCard}" plans skill "${plannedSkill}"`,
       );
     }
   }
@@ -5116,6 +5718,62 @@ function checkQuizFile(unit, filePath) {
   }
 }
 
+function exerciseSourceDesignCardRefsFromFiles(exerciseFiles) {
+  const refs = new Set();
+
+  for (const filePath of exerciseFiles) {
+    const parsed = parseFrontmatter(filePath, fs.readFileSync(filePath, "utf8"));
+    const sourceId = parsed.data?.source_design_card;
+    if (isSlug(sourceId)) refs.add(sourceId);
+  }
+
+  return refs;
+}
+
+function quizSourceItemCardRefsFromFiles(quizFiles) {
+  const refs = new Set();
+
+  for (const filePath of quizFiles) {
+    const parsed = parseFrontmatter(filePath, fs.readFileSync(filePath, "utf8"));
+    for (const question of parseQuizQuestionBlocks(parsed.body)) {
+      const sourceId = firstPlanningFieldToken(
+        planningField(question, ["source-item-card"]),
+      );
+      if (isSlug(sourceId)) refs.add(sourceId);
+    }
+  }
+
+  return refs;
+}
+
+function checkUsedPlanningCardsHaveFinalArtifactReferences(
+  unit,
+  exerciseFiles,
+  quizFiles,
+) {
+  const exerciseRefs = exerciseSourceDesignCardRefsFromFiles(exerciseFiles);
+  for (const [cardId, card] of unit.planningObjects?.exerciseDesignCards ?? []) {
+    if (planningCardStatus(card) !== "used-in-exercise") continue;
+    if (exerciseRefs.has(cardId)) continue;
+
+    addWarning(
+      unit.indexPath,
+      `exercise design card "${cardId}" has status "used-in-exercise" but no exercise file in this unit references it with frontmatter "source_design_card"; either add/update the final exercise reference or set the card back to "ready-for-exercise-batch"`,
+    );
+  }
+
+  const quizRefs = quizSourceItemCardRefsFromFiles(quizFiles);
+  for (const [cardId, card] of unit.planningObjects?.quizItemDesignCards ?? []) {
+    if (planningCardStatus(card) !== "used-in-quiz") continue;
+    if (quizRefs.has(cardId)) continue;
+
+    addWarning(
+      unit.indexPath,
+      `quiz item design card "${cardId}" has status "used-in-quiz" but no quiz question in this unit references it with "Source item card"; either add/update the final quiz item reference or set the card back to "ready-for-quiz-file"`,
+    );
+  }
+}
+
 function checkExerciseSetExerciseIds(
   filePath,
   data,
@@ -5268,6 +5926,12 @@ function checkUnitContentFiles(unit) {
   for (const filePath of quizFiles) {
     checkQuizFile(unit, filePath);
   }
+
+  checkUsedPlanningCardsHaveFinalArtifactReferences(
+    unit,
+    exerciseFiles,
+    quizFiles,
+  );
 
   for (const filePath of walkMarkdownFiles(path.join(unit.dir, "sets"))) {
     checkSetFile(unit, filePath);

@@ -38,13 +38,12 @@ Use lowercase ASCII IDs with hyphen separators. A direct exercise blueprint uses
 
 Allowed exercise design-card statuses:
 
-- `planned`: drafted design card, not ready for final exercise creation.
-- `needs-review`: a material edit made prior readiness stale or the card needs targeted review.
-- `needs-redesign`: review found a design problem.
-- `needs-verification`: math, source, parameter, or feasibility risk must be checked first.
+- `draft`: design work is still incomplete or exploratory.
+- `needs-review`: a material edit made prior readiness stale, or the card needs targeted math, source, pedagogy, or feasibility review before use.
 - `ready-for-exercise-batch`: complete enough for final exercise batch creation.
-- `used-in-exercise`: a final exercise file was created from the card.
-- `rejected`: deliberately not used.
+- `used-in-exercise`: a final exercise file exists and references this card with `source_design_card`.
+- `deferred`: deliberately postponed; do not use as a source card yet.
+- `rejected`: deliberately not used; do not use as a source card.
 
 Raw seeds are not design cards. They remain exploratory and use their own curation decision fields until upgraded into this canonical card format.
 
@@ -205,7 +204,7 @@ Even compact exercises keep the canonical headings for consistent parsing and re
 ```md
 #### <card-id> - <working title>
 
-Status: planned | needs-review | needs-redesign | needs-verification | ready-for-exercise-batch | used-in-exercise | rejected
+Status: draft | needs-review | ready-for-exercise-batch | used-in-exercise | deferred | rejected
 
 Cluster:
 - <cluster id/title>
@@ -299,4 +298,8 @@ Keep/reject decision:
 - Keep because...
 ```
 
-Use `needs-review` when a material edit makes a previously ready design card's review/readiness evidence stale. Use `needs-redesign` when review found a design failure, `needs-verification` when the card is blocked by math, source, or feasibility uncertainty, `used-in-exercise` after the final file is created, and `rejected` when the idea should not remain in the exercise ladder.
+Only `ready-for-exercise-batch` and `used-in-exercise` may be used as source statuses for final exercise files. Do not create final exercises from `draft`, `needs-review`, `deferred`, or `rejected` cards.
+
+After a final exercise file is actually created, update the card to `used-in-exercise` only when that file records the card ID in `source_design_card` and repeats it in `## Notes auteur`. Do not mark a card as used before the final artifact points back to it.
+
+A material edit to a `ready-for-exercise-batch` or `used-in-exercise` card must set the card to `needs-review`, identify any final exercise files derived from it through `source_design_card`, and mark affected exercise review evidence as `needs-review` where the design intent, statement, hints, answer, solution, feedback, or verification changed. A non-material edit may preserve the card status only when the final report gives a clear reason that design intent, answer logic, solution, feedback, remediation, and pedagogy did not change.

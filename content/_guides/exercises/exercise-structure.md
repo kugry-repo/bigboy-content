@@ -76,7 +76,7 @@ An exercise design card is curated exercise planning material.
 
 It is the main source of truth for exercise batch creation. It should be detailed enough that the batch creation step can create a high-quality final exercise without inventing the pedagogical goal, method, traps, hint ladder, or verification concerns from scratch.
 
-Use the canonical H4 card format in `content/_guides/exercises/exercise-design-guide.md`. The card heading is the stable card ID, and `Status: ready-for-exercise-batch` means the card has its target skill, exercise role/type, difficulty, prerequisites, statement shape, expected answer form, solution strategy, traps, verification check, source/provenance notes, linked-mini-lesson convention, and batch/readiness note filled. A direct exercise blueprint uses the same card contract.
+Use the canonical H4 card format in `content/_guides/exercises/exercise-design-guide.md`. The card heading is the stable card ID. `Status: ready-for-exercise-batch` means the card satisfies the full minimum contract: cluster/local scope, planned file, target skill, exercise role/type, difficulty, prerequisites, linked-mini-lesson convention, target ability, decision point, why the exercise deserves to exist, statement shape, expected answer form, parameter constraints, solution strategy, traps, hint ladder, feasibility sketch, verification check, source/provenance notes, variants, estimated time, potential sets, review notes, and batch/readiness note. A direct exercise blueprint uses the same card contract.
 
 ### Final exercise file
 
@@ -84,7 +84,7 @@ A final exercise file is exercise batch output.
 
 It lives under the unit `exercises/` folder, uses `content/_templates/exercise.template.md`, and contains learner-facing sections plus author notes.
 
-Every final exercise created from a card records `source_design_card` in frontmatter and repeats the card ID in `## Notes auteur`. If the source card is incomplete or not `ready-for-exercise-batch`, stop and repair the planning object first.
+Every final exercise created from a card records `source_design_card` in frontmatter and repeats the card ID in `## Notes auteur`. If the source card is incomplete, `draft`, `needs-review`, `deferred`, or `rejected`, stop and repair the planning object first. After successful creation, mark the card `used-in-exercise` only when the final file actually references it.
 
 Exercise batch files start as:
 
@@ -97,7 +97,7 @@ solution_status: draft
 
 They are not reviewed until both quality review and solution review have passed.
 
-After a material edit to an exercise, use `needs-review` on only the affected review substatus fields. Statement edits usually invalidate `statement_status` and may invalidate `solution_status`; solution-only edits invalidate `solution_status`; design-card edits invalidate card readiness and any derived exercise design evidence that depends on the changed card.
+After a material edit to an exercise, use `needs-review` on only the affected review substatus fields. Statement edits usually invalidate `statement_status` and may invalidate `solution_status`; solution-only edits invalidate `solution_status`; design-card edits invalidate card readiness and any derived exercise design evidence that depends on the changed card. A material edit to a `ready-for-exercise-batch` or `used-in-exercise` card sets the card to `needs-review` and should identify derived exercise files through `source_design_card` for targeted re-review.
 
 ## Why One Exercise Per File?
 

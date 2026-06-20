@@ -88,13 +88,12 @@ Use lowercase ASCII IDs with hyphen separators.
 
 Allowed quiz item design-card statuses:
 
-- `planned`: drafted item design card, not ready for final quiz creation.
-- `needs-review`: a material edit made prior readiness stale or the card needs targeted review.
-- `needs-redesign`: review found an item-design problem.
-- `needs-verification`: math, source, ambiguity, or feasibility risk must be checked first.
+- `draft`: item design work is still incomplete or exploratory.
+- `needs-review`: a material edit made prior readiness stale, or the card needs targeted math, source, ambiguity, feedback, remediation, or feasibility review before use.
 - `ready-for-quiz-file`: complete enough for final quiz file creation.
-- `used-in-quiz`: a final quiz item was created from the card.
-- `rejected`: deliberately not used.
+- `used-in-quiz`: a final quiz question exists and references this card with `Source item card`.
+- `deferred`: deliberately postponed; do not use as a source card yet.
+- `rejected`: deliberately not used; do not use as a source card.
 
 Raw item seeds are not item design cards. They remain exploratory until curated into this canonical format.
 
@@ -103,7 +102,7 @@ Canonical item design card format:
 ```md
 #### <item-card-id> - <working title>
 
-Status: planned | needs-review | needs-redesign | needs-verification | ready-for-quiz-file | used-in-quiz | rejected
+Status: draft | needs-review | ready-for-quiz-file | used-in-quiz | deferred | rejected
 
 Quiz intent:
 - <intent id/title or planned quiz file>
@@ -179,6 +178,12 @@ Batch/readiness note:
 ```
 
 For non-choice item types, keep the answer contract, verification check, explanation goal, feedback design, remediation plan, and type-specific planning field specific to that item type. Do not invent per-choice feedback where there are no choices.
+
+Only `ready-for-quiz-file` and `used-in-quiz` may be used as source statuses for final quiz questions. Do not create final quiz items from `draft`, `needs-review`, `deferred`, or `rejected` cards.
+
+After a final quiz item is actually created, update the item card to `used-in-quiz` only when that final question records the card ID in `Source item card`. Do not mark a card as used before the final artifact points back to it.
+
+A material edit to a `ready-for-quiz-file` or `used-in-quiz` item card must set the card to `needs-review`, identify any final quiz questions derived from it through `Source item card`, and mark affected quiz review evidence as `needs-review` where the item type, stem, answer, feedback, remediation, misconception signal, or verification changed. A non-material edit may preserve the card status only when the final report gives a clear reason that item intent, answer logic, feedback, remediation, and pedagogy did not change.
 
 ### 04-create-quiz-file
 

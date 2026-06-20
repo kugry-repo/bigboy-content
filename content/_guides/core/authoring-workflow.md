@@ -103,13 +103,13 @@ raw exercise seeds
 
 Exercise design cards are the source of truth for final exercise creation. A table-only exercise summary is not enough to create an exercise.
 
-Design cards are contract-bearing planning artifacts. A ready exercise card must have a stable H4 card ID, allowed status, target skill, exercise role/type, difficulty, prerequisites, statement shape, expected answer form, intended method, traps, verification check, source/provenance notes, linked-mini-lesson convention, and readiness note. Direct exercise blueprints use the same card contract.
+Design cards are contract-bearing planning artifacts. A ready exercise card must have a stable H4 card ID, allowed status (`draft`, `needs-review`, `ready-for-exercise-batch`, `used-in-exercise`, `deferred`, or `rejected`), target skill, exercise role/type, difficulty, prerequisites, statement shape, expected answer form, intended method, traps, verification check, source/provenance notes, linked-mini-lesson convention, why the exercise deserves to exist, variants, estimated time, potential sets, and readiness note. Direct exercise blueprints use the same card contract.
 
 Quality review checks statement/design/progression/hints/mistakes/learner experience. Solution review checks mathematical correctness and solution pedagogy.
 
 Each exercise lives in its own Markdown file under `exercises/`.
 
-Final exercise files record the source planning object with `source_design_card` in frontmatter and in `## Notes auteur`.
+Final exercise files record the source planning object with `source_design_card` in frontmatter and in `## Notes auteur`. Use only `ready-for-exercise-batch` or `used-in-exercise` source cards; update a card to `used-in-exercise` only after the final exercise references it.
 
 ## Standalone quizzes
 
@@ -129,11 +129,11 @@ quiz intent
 
 Quiz item design cards are the source of truth for quiz creation. A table-only quiz summary is not enough to create a quiz.
 
-Quiz item design cards are contract-bearing planning artifacts. A ready item card must have a stable H4 item-card ID, allowed status, quiz intent context, target skill, item type, difficulty, stem/task design, answer contract, verification check, explanation goal, feedback design, remediation plan, and source/provenance notes. Supported item types are `multiple-choice`, `multiple-response`, `true-false`, `fill-blank`, `match`, `sequence`, and `hotspot`. MCQ/MR item cards also need choices, correct choice(s), distractor rationale, per-choice feedback planning, and misconception mapping where appropriate. Non-choice item cards keep item-type-specific answer, feedback, verification, and remediation contracts without fake per-choice fields.
+Quiz item design cards are contract-bearing planning artifacts. A ready item card must have a stable H4 item-card ID, allowed status (`draft`, `needs-review`, `ready-for-quiz-file`, `used-in-quiz`, `deferred`, or `rejected`), quiz intent context, target skill, item type, difficulty, stem/task design, answer contract, verification check, explanation goal, feedback design, remediation plan, and source/provenance notes. Supported item types are `multiple-choice`, `multiple-response`, `true-false`, `fill-blank`, `match`, `sequence`, and `hotspot`. MCQ/MR item cards also need choices, correct choice(s), distractor rationale, per-choice feedback planning, and misconception mapping where appropriate. Non-choice item cards keep item-type-specific answer, feedback, verification, and remediation contracts without fake per-choice fields.
 
 Every MCQ/MR option should have answer-specific feedback. Wrong choices should map to real misconceptions. Fill-blank, match, sequence, and hotspot items should plan common wrong forms, wrong pairings, wrong orders, or wrong regions instead of pretending they have choices.
 
-Final quiz questions record their source planning object with `Source item card` in the question metadata.
+Final quiz questions record their source planning object with `Source item card` in the question metadata. Use only `ready-for-quiz-file` or `used-in-quiz` source cards; update a card to `used-in-quiz` only after the final question references it.
 
 ## Targeted revision
 

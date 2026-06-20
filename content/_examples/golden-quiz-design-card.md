@@ -14,7 +14,7 @@ This is an example/reference file only. It is not real unit content.
 
 #### lc-quiz-001-item-003 - Le piege du $0/0$
 
-Status: ready-for-quiz-file
+Status: used-in-quiz
 
 Quiz intent:
 - `lc-quiz-001` - Limites : reconnaitre une forme indeterminee
@@ -92,4 +92,4 @@ Mismath / ambiguity risks:
 - Ensure the expression really gives $0/0$ by direct substitution.
 
 Batch/readiness note:
-- Ready because the item type, correct answer, distractor rationale, per-choice feedback, remediation, and ambiguity check are explicit.
+- Used by `golden-quiz-limites.md` Question 3, whose `Source item card` is `lc-quiz-001-item-003`. The card was ready before drafting and is marked used only because the final question points back to it.

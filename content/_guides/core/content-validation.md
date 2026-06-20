@@ -50,8 +50,9 @@ The validator checks:
 - exact canonical initialized/published unit `_index.md` structure as derived from `content/_templates/unit-index.template.md`;
 - required exercise cluster, raw-seed, and design-card areas from the canonical initialized scaffold;
 - required quiz raw-material and design-card areas from the canonical initialized scaffold;
-- canonical exercise design-card IDs, duplicate IDs, allowed statuses, required field labels, ready-card completeness, and final exercise `source_design_card` references when enough local planning data exists;
-- canonical quiz item design-card IDs, duplicate IDs, allowed statuses, required field labels, MCQ/MR distractor and per-choice feedback planning fields, non-choice type-specific planning fields, ready-card completeness, and final quiz `Source item card` references when enough local planning data exists;
+- canonical exercise design-card IDs, duplicate IDs, allowed statuses, full ready/used-card field completeness, and final exercise `source_design_card` references to same-unit ready/used cards with mechanical mismatch checks where fields are comparable;
+- canonical quiz item design-card IDs, duplicate IDs, allowed statuses, required common fields, MCQ/MR distractor and per-choice feedback planning fields, non-choice type-specific planning fields, full ready/used-card completeness, and final quiz `Source item card` references to same-unit ready/used cards with item-type mismatch checks;
+- warning-level reverse traceability for planning cards marked `used-in-exercise` or `used-in-quiz` when no final artifact in the same unit references them;
 - `## Production dashboard` rows from the canonical initialized scaffold as the authoritative initialized/published unit workstream tracker;
 - artifact-family `Scope` rows limited to `not-started`, `not-in-scope`, and `deferred`, with ordinary dashboard progress/review statuses checked separately;
 - `## Journal de production` as the historical log;

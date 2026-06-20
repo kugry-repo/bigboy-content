@@ -141,7 +141,7 @@ Use the rich design card format from `content/_guides/exercises/exercise-design-
 ```md
 #### <card-id> - <working title>
 
-Status: planned | needs-review | needs-redesign | needs-verification | ready-for-exercise-batch | used-in-exercise | rejected
+Status: draft | needs-review | ready-for-exercise-batch | used-in-exercise | deferred | rejected
 
 Cluster:
 - <cluster id/title>
@@ -235,7 +235,7 @@ Keep/reject decision:
 - Keep because...
 ```
 
-Cards that are ready for batch creation should use `Status: ready-for-exercise-batch`. Use `planned` for drafted but not-ready cards, `needs-review` when a material edit made prior readiness stale, `needs-redesign` for design failures, `needs-verification` for math/source/feasibility uncertainty, `used-in-exercise` after final exercise creation, or `rejected` honestly when the seed is not worth keeping.
+Cards that are ready for batch creation should use `Status: ready-for-exercise-batch`. Use `draft` for incomplete design work, `needs-review` when a material edit made prior readiness stale or math/source/feasibility must be checked, `deferred` when the idea is intentionally postponed, `used-in-exercise` only after a final exercise file actually references the card with `source_design_card`, or `rejected` honestly when the seed is not worth keeping. Do not create final exercises from `draft`, `needs-review`, `deferred`, or `rejected` cards.
 
 Mark unsupported official curriculum or exam-frame claims as needing verification unless documented in `content/_references/official-sources.md`.
 
@@ -243,7 +243,7 @@ Finish by summarizing:
 
 - selected cluster;
 - number of design cards created or updated;
-- design cards kept, merged, rejected, or marked needs-review/needs-redesign/needs-verification;
+- design cards kept, merged, rejected, deferred, or marked needs-review;
 - coverage by skill and linked support; if local lessons are `not-in-scope`, report exercise-only coverage instead of treating lesson links as missing;
 - missing areas or verification needs;
 - recommended next prompt: `content/_prompts/workflows/exercises/03-check-unit-balance.md` when cluster cards are ready for whole-unit balance.
