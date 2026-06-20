@@ -94,6 +94,8 @@ If no exercises exist and the design cards are not specific enough to build sets
 
 Do not create missing exercise files during exercise-set assembly. If a useful set needs exercises that do not exist yet, record the missing planned IDs and recommend exercise batch creation.
 
+After creating or updating set files, update the `sets` row in `## Inventaire des fichiers finaux`. Update the set-family dashboard only if scope, blockers, review needs, or the next decision changed. Do not duplicate each set frontmatter status in the dashboard.
+
 Finish by summarizing:
 
 - set files created or updated;

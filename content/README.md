@@ -57,15 +57,17 @@ folders are derived as `<two-digit unit_order>-<unit_slug>`.
 Deleted or retired frontmatter IDs are recorded in
 `_references/deleted-ids.md`; validation rejects active reuse.
 
-The unit `_index.md` is the only unit-planning artifact. Unstarted units stay lightweight with `planning_state: stub`; only initialized or published unit indexes contain the full planning dashboard.
+The unit `_index.md` is the only unit-planning artifact. Unstarted units stay lightweight with `planning_state: stub`; only initialized or published unit indexes contain the initialized planning scaffold.
 
-Use `content/_templates/unit-index.template.md` as the canonical initialized scaffold. Use `content/_prompts/commands/initialize-unit.md` to expand one stub before planning lessons, exercises, quizzes, sets, or dashboard work. Do not expand every unit index just because the dashboard shape changes.
+Use `content/_templates/unit-index.template.md` as the canonical initialized scaffold. Use `content/_prompts/commands/initialize-unit.md` to expand one stub before planning lessons, exercises, quizzes, sets, or initialized unit work. Do not expand every unit index just because the scaffold shape changes.
 
 Artifact workstreams are independent. A unit may be intentionally sparse, and missing lessons, exercises, quizzes, or sets are blockers only when the declared scope, publish target, existing references, or local workflow prerequisites require them.
 
-Initialized dashboards declare artifact-family scope with the `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes`: `not-started` is the in-scope/open declaration, `not-in-scope` means intentionally absent, and `deferred` means intentionally postponed. Family-local rows record progress and review status.
+Artifact frontmatter is the source of truth for artifact-level status and review freshness. The unit `_index.md` is the source of truth for unit-level scope, planning notes, blockers, and author decisions. Its dashboard is a compact orientation view, not a second validator or a place to copy every artifact status.
 
-Initialized and published unit indexes also contain `## Inventaire des fichiers finaux`. This is the canonical navigation inventory for final student-facing or publishable lessons, exercises, and standalone quizzes. It mirrors the dashboard Scope rows, uses `none`, `not-in-scope`, or `deferred` when a family has no links, and lists real final files with unit-relative Obsidian links when they exist. Planning cards stay in the planning sections; they are not final-artifact inventory rows.
+Initialized dashboards declare artifact-family scope with the `Scope` rows under `### Lessons`, `### Exercises`, `### Sets`, and `### Quizzes`: `not-started` is the in-scope/open declaration, `not-in-scope` means intentionally absent, and `deferred` means intentionally postponed. Family-local rows summarize blockers and next decisions; artifact status stays in frontmatter.
+
+Initialized and published unit indexes also contain `## Inventaire des fichiers finaux`. This is the canonical navigation inventory for final student-facing or publishable lessons, exercises, exercise sets, and standalone quizzes. It mirrors the dashboard Scope rows, uses `none`, `not-in-scope`, or `deferred` when a family has no links, and lists real final files with unit-relative Obsidian links when they exist. Planning cards stay in the planning sections; they are not final-artifact inventory rows.
 
 `planning_state: published` is set only by explicit human instruction after review and cleanup. Review/finalize prompts can report readiness for declared scope, but they do not publish automatically.
 
@@ -75,9 +77,9 @@ Review and finalization are artifact-specific. Unit review should use lesson sta
 
 Use `content/_fixtures/initialized-unit/_index.md` only as a checked-in structural reference for the initialized scaffold. It is not educational content.
 
-After initialization, lesson preparation, exercise clusters, raw exercise seeds, exercise design cards, quiz intent cards, raw item pools, quiz item design cards, set planning, production dashboard state, and production journal entries all live in the unit `_index.md`.
+After initialization, lesson preparation, exercise clusters, raw exercise seeds, exercise design cards, quiz intent cards, raw item pools, quiz item design cards, set planning, scope decisions, blockers, and meaningful production decisions all live in the unit `_index.md`.
 
-Navigation flows from program index to unit index, then from the unit inventory to available final lesson, exercise, and quiz files. The same unit index also links authors to planning-card sections when those planning objects exist.
+Navigation flows from program index to unit index, then from the unit inventory to available final lesson, exercise, set, and quiz files. The same unit index also links authors to planning-card sections when those planning objects exist.
 
 Exercise design cards and quiz item design cards are contract-bearing planning artifacts. Ready cards need stable H4 IDs, allowed statuses, target skills, answer/solution or feedback/remediation contracts, verification/source notes, and readiness notes before final files are created. Final exercises trace back with `source_design_card`; final quiz questions trace back with `Source item card`.
 

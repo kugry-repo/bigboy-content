@@ -108,7 +108,7 @@ Do not create:
 - new mini-lessons;
 - frontend or app code.
 
-Do not update later production dashboard rows. Do not mark design cards, balance review, exercise files, quality review, solution review, or sets complete during raw seed work.
+Do not update unrelated dashboard rows. Raw seed work may change exercise planning notes, but it does not certify design cards, final exercise files, reviews, solutions, or sets.
 
 ## Output Sections
 

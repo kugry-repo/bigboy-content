@@ -60,7 +60,7 @@ Create or improve the unit plan in `TARGET_UNIT_INDEX`.
 
 This is unit-map work only.
 
-Planning records declared scope. It may plan one artifact family, several artifact families, all artifact families, or an intentionally sparse unit. Include the canonical planning sections, and use the dashboard `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes` to mark each family as `not-started`, `not-in-scope`, or `deferred`. Do not use the `Scope` row for progress or review status; update family-local rows for that evidence.
+Planning records declared scope. It may plan one artifact family, several artifact families, all artifact families, or an intentionally sparse unit. Include the canonical planning sections, and use the dashboard `Scope` rows under `### Lessons`, `### Exercises`, `### Sets`, and `### Quizzes` to mark each family as `not-started`, `not-in-scope`, or `deferred`. Do not use the `Scope` row for progress or review status. Use family-local rows only for blockers, planning readiness, review needs, or next decisions that help the author choose what to do.
 
 Do not create:
 
@@ -92,7 +92,7 @@ The unit plan must include:
 17. Planned quiz progression for diagnostic checkpoints inside quiz intent cards and item design cards.
 18. Planned diagrams and future interactions.
 19. Exam-style patterns, with unsupported official claims marked for verification.
-20. Production dashboard.
+20. Compact production dashboard, only for scope, blockers, and next decisions.
 21. Author notes and uncertainty markers.
 
 Use the current unit metadata and naming rules from `TARGET_UNIT_INDEX`. Do not hardcode a unit code, title, or folder.

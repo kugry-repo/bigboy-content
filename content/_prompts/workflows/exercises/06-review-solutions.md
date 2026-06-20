@@ -64,7 +64,7 @@ Review selected existing exercise solutions created during exercise batch creati
 
 This is solution-review work only.
 
-If the user named specific exercise files, review only those. Otherwise, review the first existing exercise files whose `solution_status` or production dashboard suggests solution review is needed. If target files are ambiguous, stop and ask.
+If the user named specific exercise files, review only those. Otherwise, review the first existing exercise files whose `solution_status` suggests solution review is needed; use the dashboard only as a blocker/next-decision clue. If target files are ambiguous, stop and ask.
 
 If this review follows a material solution edit, refresh only `solution_status` when the solution review passes. Do not refresh `statement_status` or `design_status` unless the prompt is explicitly rerouted through exercise quality review.
 

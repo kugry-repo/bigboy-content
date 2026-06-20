@@ -1,6 +1,6 @@
 # Command - Initialize Unit
 
-Use this command to expand a lightweight unit stub into an initialized planning dashboard.
+Use this command to expand a lightweight unit stub into an initialized planning scaffold.
 
 This command is for unit `_index.md` lifecycle only. It does not create lesson, exercise, quiz, or set files.
 
@@ -53,12 +53,12 @@ Prompt-specific requirements:
 - Preserve source fields, dates, version, `skills`, `status`, `sync_status`, and `sync_reason` unless the user explicitly asked to change them.
 - Set `planning_state: initialized`.
 - Keep `status: planned` unless the unit already has a stronger valid status.
-- Replace the stub body with the initialized dashboard body.
+- Replace the stub body with the initialized planning-scaffold body.
 - Do not create artifact files under `lessons/`, `exercises/`, `quizzes/`, or `sets/`.
 - Do not add fake final-artifact links to `## Inventaire des fichiers finaux`; use the template's `none` rows until real files exist.
 - Do not add fake lesson rows, exercise design cards, quiz intent cards, quiz item design cards, or generic placeholder tables.
 - Do not initialize every unit in the program. Initialize only the resolved target.
-- If the unit already has `planning_state: initialized` or `planning_state: published`, do not recreate the dashboard. Report that it is already initialized and offer the smallest targeted patch if the dashboard is malformed.
+- If the unit already has `planning_state: initialized` or `planning_state: published`, do not recreate the scaffold. Report that it is already initialized and offer the smallest targeted patch if the index is malformed.
 - If `_workflow/current-unit.md` points to the initialized unit, consider that cache stale after changing `planning_state`. Do not rewrite it from this command; delete or clear it only if visible and safe, otherwise tell the user to rerun `content/_prompts/commands/set-current-unit.md`.
 
 ## Initialized Body
@@ -70,7 +70,7 @@ When writing the actual unit `_index.md`:
 1. Preserve the resolved unit's identity, source, status, version, sync, skill, and date fields according to the rules above.
 2. Set `planning_state: initialized`.
 3. Replace the stub body with the template body, using the resolved unit title as the H1.
-4. Keep the template's French headings, planning subsections, dashboard groups, dashboard rows, and initial statuses exactly.
+4. Keep the template's French headings, planning subsections, inventory rows, dashboard groups, dashboard rows, and initial statuses exactly.
 5. Replace the journal date placeholder with the current date.
 
 For a checked-in shape reference, compare against `content/_fixtures/initialized-unit/_index.md`. Use that fixture only to understand structure; do not copy its reference metadata into production units.

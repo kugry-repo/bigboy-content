@@ -89,12 +89,12 @@ Do not:
 - perform compression/taste cleanup beyond what is needed for coherence;
 - run final mathematical verification except when a coherence issue exposes a blocking error.
 
-After editing, update the relevant lesson planning row, production dashboard, and production journal honestly.
+After editing, update unit tracking only if the edit changes scope, blockers, final-artifact navigation, or the next useful decision. Do not add dashboard or journal entries for routine coherence edits.
 
 Finish with:
 
 - file reviewed;
 - coherence edits made;
 - unresolved flow, diagram, or notation issues;
-- dashboard or journal updates;
+- inventory, dashboard, or journal updates only if they carried new information;
 - successful next action: `content/_prompts/workflows/lessons/06-compression-pass.md`.

@@ -6,4 +6,5 @@
 |---|---|---|---|
 | lessons | not-started | none | Existing reviewed-scope lesson file is omitted. |
 | exercises | not-in-scope | not-in-scope | Exercise family intentionally absent. |
+| sets | not-in-scope | not-in-scope | Set family intentionally absent. |
 | quizzes | not-in-scope | not-in-scope | Quiz family intentionally absent. |

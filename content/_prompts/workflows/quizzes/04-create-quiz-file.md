@@ -124,6 +124,8 @@ Use the H4 item-card ID from `TARGET_UNIT_INDEX`.
 
 After creating the quiz file, update each used item card from `ready-for-quiz-file` to `used-in-quiz`, but only after the final question exists and its `Source item card` exactly matches the card ID. Do not mark unused item cards as used.
 
+Add the new quiz link to `## Inventaire des fichiers finaux`. Update the quiz-family dashboard only if scope, blockers, review needs, or the next decision changed. Do not copy each quiz frontmatter status into the dashboard.
+
 ## Finish
 
 Summarize:

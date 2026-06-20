@@ -118,10 +118,10 @@ The validator checks:
 - canonical exercise design-card IDs, duplicate IDs, allowed statuses, full ready/used-card field completeness, and final exercise `source_design_card` references to same-unit ready/used cards with mechanical mismatch checks where fields are comparable;
 - canonical quiz item design-card IDs, duplicate IDs, allowed statuses, required common fields, MCQ/MR distractor and per-choice feedback planning fields, non-choice type-specific planning fields, full ready/used-card completeness, and final quiz `Source item card` references to same-unit ready/used cards with item-type mismatch checks;
 - warning-level reverse traceability for planning cards marked `used-in-exercise` or `used-in-quiz` when no final artifact in the same unit references them;
-- `## Production dashboard` rows from the canonical initialized scaffold as the authoritative initialized/published unit workstream tracker;
+- `## Production dashboard` rows from the canonical initialized scaffold as the compact initialized/published unit orientation view;
 - artifact-family `Scope` rows limited to `not-started`, `not-in-scope`, and `deferred`, with ordinary dashboard progress/review statuses checked separately;
-- `## Inventaire des fichiers finaux` rows and links for final lesson, exercise, and quiz navigation, including sparse-aware `none`, `not-in-scope`, and `deferred` states;
-- `## Journal de production` as the historical log;
+- `## Inventaire des fichiers finaux` rows and links for final lesson, exercise, set, and quiz navigation, including sparse-aware `none`, `not-in-scope`, and `deferred` states;
+- `## Journal de production` as a decision/blocker log, not a routine progress tracker;
 - the non-production initialized-unit reference fixture under `content/_fixtures/initialized-unit/`;
 - intentional invalid contract fixtures under `content/_fixtures/contracts/`, run in isolation as fault-injection checks;
 - absence of removed duplicate tracker headings;
@@ -163,7 +163,7 @@ Published files turn unresolved TODO placeholders into blocking errors.
 
 Guides, prompts, references, templates, examples, fixtures, program catalogs, and navigation files may contain TODO markers or omit YAML frontmatter by policy. These are repository-hygiene or frontmatter notices, not normal author-action warnings.
 
-Sparse units do not warn just because lessons, exercises, quizzes, or sets are absent. Missing artifact families matter only when the unit scope, dashboard, inventory, publish target, existing files, or workflow prerequisites make them required.
+Sparse units do not warn just because lessons, exercises, quizzes, or sets are absent. Missing artifact families matter only when the unit scope, dashboard `Scope` rows, inventory, publish target, existing files, or workflow prerequisites make them required.
 
 ## What automation cannot catch
 
@@ -187,7 +187,7 @@ Actionable warnings are non-blocking but should normally be fixed before review,
 
 Notices are informational. They keep intentional exceptions visible without hiding student-facing problems.
 
-The validator enforces one canonical multi-program content system. It accepts stub unit indexes only in the current lightweight lifecycle shape and accepts full dashboards only for initialized or published units. For initialized scaffolds, the source of truth is `content/_templates/unit-index.template.md`; validation reads that template to enforce current headings, planning subsections, final-artifact inventory, and dashboard rows.
+The validator enforces one canonical multi-program content system. It accepts stub unit indexes only in the current lightweight lifecycle shape and accepts initialized planning scaffolds only for initialized or published units. For initialized scaffolds, the source of truth is `content/_templates/unit-index.template.md`; validation reads that template to enforce current headings, planning subsections, final-artifact inventory, and dashboard rows.
 
 It does not accept older unit-index structures, table-only exercise or quiz planning, alternate planning notes, old prompt layouts, obsolete lesson prompt names, old single-program roots, or old folder schemes.
 

@@ -84,7 +84,7 @@ Do not:
 - create exercise sets;
 - build frontend or app code.
 
-For initialized or published units, use `## Production dashboard` as the main current-state view. Compare dashboard rows with actual files on disk and note mismatches.
+For initialized or published units, answer current-state questions from a small authoritative set: unit scope/planning notes in the unit index, final-file navigation in `## Inventaire des fichiers finaux`, artifact status and review freshness in artifact frontmatter, blockers/next-decision notes in `## Production dashboard`, and meaningful decisions in `## Journal de production`. Compare those sources with actual files on disk and note mismatches.
 
 If `TARGET_PLANNING_STATE` is `stub`, do not expect a dashboard. Recommend `content/_prompts/commands/initialize-unit.md` as the next action unless the user's request is only to manage, rename, delete, or inspect the stub.
 
@@ -103,6 +103,7 @@ Identify the requested artifact/workstream when present:
 If the user request is open-ended, choose based on:
 
 - dashboard status;
+- final-artifact inventory;
 - missing required inputs;
 - existing files;
 - obvious blockers;
@@ -111,13 +112,13 @@ If the user request is open-ended, choose based on:
 
 Do not force unrelated workstreams to run first.
 
-Sparse units are valid. For initialized or published units, read the dashboard `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes` before classifying missing work. Use family-local rows, not the `Scope` row, to judge progress and review status. Report absent artifact families as `not-in-scope`, `deferred`, or `not-started` unless the unit plan, requested publish target, existing artifact references, or local workflow prerequisites make the absence a blocker.
+Sparse units are valid. For initialized or published units, read the dashboard `Scope` rows under `### Lessons`, `### Exercises`, `### Sets`, and `### Quizzes` before classifying missing work. Use artifact frontmatter and existing files, not dashboard copies, to judge artifact status and review freshness. Report absent artifact families as `not-in-scope`, `deferred`, or `not-started` unless the unit plan, requested publish target, existing artifact references, or local workflow prerequisites make the absence a blocker.
 
 Routing rules:
 
 - Content-studio patches bounded selected content; it does not refresh stale review evidence.
 - After content already changed, route review-evidence refresh to the owning artifact review prompt.
-- Use `content/_prompts/commands/change-existing-content.md` when a requested edit may affect contracts, dependencies, planning objects, dashboard state, or multiple files.
+- Use `content/_prompts/commands/change-existing-content.md` when a requested edit may affect contracts, dependencies, planning objects, scope/blocker state, inventory links, or multiple files.
 - If the user wants unit planning, plan refresh, unit-map work, or artifact-planning decisions, recommend `content/_prompts/workflows/unit/01-plan-unit.md`.
 - If the user wants a unit-wide consistency review across the unit plan and existing artifacts, recommend `content/_prompts/workflows/unit/02-review-unit.md`.
 - If the user wants metadata/link cleanup, todo cleanup, status hygiene, source-safety cleanup, or publish-readiness cleanup, recommend `content/_prompts/workflows/unit/03-finalize-unit.md`.
@@ -131,7 +132,7 @@ Routing rules:
 - If quiz stems, item types, MCQ/MR options or distractors, match prompt structure, sequence ordering criterion, hotspot target wording, diagnostic signals, misconceptions, or item order changed materially, recommend `content/_prompts/workflows/quizzes/05-review-item-quality.md`.
 - If quiz correct answers, accepted fill-blank alternatives, match pairings, sequence correct order, hotspot correct region, partial correctness, or answer constraints changed materially, recommend `content/_prompts/workflows/quizzes/06-review-answer-keys.md`.
 - If quiz per-choice MCQ/MR feedback, non-choice wrong-response feedback, mastery criteria, remediation, or next-step routing changed materially, recommend `content/_prompts/workflows/quizzes/07-review-feedback-remediation.md`.
-- If unit scope, dashboard rows, cross-family links, finalization blockers, or publication-readiness evidence changed, recommend `content/_prompts/workflows/unit/02-review-unit.md` or `content/_prompts/workflows/unit/03-finalize-unit.md` according to whether the user wants diagnosis or cleanup/readiness.
+- If unit scope, inventory links, dashboard blocker/next-decision rows, cross-family links, finalization blockers, or publication-readiness evidence changed, recommend `content/_prompts/workflows/unit/02-review-unit.md` or `content/_prompts/workflows/unit/03-finalize-unit.md` according to whether the user wants diagnosis or cleanup/readiness.
 - If the user wants exercises only, route directly into the exercise workflow. Existing lessons are optional references unless the requested exercise depends on a specific lesson.
 - If the user wants quizzes only, route directly into the quiz workflow. Lessons and exercises are optional remediation links unless the quiz intent depends on them.
 - If the user wants lessons only, route into the lesson workflow for the selected or first useful mini-lesson.
@@ -149,7 +150,7 @@ For unit-level requests, use these exact prompt paths:
 - Unit-wide consistency review and targeted unit-level consistency fixes: `content/_prompts/workflows/unit/02-review-unit.md`
 - Publish-readiness cleanup for metadata, links, todos, statuses, and source-safety notes: `content/_prompts/workflows/unit/03-finalize-unit.md`
 
-Use `content/_prompts/commands/initialize-unit.md` first when the target is a stub and the user wants the full dashboard, planning, or artifact work.
+Use `content/_prompts/commands/initialize-unit.md` first when the target is a stub and the user wants initialized planning or artifact work.
 
 ## Lesson diagnosis
 
@@ -224,11 +225,11 @@ State the requested artifact/workstream if one was present. If the request was o
 
 ## Dashboard snapshot
 
-If the unit is a stub, say that no dashboard exists yet and summarize artifact folder contents. If the unit is initialized or published, summarize the visible `## Production dashboard` rows, `## Inventaire des fichiers finaux`, and the files that exist under `lessons/`, `exercises/`, `quizzes/`, and `sets/`.
+If the unit is a stub, say that no dashboard exists yet and summarize artifact folder contents. If the unit is initialized or published, summarize the visible `## Inventaire des fichiers finaux`, the compact `## Production dashboard` rows that affect next action, artifact frontmatter statuses/review needs, and the files that exist under `lessons/`, `exercises/`, `sets/`, and `quizzes/`.
 
 ## Ready or complete work
 
-List dashboard rows or artifacts that appear ready or complete because their expected planning areas or files exist.
+List artifacts or planning objects that appear ready or complete because their frontmatter, expected planning areas, or files exist.
 
 ## Absent by design
 
@@ -236,11 +237,11 @@ List artifact families whose dashboard `Scope` row is `not-in-scope` or whose ab
 
 ## Partial or blocked work
 
-List partially completed mini-lessons, exercise seeds, exercise design cards, exercises, exercise quality reviews, solution reviews, quiz intent cards, raw item pools, quiz item design cards, quiz files, quiz reviews, sets, statuses, stale `needs-review` evidence, blockers, or journal entries.
+List partially completed mini-lessons, exercise seeds, exercise design cards, exercises, exercise quality reviews, solution reviews, quiz intent cards, raw item pools, quiz item design cards, quiz files, quiz reviews, sets, stale `needs-review` evidence from frontmatter, blockers, or meaningful journal entries.
 
 ## Missing or inconsistent files
 
-List files expected by the dashboard, final-artifact inventory, or planning areas that are missing, plus files that exist but are not referenced. Include all four artifact folders when relevant.
+List files expected by the declared scope, final-artifact inventory, or planning areas that are missing, plus files that exist but are not referenced. Include all four artifact folders when relevant.
 
 ## Recommended next action
 

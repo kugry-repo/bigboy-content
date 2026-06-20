@@ -141,11 +141,11 @@ The new program's `_curriculum-map.md` must be populated before official unit st
 
 Official unit creation registers stubs. A stub unit stays lightweight until initialized.
 
-Use `content/_prompts/commands/initialize-unit.md` for one target unit when the user wants a full planning dashboard. The command must infer or require `TARGET_PROGRAM`, then resolve `TARGET_UNIT` inside that program.
+Use `content/_prompts/commands/initialize-unit.md` for one target unit when the user wants the initialized planning scaffold. The command must infer or require `TARGET_PROGRAM`, then resolve `TARGET_UNIT` inside that program.
 
 Unofficial topics live under `content/programs/<program_id>/topics/` and follow the same unit lifecycle.
 
-`planning_state: initialized` means the unit dashboard exists; it does not mean all artifact workstreams are complete. `planning_state: published` is set only by explicit human instruction after review and cleanup. Sparse units may be publish-ready for their declared scope.
+`planning_state: initialized` means the unit planning scaffold exists; it does not mean all artifact workstreams are complete. `planning_state: published` is set only by explicit human instruction after review and cleanup. Sparse units may be publish-ready for their declared scope.
 
 ## Local Current-Unit Cache
 

@@ -79,13 +79,13 @@ Lessons, exercises, and standalone quizzes are first-class artifact families. Re
 
 Do not judge exercises by lesson flow standards. Do not judge standalone quizzes as compressed lessons or in-lesson checks. Use lesson standards only for lesson artifacts, exercise standards only for exercise artifacts and exercise design cards, and quiz standards only for quiz artifacts and quiz planning cards.
 
-Before classifying missing work, read the dashboard `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes`, then compare them with `## Inventaire des fichiers finaux` and the actual artifact folders. Interpret Scope values canonically: `not-started` is the in-scope/open declaration, `not-in-scope` means intentionally absent, and `deferred` means intentionally postponed. Use family-local rows, not the `Scope` row, to judge progress and review status.
+Before classifying missing work, read the dashboard `Scope` rows under `### Lessons`, `### Exercises`, `### Sets`, and `### Quizzes`, then compare them with `## Inventaire des fichiers finaux`, artifact frontmatter, and the actual artifact folders. Interpret Scope values canonically: `not-started` is the in-scope/open declaration, `not-in-scope` means intentionally absent, and `deferred` means intentionally postponed. Use artifact frontmatter and existing files, not dashboard copies, to judge artifact status and review freshness.
 
 Do not require absent artifact families when their `Scope` row is `not-in-scope`. Report `deferred` families as deferred scope, not accidental missing work. If a family is `not-started`, use the family-local rows, unit plan, and request/publish target to decide whether missing work is a declared-scope gap.
 
 If Phase 2 freshness fields are present, surface stale or `needs-review` statuses as targeted review work. If Phase 3 planning objects are present, surface incomplete, stale, or not-ready design cards, blueprints, quiz intent cards, raw pools, or item design cards as planning-object blockers only for families in scope.
 
-This prompt may update unit-level dashboard/readiness evidence, but it does not refresh artifact-specific review evidence. Artifact-specific stale evidence routes to the owning review prompt.
+This prompt may update unit-level scope, blocker, inventory, or readiness notes, but it does not refresh artifact-specific review evidence. Artifact-specific stale evidence routes to the owning review prompt.
 
 Do not:
 
@@ -111,13 +111,13 @@ Distinguish:
 
 - structural contract errors;
 - broken references;
-- inconsistencies with the declared unit plan, dashboard, or existing artifact links;
+- inconsistencies with the declared unit plan, inventory, dashboard blockers, or existing artifact links;
 - quality/readiness observations about existing artifacts;
 - optional future improvements.
 
 A missing artifact family is a blocker only when:
 
-- the unit plan or dashboard explicitly promised it for the current scope;
+- the unit plan or dashboard `Scope` row explicitly promised it for the current scope;
 - the publish target requires it;
 - an existing artifact references it;
 - a workflow prerequisite says it is locally required.
@@ -127,7 +127,7 @@ Otherwise report the family using its canonical dashboard scope state: `not-in-s
 Check:
 
 - unit plan matches created files;
-- `## Inventaire des fichiers finaux` mirrors dashboard family Scope rows and lists existing in-scope final lesson, exercise, and quiz files without mixing in planning cards;
+- `## Inventaire des fichiers finaux` mirrors dashboard family Scope rows and lists existing in-scope final lesson, exercise, set, and quiz files without mixing in planning cards;
 - mini-lesson architecture is respected: no root-level `lesson.md`, and mini-lessons live under `lessons/`;
 - when lessons are in scope, lesson files exist as declared, have coherent local progression, follow the editorial pipeline at a review-signal level, and satisfy the lesson rubric without unnecessary ceremony;
 - frontmatter fields and IDs are consistent;
@@ -139,7 +139,7 @@ Check:
 - difficulty progression is reasonable inside each existing stream and across streams that explicitly interact;
 - existing exercise solutions are clear and correct at a review-signal level, without assuming solution review from statement/design review;
 - existing quiz item quality, answer keys, feedback, and remediation are clear, correct, useful, and misconception-based at a review-signal level, without assuming feedback/remediation review from answer-key review or answer-key review from feedback/remediation review;
-- no in-scope artifact claims readiness while lesson status, exercise substatuses, quiz substatuses, or dashboard review rows are `needs-review`;
+- no in-scope artifact claims readiness while lesson status, exercise substatuses, quiz substatuses, set status, or dashboard blocker/review-need rows are `needs-review`;
 - notation is consistent;
 - diagrams/interactions are planned where declared useful;
 - internal links and status fields look consistent;
@@ -169,7 +169,7 @@ Report skill evidence by declared scope:
 
 This is review output only. Do not create or maintain a repository-wide coverage file.
 
-Make only targeted edits to unit dashboard rows, statuses, links, and small consistency issues. For larger rewrites or missing declared-scope work, report blockers or recommendations instead of doing them. For metadata/link/todo/source-safety cleanup before publication consideration, recommend `content/_prompts/workflows/unit/03-finalize-unit.md`.
+Make only targeted edits to unit scope rows, dashboard blocker/next-decision rows, inventory links, obvious status contradictions, links, and small consistency issues. For larger rewrites or missing declared-scope work, report blockers or recommendations instead of doing them. For metadata/link/todo/source-safety cleanup before publication consideration, recommend `content/_prompts/workflows/unit/03-finalize-unit.md`.
 
 Treat `needs-review` review evidence as unresolved targeted review, not as clean readiness. Report the exact targeted review that would refresh it; do not restart unrelated families when a local review is enough.
 

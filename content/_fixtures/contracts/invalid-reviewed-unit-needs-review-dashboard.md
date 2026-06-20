@@ -36,6 +36,15 @@ Fixture lesson plan.
 
 Fixture misconceptions.
 
+## Inventaire des fichiers finaux
+
+| Family | Scope | Final artifacts | Notes |
+|---|---|---|---|
+| lessons | not-started | none | Fixture lesson inventory. |
+| exercises | not-started | none | Fixture exercise inventory. |
+| sets | not-started | none | Fixture set inventory. |
+| quizzes | not-started | none | Fixture quiz inventory. |
+
 ## Lecons
 
 Fixture lesson inventory.
@@ -83,46 +92,34 @@ Fixture exam notes.
 ## Production dashboard
 
 ### Unit map
-- Curriculum scope: complete
-- Skill map: complete
-- Misconception map: complete
-- Exam pattern notes: complete
+- Scope and goals: complete
+- Prerequisites and skills: complete
+- Source/exam notes: complete
+- Blockers / next decision: complete
 
 ### Lessons
-- Scope: complete
-- Source/target prep: complete
-- Raw dumps: complete
-- Curation: complete
-- Draft files: complete
-- Coherence review: complete
-- Compression/voice review: complete
-- Final verification: needs-review
+- Scope: not-started
+- Plan / notes: complete
+- Blockers / review needs: needs-review
 
 ### Exercises
-- Scope: complete
-- Cluster map: complete
-- Raw seeds: complete
-- Design cards: complete
-- Balance review: complete
-- Exercise files: complete
-- Quality review: complete
-- Solution review: complete
-- Sets: complete
+- Scope: not-started
+- Planning cards: complete
+- Blockers / review needs: complete
+
+### Sets
+- Scope: not-started
+- Plan / links: complete
+- Blockers / review needs: complete
 
 ### Quizzes
-- Scope: complete
-- Quiz intent map: complete
-- Raw item pool: complete
-- Item design cards: complete
-- Quiz files: complete
-- Item quality review: complete
-- Answer key review: complete
-- Feedback/remediation review: complete
+- Scope: not-started
+- Planning cards: complete
+- Blockers / review needs: complete
 
 ### Unit review
-- Cross-artifact progression: complete
-- Metadata and links: complete
-- Validator: complete
+- Unit consistency: complete
+- Publication blockers: complete
 
 ## Journal de production
 

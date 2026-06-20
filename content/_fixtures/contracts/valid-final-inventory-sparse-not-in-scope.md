@@ -6,4 +6,5 @@
 |---|---|---|---|
 | lessons | not-started | [[lessons/fixture-lesson-001|Fixture lesson]] | In-scope lesson file is listed. |
 | exercises | not-in-scope | not-in-scope | No exercise links required. |
+| sets | not-in-scope | not-in-scope | No set links required. |
 | quizzes | not-in-scope | not-in-scope | No quiz links required. |

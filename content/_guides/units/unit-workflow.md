@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This guide defines the production dashboard model for one content unit.
+This guide defines the unit-index lifecycle, status ownership, and lightweight dashboard model for one content unit.
 
 A content unit can be:
 
@@ -29,7 +29,7 @@ Official curriculum structure is owned by the program `_curriculum-map.md`. It i
 
 The program `_index.md` is an overview, navigation page, and dashboard. Official-unit catalog rows in it are derived from `_curriculum-map.md`.
 
-The unit `_index.md` owns unit-local planning and content state: `planning_state`, dashboard rows, production notes, local maps, design cards, status, and related authoring decisions. Official identity fields repeated in unit frontmatter are derived copies and must match the curriculum map.
+The unit `_index.md` owns unit-local scope, planning notes, blockers, navigation, and related authoring decisions. Artifact files own their own status and review freshness in frontmatter. Official identity fields repeated in unit frontmatter are derived copies and must match the curriculum map.
 
 Unofficial topics are not part of the official curriculum map. Their canonical registration is the topic unit `_index.md`; `topics/_index.md` and any topic rows in the program index are derived navigation views.
 
@@ -61,8 +61,8 @@ All unit-level planning belongs in the unit `_index.md`, including:
 - item design cards for quizzes;
 - diagram and visual requirements;
 - exam-alignment notes;
-- production dashboard state;
-- production journal entries.
+- lightweight production-dashboard orientation;
+- production journal entries for meaningful decisions and blockers.
 
 Do not create or use a second planning-note convention. Do not preemptively expand every stub when the dashboard shape changes.
 
@@ -78,22 +78,22 @@ There is no required lesson -> exercise -> quiz order. Review, cleanup, and fina
 
 A missing artifact family is a blocker only when one of these local contracts requires it:
 
-- the unit plan or production dashboard explicitly promised that artifact family for the current scope;
+- the unit plan or dashboard `Scope` row explicitly promised that artifact family for the current scope;
 - the publish target requires that artifact family;
 - an existing artifact links to or depends on the missing artifact family;
 - a workflow prerequisite says the artifact is locally required for the requested operation.
 
 Otherwise, absence is reported through the canonical sparse-family dashboard states, not as a defect.
 
-Artifact-family scope is recorded mechanically in each initialized unit dashboard through the `Scope` row under `### Lessons`, `### Exercises`, and `### Quizzes`.
+Artifact-family scope is recorded mechanically in each initialized unit dashboard through the `Scope` row under `### Lessons`, `### Exercises`, `### Sets`, and `### Quizzes`.
 
 Canonical sparse-family states:
 
-- `not-started`: this artifact family is intended for the current declared scope. In the `Scope` row, this is the in-scope/open value; family-local rows record whether work has actually started, progressed, or completed.
+- `not-started`: this artifact family is intended for the current declared scope. In the `Scope` row, this is the in-scope/open value; family-local rows record only useful orientation such as blockers, planning readiness, or review needs.
 - `not-in-scope`: this artifact family is intentionally absent from the unit and must not block review, cleanup, or finalization for the declared scope.
 - `deferred`: this artifact family is intentionally postponed. It is a visible open planning decision or future-work note, not an accidental omission.
 
-Use these hyphenated values in dashboard rows and status reports. Do not write prose variants such as `not in scope` as dashboard statuses. The `Scope` row is not a progress, review, or readiness row; keep progress evidence in the family-local rows.
+Use these hyphenated values in dashboard rows and status reports. Do not write prose variants such as `not in scope` as dashboard statuses. The `Scope` row is not a progress, review, or readiness row.
 
 When a family is `not-in-scope`, mark the family `Scope` row and its family-local dashboard rows `not-in-scope` for mechanical clarity. Do not keep design cards, final files, or active local dashboard rows in a family marked `not-in-scope`.
 
@@ -104,8 +104,8 @@ When a family is `deferred`, mark the `Scope` row `deferred`; family-local rows 
 Use `planning_state` in unit-index frontmatter:
 
 - `stub`: the unit is registered but not initialized. The body stays tiny and has no planning dashboard.
-- `initialized`: the full planning dashboard exists and can be developed. It does not mean the unit is complete.
-- `published`: reserved/manual state for a unit whose dashboard exists and whose declared scope has passed explicit human publication review.
+- `initialized`: the lightweight planning scaffold exists and can be developed. It does not mean the unit is complete.
+- `published`: reserved/manual state for a unit whose planning scaffold exists and whose declared scope has passed explicit human publication review.
 
 `status` remains content maturity. `planning_state` is the shape and lifecycle of the unit index itself.
 
@@ -118,10 +118,10 @@ Stub body:
 
 This unit is registered but not initialized yet.
 
-Run `content/_prompts/commands/initialize-unit.md` before planning lessons, exercises, quizzes, sets, or the full unit dashboard.
+Run `content/_prompts/commands/initialize-unit.md` before planning lessons, exercises, quizzes, sets, or the initialized planning scaffold.
 ```
 
-Use `content/_prompts/commands/initialize-unit.md` to expand one stub into the current initialized dashboard. Initialization must preserve the unit identity fields and set `planning_state: initialized`.
+Use `content/_prompts/commands/initialize-unit.md` to expand one stub into the current initialized planning scaffold. Initialization must preserve the unit identity fields and set `planning_state: initialized`.
 
 Content creation workflows must not create lessons, exercises, quizzes, sets, or full planning sections inside a stub. They must stop and ask for unit initialization first, or initialize the target only when the user explicitly asked for initialization.
 
@@ -190,15 +190,15 @@ a new canonical current-unit entry from the changed unit.
 
 ## Source of truth
 
-Use five layers of state:
+Use these authoritative state layers:
 
 1. `content/_guides/units/unit-workflow.md` defines lifecycle and dashboard semantics.
 2. Program `_curriculum-map.md` defines official curriculum structure for official units.
-3. Unit-index frontmatter `planning_state` defines whether the unit is a stub, initialized dashboard, or published dashboard.
-4. The initialized or published unit `_index.md` tracks unit-specific progress through `## Production dashboard`.
-5. File frontmatter tracks file-level status.
+3. Unit-index frontmatter `planning_state` defines whether the unit is a stub, initialized planning scaffold, or published planning scaffold.
+4. The initialized or published unit `_index.md` owns unit-level scope, planning notes, final-artifact navigation, blockers, and meaningful production decisions.
+5. Artifact frontmatter tracks artifact-level status, review freshness, and review substatus fields.
 
-`status` means content maturity. `sync_status` means alignment/freshness against current upstream plans, templates, and guides. `## Journal de production` is a historical log, not a current-state tracker.
+`status` means content maturity. `sync_status` means alignment/freshness against current upstream plans, templates, and guides. `## Production dashboard` is a compact orientation view; it is not a second source of artifact status. `## Journal de production` explains meaningful history; it is not a routine progress log.
 
 For mutation safety, published content means an affected unit index has
 `planning_state: published` or `status: published`, or an affected production
@@ -214,7 +214,7 @@ Guides and prompts should describe the scaffold's purpose and workstream semanti
 
 Use `content/_fixtures/initialized-unit/_index.md` only as a non-production reference fixture for seeing the current scaffold in a checked-in unit-shaped folder. It is not educational content, not a golden unit, and not curriculum evidence.
 
-At a high level, an initialized or published unit index contains placement notes, objectives, prerequisites, skills, mini-lesson planning, misconceptions, final-artifact inventory, exercise planning, exercise-set planning, quiz planning, diagram/interaction notes, exam-alignment notes, the production dashboard, the production journal, and author notes.
+At a high level, an initialized or published unit index contains placement notes, objectives, prerequisites, skills, mini-lesson planning, misconceptions, final-artifact inventory, exercise planning, exercise-set planning, quiz planning, diagram/interaction notes, exam-alignment notes, the compact production dashboard, the decision journal, and author notes.
 
 The exercise planning area stores the cluster map, raw seeds, and exercise design cards. The quiz planning area stores quiz intent cards, raw item pools, and quiz item design cards.
 
@@ -222,12 +222,13 @@ New registered units should use `content/_templates/unit-index-stub.template.md`
 
 ## Final artifact inventory
 
-`## Inventaire des fichiers finaux` is the canonical unit-local navigation table for final student-facing or publishable artifacts. It is separate from planning cards.
+`## Inventaire des fichiers finaux` is the canonical unit-local navigation table for final student-facing or publishable artifacts. It is separate from planning cards and must not become a second status database.
 
 Use one row for each independent artifact family:
 
 - `lessons`
 - `exercises`
+- `sets`
 - `quizzes`
 
 The row `Scope` value must mirror the matching dashboard family `Scope` row. The `Final artifacts` cell uses:
@@ -237,18 +238,18 @@ The row `Scope` value must mirror the matching dashboard family `Scope` row. The
 - `deferred` when the family is intentionally postponed;
 - unit-relative Obsidian links such as `[[lessons/lc-lesson-001|Lesson title]]` when final files exist.
 
-Final artifact links point only to files under the matching family folder. Do not list exercise design cards, quiz item design cards, raw seeds, intent cards, or other planning objects in this inventory. Planning cards remain under `### Design cards des exercices` and `### Design cards des items de quiz`; final exercises and quiz questions refer back to them with `source_design_card` or `Source item card`.
+Final artifact links point only to files under the matching family folder. Do not list exercise design cards, quiz item design cards, raw seeds, intent cards, or other planning objects in this inventory. Exercise sets are final navigation artifacts when they exist under `sets/`, so list them in the `sets` row. Planning cards remain under `### Design cards des exercices` and `### Design cards des items de quiz`; final exercises and quiz questions refer back to them with `source_design_card` or `Source item card`.
 
 The intended navigation chain is:
 
 - program `_index.md` -> unit `_index.md`;
-- unit `## Inventaire des fichiers finaux` -> available final lessons, exercises, and quizzes;
+- unit `## Inventaire des fichiers finaux` -> available final lessons, exercises, sets, and quizzes;
 - unit planning sections -> exercise design cards and quiz item design cards;
 - final exercise/quiz artifacts -> source planning cards where the artifact contract requires traceability.
 
 ## Production dashboard
 
-The production dashboard is a compact status view for independent but coordinated workstreams. It is not a global sequence, and it is not a checklist that must be completed from top to bottom.
+The production dashboard is a compact orientation tool for independent but coordinated workstreams. It is not a global sequence, not a second validator, not a complete project-management system, and not a place to copy every artifact status manually.
 
 Allowed dashboard statuses:
 
@@ -264,15 +265,15 @@ Allowed dashboard statuses:
 
 Use the smallest honest status. Do not mark a workstream complete just because an unrelated workstream is complete.
 
-Use `needs-review` for dashboard rows whose current evidence is stale after a material edit. Once the relevant targeted review passes, update only the row that the review actually refreshed.
+Use `needs-review` on dashboard rows only as a compact pointer that some artifact frontmatter or unit-level review evidence needs attention. Artifact frontmatter remains authoritative for the exact field. Once the relevant targeted review passes, update only the row that actually affects the next action.
 
 Only `not-started`, `not-in-scope`, and `deferred` are valid in artifact-family `Scope` rows. Generic progress or review statuses such as `partial`, `ready`, `needs-review`, `complete`, `blocked`, and `not-run` belong only in family-local rows.
 
-The `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes` are the canonical way to distinguish "this family belongs to the current declared scope" (`not-started`), "we intentionally do not want this family in the unit" (`not-in-scope`), and "we are postponing this family" (`deferred`). Review and finalize prompts must read those rows before treating absent files or planning sections as defects, but must use the family-local rows to judge progress and review readiness.
+The `Scope` rows under `### Lessons`, `### Exercises`, `### Sets`, and `### Quizzes` are the canonical way to distinguish "this family belongs to the current declared scope" (`not-started`), "we intentionally do not want this family in the unit" (`not-in-scope`), and "we are postponing this family" (`deferred`). Review and finalize prompts must read those rows before treating absent files or planning sections as defects, but must use artifact frontmatter, inventory links, existing files, blockers, and family-local dashboard notes to judge actual progress and review readiness.
 
-The canonical dashboard groups and rows are defined in `content/_templates/unit-index.template.md`. The current groups are Unit map, Lessons, Exercises, Quizzes, and Unit review.
+The canonical dashboard groups and rows are defined in `content/_templates/unit-index.template.md`. The current groups are Unit map, Lessons, Exercises, Sets, Quizzes, and Unit review.
 
-Update dashboard rows when the corresponding artifact changes. Use `## Journal de production` for dated history and rationale.
+Update the dashboard when scope changes, a final artifact is created or removed, a blocker appears or resolves, a review outcome changes the next action, or a meaningful production decision should be visible. Do not update it after every tiny patch, every content-studio wording edit, every validator run, or just to duplicate frontmatter.
 
 ## Dashboard and status ownership
 
@@ -281,7 +282,7 @@ Status ownership is local and evidence-based:
 | State or row | Owning prompt or workflow |
 |---|---|
 | Unit `Scope` rows | `content/_prompts/workflows/unit/01-plan-unit.md`, or targeted unit-index edits through `content/_prompts/commands/change-existing-content.md` when scope changes after planning. |
-| Unit family progress rows | The workflow that created or changed that family artifact; unit review/finalize may correct obvious stale dashboard bookkeeping without certifying artifact quality. |
+| Unit family orientation rows | The workflow that changed scope, planning readiness, blockers, or next decisions for that family; unit review/finalize may correct obvious stale dashboard bookkeeping without certifying artifact quality. |
 | Unit review rows | `content/_prompts/workflows/unit/02-review-unit.md` and `content/_prompts/workflows/unit/03-finalize-unit.md`. |
 | Lesson `status` and final verification row | `content/_prompts/workflows/lessons/07-verify-finalize.md`. |
 | Exercise design/statement evidence | `content/_prompts/workflows/exercises/05-review-exercise-quality.md`. |
@@ -293,9 +294,7 @@ Status ownership is local and evidence-based:
 | Quiz item-card status | `content/_prompts/workflows/quizzes/03-curate-item-design-cards.md` or `content/_prompts/commands/change-existing-content.md` for a bounded card edit. |
 | Top-level `status: reviewed` or `status: published` | The owning artifact review/finalization evidence must support it; publication still requires explicit human decision where the workflow says so. |
 
-Combined dashboard rows summarize multiple underlying fields but do not erase ownership. Exercise `Quality review` is `reviewed` only when both design and statement evidence are reviewed; it is `partial` when one is reviewed and the other is still draft or incomplete; it is `needs-review` when either field is stale; it is `blocked` when either field has a failed-review state such as `needs-redesign` or `needs-rewrite`.
-
-Quiz `Feedback/remediation review` is `reviewed` only when both `feedback_status` and `remediation_status` are reviewed; it is `partial` when one side is reviewed and the other is still draft or incomplete; it is `needs-review` when either field is stale; it is `blocked` when either field has `needs-correction`.
+Combined dashboard rows summarize next-action needs but do not erase ownership. For example, an exercise-family row may say `needs-review` because one or more exercise files have stale `design_status`, `statement_status`, or `solution_status`; the exact stale fields remain in the exercise frontmatter. A quiz-family row may say `needs-review` because one or more quiz files have stale item-quality, answer-key, feedback, or remediation evidence; the exact stale fields remain in quiz frontmatter.
 
 ## Workstream routing
 
@@ -318,7 +317,7 @@ Examples:
 - If the user asks for metadata/link cleanup or publish-readiness cleanup, route to `content/_prompts/workflows/unit/03-finalize-unit.md`.
 - If the user asks for a known bounded change to existing files, stale-file sync, or schema/template/prompt/validator migration, route to `content/_prompts/commands/change-existing-content.md`.
 - If the user asks for conversational critique, diagnosis, proposals, taste decisions, grilling, or a small targeted patch on a selected artifact, route to `content/_prompts/commands/content-studio.md`.
-- If the user asks "what next?", inspect the dashboard, existing files, blockers, and likely goal, then recommend one exact prompt path.
+- If the user asks "what next?", inspect artifact frontmatter, the final-artifact inventory, the compact dashboard, blockers, existing files, and likely goal, then recommend one exact prompt path.
 
 ## Dependencies
 
@@ -369,7 +368,7 @@ Final artifacts keep source-card traceability: exercises use `source_design_card
 
 Use `content/_prompts/commands/initialize-unit.md` before unit map work when `planning_state: stub`.
 
-Use `content/_prompts/workflows/unit/01-plan-unit.md` to create or improve the unit map after initialization. This workstream updates the unit blueprint, prerequisite map, skill map, mini-lesson plan, misconception map, exercise/quiz planning decisions, diagram notes, exam-alignment notes, production dashboard, journal, and author notes.
+Use `content/_prompts/workflows/unit/01-plan-unit.md` to create or improve the unit map after initialization. This workstream updates the unit blueprint, prerequisite map, skill map, mini-lesson plan, misconception map, exercise/quiz/set planning decisions, diagram notes, exam-alignment notes, compact dashboard orientation, meaningful journal entries, and author notes.
 
 Do not create lesson, exercise, quiz, or set files during unit map work unless the user explicitly asks for them.
 
@@ -449,7 +448,7 @@ Unit review may surface family-specific contract violations, stale statuses, or 
 
 For skill coverage, synthesize from the unit `_index.md`, lesson files, exercise files, quiz files, declared `skills`, design cards, and visible progression gaps. Compare streams only when multiple streams exist or when the unit plan explicitly says they should align. Report skills taught, practiced, quizzed, over-covered, under-covered, or missing prerequisites in terms of declared scope. Do not update any manual global coverage file.
 
-This is a unit-wide consistency review. It may make small targeted consistency fixes to dashboard rows, links, statuses, and obvious metadata problems. It must not create missing artifact families unless their absence violates an explicit local contract. It is not the conversational studio for selected text, not a broad migration command, not deep pedagogical review, and not the publication transition.
+This is a unit-wide consistency review. It may make small targeted consistency fixes to dashboard rows, inventory links, obvious status contradictions, and metadata problems. It must not create missing artifact families unless their absence violates an explicit local contract. It is not the conversational studio for selected text, not a broad migration command, not deep pedagogical review, and not the publication transition.
 
 ### Metadata and link cleanup
 
@@ -459,7 +458,7 @@ This prompt is a cleanup pass, consistency pass, publish-readiness assessment, a
 
 It must not automatically set unit `planning_state: published`; that state is reserved for an explicit human publication decision. It must not mark files `published` unless explicitly requested and the relevant review evidence already supports it.
 
-Finalize must block or report any in-scope lesson, exercise, quiz, or dashboard row whose review evidence is `needs-review`. Sparse families marked `not-in-scope` may still be absent, and families marked `deferred` remain known future scope, but stale review evidence inside declared scope is unresolved work.
+Finalize must block or report any in-scope lesson, exercise, set, quiz, or dashboard row whose review evidence is `needs-review`. Sparse families marked `not-in-scope` may still be absent, and families marked `deferred` remain known future scope, but stale review evidence inside declared scope is unresolved work.
 
 Finalization checks are family-specific:
 
@@ -475,7 +474,7 @@ When revising existing content or responding to schema/template/prompt/validator
 
 Structural changes must migrate affected existing files to the new source of truth in the same change. Do not leave old schemas, headings, filenames, prompt paths, folder rules, or dashboard rules valid.
 
-Targeted revision should patch only the affected files and any directly impacted links, metadata, dashboard rows, or journal notes.
+Targeted revision should patch only the affected files and any directly impacted links, metadata, inventory rows, dashboard rows, or meaningful journal notes.
 
 Use this command when the user already knows the change they want, even if they do not know every affected file. It discovers the blast radius and applies the bounded change coherently.
 
@@ -498,7 +497,7 @@ Every initialized or published unit `_index.md` also contains:
 
 | Date | Changement | Notes |
 |---|---|---|
-| YYYY-MM-DD | Unit initialized | Stub expanded into the current planning dashboard. |
+| YYYY-MM-DD | Unit initialized | Stub expanded into the current lightweight planning scaffold. |
 ```
 
-Use the journal for historical authoring notes, not as a current-state tracker. Keep `YYYY-MM-DD` only in templates and examples of the scaffold; real unit journal entries use real ISO dates.
+Use the journal for decisions that explain why the unit changed direction, blockers and resolutions, source/provenance choices, major scope changes, and important review outcomes. Do not add one entry per prompt run, tiny edit, validator run, or routine status update. Keep `YYYY-MM-DD` only in templates and examples of the scaffold; real unit journal entries use real ISO dates.

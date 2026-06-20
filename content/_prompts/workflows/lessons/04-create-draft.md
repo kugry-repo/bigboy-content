@@ -116,12 +116,12 @@ Use frontmatter values derived from `TARGET_UNIT_INDEX`, including the resolved 
 
 Use `status: draft` unless a more conservative status is justified by unresolved correctness or source concerns.
 
-After creating the file, update the relevant lesson planning row, production dashboard, and production journal honestly. Do not claim the lesson is final.
+After creating the file, update only the necessary unit state: add the lesson to `## Inventaire des fichiers finaux` if it is a final lesson file, adjust the lesson-family dashboard only if scope, blockers, or next decision changed, and add a journal entry only for a meaningful decision or blocker. Do not claim the lesson is final.
 
 Finish by summarizing:
 
 - file created;
 - selected shape and main ideas included;
 - unresolved review or verification needs;
-- dashboard or journal updates;
+- inventory, dashboard, or journal updates only if they carried new information;
 - successful next action: `content/_prompts/workflows/lessons/05-coherence-pass.md`.

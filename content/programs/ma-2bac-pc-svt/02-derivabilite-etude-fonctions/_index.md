@@ -28,7 +28,8 @@ updated: 2026-06-20
 ---
 
 # Dérivabilité et étude des fonctions
+ivabilitÉ et É	ude des fonctions
 
 This unit is registered but not initialized yet.
 
-Run `content/_prompts/commands/initialize-unit.md` before planning lessons, exercises, quizzes, sets, or the full unit dashboard.
+Run `content/_prompts/commands/initialize-unit.md` before planning lessons, exercises, quizzes, sets, or the initialized planning scaffold.

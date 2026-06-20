@@ -72,11 +72,11 @@ Perform cleanup and publish-readiness assessment for `TARGET_UNIT_PATH`.
 
 This is cleanup work only.
 
-First, read `TARGET_UNIT_INDEX`, inspect `## Production dashboard` and `## Inventaire des fichiers finaux`, determine the unit's declared scope from the `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes`, and identify which existing artifacts can be cleaned safely. Interpret `not-started` as the in-scope/open declaration, `not-in-scope` as intentionally absent, and `deferred` as intentionally postponed. Use family-local rows, not the `Scope` row, to judge progress and review status. If major work is missing, report it as a declared-scope gap only when a local contract requires it. Otherwise report the absent artifact family using its canonical dashboard scope state.
+First, read `TARGET_UNIT_INDEX`, inspect `## Inventaire des fichiers finaux` and the compact `## Production dashboard`, determine the unit's declared scope from the `Scope` rows under `### Lessons`, `### Exercises`, `### Sets`, and `### Quizzes`, and identify which existing artifacts can be cleaned safely. Interpret `not-started` as the in-scope/open declaration, `not-in-scope` as intentionally absent, and `deferred` as intentionally postponed. Use artifact frontmatter and existing files, not dashboard copies, to judge artifact status and review freshness. If major work is missing, report it as a declared-scope gap only when a local contract requires it. Otherwise report the absent artifact family using its canonical dashboard scope state.
 
 Finalize only the artifact families that are in scope for the declared unit scope or requested publish target. Use each family-specific completion contract:
 
-- Lessons: verify intended mini-lesson files exist, lesson `status` and dashboard review state are acceptable, lesson structure and metadata satisfy the lesson contract, and known review issues are resolved or explicitly deferred.
+- Lessons: verify intended mini-lesson files exist, lesson `status` is acceptable, lesson structure and metadata satisfy the lesson contract, and known review issues are resolved or explicitly deferred.
 - Exercises: verify final exercise files exist for intended exercise batches, statements and solutions have acceptable independent review states, design cards or direct blueprints are ready/used/resolved when present, `solution_status` is not assumed from `statement_status`, and exercise batch balance has been handled when the unit scope requires it.
 - Quizzes: verify standalone quiz files exist for intended quiz work, item quality, answer key, feedback, and remediation review states are acceptable, canonical item types and required type-specific answer/feedback/remediation contracts are present, quizzes are not treated as in-lesson mini-checks, and remediation uses available, planned, `not-in-scope`, or `deferred` support honestly.
 
@@ -116,7 +116,7 @@ Classify findings as:
 
 A missing artifact family is a blocker only when:
 
-- the unit plan or dashboard explicitly promised it for the current scope;
+- the unit plan or dashboard `Scope` row explicitly promised it for the current scope;
 - the publish target requires it;
 - an existing artifact references it;
 - a workflow prerequisite says it is locally required.
@@ -124,9 +124,9 @@ A missing artifact family is a blocker only when:
 Check:
 
 - frontmatter consistency across the unit;
-- `## Inventaire des fichiers finaux` mirrors dashboard family Scope rows, links existing in-scope final lesson/exercise/quiz files, and keeps planning cards out of final-artifact navigation;
+- `## Inventaire des fichiers finaux` mirrors dashboard family Scope rows, links existing in-scope final lesson/exercise/set/quiz files, and keeps planning cards out of final-artifact navigation;
 - lesson `status`, exercise `design_status`/`statement_status`/`solution_status`, and quiz `item_quality_status`/`answer_key_status`/`feedback_status`/`remediation_status` fields;
-- stale review evidence: lesson `status: needs-review`, exercise `design_status`/`statement_status`/`solution_status: needs-review`, quiz review substatuses at `needs-review`, and dashboard review rows at `needs-review`;
+- stale review evidence: lesson `status: needs-review`, exercise `design_status`/`statement_status`/`solution_status: needs-review`, set `status: needs-review`, quiz review substatuses at `needs-review`, and dashboard blocker/review-need rows at `needs-review`;
 - Obsidian-friendly Markdown headings, callouts, links, and tables;
 - obvious broken internal links;
 - TODOs and author notes, making sure unresolved items are intentional;
@@ -175,8 +175,8 @@ Allowed cleanup changes:
 - frontmatter metadata consistency;
 - non-published status corrections when evidence supports them;
 - links, headings, todo placement, and author-note hygiene;
-- dashboard rows for cleanup/review state;
-- production journal notes for cleanup performed;
+- dashboard rows only for scope, blockers, review needs, or next decisions changed by cleanup;
+- production journal notes only for meaningful cleanup decisions, blockers, source/provenance choices, major scope changes, or important review outcomes;
 - source-safety notes and unresolved-blocker notes.
 
 Always report readiness, blockers, and the evidence checked. Do not change `planning_state` to `published`. If the result is `Ready for declared scope`, also report `Needs human publication decision` unless the user separately gave explicit publication instructions.

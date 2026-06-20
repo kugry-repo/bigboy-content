@@ -28,7 +28,8 @@ updated: 2026-06-20
 ---
 
 # Équations différentielles
+entielles
 
 This unit is registered but not initialized yet.
 
-Run `content/_prompts/commands/initialize-unit.md` before planning lessons, exercises, quizzes, sets, or the full unit dashboard.
+Run `content/_prompts/commands/initialize-unit.md` before planning lessons, exercises, quizzes, sets, or the initialized planning scaffold.

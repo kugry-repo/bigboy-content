@@ -594,6 +594,7 @@ const ALLOWED_DASHBOARD_SCOPE_STATUSES = new Set([
 const ARTIFACT_FAMILY_DASHBOARD_SECTIONS = new Set([
   "Lessons",
   "Exercises",
+  "Sets",
   "Quizzes",
 ]);
 const DASHBOARD_SCOPE_ROW = "Scope";
@@ -625,6 +626,12 @@ const FINAL_ARTIFACT_FAMILIES = [
     label: "Exercises",
     dashboardSection: "Exercises",
     folder: "exercises",
+  },
+  {
+    key: "sets",
+    label: "Sets",
+    dashboardSection: "Sets",
+    folder: "sets",
   },
   {
     key: "quizzes",
@@ -1016,6 +1023,8 @@ const CONTRACT_FIXTURES = {
     "content/_fixtures/contracts/valid-sparse-lesson-only-unit.md",
   sparseExerciseOnlyUnit:
     "content/_fixtures/contracts/valid-sparse-exercise-only-unit.md",
+  sparseSetOnlyUnit:
+    "content/_fixtures/contracts/valid-sparse-set-only-unit.md",
   sparseQuizOnlyUnit:
     "content/_fixtures/contracts/valid-sparse-quiz-only-unit.md",
   sparseLessonsQuizzesUnit:
@@ -1036,6 +1045,8 @@ const CONTRACT_FIXTURES = {
     "content/_fixtures/contracts/valid-final-inventory-lesson-only.md",
   validFinalInventoryExerciseOnly:
     "content/_fixtures/contracts/valid-final-inventory-exercise-only.md",
+  validFinalInventorySetOnly:
+    "content/_fixtures/contracts/valid-final-inventory-set-only.md",
   validFinalInventoryQuizOnly:
     "content/_fixtures/contracts/valid-final-inventory-quiz-only.md",
   validFinalInventorySparseNotInScope:
@@ -4884,7 +4895,7 @@ function checkContractFixtures() {
         parsed.data,
       );
     },
-    [/row "Final verification" is "needs-review" while unit frontmatter claims reviewed\/published readiness/],
+    [/row "Blockers \/ review needs" is "needs-review" while unit frontmatter claims reviewed\/published readiness/],
   );
 
   expectValidContractFixture(
@@ -4901,6 +4912,15 @@ function checkContractFixtures() {
     "exercise-only sparse unit finalizes with lessons and quizzes out of scope",
     () => checkDashboardContractFixture(
       CONTRACT_FIXTURES.sparseExerciseOnlyUnit,
+      { status: "reviewed" },
+    ),
+  );
+
+  expectValidContractFixture(
+    CONTRACT_FIXTURES.sparseSetOnlyUnit,
+    "set-only sparse unit finalizes with lessons, exercises, and quizzes out of scope",
+    () => checkDashboardContractFixture(
+      CONTRACT_FIXTURES.sparseSetOnlyUnit,
       { status: "reviewed" },
     ),
   );
@@ -4930,7 +4950,7 @@ function checkContractFixtures() {
       CONTRACT_FIXTURES.notInScopeActiveDashboardRow,
       { status: "planned" },
     ),
-    [/family "Exercises" is marked "Scope: not-in-scope" but row "Exercise files" is "ready"/],
+    [/family "Exercises" is marked "Scope: not-in-scope" but row "Blockers \/ review needs" is "ready"/],
   );
 
   expectValidContractFixture(
@@ -4949,7 +4969,7 @@ function checkContractFixtures() {
       CONTRACT_FIXTURES.deferredFinalDashboardRow,
       { status: "reviewed" },
     ),
-    [/family "Exercises" is marked "Scope: deferred" but row "Exercise files" is "complete"/],
+    [/family "Exercises" is marked "Scope: deferred" but row "Blockers \/ review needs" is "complete"/],
   );
 
   expectInvalidContractFixture(
@@ -5012,6 +5032,7 @@ function checkContractFixtures() {
         scopes: {
           lessons: "not-started",
           exercises: "not-in-scope",
+          sets: "not-in-scope",
           quizzes: "not-in-scope",
         },
         files: {
@@ -5030,10 +5051,30 @@ function checkContractFixtures() {
         scopes: {
           lessons: "not-in-scope",
           exercises: "not-started",
+          sets: "not-in-scope",
           quizzes: "not-in-scope",
         },
         files: {
           exercises: ["exercises/fixture-ex-001.md"],
+        },
+      },
+    ),
+  );
+
+  expectValidContractFixture(
+    CONTRACT_FIXTURES.validFinalInventorySetOnly,
+    "set-only final-artifact inventory passes",
+    () => checkFinalArtifactInventoryContractFixture(
+      CONTRACT_FIXTURES.validFinalInventorySetOnly,
+      {
+        scopes: {
+          lessons: "not-in-scope",
+          exercises: "not-in-scope",
+          sets: "not-started",
+          quizzes: "not-in-scope",
+        },
+        files: {
+          sets: ["sets/fixture-set-core.md"],
         },
       },
     ),
@@ -5048,6 +5089,7 @@ function checkContractFixtures() {
         scopes: {
           lessons: "not-in-scope",
           exercises: "not-in-scope",
+          sets: "not-in-scope",
           quizzes: "not-started",
         },
         files: {
@@ -5066,6 +5108,7 @@ function checkContractFixtures() {
         scopes: {
           lessons: "not-started",
           exercises: "not-in-scope",
+          sets: "not-in-scope",
           quizzes: "not-in-scope",
         },
         files: {
@@ -5084,6 +5127,7 @@ function checkContractFixtures() {
         scopes: {
           lessons: "deferred",
           exercises: "not-in-scope",
+          sets: "not-in-scope",
           quizzes: "not-started",
         },
       },
@@ -5099,6 +5143,7 @@ function checkContractFixtures() {
         scopes: {
           lessons: "not-started",
           exercises: "not-in-scope",
+          sets: "not-in-scope",
           quizzes: "not-in-scope",
         },
       },
@@ -5116,6 +5161,7 @@ function checkContractFixtures() {
         scopes: {
           lessons: "not-started",
           exercises: "not-in-scope",
+          sets: "not-in-scope",
           quizzes: "not-in-scope",
         },
         files: {
@@ -7430,9 +7476,11 @@ function checkUnitContentFiles(unit) {
   const lessonFiles = walkMarkdownFiles(path.join(unit.dir, "lessons"));
   const exerciseFiles = walkMarkdownFiles(path.join(unit.dir, "exercises"));
   const quizFiles = walkMarkdownFiles(path.join(unit.dir, "quizzes"));
+  const setFiles = walkMarkdownFiles(path.join(unit.dir, "sets"));
 
   checkNotInScopeArtifactFiles(unit, "Lessons", lessonFiles);
   checkNotInScopeArtifactFiles(unit, "Exercises", exerciseFiles);
+  checkNotInScopeArtifactFiles(unit, "Sets", setFiles);
   checkNotInScopeArtifactFiles(unit, "Quizzes", quizFiles);
 
   checkFinalArtifactInventoryFiles(
@@ -7444,6 +7492,11 @@ function checkUnitContentFiles(unit) {
     unit,
     FINAL_ARTIFACT_FAMILY_BY_KEY.get("exercises"),
     exerciseFiles,
+  );
+  checkFinalArtifactInventoryFiles(
+    unit,
+    FINAL_ARTIFACT_FAMILY_BY_KEY.get("sets"),
+    setFiles,
   );
   checkFinalArtifactInventoryFiles(
     unit,
@@ -7469,7 +7522,7 @@ function checkUnitContentFiles(unit) {
     quizFiles,
   );
 
-  for (const filePath of walkMarkdownFiles(path.join(unit.dir, "sets"))) {
+  for (const filePath of setFiles) {
     checkSetFile(unit, filePath);
   }
 }
@@ -8239,7 +8292,7 @@ function checkNextActionPrompt(filePath, text) {
     [
       "Content-studio patches bounded selected content; it does not refresh stale review evidence.",
       "After content already changed, route review-evidence refresh to the owning artifact review prompt.",
-      "Use `content/_prompts/commands/change-existing-content.md` when a requested edit may affect contracts, dependencies, planning objects, dashboard state, or multiple files.",
+      "Use `content/_prompts/commands/change-existing-content.md` when a requested edit may affect contracts, dependencies, planning objects, scope/blocker state, inventory links, or multiple files.",
     ],
     "next-action patch-vs-review routing contract",
   );
@@ -8365,7 +8418,7 @@ function checkUnitReviewFinalizePromptContract(filePath, text, relative) {
         "Do not require absent artifact families",
         "families as deferred scope",
         "incomplete, stale, or not-ready design cards",
-        "This prompt may update unit-level dashboard/readiness evidence, but it does not refresh artifact-specific review evidence.",
+        "This prompt may update unit-level scope, blocker, inventory, or readiness notes, but it does not refresh artifact-specific review evidence.",
         "Artifact-specific stale evidence routes to the owning review prompt.",
       ],
       "unit review prompt artifact-symmetry contract",

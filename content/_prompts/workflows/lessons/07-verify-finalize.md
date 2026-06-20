@@ -116,7 +116,7 @@ Rules:
 npm run validate
 ```
 
-After verification, update the relevant lesson planning row, production dashboard, and production journal honestly.
+After verification, update lesson frontmatter as the source of truth for lesson status. Update the unit inventory only if final lesson links changed, the dashboard only if a blocker/review-need/next decision changed, and the journal only for an important review outcome or decision.
 
 Finish with:
 
@@ -124,6 +124,6 @@ Finish with:
 - status decision;
 - math, notation, curriculum, source, or official-claim uncertainties;
 - frontmatter/link/formatting fixes;
-- dashboard or journal updates;
+- status, inventory, dashboard, or journal updates only if they carried new information;
 - validation result;
 - next action through `content/_prompts/commands/next-action.md`, unless the user asked for a specific downstream unit, exercise, quiz, or diagnostic prompt.

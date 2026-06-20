@@ -3,43 +3,31 @@
 ## Production dashboard
 
 ### Unit map
-- Curriculum scope: complete
-- Skill map: complete
-- Misconception map: complete
-- Exam pattern notes: complete
+- Scope and goals: complete
+- Prerequisites and skills: complete
+- Source/exam notes: complete
+- Blockers / next decision: complete
 
 ### Lessons
 - Scope: not-started
-- Source/target prep: complete
-- Raw dumps: complete
-- Curation: complete
-- Draft files: complete
-- Coherence review: complete
-- Compression/voice review: complete
-- Final verification: complete
+- Plan / notes: complete
+- Blockers / review needs: complete
 
 ### Exercises
 - Scope: not-in-scope
-- Cluster map: not-in-scope
-- Raw seeds: not-in-scope
-- Design cards: not-in-scope
-- Balance review: not-in-scope
-- Exercise files: not-in-scope
-- Quality review: not-in-scope
-- Solution review: not-in-scope
-- Sets: not-in-scope
+- Planning cards: not-in-scope
+- Blockers / review needs: not-in-scope
+
+### Sets
+- Scope: not-in-scope
+- Plan / links: not-in-scope
+- Blockers / review needs: not-in-scope
 
 ### Quizzes
 - Scope: not-started
-- Quiz intent map: complete
-- Raw item pool: complete
-- Item design cards: complete
-- Quiz files: complete
-- Item quality review: complete
-- Answer key review: complete
-- Feedback/remediation review: complete
+- Planning cards: complete
+- Blockers / review needs: complete
 
 ### Unit review
-- Cross-artifact progression: complete
-- Metadata and links: complete
-- Validator: complete
+- Unit consistency: complete
+- Publication blockers: complete

@@ -53,7 +53,7 @@ quizzes/
 sets/
 ```
 
-Do not create lessons, exercises, quizzes, sets, or initialized dashboards unless explicitly requested.
+Do not create lessons, exercises, quizzes, sets, or initialized planning scaffolds unless explicitly requested.
 
 ## Final Step
 

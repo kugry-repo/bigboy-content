@@ -15,9 +15,9 @@ Use the command prompts when you need to decide, manage, or change direction:
 - `content/_prompts/commands/manage-program.md` - create, rename, delete, modify, split, or adapt full programs.
 - `content/_prompts/commands/set-current-unit.md` - write the local current-unit cache.
 - `content/_prompts/commands/manage-unit.md` - create, rename, change metadata, split, merge, delete, reorder, or move official/unofficial units and topics.
-- `content/_prompts/commands/initialize-unit.md` - expand one registered `planning_state: stub` unit into an initialized planning dashboard.
+- `content/_prompts/commands/initialize-unit.md` - expand one registered `planning_state: stub` unit into an initialized planning scaffold.
 - `content/_prompts/commands/content-studio.md` - conversational critique, diagnosis, proposals, grilling, or targeted patches across lessons, exercises, quizzes, and unit planning sections.
-- `content/_prompts/commands/change-existing-content.md` - change existing lessons, exercises, quizzes, plans, unit dashboards, prompts, guides, templates, or validators safely.
+- `content/_prompts/commands/change-existing-content.md` - change existing lessons, exercises, quizzes, plans, unit indexes, prompts, guides, templates, or validators safely.
 
 Use workflow prompts when you already know what you are producing:
 
@@ -29,7 +29,7 @@ Use workflow prompts when you already know what you are producing:
 - `content/_prompts/workflows/exercises/` - exercise seeds, design cards, balance, batch creation, quality review, solution review, and sets.
 - `content/_prompts/workflows/quizzes/` - quiz intent, raw item pools, item design cards, quiz file creation, item-quality review, answer-key review, and feedback/remediation review.
 
-Use unit workflow prompts by intent. They are not a global ladder, and they do not force lesson -> exercise -> quiz order. A unit may be intentionally sparse, so route by declared scope and the user's requested workstream. Initialized dashboards express sparse scope with `Scope: not-started`, `Scope: not-in-scope`, or `Scope: deferred` under the relevant artifact family; family-local rows record progress and review status.
+Use unit workflow prompts by intent. They are not a global ladder, and they do not force lesson -> exercise -> quiz order. A unit may be intentionally sparse, so route by declared scope and the user's requested workstream. Initialized dashboards express sparse scope with `Scope: not-started`, `Scope: not-in-scope`, or `Scope: deferred` under the relevant artifact family; artifact frontmatter records artifact status and review freshness.
 
 For edits to existing reviewed content, use the revision freshness contract in `content/_guides/schema/frontmatter-schema.md`: material edits invalidate only affected review evidence with `needs-review`; non-material edits may preserve status only with an explicit reason.
 
@@ -49,7 +49,7 @@ In this file, improve quiz item Q3 distractor B and its feedback.
 Review only the selected text for clarity. Do not patch yet.
 ```
 
-Use the owning review prompt when content already changed and the task is to refresh stale review evidence. Use `content/_prompts/commands/change-existing-content.md` when the edit may affect dependencies, planning objects, dashboard state, contracts, or multiple files.
+Use the owning review prompt when content already changed and the task is to refresh stale review evidence. Use `content/_prompts/commands/change-existing-content.md` when the edit may affect dependencies, planning objects, scope/blocker state, contracts, or multiple files.
 
 Route review by artifact ownership:
 
@@ -59,7 +59,7 @@ Route review by artifact ownership:
 - Quiz stems, item types, MCQ/MR options or distractors, match pairings, sequence ordering criterion, hotspot target definition, diagnostic signals, or item order changed: `content/_prompts/workflows/quizzes/05-review-item-quality.md`.
 - Quiz correct answers, accepted fill-blank alternatives, match pairings, sequence order, hotspot region, partial correctness, or answer logic changed: `content/_prompts/workflows/quizzes/06-review-answer-keys.md`.
 - Quiz feedback, per-choice MCQ/MR feedback, non-choice wrong-response feedback, mastery criteria, or remediation changed: `content/_prompts/workflows/quizzes/07-review-feedback-remediation.md`.
-- Unit scope, dashboard, cross-family consistency, or publication-readiness changed: `content/_prompts/workflows/unit/02-review-unit.md` or `content/_prompts/workflows/unit/03-finalize-unit.md`.
+- Unit scope, blockers, inventory, cross-family consistency, or publication-readiness changed: `content/_prompts/workflows/unit/02-review-unit.md` or `content/_prompts/workflows/unit/03-finalize-unit.md`.
 
 Use shortcuts only for special cases:
 

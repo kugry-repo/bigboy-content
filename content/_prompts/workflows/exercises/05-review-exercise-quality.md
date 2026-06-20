@@ -63,7 +63,7 @@ If `TARGET_UNIT_INDEX` has `planning_state: stub`, stop before changing unit pla
 
 Review selected existing exercise files for exercise quality.
 
-If the user named specific exercise files, review only those. Otherwise, review the first existing exercise files whose `design_status`, `statement_status`, author notes, or production dashboard suggests quality review is needed. If target files are ambiguous, stop and ask.
+If the user named specific exercise files, review only those. Otherwise, review the first existing exercise files whose `design_status`, `statement_status`, or author notes suggest quality review is needed; use the dashboard only as a blocker/next-decision clue. If target files are ambiguous, stop and ask.
 
 If this review follows a material edit, identify whether the stale evidence is design intent, statement, hints, mistakes, verification, or another quality component. Refresh only `design_status` and/or `statement_status` when those components were actually reviewed.
 

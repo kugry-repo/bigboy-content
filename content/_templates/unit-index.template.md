@@ -57,15 +57,16 @@ No unit-specific misconceptions recorded yet.
 
 ## Inventaire des fichiers finaux
 
-This inventory lists final student-facing or publishable artifacts only. Planning cards stay in the planning sections below.
+This inventory is for navigation, not status bookkeeping. List final student-facing or publishable files only; planning cards stay in the planning sections below.
 
-Use the `Scope` value from the matching production-dashboard family row. Use `none` when an in-scope family has no final files yet, `not-in-scope` when the family is intentionally absent, and `deferred` when the family is intentionally postponed. When final files exist, list unit-relative Obsidian links such as `[[lessons/{{unit_code}}-lesson-001|Lesson title]]`.
+Use the `Scope` value from the matching production-dashboard family row. Use `none` when an in-scope family has no final files yet, `not-in-scope` when the family is intentionally absent, and `deferred` when the family is intentionally postponed. When final files exist, list unit-relative Obsidian links such as `[[lessons/{{unit_code}}-lesson-001|Lesson title]]`. Exam-style material should be listed through its actual artifact family: exercise files, quiz files, or exercise sets.
 
 | Family | Scope | Final artifacts | Notes |
 |---|---|---|---|
-| lessons | not-started | none | No lesson files created yet. |
-| exercises | not-started | none | No exercise files created yet. |
-| quizzes | not-started | none | No quiz files created yet. |
+| lessons | not-started | none | Add final lesson links when lesson files exist. |
+| exercises | not-started | none | Add final exercise links when exercise files exist. |
+| sets | not-started | none | Add exercise-set links when learner paths exist. |
+| quizzes | not-started | none | Add final quiz links when quiz files exist. |
 
 ## Leçons
 
@@ -117,57 +118,45 @@ No exam-alignment notes recorded yet.
 
 ## Production dashboard
 
-Use the artifact-family `Scope` rows to record sparse-unit intent: `not-started` is the in-scope/open declaration, `not-in-scope` means the family is intentionally absent, and `deferred` means it is intentionally postponed. Use family-local rows for progress and review status.
-
-Use `needs-review` on review rows when a material edit made previously reviewed evidence stale. Targeted re-review should refresh only the row/status it actually checked.
+Use this as a compact orientation tool. Artifact frontmatter is the source of truth for artifact status and review freshness; this dashboard records declared scope, blockers, and next decisions only when they help a human choose the next action.
 
 ### Unit map
-- Curriculum scope: not-started
-- Skill map: not-started
-- Misconception map: not-started
-- Exam pattern notes: not-started
+- Scope and goals: not-started
+- Prerequisites and skills: not-started
+- Source/exam notes: not-started
+- Blockers / next decision: not-started
 
 ### Lessons
 - Scope: not-started
-- Source/target prep: not-started
-- Raw dumps: not-started
-- Curation: not-started
-- Draft files: not-started
-- Coherence review: not-started
-- Compression/voice review: not-started
-- Final verification: not-started
+- Plan / notes: not-started
+- Blockers / review needs: not-started
 
 ### Exercises
 - Scope: not-started
-- Cluster map: not-started
-- Raw seeds: not-started
-- Design cards: not-started
-- Balance review: not-started
-- Exercise files: not-started
-- Quality review: not-started
-- Solution review: not-started
-- Sets: not-started
+- Planning cards: not-started
+- Blockers / review needs: not-started
+
+### Sets
+- Scope: not-started
+- Plan / links: not-started
+- Blockers / review needs: not-started
 
 ### Quizzes
 - Scope: not-started
-- Quiz intent map: not-started
-- Raw item pool: not-started
-- Item design cards: not-started
-- Quiz files: not-started
-- Item quality review: not-started
-- Answer key review: not-started
-- Feedback/remediation review: not-started
+- Planning cards: not-started
+- Blockers / review needs: not-started
 
 ### Unit review
-- Cross-artifact progression: not-started
-- Metadata and links: not-started
-- Validator: not-run
+- Unit consistency: not-started
+- Publication blockers: not-started
 
 ## Journal de production
 
+Record decisions, blockers, source/provenance choices, major scope changes, and important review outcomes only. Do not add entries for routine prompt runs, tiny wording edits, ordinary validator runs, or status updates that are already clear in frontmatter or the dashboard.
+
 | Date | Changement | Notes |
 |---|---|---|
-| YYYY-MM-DD | Unit initialized | Stub expanded into the current planning dashboard. |
+| YYYY-MM-DD | Unit initialized | Stub expanded into the current lightweight planning scaffold. |
 
 ## Notes auteur
 

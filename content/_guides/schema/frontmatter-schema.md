@@ -140,23 +140,25 @@ updated: YYYY-MM-DD
 
 Unit indexes have a lifecycle controlled by `planning_state`:
 
-- `stub`: the unit is registered but not initialized. The body is a lightweight stub with no H2 planning dashboard.
-- `initialized`: the full planning dashboard exists and can be developed. It does not mean the unit is complete.
-- `published`: reserved/manual state for a unit whose full dashboard exists and whose declared scope has passed explicit human publication review.
+- `stub`: the unit is registered but not initialized. The body is a lightweight stub with no H2 planning scaffold.
+- `initialized`: the lightweight planning scaffold exists and can be developed. It does not mean the unit is complete.
+- `published`: reserved/manual state for a unit whose planning scaffold exists and whose declared scope has passed explicit human publication review.
 
 A stub is not a failed unit. Sparse units can be publish-ready for their declared scope.
 
-The initialized body and production dashboard scaffold are authored in `content/_templates/unit-index.template.md`. Do not maintain a separate full body copy in schema docs.
+The initialized body and lightweight dashboard scaffold are authored in `content/_templates/unit-index.template.md`. Do not maintain a separate full body copy in schema docs.
 
-Initialized and published unit dashboards use artifact-family `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes`. The sparse-family states are:
+Artifact frontmatter is the source of truth for artifact-level status and review freshness. The unit index owns unit-level scope, planning notes, blockers, final-artifact navigation, and meaningful production decisions.
 
-- `not-started`: the family is intended for the current declared scope; family-local rows record whether work has begun, progressed, or completed.
+Initialized and published unit dashboards use artifact-family `Scope` rows under `### Lessons`, `### Exercises`, `### Sets`, and `### Quizzes`. The sparse-family states are:
+
+- `not-started`: the family is intended for the current declared scope; family-local rows record only useful orientation such as blockers, planning readiness, or review needs.
 - `not-in-scope`: the family is intentionally absent and should not block review or finalization for the declared scope.
 - `deferred`: the family is intentionally postponed and should be reported as future work or an open planning decision.
 
-Only `not-started`, `not-in-scope`, and `deferred` are valid artifact-family `Scope` values. Other dashboard rows use the allowed dashboard statuses documented in `content/_guides/units/unit-workflow.md`. Use hyphenated machine-friendly values in rows; prose variants such as `not in scope` are not dashboard statuses.
+Only `not-started`, `not-in-scope`, and `deferred` are valid artifact-family `Scope` values. Other dashboard rows use the allowed dashboard statuses documented in `content/_guides/units/unit-workflow.md`, but they are orientation notes rather than authoritative artifact status. Use hyphenated machine-friendly values in rows; prose variants such as `not in scope` are not dashboard statuses.
 
-Initialized and published unit indexes also include `## Inventaire des fichiers finaux`. It is a navigation contract, not frontmatter: one row each for `lessons`, `exercises`, and `quizzes`; row `Scope` mirrors the corresponding dashboard family `Scope`; `Final artifacts` is `none`, `not-in-scope`, `deferred`, or unit-relative Obsidian links to final files under the matching artifact folder. Planning cards are not listed there.
+Initialized and published unit indexes also include `## Inventaire des fichiers finaux`. It is a navigation contract, not frontmatter: one row each for `lessons`, `exercises`, `sets`, and `quizzes`; row `Scope` mirrors the corresponding dashboard family `Scope`; `Final artifacts` is `none`, `not-in-scope`, `deferred`, or unit-relative Obsidian links to final files under the matching artifact folder. Planning cards are not listed there.
 
 `content/_prompts/commands/initialize-unit.md` owns the transition from `stub` to `initialized`.
 

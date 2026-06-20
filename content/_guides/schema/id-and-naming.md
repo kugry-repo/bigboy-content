@@ -30,7 +30,7 @@ Do not model a full program as a track inside another program. For example, `ma-
 
 For official curriculum units, the owning program's `_curriculum-map.md` is the canonical structure file. It owns the official unit list, order, code, folder, slug, title, domain, and official curriculum presence.
 
-Program `_index.md` files are overview/navigation dashboards. Unit `_index.md` files are unit-local planning dashboards. If either repeats official identity fields, those fields are derived copies and must match `_curriculum-map.md`.
+Program `_index.md` files are overview/navigation pages. Unit `_index.md` files are unit-local planning scaffolds and orientation pages. If either repeats official identity fields, those fields are derived copies and must match `_curriculum-map.md`.
 
 Unofficial topics do not belong in `_curriculum-map.md`. Their canonical registration is the topic unit `_index.md`; `topics/_index.md` and any program-index topic tables are derived navigation views.
 

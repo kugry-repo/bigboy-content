@@ -8,7 +8,7 @@ This command handles bounded edits and migrations. It does not replace unit revi
 
 Use this command when the desired change is already known, even if the user does not know every affected file. For conversational critique, diagnosis, taste/voice exploration, grilling, proposals, or a small selected-fragment patch, use `content/_prompts/commands/content-studio.md`. For unit-wide consistency review, use `content/_prompts/workflows/unit/02-review-unit.md`. For publish-readiness cleanup, use `content/_prompts/workflows/unit/03-finalize-unit.md`.
 
-If content already changed and the only remaining task is to verify or refresh stale review evidence, route to the owning artifact review prompt instead of using this command. Use this command when the edit itself may affect contracts, dependencies, planning objects, dashboard state, or multiple files.
+If content already changed and the only remaining task is to verify or refresh stale review evidence, route to the owning artifact review prompt instead of using this command. Use this command when the edit itself may affect contracts, dependencies, planning objects, scope/blocker state, inventory links, or multiple files.
 
 The user may write naturally, for example:
 
@@ -48,7 +48,7 @@ Prompt-specific requirements:
 3. If the scope is still unclear after reading the request and supported context, stop and ask.
 4. Derive affected files from the requested change, not from the creation checklist alone.
 
-If a resolved unit has `planning_state: stub`, do not create lesson, exercise, quiz, set, or full dashboard content inside it. For unit-level content work, recommend `content/_prompts/commands/initialize-unit.md` first. For global schema, prompt, guide, validator, or template migrations, it is valid to patch stub frontmatter or stub body shape directly when the lifecycle changes.
+If a resolved unit has `planning_state: stub`, do not create lesson, exercise, quiz, set, or initialized planning content inside it. For unit-level content work, recommend `content/_prompts/commands/initialize-unit.md` first. For global schema, prompt, guide, validator, or template migrations, it is valid to patch stub frontmatter or stub body shape directly when the lifecycle changes.
 
 ## Required reading
 
@@ -95,8 +95,8 @@ For unit-level or content-level changes, inspect as relevant:
 - `TARGET_UNIT_PATH/exercises/`
 - `TARGET_UNIT_PATH/quizzes/`
 - `TARGET_UNIT_PATH/sets/`
-- unit `## Production dashboard`
 - unit `## Inventaire des fichiers finaux`
+- unit `## Production dashboard`
 - artifact-family `Scope` rows and the canonical sparse states `not-started`, `not-in-scope`, and `deferred`
 - `## Journal de production`
 - lesson, exercise, quiz, and set frontmatter
@@ -165,7 +165,7 @@ Targeted review ownership:
 - quiz item-quality evidence: `content/_prompts/workflows/quizzes/05-review-item-quality.md`;
 - quiz answer-key evidence: `content/_prompts/workflows/quizzes/06-review-answer-keys.md`;
 - quiz feedback/remediation evidence: `content/_prompts/workflows/quizzes/07-review-feedback-remediation.md`;
-- unit scope, dashboard, or readiness evidence: `content/_prompts/workflows/unit/02-review-unit.md` or `content/_prompts/workflows/unit/03-finalize-unit.md`.
+- unit scope, inventory links, dashboard blockers/next decisions, or readiness evidence: `content/_prompts/workflows/unit/02-review-unit.md` or `content/_prompts/workflows/unit/03-finalize-unit.md`.
 
 ## Change classification
 
@@ -183,14 +183,14 @@ Behavior:
 
 ### `medium-content-sync`
 
-A change that may affect a unit plan, one or more mini-lessons, neighboring lessons, linked exercises, linked quizzes, sets, unit dashboards, or status notes.
+A change that may affect a unit plan, one or more mini-lessons, neighboring lessons, linked exercises, linked quizzes, sets, inventory links, scope/blocker notes, or status notes.
 
 Behavior:
 
 - Discover affected files.
 - Patch only affected files.
 - Run targeted consistency review.
-- Update workflow/status/journal notes when appropriate.
+- Update only the necessary workflow/status state: frontmatter when review freshness changes, inventory when final files are created/removed, dashboard rows when scope/blockers/next decisions change, and journal notes only for meaningful decisions.
 
 ### `big-structural-revision`
 
@@ -249,7 +249,7 @@ describe change
 -> patch affected files or produce impact plan
 -> targeted review
 -> freshness impact summary
--> update dashboard/status/journal notes
+-> update minimal status, inventory, dashboard, or journal notes when they carry new information
 ```
 
 When patching existing content, preserve YAML frontmatter unless a field needs a targeted update. Freshness invalidation is a targeted update. If using freshness metadata, remember:
@@ -319,7 +319,7 @@ Report checks performed:
 - sets;
 - frontmatter/status;
 - internal links;
-- dashboard and journal consistency;
+- inventory, dashboard, and journal consistency;
 - math/program/source uncertainty where relevant.
 
 Also report which targeted review evidence was refreshed, and which stale evidence remains. A solution review refreshes `solution_status` only; a quiz answer-key review refreshes `answer_key_status` only; feedback/remediation review refreshes those fields only.

@@ -67,7 +67,7 @@ sets/.gitkeep
 
 Populate `_curriculum-map.md` before treating official unit stubs as registered. The map owns the official unit list, order, folders, slugs, titles, domains, and codes. Unit stubs and program-index official-unit tables are derived copies and must match it.
 
-Do not create lessons, exercises, quizzes, sets, or full initialized dashboards unless explicitly requested.
+Do not create lessons, exercises, quizzes, sets, or initialized planning scaffolds unless explicitly requested.
 
 Use the new program's `id_prefix` for all unit IDs:
 

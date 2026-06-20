@@ -141,7 +141,7 @@ Use valid `difficulty`, `exercise_type`, `exercise_role`, `exam_relevance`, and 
 
 After creating the files, update each source design card from `ready-for-exercise-batch` to `used-in-exercise`, but only after the final exercise file exists and its frontmatter `source_design_card` exactly matches the card ID. Do not mark unused cards as used.
 
-After creating the files, update the production dashboard only for the created batch. Use `partial` unless all intended exercise files for the current unit target exist.
+After creating the files, add the new exercise links to `## Inventaire des fichiers finaux`. Update the exercise-family dashboard only if scope, blockers, review needs, or the next decision changed. Do not copy each exercise frontmatter status into the dashboard.
 
 Finish by summarizing:
 

@@ -45,7 +45,7 @@ compatibility aliases behind.
 - `content/_guides/schema/frontmatter-schema.md`
 - `content/_guides/schema/id-and-naming.md`
 - `content/_guides/core/content-validation.md`
-- `content/_guides/exercises/exercise-structure.md` when the operation affects exercise workflow/dashboard references
+- `content/_guides/exercises/exercise-structure.md` when the operation affects exercise workflow, set navigation, or dashboard references
 - `content/_templates/unit-index-stub.template.md`
 - `content/_templates/unit-index.template.md`
 
@@ -183,7 +183,7 @@ Check at least:
 
 - curriculum-map rows;
 - unit index frontmatter;
-- unit index body and production dashboard;
+- unit index body, final-artifact inventory, and production dashboard;
 - program `_index.md`;
 - `topics/_index.md` when topics are involved;
 - `related_units`;
@@ -333,7 +333,7 @@ instead of editing `_curriculum-map.md`.
 1. Resolve the unit.
 2. Classify the requested metadata as official structure, topic registration, or unit-local planning/content state.
 3. For official structure fields (`unit_order`, `unit_code`, `unit_folder`, `unit_slug`, `title`, `domain`, or official curriculum presence), update `_curriculum-map.md` first, then derived copies.
-4. For official unit-local fields (`planning_state`, `status`, `sync_status`, `skills`, `related_units`, dashboard rows, journal notes, or author notes), update the unit `_index.md` and affected artifacts only; do not change `_curriculum-map.md`.
+4. For official unit-local fields (`planning_state`, `status`, `sync_status`, `skills`, `related_units`, inventory rows, dashboard rows, meaningful journal notes, or author notes), update the unit `_index.md` and affected artifacts only; do not change `_curriculum-map.md`.
 5. For unofficial topic identity fields, update the topic unit `_index.md` first, then derived topic catalogs.
 6. Apply the published-ID stability rule before changing `unit_code` or any ID.
 7. Search for stale references if the modified field affects links, IDs, folders, titles, ordering, or codes.

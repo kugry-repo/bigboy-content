@@ -1,4 +1,4 @@
-# Valid Sparse Exercise-Only Unit
+# Valid Sparse Set-Only Unit
 
 ## Production dashboard
 
@@ -14,14 +14,14 @@
 - Blockers / review needs: not-in-scope
 
 ### Exercises
-- Scope: not-started
-- Planning cards: complete
-- Blockers / review needs: complete
+- Scope: not-in-scope
+- Planning cards: not-in-scope
+- Blockers / review needs: not-in-scope
 
 ### Sets
-- Scope: not-in-scope
-- Plan / links: not-in-scope
-- Blockers / review needs: not-in-scope
+- Scope: not-started
+- Plan / links: complete
+- Blockers / review needs: complete
 
 ### Quizzes
 - Scope: not-in-scope

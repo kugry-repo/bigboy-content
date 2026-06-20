@@ -23,7 +23,7 @@ Do not add new `00-*` control prompts, `q01-*` quiz prompts, or letter suffix pr
 - `content/_prompts/commands/next-action.md` diagnoses the current state and recommends the next exact prompt path.
 - `content/_prompts/commands/set-current-unit.md` writes the ephemeral `_workflow/current-unit.md` cache.
 - `content/_prompts/commands/manage-unit.md` creates, renames, changes metadata, splits, merges, deletes, reorders, or moves official/unofficial units.
-- `content/_prompts/commands/initialize-unit.md` expands one `planning_state: stub` unit into an initialized planning dashboard.
+- `content/_prompts/commands/initialize-unit.md` expands one `planning_state: stub` unit into an initialized planning scaffold.
 - `content/_prompts/commands/content-studio.md` supports conversational critique, diagnosis, proposals, grilling, and targeted patches across content artifacts from selected text, active files, or explicit paths.
 - `content/_prompts/commands/change-existing-content.md` handles targeted revision, stale-file sync, and workflow/template/schema changes.
 
@@ -31,7 +31,7 @@ Content-studio is for bounded patching or critique. It should infer the target
 from selection or active file path before falling back to `_workflow/current-unit.md`.
 Review prompts refresh stale review evidence after content already changed.
 Change-existing-content owns dependency-aware edits that can touch contracts,
-planning objects, dashboard state, or multiple files.
+planning objects, scope/blocker state, inventory links, or multiple files.
 
 ## Local Prompt Workflows
 

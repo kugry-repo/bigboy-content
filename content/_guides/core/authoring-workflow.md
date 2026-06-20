@@ -40,15 +40,17 @@ Unofficial topics may contain topic-native content and links to official-unit co
 
 The unit `_index.md` is the only unit-planning artifact.
 
-Unstarted units should remain lightweight stubs with `planning_state: stub`. Use `content/_prompts/commands/initialize-unit.md` to expand one unit into an initialized dashboard before planning lessons, exercises, quizzes, or sets.
+Unstarted units should remain lightweight stubs with `planning_state: stub`. Use `content/_prompts/commands/initialize-unit.md` to expand one unit into an initialized planning scaffold before planning lessons, exercises, quizzes, or sets.
 
-`planning_state: initialized` means the dashboard exists; it does not mean the unit is complete. `planning_state: stub` is not a failure state. `planning_state: published` is reserved for an explicit human publication decision after review and cleanup. Current workflow prompts can prepare readiness, but they do not automatically publish a unit.
+`planning_state: initialized` means the planning scaffold exists; it does not mean the unit is complete. `planning_state: stub` is not a failure state. `planning_state: published` is reserved for an explicit human publication decision after review and cleanup. Current workflow prompts can prepare readiness, but they do not automatically publish a unit.
 
 Sparse units can be ready for their declared scope. Missing artifact families are blockers only when the unit plan, publish target, existing references, or local workflow prerequisites require them.
 
-Initialized dashboards use `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes` to make sparse units mechanical: `not-started` is the in-scope/open declaration, `not-in-scope` means intentionally absent, and `deferred` means intentionally postponed. Family-local rows record progress and review status.
+Artifact frontmatter is the source of truth for artifact-level status and review freshness. The unit `_index.md` is the source of truth for unit-level scope, planning notes, blockers, final-artifact navigation, and meaningful authoring decisions.
 
-Initialized and published unit indexes also use `## Inventaire des fichiers finaux` as the navigation inventory for final lessons, exercises, and quizzes. It mirrors those Scope rows and stays separate from exercise and quiz planning cards.
+Initialized dashboards use `Scope` rows under `### Lessons`, `### Exercises`, `### Sets`, and `### Quizzes` to make sparse units mechanical: `not-started` is the in-scope/open declaration, `not-in-scope` means intentionally absent, and `deferred` means intentionally postponed. Family-local rows summarize blockers, planning readiness, and review needs only when they help choose the next action.
+
+Initialized and published unit indexes also use `## Inventaire des fichiers finaux` as the navigation inventory for final lessons, exercises, sets, and quizzes. It mirrors those Scope rows and stays separate from exercise and quiz planning cards.
 
 After initialization, use it for:
 
@@ -57,11 +59,11 @@ After initialization, use it for:
 - exercise-set planning;
 - quiz intent cards, raw item pools, and item design cards;
 - diagram and exam-alignment notes;
-- production dashboard state and production journal.
+- compact dashboard orientation and decision-only production journal.
 
 Do not move unit planning into a separate note.
 
-Do not expand every unit index just because the planning dashboard shape changed.
+Do not expand every unit index just because the initialized scaffold shape changed.
 
 ## Lessons
 

@@ -110,7 +110,7 @@ Rules:
 - If the lesson is small, let it stay small.
 - Do not perform final verification except when a compression or voice edit exposes a blocking defect.
 
-After editing, update the relevant lesson planning row, production dashboard, and production journal honestly.
+After editing, update unit tracking only if the edit changes scope, blockers, final-artifact navigation, or the next useful decision. Do not add dashboard or journal entries for routine compression, taste, or voice edits.
 
 Finish with:
 
@@ -119,5 +119,5 @@ Finish with:
 - voice and taste improvements made;
 - remaining weak spots;
 - optional 1-5 quality score using `content/_guides/lessons/lesson-quality-rubric.md` if the user requested scoring;
-- dashboard or journal updates;
+- inventory, dashboard, or journal updates only if they carried new information;
 - successful next action: `content/_prompts/workflows/lessons/07-verify-finalize.md`.
