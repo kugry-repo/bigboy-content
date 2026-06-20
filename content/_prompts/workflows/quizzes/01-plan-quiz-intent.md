@@ -113,8 +113,8 @@ Allowed item types:
 
 Item-type contract notes:
 - Why each allowed type fits the diagnostic goal.
-- MCQ/MR: whether distractors and per-choice feedback are needed.
-- Non-choice: expected answer form, pairing logic, ordering criterion, or hotspot target contract as appropriate.
+- MCQ/MR: planned correct answer shape, distractor rationale, per-choice feedback, and whether MR genuinely needs multiple correct options.
+- Non-choice: visible blank/input, proposition truth value, left/right pairing logic, items-to-order criterion, or hotspot target/region/UI marker as appropriate.
 
 Expected item count:
 - TODO

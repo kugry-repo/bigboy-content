@@ -31,6 +31,11 @@ Options / interaction:
 Correct answer:
 - B
 
+Distractor rationale:
+- A: tempting because the numerator tends to $0$.
+- C: tempting because the final limit after transformation is $2$.
+- D: tempting because outside $x=1$, the denominator is not zero.
+
 Explanation:
 - Le numerateur et le denominateur tendent vers $0$, donc on obtient une forme indeterminee.
 
@@ -114,7 +119,7 @@ Choice feedback:
   - Remediation: Revoir le role du voisinage.
 
 Verification notes:
-- Correct set is unambiguous.
+- Correct set has at least two correct options and at least one incorrect option; feedback statuses agree with the answer set.
 
 Remediation:
 - Revoir les hypotheses une par une, puis refaire un item avec feedback sur choix oublie.
@@ -159,11 +164,17 @@ Type:
 Stem:
 Pour transformer $\frac{x^2-1}{x-1}$, on commence par ecrire $x^2-1=$ ____.
 
+Options / interaction:
+- answer-input: short algebraic expression.
+
 Expected answer(s):
 - $(x-1)(x+1)$
 
 Accepted alternatives:
 - $(x+1)(x-1)$
+
+Grading / normalization rule:
+- Accept equivalent factored order; do not accept expanded form because the diagnostic target is factorization.
 
 Common wrong forms:
 - $x(x-1)$ : confond facteur commun et identite remarquable.
@@ -188,14 +199,20 @@ Type:
 Stem:
 Associe chaque forme a la premiere action utile.
 
-Options / interaction:
-- Left: $0/0$ ; $\frac{a}{0}$ avec $a \ne 0$ ; forme directe finie.
-- Right: transformer ; etudier une limite infinie ou non-existence ; substituer directement.
+Left-side items:
+- L1. $0/0$
+- L2. $\frac{a}{0}$ avec $a \ne 0$
+- L3. forme directe finie
+
+Right-side options:
+- R1. transformer
+- R2. etudier une limite infinie ou non-existence
+- R3. substituer directement
 
 Correct pairings:
-- $0/0$ -> transformer
-- $\frac{a}{0}$ avec $a \ne 0$ -> etudier une limite infinie ou non-existence
-- forme directe finie -> substituer directement
+- L1 -> R1
+- L2 -> R2
+- L3 -> R3
 
 Pairing rationale:
 - Chaque paire correspond au premier diagnostic apres substitution.
@@ -217,7 +234,7 @@ Type:
 Stem:
 Ordonne les etapes pour traiter $\lim_{x \to 1}\frac{x^2-1}{x-1}$.
 
-Options / interaction:
+Items to order:
 - A. Simplifier pour $x \ne 1$.
 - B. Factoriser $x^2-1$.
 - C. Faire la substitution directe.
@@ -249,7 +266,7 @@ Type:
 Stem:
 Sur le tableau de variations de $f$, selectionne la zone qui montre que $f$ est croissante.
 
-Target reference:
+Target visual:
 - Described table: interval labels on the first row, variation arrows on the second row.
 
 Correct region(s):

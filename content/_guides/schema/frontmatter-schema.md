@@ -479,7 +479,7 @@ Allowed `item_types` values are:
 - `sequence`
 - `hotspot`
 
-Each final question must declare one of these item types in its question metadata and satisfy the matching standalone quiz item contract from `content/_guides/quizzes/quiz-structure.md`. `sequence` and `hotspot` are valid content contracts even when learner UI support is future work; hotspot items should mark the contract `content-contract-ready / UI-dependent` until rendering support exists.
+Each final question must declare one of these item types in its question metadata and satisfy the matching standalone quiz item contract from `content/_guides/quizzes/quiz-structure.md`. Reviewed or published quiz items use strict type-specific contracts: MCQ/MR require per-choice feedback and answer-key agreement, fill-blank requires a visible blank/input location, match requires student-facing left/right lists, sequence requires student-facing items to order, and hotspot requires a target reference, correct region, and UI dependency marker. `sequence` and `hotspot` are valid content contracts even when learner UI support is future work; hotspot items should mark the contract `content-contract-ready / UI-dependent` until rendering support exists.
 
 ```yaml
 ---

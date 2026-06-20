@@ -17,7 +17,7 @@ This is an example/reference file only. It is not real unit content.
 Stem:
 Calcule $\lim_{x \to 1}\frac{x^2-1}{x-1}$.
 
-Options:
+Options / interaction:
 - A. $0$
 - B. $1$
 - C. $2$
@@ -50,7 +50,7 @@ Misconception tags:
 Stem:
 Pour $\lim_{x \to 1}\frac{x^2-1}{x-1}$, la substitution directe donne $0/0$. Quelle est la meilleure conclusion à ce moment-là ?
 
-Options:
+Options / interaction:
 - A. La limite vaut $0$.
 - B. La limite n'existe jamais.
 - C. Il faut transformer l'expression avant de conclure.
@@ -71,4 +71,3 @@ Why it is better:
 - The cognitive role is recognition, not long calculation.
 - Each distractor represents a plausible student state.
 - Feedback can route each mistake to a different remediation.
-

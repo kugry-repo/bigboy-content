@@ -61,7 +61,14 @@ Check:
 - skill coverage;
 - cognitive role balance;
 - item-type fit;
-- item-type contract fit for every final question;
+- item-type contract fit for every final question:
+  - MCQ has a clear single-answer shape and plausible distractors;
+  - MR is genuinely multiple-response, with at least two correct options and at least one incorrect option;
+  - true-false has one unambiguous proposition;
+  - fill-blank has a visible blank or answer-input location;
+  - match has student-facing left/right lists;
+  - sequence has student-facing items to order and a visible ordering task;
+  - hotspot has a target visual/reference and UI-dependent contract marker when needed;
 - stem clarity;
 - diagnostic signal;
 - MCQ/MR distractor quality;

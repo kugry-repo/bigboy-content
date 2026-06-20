@@ -139,9 +139,13 @@ Quiz type-specific implications:
 
 - MCQ/MR distractor changes affect item-quality review and usually feedback review.
 - MCQ/MR correct-answer changes affect answer-key review and likely feedback review.
+- MCQ/MR reviewed items require per-choice feedback, distractor rationale for wrong choices, and answer-key agreement; generic feedback alone is not a valid reviewed contract.
 - Fill-blank accepted-answer form changes affect answer-key review; common wrong-form feedback changes affect feedback review.
+- Fill-blank items must keep a visible blank or answer-input location.
 - Match pairing changes affect answer-key review and may affect explanation or feedback.
+- Match items must keep student-facing left/right lists that the pairings refer to.
 - Sequence ordering-criterion changes affect item-quality and answer-key review.
+- Sequence items must keep student-facing items to order.
 - Hotspot target-region changes affect answer-key review and may affect UI-dependent review notes or feedback.
 - Non-choice item edits should not introduce MCQ choices, distractors, or per-choice feedback unless the item type itself is changed and item-quality review is invalidated.
 

@@ -166,9 +166,13 @@ Quiz type-specific freshness examples:
 
 - Changing an MCQ/MR distractor affects `item_quality_status` and usually `feedback_status`.
 - Changing an MCQ/MR correct choice affects `answer_key_status` and likely `feedback_status`.
+- Reviewed MCQ/MR items must keep per-choice feedback, wrong-choice rationale, and answer-key agreement.
 - Changing a fill-blank accepted answer form affects `answer_key_status`; changing common wrong-form feedback affects `feedback_status`.
+- Fill-blank items must keep a visible blank or answer-input location.
 - Changing a match pair affects `answer_key_status` and may affect explanation or feedback.
+- Match items must keep student-facing left/right lists.
 - Changing a sequence ordering criterion affects `item_quality_status` and `answer_key_status`.
+- Sequence items must keep student-facing items to order.
 - Changing a hotspot region definition affects `answer_key_status` and may affect UI-dependent review notes and feedback.
 
 ## Mode Behavior

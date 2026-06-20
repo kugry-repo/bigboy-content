@@ -92,17 +92,19 @@ For `multiple-choice` and `multiple-response` cards, also include:
 
 - choices or choice design;
 - correct choice(s);
-- distractor rationale;
-- per-choice feedback plan;
+- for `multiple-choice`, exactly one correct choice;
+- for `multiple-response`, at least two correct choices and at least one incorrect option, plus the complete correct set;
+- distractor rationale for every wrong choice;
+- per-choice feedback plan, including selected-wrong and missed-correct feedback for multiple-response;
 - misconception targeted by each wrong choice where appropriate.
 
 For non-choice item types, do not force per-choice feedback. Require the appropriate answer contract, verification check, feedback design, remediation plan, and type-specific field:
 
-- `true-false`: proposition contract;
-- `fill-blank`: accepted answer forms;
-- `match`: pairing contract;
-- `sequence`: ordering criterion;
-- `hotspot`: hotspot target region and `content-contract-ready / UI-dependent` marker when UI support is not implemented.
+- `true-false`: exact proposition, truth value, and opposite-response misconception;
+- `fill-blank`: visible blank/input plan, accepted answer forms, equivalent forms, common near-misses where useful, and grading/normalization rule where relevant;
+- `match`: student-facing left/right sets, correct pairings, and uniqueness or many-to-one rule;
+- `sequence`: student-facing items to order, correct order, ordering criterion, and allowed alternatives if any;
+- `hotspot`: target visual/reference, correct region, common wrong regions, and `content-contract-ready / UI-dependent` marker when UI support is not implemented.
 
 ## Canonical Item Design Card Format
 
@@ -150,7 +152,7 @@ Source/provenance:
 - original | exam-inspired | adapted | source note, with source-anchor notes when applicable
 
 Choices / interaction design:
-- For MCQ/MR: planned choices. For non-choice items: answer-input, matching, sequence, or hotspot interaction design.
+- For MCQ/MR: planned choices. For fill-blank: visible blank/input location. For match: student-facing left/right sets. For sequence: items to order. For hotspot: target visual/interaction marker.
 
 Correct choice(s):
 - For MCQ/MR only.
@@ -165,19 +167,19 @@ Misconceptions by wrong choice:
 - For MCQ/MR only, where appropriate.
 
 Proposition contract:
-- For true-false only.
+- For true-false only: proposition, truth value, opposite-response misconception, and ambiguity guard.
 
 Accepted answer forms:
-- For fill-blank only.
+- For fill-blank only: visible blank/input plan, expected answers, accepted equivalents, near-misses, and normalization/grading rule where relevant.
 
 Pairing contract:
-- For match only.
+- For match only: left/right sets, correct pairings, and uniqueness or many-to-one rule.
 
 Ordering criterion:
-- For sequence only.
+- For sequence only: items to order, correct order, ordering rule, and allowed alternatives if any.
 
 Hotspot target region:
-- For hotspot only.
+- For hotspot only: target reference, correct region, wrong regions, interaction contract, and `content-contract-ready / UI-dependent` marker.
 
 Mismath / ambiguity risks:
 - <risks to check before final drafting>

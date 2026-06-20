@@ -942,6 +942,12 @@ const CONTRACT_FIXTURES = {
     "content/_fixtures/contracts/invalid-quiz-item-card-contract.md",
   quizItemBodyContract:
     "content/_fixtures/contracts/invalid-quiz-item-body-contract.md",
+  validQuizItemTypeContracts:
+    "content/_fixtures/contracts/valid-quiz-item-type-contracts.md",
+  invalidQuizItemTypeContracts:
+    "content/_fixtures/contracts/invalid-quiz-item-type-contracts.md",
+  invalidQuizAnswerKeyMismatches:
+    "content/_fixtures/contracts/invalid-quiz-answer-key-mismatches.md",
   exerciseSourceMissingCard:
     "content/_fixtures/contracts/invalid-exercise-source-missing-card.md",
   exerciseSourceBadStatus:
@@ -1899,6 +1905,177 @@ function checkRequiredPlanningFields(
   }
 }
 
+function planningFieldText(card, aliases) {
+  return planningField(card, aliases)?.value ?? "";
+}
+
+function addQuizItemCardShapeDiagnostic(filePath, card, severity, message) {
+  addPlanningCardDiagnostic(filePath, "quiz item design card", card, severity, message);
+}
+
+function checkChoiceQuizItemDesignCardShape(filePath, card, itemType, severity) {
+  const choiceText = planningFieldText(card, ["choices-interaction-design"]);
+  const choiceLabels = quizChoiceLabels(choiceText).filter((label) => /^[A-Z]$/.test(label));
+  const correctLabels = labelsMentionedInText(
+    planningFieldText(card, ["correct-choice-s", "correct-choices"]),
+    choiceLabels,
+  );
+
+  if (choiceLabels.length < 2) {
+    addQuizItemCardShapeDiagnostic(
+      filePath,
+      card,
+      severity,
+      `${itemType} card needs at least two planned choices`,
+    );
+  }
+
+  if (itemType === "multiple-choice" && correctLabels.length !== 1) {
+    addQuizItemCardShapeDiagnostic(
+      filePath,
+      card,
+      severity,
+      "multiple-choice card must plan exactly one correct choice",
+    );
+  }
+
+  if (itemType === "multiple-response" && correctLabels.length < 2) {
+    addQuizItemCardShapeDiagnostic(
+      filePath,
+      card,
+      severity,
+      "multiple-response card must plan at least two correct choices; use multiple-choice for exactly one correct option",
+    );
+  }
+
+  if (
+    itemType === "multiple-response" &&
+    choiceLabels.length > 0 &&
+    correctLabels.length >= choiceLabels.length
+  ) {
+    addQuizItemCardShapeDiagnostic(
+      filePath,
+      card,
+      severity,
+      "multiple-response card must plan at least one incorrect option",
+    );
+  }
+
+  const rationaleText = planningFieldText(card, ["distractor-rationale"]);
+  const feedbackPlan = planningFieldText(card, ["per-choice-feedback-plan"]);
+
+  for (const label of choiceLabels) {
+    if (!feedbackHasLabelBlock(feedbackPlan, label)) {
+      addQuizItemCardShapeDiagnostic(
+        filePath,
+        card,
+        severity,
+        `${itemType} card missing per-choice feedback plan for choice ${label}`,
+      );
+    }
+  }
+
+  for (const label of choiceLabels.filter((choice) => !correctLabels.includes(choice))) {
+    if (!labelRegex(label).test(rationaleText)) {
+      addQuizItemCardShapeDiagnostic(
+        filePath,
+        card,
+        severity,
+        `${itemType} card missing distractor rationale for wrong choice ${label}`,
+      );
+    }
+  }
+}
+
+function checkNonChoiceQuizItemDesignCardShape(filePath, card, itemType, severity) {
+  const stemText = planningFieldText(card, ["stem-task-design"]);
+  const interactionText = planningFieldText(card, ["choices-interaction-design"]);
+
+  if (itemType === "true-false") {
+    const proposition = planningFieldText(card, ["proposition-contract"]);
+    if (!hasAnyNormalizedText(proposition, ["vrai", "faux", "true", "false"])) {
+      addQuizItemCardShapeDiagnostic(
+        filePath,
+        card,
+        severity,
+        "true-false card proposition contract must plan the truth value",
+      );
+    }
+  }
+
+  if (itemType === "fill-blank") {
+    if (!hasVisibleBlankOrInput(`${stemText}\n${interactionText}`)) {
+      addQuizItemCardShapeDiagnostic(
+        filePath,
+        card,
+        severity,
+        "fill-blank card must plan a visible blank or answer-input location",
+      );
+    }
+  }
+
+  if (itemType === "match") {
+    const pairing = planningFieldText(card, ["pairing-contract"]);
+    const matchContractText = `${interactionText}\n${pairing}`;
+    if (
+      !hasAnyNormalizedText(matchContractText, ["left"]) ||
+      !hasAnyNormalizedText(matchContractText, ["right"]) ||
+      !/(->|=>|â†’|:)/.test(pairing)
+    ) {
+      addQuizItemCardShapeDiagnostic(
+        filePath,
+        card,
+        severity,
+        "match card pairing contract must plan left/right sets and correct pairings",
+      );
+    }
+  }
+
+  if (itemType === "sequence") {
+    const ordering = planningFieldText(card, ["ordering-criterion"]);
+    const labels = quizChoiceLabels(interactionText).filter((label) => /^[A-Z]$/.test(label));
+    if (
+      labels.length < 3 &&
+      !hasAnyNormalizedText(`${interactionText}\n${ordering}`, ["items to order", "steps to order", "etapes a ordonner"])
+    ) {
+      addQuizItemCardShapeDiagnostic(
+        filePath,
+        card,
+        severity,
+        "sequence card must plan the student-facing items to order",
+      );
+    }
+    if (!hasAnyNormalizedText(ordering, ["correct order", "ordre correct", "ordering criterion", "critere"])) {
+      addQuizItemCardShapeDiagnostic(
+        filePath,
+        card,
+        severity,
+        "sequence card ordering criterion must plan the correct order and ordering rule",
+      );
+    }
+  }
+
+  if (itemType === "hotspot") {
+    const hotspot = planningFieldText(card, ["hotspot-target-region"]);
+    if (!hasAnyNormalizedText(hotspot, ["target", "region", "point", "area", "zone"])) {
+      addQuizItemCardShapeDiagnostic(
+        filePath,
+        card,
+        severity,
+        "hotspot card must plan the target visual and correct region",
+      );
+    }
+    if (!hasAnyNormalizedText(hotspot, ["content-contract-ready", "ui-dependent"])) {
+      addQuizItemCardShapeDiagnostic(
+        filePath,
+        card,
+        severity,
+        "hotspot card must carry the content-contract-ready / UI-dependent marker until UI support exists",
+      );
+    }
+  }
+}
+
 function checkPlanningCardIds(filePath, kind, cards) {
   const ids = new Map();
 
@@ -2473,6 +2650,12 @@ function checkQuizItemDesignCardContracts(filePath, body) {
         typeRequiredFields,
         fieldSeverity,
       );
+    }
+
+    if (CHOICE_BASED_QUIZ_ITEM_TYPES.has(itemType)) {
+      checkChoiceQuizItemDesignCardShape(filePath, card, itemType, fieldSeverity);
+    } else if (itemType) {
+      checkNonChoiceQuizItemDesignCardShape(filePath, card, itemType, fieldSeverity);
     }
   }
 
@@ -3795,6 +3978,70 @@ function checkContractFixtures() {
     ],
   );
 
+  expectValidContractFixture(
+    CONTRACT_FIXTURES.validQuizItemTypeContracts,
+    "valid reviewed quiz item type contracts",
+    () => {
+      const parsed = readFixtureFrontmatter(
+        CONTRACT_FIXTURES.validQuizItemTypeContracts,
+        "valid quiz item type contract fixture",
+      );
+      checkFinalQuizItemContracts(
+        fullPathFromRepoPath(CONTRACT_FIXTURES.validQuizItemTypeContracts),
+        parsed.data,
+        parsed.body,
+      );
+    },
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.invalidQuizItemTypeContracts,
+    "invalid reviewed quiz item type contracts",
+    () => {
+      const parsed = readFixtureFrontmatter(
+        CONTRACT_FIXTURES.invalidQuizItemTypeContracts,
+        "invalid quiz item type contract fixture",
+      );
+      checkFinalQuizItemContracts(
+        fullPathFromRepoPath(CONTRACT_FIXTURES.invalidQuizItemTypeContracts),
+        parsed.data,
+        parsed.body,
+      );
+    },
+    [
+      /Question 1 - Generic MCQ feedback: multiple-choice item needs per-choice feedback/,
+      /Question 2 - MCQ missing distractor rationale: multiple-choice distractor B missing rationale/,
+      /Question 3 - MR with one correct option: multiple-response item must identify at least two correct options/,
+      /Question 4 - True-false missing opposite feedback: true-false item missing feedback for "Vrai" response/,
+      /Question 5 - Fill blank without blank: fill-blank item has expected answers but no visible blank/,
+      /Question 6 - Match missing sides: match item declares pairings but is missing student-facing left-side items or right-side options/,
+      /Question 7 - Sequence missing items: sequence item declares a correct order but is missing student-facing items to order/,
+      /Question 8 - Hotspot missing target and region: hotspot item needs a target image/,
+      /Question 8 - Hotspot missing target and region: missing correct region definition/,
+    ],
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.invalidQuizAnswerKeyMismatches,
+    "quiz item answer-key mismatch contracts",
+    () => {
+      const parsed = readFixtureFrontmatter(
+        CONTRACT_FIXTURES.invalidQuizAnswerKeyMismatches,
+        "quiz answer-key mismatch fixture",
+      );
+      checkFinalQuizItemContracts(
+        fullPathFromRepoPath(CONTRACT_FIXTURES.invalidQuizAnswerKeyMismatches),
+        parsed.data,
+        parsed.body,
+      );
+    },
+    [
+      /Question 1 - MCQ feedback disagrees with key: multiple-choice answer-key mismatch/,
+      /Question 2 - MR feedback disagrees with key: multiple-response answer-key mismatch/,
+      /Question 3 - Sequence order references missing item: sequence answer-key mismatch/,
+    ],
+  );
+
   expectInvalidContractFixture(
     CONTRACT_FIXTURES.exerciseSourceMissingCard,
     "final exercise source design-card reference must exist",
@@ -5074,6 +5321,197 @@ function looksLikeMcqChoiceList(text) {
   return quizChoiceLabels(text).filter((label) => /^[A-Z]$/.test(label)).length >= 2;
 }
 
+function quizFieldItems(block, aliases) {
+  return planningFieldItems(planningField(block, aliases));
+}
+
+function quizFieldText(block, aliases) {
+  return quizFieldValue(block, aliases);
+}
+
+function feedbackBlockForLabel(text, label) {
+  const lines = String(text ?? "").split(/\r?\n/);
+  const escaped = escapeRegex(label);
+  const startPattern = new RegExp(
+    `^\\s*[-*]\\s*(?:\`)?${escaped}(?:\`)?\\s*:`,
+    "i",
+  );
+  const nextLabelPattern =
+    /^\s*[-*]\s*(?:`)?(?:[A-Z]|Vrai|Faux|True|False)(?:`)?\s*:/i;
+  const startIndex = lines.findIndex((line) => startPattern.test(line));
+  if (startIndex < 0) return "";
+
+  const blockLines = [lines[startIndex]];
+  for (let index = startIndex + 1; index < lines.length; index += 1) {
+    const line = lines[index];
+    if (nextLabelPattern.test(line)) break;
+    blockLines.push(line);
+  }
+
+  return blockLines.join("\n");
+}
+
+function feedbackStatusForLabel(text, label) {
+  const block = feedbackBlockForLabel(text, label);
+  const match = block.match(/^\s*[-*]?\s*Status:\s*([A-Za-z-]+)/im);
+  return match ? normalizeForSearch(match[1]).trim() : "";
+}
+
+function feedbackCorrectLabels(text, labels) {
+  return labels.filter((label) => feedbackStatusForLabel(text, label) === "correct");
+}
+
+function sameLabelSet(left, right) {
+  if (left.length !== right.length) return false;
+  const rightSet = new Set(right);
+  return left.every((label) => rightSet.has(label));
+}
+
+function diagnosticLabelList(labels) {
+  return labels.length ? labels.join(", ") : "none";
+}
+
+function hasVisibleBlankOrInput(text) {
+  const normalized = normalizeForSearch(text);
+  return (
+    /_{2,}/.test(text) ||
+    /\[\s*(?:blank|input|answer)\s*\]/i.test(text) ||
+    /\{\{\s*(?:blank|input|answer)\s*\}\}/i.test(text) ||
+    hasAnyNormalizedText(normalized, [
+      "answer-input",
+      "input location",
+      "short answer",
+      "reponse courte",
+      "champ de reponse",
+      "zone de reponse",
+      "a completer",
+      "blank",
+    ])
+  );
+}
+
+function splitInlineItemList(text) {
+  return String(text ?? "")
+    .split(/\s*(?:;|\|)\s*/g)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function interactionLineItems(interactionText, labels) {
+  const normalizedLabels = labels.map((label) => normalizeForSearch(label));
+  for (const line of String(interactionText ?? "").split(/\r?\n/)) {
+    const cleaned = line.trim().replace(/^[-*]\s*/, "");
+    const normalized = normalizeForSearch(cleaned);
+    const matchedLabel = normalizedLabels.find((label) =>
+      normalized.startsWith(`${label}:`) ||
+      normalized.startsWith(`${label} -`) ||
+      normalized.startsWith(`${label} `)
+    );
+    if (!matchedLabel) continue;
+
+    const afterSeparator = cleaned.replace(/^[^:-]+[:-]\s*/, "").trim();
+    const items = splitInlineItemList(afterSeparator);
+    return items.length > 0 ? items : [afterSeparator].filter(Boolean);
+  }
+
+  return [];
+}
+
+function quizMatchSideItems(question, aliases, interactionLabels) {
+  const explicitItems = quizFieldItems(question, aliases);
+  if (explicitItems.length > 0) return explicitItems;
+
+  return interactionLineItems(
+    quizFieldText(question, ["options-interaction", "options", "interaction"]),
+    interactionLabels,
+  );
+}
+
+function referenceTokensForItems(items) {
+  const tokens = new Set();
+
+  for (const item of items) {
+    const cleaned = String(item ?? "").trim();
+    if (!cleaned) continue;
+
+    const normalized = normalizeForSearch(
+      cleaned
+        .replace(/`/g, "")
+        .replace(/\s+/g, " ")
+        .trim(),
+    );
+    tokens.add(normalized);
+
+    const labelMatch = cleaned.match(/^`?([A-Za-z][A-Za-z0-9]*|\d+)`?\s*[\).:-]/);
+    if (labelMatch) tokens.add(normalizeForSearch(labelMatch[1]));
+  }
+
+  return tokens;
+}
+
+function referenceMatchesKnownItem(reference, itemTokens) {
+  const normalized = normalizeForSearch(
+    String(reference ?? "")
+      .replace(/`/g, "")
+      .replace(/\s+/g, " ")
+      .trim(),
+  );
+  if (!normalized) return false;
+  if (itemTokens.has(normalized)) return true;
+
+  return [...itemTokens].some((token) =>
+    token.length > 1 &&
+    (normalized.includes(token) || token.includes(normalized))
+  );
+}
+
+function parseMappingPairs(text) {
+  const pairs = [];
+  for (const item of planningFieldItems({ value: text })) {
+    const match = item.match(/^(.+?)\s*(?:->|=>|→|:)\s*(.+?)\s*$/);
+    if (!match) continue;
+    pairs.push({
+      left: match[1].trim(),
+      right: match[2].trim(),
+    });
+  }
+
+  return pairs;
+}
+
+function sequenceItemsToOrder(question) {
+  const explicitItems = quizFieldItems(question, [
+    "items-to-order",
+    "sequence-items",
+    "ordered-items",
+  ]);
+  if (explicitItems.length > 0) return explicitItems;
+
+  const optionText = quizFieldText(question, [
+    "options-interaction",
+    "options",
+    "interaction",
+  ]);
+  const labels = quizChoiceLabels(optionText).filter((label) => /^[A-Z]$/.test(label));
+  if (labels.length > 0) return labels;
+
+  return [];
+}
+
+function sequenceOrderReferences(text) {
+  return String(text ?? "")
+    .replace(/`/g, "")
+    .split(/\s*(?:,|;|->|=>|→|\n)\s*/g)
+    .map((item) =>
+      item
+        .trim()
+        .replace(/^[-*]\s*/, "")
+        .replace(/^\d+\.\s*/, "")
+        .replace(/[.]$/, ""),
+    )
+    .filter(Boolean);
+}
+
 function answerTextForContract(answerBlock) {
   return quizFieldValue(answerBlock, [
     "correct-answer",
@@ -5170,6 +5608,28 @@ function checkChoiceBasedQuizItem(filePath, data, question, answerBlock, itemTyp
     );
   }
 
+  if (itemType === "multiple-response" && correctLabels.length === 1) {
+    addQuizItemContractDiagnostic(
+      filePath,
+      data,
+      question,
+      "multiple-response item must identify at least two correct options; use multiple-choice when exactly one option is correct",
+    );
+  }
+
+  if (
+    itemType === "multiple-response" &&
+    choiceLabels.length > 0 &&
+    correctLabels.length >= choiceLabels.length
+  ) {
+    addQuizItemContractDiagnostic(
+      filePath,
+      data,
+      question,
+      "multiple-response item needs at least one incorrect option to remain diagnostic",
+    );
+  }
+
   if (
     itemType === "multiple-response" &&
     !hasCompleteQuizField(answerBlock, [
@@ -5209,6 +5669,118 @@ function checkChoiceBasedQuizItem(filePath, data, question, answerBlock, itemTyp
     );
   }
 
+  const feedbackCorrect = feedbackCorrectLabels(choiceFeedback, choiceLabels);
+  if (
+    feedbackCorrect.length > 0 &&
+    correctLabels.length > 0 &&
+    !sameLabelSet(feedbackCorrect, correctLabels)
+  ) {
+    addQuizItemContractDiagnostic(
+      filePath,
+      data,
+      question,
+      `${itemType} answer-key mismatch: correct answer field marks ${diagnosticLabelList(correctLabels)} but choice feedback marks ${diagnosticLabelList(feedbackCorrect)} as correct`,
+    );
+  }
+
+  for (const label of choiceLabels) {
+    const block = feedbackBlockForLabel(choiceFeedback, label);
+    if (!block) continue;
+
+    const status = feedbackStatusForLabel(choiceFeedback, label);
+    if (!status) {
+      addQuizItemContractDiagnostic(
+        filePath,
+        data,
+        question,
+        `${itemType} choice ${label} feedback is missing a Status line`,
+      );
+      continue;
+    }
+
+    const isCorrect = correctLabels.includes(label);
+    if (isCorrect && status !== "correct") {
+      addQuizItemContractDiagnostic(
+        filePath,
+        data,
+        question,
+        `${itemType} answer-key mismatch: choice ${label} is in the correct answer set but feedback status is "${status}"`,
+      );
+    }
+
+    if (!isCorrect && status === "correct") {
+      addQuizItemContractDiagnostic(
+        filePath,
+        data,
+        question,
+        `${itemType} answer-key mismatch: choice ${label} is marked correct in feedback but is not in the correct answer set`,
+      );
+    }
+
+    if (
+      isCorrect &&
+      !hasAnyNormalizedText(block, [
+        "why it is correct/incorrect",
+        "why it is correct",
+        "why this is correct",
+        "what to remember",
+        "a retenir",
+      ])
+    ) {
+      addQuizItemContractDiagnostic(
+        filePath,
+        data,
+        question,
+        `${itemType} correct choice ${label} feedback must reinforce the reasoning`,
+      );
+    }
+
+    if (
+      !isCorrect &&
+      !hasAnyNormalizedText(block, [
+        "why this is tempting",
+        "pourquoi c'est tentant",
+        "tentant",
+        "plausible",
+      ])
+    ) {
+      addQuizItemContractDiagnostic(
+        filePath,
+        data,
+        question,
+        `${itemType} distractor ${label} missing rationale for why the wrong choice is plausible`,
+      );
+    }
+
+    if (
+      !isCorrect &&
+      !hasAnyNormalizedText(block, [
+        "why it is correct/incorrect",
+        "why it is incorrect",
+        "why it is wrong",
+        "why this is wrong",
+        "pourquoi c'est faux",
+        "pourquoi elle est fausse",
+      ])
+    ) {
+      addQuizItemContractDiagnostic(
+        filePath,
+        data,
+        question,
+        `${itemType} distractor ${label} feedback must explain why the choice is wrong`,
+      );
+    }
+
+    if (!hasAnyNormalizedText(block, ["remediation", "remediation", "suite conseillee", "a revoir"])) {
+      addQuizItemContractDiagnostic(
+        filePath,
+        data,
+        question,
+        `${itemType} choice ${label} feedback is missing remediation guidance`,
+      );
+    }
+  }
+
   if (
     itemType === "multiple-response" &&
     !hasAnyNormalizedText(choiceFeedback, [
@@ -5225,6 +5797,29 @@ function checkChoiceBasedQuizItem(filePath, data, question, answerBlock, itemTyp
       question,
       "multiple-response feedback should address missed correct choices where practical",
     );
+  }
+
+  if (itemType === "multiple-response") {
+    for (const label of correctLabels) {
+      const block = feedbackBlockForLabel(choiceFeedback, label);
+      if (
+        block &&
+        !hasAnyNormalizedText(block, [
+          "missing-correct",
+          "missed correct",
+          "missing correct",
+          "manque",
+          "oublie",
+        ])
+      ) {
+        addQuizItemContractDiagnostic(
+          filePath,
+          data,
+          question,
+          `multiple-response correct choice ${label} needs missed-correct feedback`,
+        );
+      }
+    }
   }
 }
 
@@ -5244,15 +5839,92 @@ function checkTrueFalseQuizItem(filePath, data, question, answerBlock) {
     "choice-feedback",
     "feedback",
   ]);
+  const correctTruthValue = hasAnyNormalizedText(answerText, ["vrai", "true"])
+    ? "Vrai"
+    : hasAnyNormalizedText(answerText, ["faux", "false"])
+      ? "Faux"
+      : "";
+  const feedbackCorrect = feedbackCorrectLabels(responseFeedback, ["Vrai", "Faux"]);
+
   for (const label of ["Vrai", "Faux"]) {
-    if (!feedbackHasLabelBlock(responseFeedback, label)) {
+    const block = feedbackBlockForLabel(responseFeedback, label);
+    if (!block) {
       addQuizItemContractDiagnostic(
         filePath,
         data,
         question,
-        `true-false item should include feedback for "${label}" response`,
+        `true-false item missing feedback for "${label}" response`,
+      );
+      continue;
+    }
+
+    const status = feedbackStatusForLabel(responseFeedback, label);
+    if (!status) {
+      addQuizItemContractDiagnostic(
+        filePath,
+        data,
+        question,
+        `true-false response "${label}" feedback is missing a Status line`,
       );
     }
+
+    if (
+      correctTruthValue &&
+      label === correctTruthValue &&
+      status &&
+      status !== "correct"
+    ) {
+      addQuizItemContractDiagnostic(
+        filePath,
+        data,
+        question,
+        `true-false answer-key mismatch: answer is "${correctTruthValue}" but "${label}" feedback status is "${status}"`,
+      );
+    }
+
+    if (
+      correctTruthValue &&
+      label !== correctTruthValue &&
+      status === "correct"
+    ) {
+      addQuizItemContractDiagnostic(
+        filePath,
+        data,
+        question,
+        `true-false answer-key mismatch: answer is "${correctTruthValue}" but "${label}" feedback is marked correct`,
+      );
+    }
+
+    if (
+      !hasAnyNormalizedText(block, [
+        "why it is correct/incorrect",
+        "why it is correct",
+        "why it is incorrect",
+        "why it is wrong",
+        "correction",
+        "condition",
+      ])
+    ) {
+      addQuizItemContractDiagnostic(
+        filePath,
+        data,
+        question,
+        `true-false response "${label}" feedback must explain why that response is correct or incorrect`,
+      );
+    }
+  }
+
+  if (
+    correctTruthValue &&
+    feedbackCorrect.length > 0 &&
+    !sameLabelSet(feedbackCorrect, [correctTruthValue])
+  ) {
+    addQuizItemContractDiagnostic(
+      filePath,
+      data,
+      question,
+      `true-false answer-key mismatch: answer field marks "${correctTruthValue}" but response feedback marks ${diagnosticLabelList(feedbackCorrect)} as correct`,
+    );
   }
 }
 
@@ -5279,6 +5951,15 @@ function checkFillBlankQuizItem(filePath, data, question, answerBlock) {
     "options",
     "interaction",
   ]);
+  if (!hasVisibleBlankOrInput(`${quizFieldValue(question, ["stem"])}\n${optionText}`)) {
+    addQuizItemContractDiagnostic(
+      filePath,
+      data,
+      question,
+      "fill-blank item has expected answers but no visible blank or answer-input location for the student",
+    );
+  }
+
   if (looksLikeMcqChoiceList(optionText)) {
     addQuizItemContractDiagnostic(
       filePath,
@@ -5290,6 +5971,33 @@ function checkFillBlankQuizItem(filePath, data, question, answerBlock) {
 }
 
 function checkMatchQuizItem(filePath, data, question, answerBlock) {
+  const leftItems = quizMatchSideItems(
+    question,
+    ["left-side-items", "left-items", "left-side-prompts", "left-prompts"],
+    ["left-side items", "left", "prompts"],
+  );
+  const rightItems = quizMatchSideItems(
+    question,
+    ["right-side-options", "right-options", "right-side-matches", "right-matches"],
+    ["right-side options", "right", "matches", "options"],
+  );
+
+  if (leftItems.length === 0 || rightItems.length === 0) {
+    addQuizItemContractDiagnostic(
+      filePath,
+      data,
+      question,
+      "match item declares pairings but is missing student-facing left-side items or right-side options",
+    );
+  } else if (leftItems.length < 2 || rightItems.length < 2) {
+    addQuizItemContractDiagnostic(
+      filePath,
+      data,
+      question,
+      "match item needs at least two left-side items and two right-side options",
+    );
+  }
+
   requireAnswerBlockField(
     filePath,
     data,
@@ -5320,9 +6028,48 @@ function checkMatchQuizItem(filePath, data, question, answerBlock) {
       "match item pairings should use a recognizable mapping format",
     );
   }
+
+  const parsedPairings = parseMappingPairs(pairings);
+  if (parsedPairings.length > 0 && leftItems.length > 0 && rightItems.length > 0) {
+    const leftTokens = referenceTokensForItems(leftItems);
+    const rightTokens = referenceTokensForItems(rightItems);
+    const badLeft = [];
+    const badRight = [];
+
+    for (const pair of parsedPairings) {
+      if (!referenceMatchesKnownItem(pair.left, leftTokens)) badLeft.push(pair.left);
+      if (!referenceMatchesKnownItem(pair.right, rightTokens)) badRight.push(pair.right);
+    }
+
+    if (badLeft.length > 0 || badRight.length > 0) {
+      addQuizItemContractDiagnostic(
+        filePath,
+        data,
+        question,
+        `match answer-key mismatch: pairings reference unknown left item(s) ${diagnosticLabelList(badLeft)} or right option(s) ${diagnosticLabelList(badRight)}`,
+      );
+    }
+  }
 }
 
 function checkSequenceQuizItem(filePath, data, question, answerBlock) {
+  const itemsToOrder = sequenceItemsToOrder(question);
+  if (itemsToOrder.length === 0) {
+    addQuizItemContractDiagnostic(
+      filePath,
+      data,
+      question,
+      "sequence item declares a correct order but is missing student-facing items to order",
+    );
+  } else if (itemsToOrder.length < 3) {
+    addQuizItemContractDiagnostic(
+      filePath,
+      data,
+      question,
+      "sequence item needs at least three student-facing items to order",
+    );
+  }
+
   requireAnswerBlockField(
     filePath,
     data,
@@ -5339,12 +6086,45 @@ function checkSequenceQuizItem(filePath, data, question, answerBlock) {
     ["ordering-criterion"],
     "ordering criterion",
   );
+
+  const orderText = quizFieldValue(answerBlock, ["correct-order"]);
+  const orderReferences = sequenceOrderReferences(orderText);
+  if (itemsToOrder.length > 0 && orderReferences.length > 0) {
+    const itemTokens = referenceTokensForItems(itemsToOrder);
+    const missingReferences = orderReferences.filter(
+      (reference) => !referenceMatchesKnownItem(reference, itemTokens),
+    );
+
+    if (missingReferences.length > 0) {
+      addQuizItemContractDiagnostic(
+        filePath,
+        data,
+        question,
+        `sequence answer-key mismatch: correct order references unknown item(s) ${missingReferences.join(", ")}`,
+      );
+    }
+
+    const itemReferenceLabels = [...itemTokens].filter((token) => token.length <= 3);
+    const missingOrderItems = itemReferenceLabels.filter(
+      (token) => !orderReferences.some((reference) =>
+        normalizeForSearch(reference) === token
+      ),
+    );
+    if (itemReferenceLabels.length >= 3 && missingOrderItems.length > 0) {
+      addQuizItemContractDiagnostic(
+        filePath,
+        data,
+        question,
+        `sequence answer-key mismatch: correct order omits item(s) ${missingOrderItems.join(", ")}`,
+      );
+    }
+  }
 }
 
 function checkHotspotQuizItem(filePath, data, question, answerBlock) {
   const targetReference =
-    quizFieldValue(question, ["target-reference", "target-description"]) ||
-    quizFieldValue(answerBlock, ["target-reference", "target-description"]);
+    quizFieldValue(question, ["target-reference", "target-description", "target-visual"]) ||
+    quizFieldValue(answerBlock, ["target-reference", "target-description", "target-visual"]);
   if (!String(targetReference).trim() || /^TODO\b/i.test(String(targetReference).trim())) {
     addQuizItemContractDiagnostic(
       filePath,

@@ -141,7 +141,7 @@ Source/provenance:
 - original | exam-inspired | adapted | source note, with source-anchor notes when applicable
 
 Choices / interaction design:
-- For MCQ/MR: planned choices. For non-choice items: answer-input, matching, sequence, or hotspot interaction design.
+- For MCQ/MR: planned choices. For fill-blank: visible blank/input location. For match: student-facing left/right sets. For sequence: items to order. For hotspot: target visual/interaction marker.
 
 Correct choice(s):
 - For MCQ/MR only.
@@ -156,19 +156,19 @@ Misconceptions by wrong choice:
 - For MCQ/MR only, where appropriate.
 
 Proposition contract:
-- For true-false only: the exact proposition, context, true/false answer, and ambiguity guard.
+- For true-false only: exact proposition, context, truth value, opposite-response misconception, and ambiguity guard.
 
 Accepted answer forms:
-- For fill-blank only: expected answer(s), accepted equivalent forms, notation constraints, and common wrong forms to anticipate.
+- For fill-blank only: visible blank/input plan, expected answer(s), accepted equivalent forms, notation constraints, unacceptable near-misses where useful, and grading/normalization rule where relevant.
 
 Pairing contract:
-- For match only: left-side prompts, right-side matches, correct pairings, distractor entries if used, and uniqueness or many-to-one rule.
+- For match only: student-facing left-side prompts, right-side options, correct pairings, distractor entries if used, and uniqueness or many-to-one rule.
 
 Ordering criterion:
-- For sequence only: items to order, correct order, ordering rule, and allowed alternative orders if any.
+- For sequence only: student-facing items to order, correct order, ordering rule, and allowed alternative orders if any.
 
 Hotspot target region:
-- For hotspot only: target image/diagram/graph description or reference, correct region definition, common wrong regions, and `content-contract-ready / UI-dependent` marker when UI support is not implemented.
+- For hotspot only: target image/diagram/graph description or reference, correct region definition, common wrong regions, expected interaction contract, and `content-contract-ready / UI-dependent` marker when UI support is not implemented.
 
 Mismath / ambiguity risks:
 - <risks to check before final drafting>
@@ -178,6 +178,8 @@ Batch/readiness note:
 ```
 
 For non-choice item types, keep the answer contract, verification check, explanation goal, feedback design, remediation plan, and type-specific planning field specific to that item type. Do not invent per-choice feedback where there are no choices.
+
+Ready item cards must be concrete enough to produce valid final items. A ready fill-blank card plans the blank/input and accepted answers; a ready match card plans left/right sets and pairings; a ready sequence card plans the ordered items, correct order, and ordering criterion; a ready true-false card plans the truth value and opposite-response misconception; a ready hotspot card plans the target and correct region; ready MCQ/MR cards plan correct choices, distractor rationales, and per-choice feedback.
 
 Only `ready-for-quiz-file` and `used-in-quiz` may be used as source statuses for final quiz questions. Do not create final quiz items from `draft`, `needs-review`, `deferred`, or `rejected` cards.
 
@@ -189,7 +191,7 @@ A material edit to a `ready-for-quiz-file` or `used-in-quiz` item card must set 
 
 Create one final quiz file from ready item design cards. Use `content/_templates/quiz.template.md`.
 
-Do not invent diagnostic design from scratch during final file creation. If a ready item design card is missing its target skill, item type, answer contract, feedback design, remediation plan, or MCQ/MR distractor and per-choice feedback planning, repair the card first instead of drafting a weak final item.
+Do not invent diagnostic design from scratch during final file creation. If a ready item design card is missing its target skill, item type, answer contract, feedback design, remediation plan, MCQ/MR distractor and per-choice feedback planning, or the relevant non-choice blank/pairing/order/hotspot contract, repair the card first instead of drafting a weak final item.
 
 ### 05-review-item-quality
 
@@ -260,13 +262,13 @@ Every final standalone quiz item needs a type-specific contract. The contract is
 
 | Item type | Student-facing shape | Answer contract | Feedback/remediation contract | Verification rule | Per-choice feedback |
 |---|---|---|---|---|---|
-| `multiple-choice` | One clear stem with several plausible choices. | Exactly one correct choice. | Distractor rationale for each wrong choice, answer-specific feedback, explanation of the correct answer, and next-step remediation. | Verify that exactly one choice is correct and that every wrong choice is plausible but false. | Required for diagnostic items. |
-| `multiple-response` | One clear stem with several selectable choices. | All correct choices identified, with partial-credit or all-or-nothing logic stated when relevant. | Feedback for selected wrong choices and missed correct choices where practical; explanation of the full correct set. | Verify that the scoring and correct set are unambiguous. | Required for diagnostic items. |
-| `true-false` | One precise proposition. | `Vrai` or `Faux`, plus the correction or condition that decides it. | Feedback for both responses when diagnostic; remediation for the misconception behind the wrong response. | Verify that the proposition is not ambiguous or context-dependent unless the context is explicit. | Not applicable beyond the two response paths. |
-| `fill-blank` | A short blank with clear answer format. | Expected answer(s), accepted equivalent forms, and notation constraints. | Feedback for common wrong forms where practical, plus remediation. | Verify that accepted forms are clear and mathematically equivalent. | Not applicable. Do not invent choices. |
-| `match` | Left-side prompts and right-side matches. | Correct pairings, with distractor entries if used. | Pairing rationale, feedback for common wrong pairings, and remediation. | Verify that pairings are unique, or explicitly mark many-to-one matching if allowed. | Not applicable. |
-| `sequence` | Items to order. | Correct order and the rule/criterion for ordering. | Explanation of the dependency/order logic, feedback for common swaps, and remediation. | Verify that the order is mathematically or logically unique unless alternatives are stated. | Not applicable. |
-| `hotspot` | Image, diagram, graph, table, or described visual target. | Target reference/description and correct region(s) in Markdown-friendly terms. | Feedback for common wrong regions and remediation. | Verify that the target region is unambiguous. Mark as `content-contract-ready / UI-dependent` until learner UI support exists. | Not applicable. |
+| `multiple-choice` | One clear stem with at least two plausible choices. | Exactly one correct choice; the answer key must agree with the choice marked correct in feedback. | Distractor rationale for each wrong choice, answer-specific feedback with `Status`, useful correct-choice feedback, and next-step remediation. | Verify that exactly one choice is correct and that every wrong choice is plausible but false. | Required. Generic feedback alone is invalid for reviewed/published items. |
+| `multiple-response` | One clear stem with several selectable choices. | Complete correct set with at least two correct options and at least one incorrect option; use `multiple-choice` when exactly one option is correct. State partial-credit or all-or-nothing logic. | Feedback for selected wrong choices, missed correct choices, explanation of the full correct set, and remediation. | Verify that the scoring, complete correct set, and feedback statuses agree. | Required. |
+| `true-false` | One precise proposition. | `Vrai` or `Faux`, plus the correction or condition that decides it; response feedback must agree with the truth value. | Feedback for both response paths and remediation for the misconception behind the wrong response. | Verify that the proposition is not ambiguous or context-dependent unless the context is explicit. | Not applicable beyond the two response paths. |
+| `fill-blank` | A short visible blank, answer-input marker, or clearly indicated input location with clear answer format. | Expected answer(s), accepted equivalent forms, notation constraints, and normalization/grading rule where relevant. | Feedback for common wrong forms or error patterns, plus remediation. | Verify that accepted forms are clear and mathematically equivalent, and that the student can see where to answer. | Not applicable. Do not invent choices. |
+| `match` | Student-facing left-side items and right-side options. | Correct pairings, with distractor entries if used; pairings must refer to visible left/right entries. | Pairing rationale, feedback for common wrong pairings, and remediation. | Verify that pairings are unique, or explicitly mark many-to-one matching if allowed. | Not applicable. |
+| `sequence` | Student-facing items to order. | Correct order and the rule/criterion for ordering; the order must refer to visible items. | Explanation of the dependency/order logic, feedback for common swaps, and remediation. | Verify that the order is mathematically or logically unique unless alternatives are stated. | Not applicable. |
+| `hotspot` | Image, diagram, graph, table, or described visual target. | Target reference/description, correct region(s) in Markdown-friendly terms, and UI dependency marker. | Feedback for common wrong regions and remediation. | Verify that the target region is unambiguous. Mark as `content-contract-ready / UI-dependent` until learner UI support exists. | Not applicable. |
 
 Non-choice items must not be forced into MCQ-shaped fields. They still need explanation, feedback, remediation, and verification, but those pieces should match the interaction type.
 

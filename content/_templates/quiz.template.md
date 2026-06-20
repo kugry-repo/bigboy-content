@@ -93,11 +93,15 @@ Stem:
 TODO.
 
 Options / interaction:
-- TODO. Use choices only for `multiple-choice` and `multiple-response`; use answer-input, proposition, matching, ordering, or hotspot target details for other item types.
+- TODO. Use choices only for `multiple-choice` and `multiple-response`.
+- For `fill-blank`, include a visible `____` or `answer-input` location.
+- For `match`, add `Left-side items:` and `Right-side options:` fields.
+- For `sequence`, add `Items to order:` with the labels/steps the learner must order.
+- For `hotspot`, add `Target visual:` or `Target reference:` plus the UI dependency marker.
 
 ## Corrigé et feedback
 
-Use the snippet that matches each question type. Every item needs an answer contract, explanation, verification notes, feedback, and remediation. MCQ/MR items need per-choice feedback; non-choice items do not.
+Use the snippet that matches each question type. Every item needs an answer contract, explanation, verification notes, feedback, and remediation. MCQ/MR items need per-choice feedback, distractor rationale, and answer-key agreement; non-choice items do not use fake choices.
 
 ### Question 1
 
@@ -132,6 +136,9 @@ Correct answer:
 Why the correct answer is correct:
 - TODO
 
+Distractor rationale:
+- B: TODO. Explain why this wrong choice is plausible and what it reveals.
+
 Choice feedback:
 - A:
   - Status: correct
@@ -149,7 +156,7 @@ Choice feedback:
   - Remediation: TODO
 
 Verification notes:
-- Exactly one correct answer.
+- Exactly one correct answer, and the choice marked correct in feedback is the same choice named in `Correct answer`.
 
 Remediation:
 - TODO.
@@ -160,7 +167,7 @@ Correct answer:
 - A, C
 
 Scoring / answer rule:
-- TODO.
+- TODO. State full-credit/partial-credit/all-or-nothing logic.
 
 Explanation:
 - TODO.
@@ -170,6 +177,7 @@ Choice feedback:
   - Status: correct
   - Diagnostic signal: TODO
   - Missing-correct feedback: TODO
+  - Why it is correct/incorrect: TODO
   - What to remember: TODO
   - Remediation: TODO
 - B:
@@ -181,7 +189,7 @@ Choice feedback:
   - Remediation: TODO
 
 Verification notes:
-- Correct set and scoring rule are unambiguous.
+- Correct set has at least two correct options and at least one incorrect option; scoring rule and feedback statuses agree with the complete set.
 
 Remediation:
 - TODO.
@@ -220,6 +228,9 @@ Expected answer(s):
 Accepted alternatives:
 - TODO
 
+Grading / normalization rule:
+- TODO, or explicit none.
+
 Common wrong forms:
 - TODO
 
@@ -230,12 +241,13 @@ Remediation:
 - TODO
 
 Verification notes:
-- Answer format and accepted equivalent forms are clear.
+- Student-facing prompt has a visible blank/input location; answer format and accepted equivalent forms are clear.
 
 #### match
 
 Correct pairings:
-- TODO -> TODO
+- L1 -> R1
+- L2 -> R2
 
 Pairing rationale:
 - TODO
@@ -250,12 +262,12 @@ Remediation:
 - TODO
 
 Verification notes:
-- Pairings are unique, or many-to-one matching is explicitly allowed.
+- Student-facing left/right lists exist; pairings refer to those lists and are unique, or many-to-one matching is explicitly allowed.
 
 #### sequence
 
 Correct order:
-- TODO
+- A, B, C
 
 Ordering criterion:
 - TODO
@@ -270,7 +282,7 @@ Remediation:
 - TODO
 
 Verification notes:
-- Order is unique, or allowed alternatives are stated.
+- Student-facing items to order exist; correct order refers to those items and is unique, or allowed alternatives are stated.
 
 #### hotspot
 
@@ -293,7 +305,7 @@ Remediation:
 - TODO
 
 Verification notes:
-- Target region is unambiguous without guessing the renderer.
+- Target reference, correct region, and UI dependency marker agree; target region is unambiguous without guessing the renderer.
 
 #### choice-feedback line format
 

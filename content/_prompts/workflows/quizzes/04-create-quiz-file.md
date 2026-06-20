@@ -30,8 +30,9 @@ Prompt-specific requirements:
 - Do not create final quiz items from item cards marked `draft`, `needs-review`, `deferred`, or `rejected`. `needs-review` includes stale ready/used cards after a material edit.
 - If the target is missing, ambiguous, or has no ready item cards, stop and report the blocker.
 - If a selected item card is missing its stable item-card ID, target skill, item type, difficulty, stem/task design, answer contract, verification check, explanation goal, feedback design, remediation plan, source/provenance notes, or batch/readiness note, stop and repair the card before drafting the quiz.
-- For `multiple-choice` and `multiple-response` cards, also require choices, correct choice(s), distractor rationale, per-choice feedback planning, and misconception mapping where appropriate.
-- For `true-false`, `fill-blank`, `match`, `sequence`, and `hotspot` cards, also require the relevant proposition, accepted-answer, pairing, ordering, or hotspot-region planning field. Do not draft a final item by squeezing a non-choice card into MCQ fields.
+- For `multiple-choice` cards, also require choices, exactly one correct choice, distractor rationale for every wrong choice, per-choice feedback planning, and misconception mapping where appropriate.
+- For `multiple-response` cards, also require choices, at least two correct choices, at least one incorrect option, the complete correct set, scoring/answer-rule planning, distractor rationale, per-choice feedback planning, missed-correct feedback planning, and misconception mapping where appropriate.
+- For `true-false`, `fill-blank`, `match`, `sequence`, and `hotspot` cards, also require the relevant proposition/truth-value, visible blank/accepted-answer, left-right/pairing, items/order/criterion, or target/region/UI-marker planning field. Do not draft a final item by squeezing a non-choice card into MCQ fields.
 
 ## Read First
 
@@ -100,7 +101,11 @@ Required final quiz qualities:
 - questions with `Source item card` metadata;
 - answer key;
 - type-specific answer contract and verification notes;
-- per-choice feedback for diagnostic MCQ/MR;
+- per-choice feedback, distractor rationale, and answer-key agreement for MCQ/MR;
+- visible blank/input location for fill-blank items;
+- student-facing left/right lists for match items;
+- student-facing items to order for sequence items;
+- target reference, correct region, and `content-contract-ready / UI-dependent` marker for hotspot items;
 - non-choice feedback/remediation that matches the item type, without fake per-choice fields;
 - misconception tags where relevant;
 - remediation by mastery level and misconception;

@@ -99,12 +99,13 @@ Why the wrong answer / wrong response is tempting:
 - TODO
 
 Type-specific contract sketch:
-- MCQ/MR: choice set, correct choice(s), distractor idea, and per-choice feedback angle.
-- True-false: exact proposition, answer, and ambiguity risk.
-- Fill-blank: expected answer form and accepted alternatives to plan.
-- Match: left/right lists and pairing logic.
-- Sequence: items to order and ordering criterion.
-- Hotspot: target visual/diagram reference and correct region definition.
+- MCQ: choice set, exactly one correct choice, distractor rationale, and per-choice feedback angle.
+- MR: choice set, at least two correct options, at least one incorrect option, complete correct set, scoring rule, missed-correct feedback angle, and selected-wrong feedback angle.
+- True-false: exact proposition, truth value, opposite-response misconception, and ambiguity risk.
+- Fill-blank: visible blank/input location, expected answer form, accepted alternatives, and common near-misses to plan.
+- Match: student-facing left/right lists and pairing logic.
+- Sequence: student-facing items to order, correct order, and ordering criterion.
+- Hotspot: target visual/diagram reference, correct region definition, and `content-contract-ready / UI-dependent` marker when needed.
 
 Feedback angle:
 - TODO

@@ -38,9 +38,9 @@ Strong item shape:
 
 Minimum contract:
 
-- Required sections/fields: type, stem, choices, correct answer, explanation, choice feedback, remediation, verification notes.
-- Answer format: exactly one correct choice label.
-- Feedback format: per-choice feedback for diagnostic items; wrong choices need distractor rationale, why tempting, why false, what to remember, and remediation.
+- Required sections/fields: type, stem, choices, exactly one correct answer, explanation, choice feedback, remediation, verification notes.
+- Answer format: exactly one correct choice label, and feedback status must agree with that label.
+- Feedback format: per-choice feedback; every choice needs `Status`, useful correct-choice feedback, and every wrong choice needs distractor rationale, why tempting, why false, what to remember, and remediation.
 - Explanation requirement: explain why the correct answer works, not only which choice is correct.
 - Verification rule: confirm exactly one choice is correct and every distractor is plausible but mathematically false.
 
@@ -92,9 +92,9 @@ Strong item shape:
 
 Minimum contract:
 
-- Required sections/fields: type, stem, choices, correct answer set, scoring/answer rule, explanation, choice feedback, remediation, verification notes.
-- Answer format: all correct choice labels; partial-credit or all-or-nothing logic when relevant.
-- Feedback format: per-choice feedback, including selected wrong choices and missed correct choices where practical.
+- Required sections/fields: type, stem, choices, complete correct answer set, scoring/answer rule, explanation, choice feedback, remediation, verification notes.
+- Answer format: at least two correct choice labels and at least one incorrect option; partial-credit or all-or-nothing logic when relevant. If exactly one option is correct, use `multiple-choice`.
+- Feedback format: per-choice feedback, including selected wrong choices, missed correct choices, and feedback status that agrees with the complete correct set.
 - Explanation requirement: explain the full correct set and why excluded choices are excluded.
 - Verification rule: confirm the correct set and scoring rule are unambiguous.
 
@@ -140,9 +140,9 @@ Strong item shape:
 
 Minimum contract:
 
-- Required sections/fields: type, proposition/stem, true-false answer, explanation, feedback for both responses when diagnostic, remediation, verification notes.
-- Answer format: `Vrai` or `Faux`, with correction or condition where needed.
-- Feedback format: two response paths, not MCQ distractors.
+- Required sections/fields: type, proposition/stem, true-false answer, explanation, feedback for both responses, remediation, verification notes.
+- Answer format: `Vrai` or `Faux`, with correction or condition where needed; response feedback must agree with the truth value.
+- Feedback format: two response paths with `Status`, not MCQ distractors.
 - Explanation requirement: name the condition or correction that decides the proposition.
 - Verification rule: confirm the proposition is not ambiguous or context-dependent unless the context is explicit.
 
@@ -190,9 +190,9 @@ Strong item shape:
 
 Minimum contract:
 
-- Required sections/fields: type, stem with blank location, expected answer(s), accepted equivalent forms, explanation, feedback for common wrong forms where practical, remediation, verification notes.
+- Required sections/fields: type, stem with visible blank or answer-input location, expected answer(s), accepted equivalent forms, explanation, feedback for common wrong forms where practical, remediation, verification notes.
 - Answer format: short answer, expression, value, interval, condition, or notation pattern.
-- Feedback format: common wrong forms and what they reveal; no fake per-choice feedback.
+- Feedback format: common wrong forms, unacceptable near-misses where useful, normalization/grading notes where relevant, and what those responses reveal; no fake per-choice feedback.
 - Explanation requirement: explain the mathematical form, condition, or transformation behind the answer.
 - Verification rule: confirm the answer format and accepted equivalent forms are clear.
 
@@ -240,7 +240,7 @@ Strong item shape:
 
 Minimum contract:
 
-- Required sections/fields: type, left-side prompts, right-side matches, correct pairings, explanation or pairing rationale, feedback/remediation pattern, verification notes.
+- Required sections/fields: type, student-facing left-side prompts, student-facing right-side options, correct pairings, explanation or pairing rationale, feedback/remediation pattern, verification notes.
 - Answer format: pair list or mapping table; distractor entries if used.
 - Feedback format: correct-pair rationale plus common wrong-pair feedback; no per-choice MCQ feedback.
 - Explanation requirement: explain the relation behind the pairings.
@@ -288,7 +288,7 @@ Strong item shape:
 
 Minimum contract:
 
-- Required sections/fields: type, items to order, correct order, ordering criterion, explanation, feedback/remediation pattern, verification notes.
+- Required sections/fields: type, student-facing items to order, correct order, ordering criterion, explanation, feedback/remediation pattern, verification notes.
 - Answer format: ordered labels or ordered step list.
 - Feedback format: common swapped steps and the dependency they break; no per-choice MCQ feedback.
 - Explanation requirement: explain the rule or dependency that fixes the order.
@@ -337,7 +337,7 @@ Strong item shape:
 
 Minimum contract:
 
-- Required sections/fields: type, target image/diagram/graph description or reference, selectable region definition, correct region(s), explanation, feedback/remediation pattern, verification notes.
+- Required sections/fields: type, target image/diagram/graph description or reference, selectable region definition, correct region(s), `content-contract-ready / UI-dependent` marker while needed, explanation, feedback/remediation pattern, verification notes.
 - Answer format: Markdown-friendly region description, such as interval, point, cell, curve segment, or named region.
 - Feedback format: common wrong regions and the visual clue they missed; no per-choice MCQ feedback.
 - Explanation requirement: explain the visual cue that identifies the target.

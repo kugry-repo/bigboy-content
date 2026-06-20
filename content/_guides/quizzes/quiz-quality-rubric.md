@@ -87,7 +87,7 @@ A correct answer key alone is not enough for a quiz to be reviewed.
 
 A wrong answer is not acceptable unless it represents a plausible student mistake, misconception, invalid theorem use, domain error, method-choice error, algebra slip, or incomplete reasoning.
 
-For `multiple-choice` and `multiple-response`, per-choice feedback and distractor rationale are required for diagnostic items. For `fill-blank`, `match`, `sequence`, and `hotspot`, do not fake choices; require the appropriate accepted-answer, pairing, ordering, or target-region contract instead.
+For `multiple-choice` and `multiple-response`, per-choice feedback, answer-key agreement, and distractor rationale for every wrong option are required for reviewed/published diagnostic items. `multiple-response` must have a complete correct set with at least two correct options and at least one incorrect option; use `multiple-choice` when exactly one option is correct. For `fill-blank`, `match`, `sequence`, and `hotspot`, do not fake choices; require the appropriate visible blank/input, left/right pairing, ordering, or target-region contract instead.
 
 Do not use item types just for variety.
 

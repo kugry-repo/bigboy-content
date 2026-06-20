@@ -53,9 +53,9 @@ Source/provenance:
 - Original diagnostic item design; no copied source.
 
 Choices / interaction design:
-- Choice A: The student is correct because the numerator tends to $0$.
-- Choice B: The student is correct because $0/0=0$.
-- Choice C: The conclusion is invalid; factorize or transform first.
+- A. The student is correct because the numerator tends to $0$.
+- B. The student is correct because $0/0=0$.
+- C. The conclusion is invalid; factorize or transform first.
 
 Correct choice(s):
 - C
@@ -65,28 +65,28 @@ Distractor rationale:
 - Choice B targets treating an undefined expression as a number.
 
 Per-choice feedback plan:
-- Choice A:
+- A:
   - Diagnostic signal: ignores the denominator and treats one side of the quotient alone.
   - Why it is tempting: the numerator really does tend to $0$.
   - Why it is wrong: the denominator also tends to $0$, so the quotient needs transformation.
   - Feedback: Le numerateur seul ne decide pas la limite du quotient.
   - Remediation: Refaire un item sur les formes de quotient.
-- Choice B:
+- B:
   - Diagnostic signal: treats an undefined expression as a number.
   - Why it is tempting: the symbol contains zeros.
   - Why it is wrong: $0/0$ is not a number and does not give a limit.
   - Feedback: $0/0$ annonce une transformation a faire.
   - Remediation: Relire la mini-revue sur les formes indeterminees.
-- Choice C:
+- C:
   - Diagnostic signal: correct recognition of the indeterminate form.
   - Why it is tempting: this is the safe method.
-  - Why it is wrong: not wrong.
+  - Why it is correct: it rejects the invalid conclusion and requires transformation first.
   - Feedback: C'est le bon reflexe : on transforme avant de conclure.
   - Remediation: Continuer vers les exercices de factorisation.
 
 Misconceptions by wrong choice:
-- Choice A: `quotient-numerateur-seul`
-- Choice B: `zero-sur-zero-valeur`
+- A: `quotient-numerateur-seul`
+- B: `zero-sur-zero-valeur`
 
 Mismath / ambiguity risks:
 - Ensure the expression really gives $0/0$ by direct substitution.

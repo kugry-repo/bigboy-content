@@ -52,7 +52,7 @@ Prompt-specific requirements:
 Check:
 
 - type-specific feedback;
-- per-choice feedback for diagnostic MCQ/MR items;
+- per-choice feedback for MCQ/MR items, with useful correct-choice feedback, distractor rationale for every wrong choice, missed-correct feedback for MR, and remediation per response path;
 - diagnostic signal for each answer or anticipated wrong-response pattern;
 - why wrong choices, wrong forms, wrong pairings, wrong orders, or wrong regions are tempting;
 - why those responses are wrong;

@@ -171,6 +171,11 @@ Correct answer:
 Why the correct answer is correct:
 - Le numérateur et le dénominateur tendent tous les deux vers $0$.
 
+Distractor rationale:
+- A: tentant parce que le numérateur tend vers $0$, mais le quotient complet donne $0/0$.
+- C: tentant parce que la limite finale sera $2$ après transformation, mais ce n'est pas la substitution directe.
+- D: tentant parce que pour $x \ne 1$ le dénominateur n'est pas nul, mais au point visé il tend vers $0$.
+
 Choice feedback:
 - A:
   - Status: incorrect

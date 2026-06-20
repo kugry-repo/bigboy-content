@@ -103,12 +103,12 @@ Check:
 - [ ] Each final question records `Source item card`.
 - [ ] The referenced quiz source card exists in the same unit, has status `ready-for-quiz-file` or `used-in-quiz`, is not duplicated, and does not contradict the final item type, cognitive role, or skill target where those fields exist.
 - [ ] Each final question declares one canonical item type: `multiple-choice`, `multiple-response`, `true-false`, `fill-blank`, `match`, `sequence`, or `hotspot`.
-- [ ] MCQ items have choices, exactly one correct answer, distractor rationale, explanation, verification, and per-choice diagnostic feedback.
-- [ ] Multiple-response items have choices, an unambiguous correct set, scoring/answer rule where needed, explanation, verification, and feedback for selected wrong and missed correct choices where practical.
+- [ ] MCQ items have choices, exactly one correct answer, distractor rationale for each wrong choice, answer-key/feedback agreement, explanation, verification, and per-choice diagnostic feedback.
+- [ ] Multiple-response items have choices, at least two correct options, at least one incorrect option, an unambiguous complete correct set, scoring/answer rule where needed, answer-key/feedback agreement, explanation, verification, and feedback for selected wrong and missed correct choices.
 - [ ] True-false items have a precise proposition, a true/false answer, explanation, verification against ambiguity, and feedback for both response paths when diagnostic.
-- [ ] Fill-blank items have a clear blank, expected answers, accepted equivalent forms when relevant, answer-format verification, explanation, feedback for common wrong forms, and remediation.
-- [ ] Match items have left/right lists, correct pairings, uniqueness or many-to-one rules, pairing rationale, feedback for common wrong pairings, and remediation.
-- [ ] Sequence items have items to order, correct order, ordering criterion, uniqueness or allowed alternatives, explanation, feedback for common swaps, and remediation.
+- [ ] Fill-blank items have a visible blank or answer-input location, expected answers, accepted equivalent forms when relevant, answer-format verification, explanation, feedback for common wrong forms, and remediation.
+- [ ] Match items have student-facing left/right lists, correct pairings that refer to those lists, uniqueness or many-to-one rules, pairing rationale, feedback for common wrong pairings, and remediation.
+- [ ] Sequence items have student-facing items to order, correct order that refers to those items, ordering criterion, uniqueness or allowed alternatives, explanation, feedback for common swaps, and remediation.
 - [ ] Hotspot items have a target visual reference or description, Markdown-friendly correct region definition, `content-contract-ready / UI-dependent` marker until UI support exists, explanation, feedback for common wrong regions, and remediation.
 - [ ] Item quality is reviewed for purpose, skill coverage, cognitive role balance, item-type fit, stem clarity, diagnostic signal, MCQ/MR distractors, non-choice wrong-response patterns, misconception coverage, order, standalone usability, and source safety.
 - [ ] Answer keys are reviewed separately for correctness, accepted alternatives, partial correctness, conditions, notation, and consistency with the stem.

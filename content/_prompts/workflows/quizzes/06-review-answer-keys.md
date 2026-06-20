@@ -52,9 +52,13 @@ Check:
 
 - correct answers;
 - accepted alternatives;
+- MCQ correct choice agrees with the option marked correct in choice feedback;
+- MR complete correct set has at least two correct options, at least one incorrect option, and agrees with feedback statuses;
+- true-false truth value agrees with the response marked correct;
 - fill-blank accepted equivalent forms and notation constraints;
-- match correct pairings and uniqueness or many-to-one rules;
-- sequence correct order, ordering criterion, and allowed alternative orders if any;
+- fill-blank visible blank/input location agrees with the expected answer format;
+- match correct pairings refer to visible left/right lists, with uniqueness or many-to-one rules;
+- sequence correct order refers to visible items to order, with ordering criterion and allowed alternative orders if any;
 - hotspot correct region definition and target-reference consistency;
 - domains;
 - theorem conditions;
