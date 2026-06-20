@@ -201,19 +201,32 @@ Choice feedback:
   - What to remember: on évalue la tendance au point visé.
   - Remediation: Reprendre la substitution dans un quotient.
 
+Verification notes:
+- La substitution directe donne bien numérateur $0$ et dénominateur $0$ ; une seule option nomme cette forme.
+
+Remediation:
+- Utiliser le feedback par choix pour distinguer valeur finale, forme indéterminée, et simplification après transformation.
+
 ### Question 2
 
-Correct answer:
+Expected answer(s):
 - $(x-1)(x+1)$
 
-Why the correct answer is correct:
+Explanation:
 - C'est l'identité remarquable $a^2-b^2=(a-b)(a+b)$.
 
-Accepted alternatives, if needed:
+Accepted alternatives:
 - $(x+1)(x-1)$
 
 Verification notes:
 - Après simplification pour $x \ne 1$, l'expression devient $x+1$.
+
+Feedback:
+- Diagnostic signal: une réponse qui développe ou qui propose seulement $x-1$ montre que l'identité remarquable n'est pas encore stable.
+- Common wrong form: $x(x-1)$ confond facteur commun et différence de deux carrés.
+
+Remediation:
+- Refaire deux factorisations de type $a^2-b^2$, puis revenir à la simplification du quotient.
 
 Misconception tags:
 - `developpement-automatique`
@@ -226,7 +239,7 @@ Correct answer:
 Why the correct answer is correct:
 - $0/0$ n'est pas une valeur. C'est une forme indéterminée.
 
-Choice feedback:
+Response feedback:
 - Vrai:
   - Status: incorrect
   - Diagnostic signal: confond forme indéterminée et résultat.
@@ -241,6 +254,12 @@ Choice feedback:
   - Why it is correct/incorrect: $0/0$ impose une transformation.
   - What to remember: la substitution peut révéler le problème, pas le résoudre.
   - Remediation: Continuer vers les exercices de transformation.
+
+Verification notes:
+- La proposition est fausse sans contexte supplémentaire : $0/0$ signale une transformation, pas une valeur.
+
+Remediation:
+- Reprendre une erreur-clinic où il faut séparer diagnostic de forme et conclusion de limite.
 
 ## Critères de maîtrise
 

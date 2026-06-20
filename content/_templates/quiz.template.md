@@ -151,12 +151,18 @@ Choice feedback:
 Verification notes:
 - Exactly one correct answer.
 
+Remediation:
+- TODO.
+
 #### multiple-response
 
 Correct answer:
 - A, C
 
 Scoring / answer rule:
+- TODO.
+
+Explanation:
 - TODO.
 
 Choice feedback:
@@ -176,6 +182,9 @@ Choice feedback:
 
 Verification notes:
 - Correct set and scoring rule are unambiguous.
+
+Remediation:
+- TODO.
 
 #### true-false
 
@@ -199,6 +208,9 @@ Response feedback:
 
 Verification notes:
 - Proposition is not ambiguous, or the context makes it explicit.
+
+Remediation:
+- TODO.
 
 #### fill-blank
 

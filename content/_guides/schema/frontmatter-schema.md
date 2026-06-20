@@ -466,6 +466,8 @@ Allowed quiz review substatus values:
 
 `status: published` requires all four quiz review substatuses to be `reviewed`.
 
+For `status: reviewed` or `status: published`, `question_count` must be a positive integer and must match the number of student-facing `### Question` blocks under `## Questions`. Mirrored answer headings under `## Corrigé et feedback` are not counted as quiz questions.
+
 Allowed `item_types` values are:
 
 - `multiple-choice`

@@ -67,6 +67,9 @@ Choice feedback:
 Verification notes:
 - Exactly one correct answer.
 
+Remediation:
+- Revoir la difference entre forme diagnostique et valeur finale, puis refaire un item de substitution directe.
+
 ## multiple-response
 
 Type:
@@ -113,6 +116,9 @@ Choice feedback:
 Verification notes:
 - Correct set is unambiguous.
 
+Remediation:
+- Revoir les hypotheses une par une, puis refaire un item avec feedback sur choix oublie.
+
 ## true-false
 
 Type:
@@ -141,6 +147,9 @@ Response feedback:
 
 Verification notes:
 - Proposition precise, no hidden context.
+
+Remediation:
+- Revoir le role de $0/0$, puis reformuler la proposition correcte.
 
 ## fill-blank
 

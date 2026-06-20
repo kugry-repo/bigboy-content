@@ -584,6 +584,16 @@ const ARTIFACT_FAMILY_DASHBOARD_SECTIONS = new Set([
 ]);
 const DASHBOARD_SCOPE_ROW = "Scope";
 
+const FINAL_CONTENT_STATUSES = new Set(["reviewed", "published"]);
+
+const FINALIZATION_BLOCKING_DASHBOARD_STATUSES = new Set([
+  "not-started",
+  "partial",
+  "needs-review",
+  "blocked",
+  "not-run",
+]);
+
 const REQUIRED_DASHBOARD = parseDashboardContractFromTemplate(
   CANONICAL_INITIALIZED_UNIT_TEMPLATE_BODY,
 );
@@ -916,6 +926,20 @@ const CONTRACT_FIXTURES = {
     "content/_fixtures/contracts/invalid-quiz-item-card-contract.md",
   quizItemBodyContract:
     "content/_fixtures/contracts/invalid-quiz-item-body-contract.md",
+  reviewedExerciseStaleSubstatus:
+    "content/_fixtures/contracts/invalid-reviewed-exercise-stale-substatus.md",
+  reviewedQuizStaleSubstatus:
+    "content/_fixtures/contracts/invalid-reviewed-quiz-stale-substatus.md",
+  reviewedUnitNeedsReviewDashboard:
+    "content/_fixtures/contracts/invalid-reviewed-unit-needs-review-dashboard.md",
+  reviewedQuizZeroQuestionCount:
+    "content/_fixtures/contracts/invalid-reviewed-quiz-zero-question-count.md",
+  reviewedExampleQuizBodyContract:
+    "content/_fixtures/contracts/invalid-example-reviewed-quiz-body-contract.md",
+  quizQuestionCountAnswerHeading:
+    "content/_fixtures/contracts/valid-quiz-question-count-answer-heading.md",
+  draftWarningOnlyQuiz:
+    "content/_fixtures/contracts/warning-only-draft-quiz.md",
   exerciseSetBadExerciseId:
     "content/_fixtures/contracts/invalid-exercise-set-bad-exercise-id.md",
   unsupportedObjectType:
@@ -1072,6 +1096,68 @@ function expectInvalidContractFixture(repoPath, contractLabel, check, expectedDi
       addError(
         fixturePath,
         `contract fixture "${contractLabel}" did not produce expected diagnostic ${expected}; actual isolated errors: ${result.errors.join(" | ")}`,
+      );
+    }
+  }
+}
+
+function expectValidContractFixture(repoPath, contractLabel, check) {
+  const fixturePath = fullPathFromRepoPath(repoPath);
+
+  if (!isFile(fixturePath)) {
+    addError(
+      fixturePath,
+      `missing valid contract fixture for "${contractLabel}"; expected non-production fixture under ${CONTRACT_FIXTURES_DIR_PATH}`,
+    );
+    return;
+  }
+
+  checkedContractFixtures += 1;
+  const result = runIsolatedDiagnostics(check);
+
+  if (result.errors.length || result.warnings.length) {
+    addError(
+      fixturePath,
+      `contract fixture "${contractLabel}" unexpectedly produced diagnostics; isolated errors: ${result.errors.join(" | ")}; isolated warnings: ${result.warnings.join(" | ")}`,
+    );
+  }
+}
+
+function expectWarningOnlyContractFixture(repoPath, contractLabel, check, expectedDiagnostics) {
+  const fixturePath = fullPathFromRepoPath(repoPath);
+
+  if (!isFile(fixturePath)) {
+    addError(
+      fixturePath,
+      `missing warning-only contract fixture for "${contractLabel}"; expected non-production fixture under ${CONTRACT_FIXTURES_DIR_PATH}`,
+    );
+    return;
+  }
+
+  checkedContractFixtures += 1;
+  const result = runIsolatedDiagnostics(check);
+
+  if (result.errors.length > 0) {
+    addError(
+      fixturePath,
+      `contract fixture "${contractLabel}" produced blocking errors but should remain warning-only; isolated errors: ${result.errors.join(" | ")}`,
+    );
+    return;
+  }
+
+  if (result.warnings.length === 0) {
+    addError(
+      fixturePath,
+      `contract fixture "${contractLabel}" produced no warnings; this fixture should prove warning-only validation remains non-fatal`,
+    );
+    return;
+  }
+
+  for (const expected of expectedDiagnostics) {
+    if (!result.warnings.some((warning) => diagnosticMatches(warning, expected))) {
+      addError(
+        fixturePath,
+        `contract fixture "${contractLabel}" did not produce expected warning ${expected}; actual isolated warnings: ${result.warnings.join(" | ")}`,
       );
     }
   }
@@ -1493,6 +1579,29 @@ function checkAllowedArrayValues(filePath, data, field, allowedValues) {
   }
 }
 
+function claimsFinalReadiness(data = {}) {
+  return (
+    FINAL_CONTENT_STATUSES.has(data.status) ||
+    data.planning_state === "published"
+  );
+}
+
+function addFinalReadinessDiagnostic(filePath, data, message) {
+  if (claimsFinalReadiness(data)) addError(filePath, message);
+  else addWarning(filePath, message);
+}
+
+function requireCurrentSyncForFinalReadiness(filePath, data, label) {
+  if (!claimsFinalReadiness(data)) return;
+  if (!Object.hasOwn(data, "sync_status")) return;
+  if (data.sync_status === "current") return;
+
+  addError(
+    filePath,
+    `${label} claims reviewed/published readiness while frontmatter "sync_status" is "${data.sync_status}"; finalization requires current freshness evidence`,
+  );
+}
+
 function checkBooleanField(filePath, data, field) {
   if (!Object.hasOwn(data, field) || isEmptyValue(data[field])) return;
 
@@ -1855,6 +1964,22 @@ function checkProductionDashboard(filePath, dashboardSection, data = {}) {
         );
       }
     }
+
+    const familyScope = rows.get(DASHBOARD_SCOPE_ROW);
+    const skipDeferredOrOutOfScopeFamily =
+      ARTIFACT_FAMILY_DASHBOARD_SECTIONS.has(group.section) &&
+      (familyScope === "not-in-scope" || familyScope === "deferred");
+
+    if (claimsFinalReadiness(data) && !skipDeferredOrOutOfScopeFamily) {
+      for (const [row, status] of rows.entries()) {
+        if (!FINALIZATION_BLOCKING_DASHBOARD_STATUSES.has(status)) continue;
+
+        addError(
+          filePath,
+          `dashboard row "${row}" is "${status}" while unit frontmatter claims reviewed/published readiness`,
+        );
+      }
+    }
   }
 
   for (const match of dashboardSection.matchAll(/^\s*-\s+([^:\n]+):\s*([^\s]+)\s*$/gmu)) {
@@ -1863,18 +1988,6 @@ function checkProductionDashboard(filePath, dashboardSection, data = {}) {
       addError(
         filePath,
         `dashboard row "${match[1].trim()}" has invalid status "${status}"; expected one of ${[...ALLOWED_DASHBOARD_STATUSES].join(", ")}`,
-      );
-    }
-
-    if (
-      status === "needs-review" &&
-      (data.status === "reviewed" ||
-        data.status === "published" ||
-        data.planning_state === "published")
-    ) {
-      addWarning(
-        filePath,
-        `dashboard row "${match[1].trim()}" is needs-review while unit frontmatter claims reviewed/published readiness`,
       );
     }
   }
@@ -2316,9 +2429,9 @@ function checkUnitFrontmatter(indexPath, unitDir, expectedGroup, data, program) 
   }
 
   if (data.planning_state === "published" && data.status !== "published") {
-    addWarning(
+    addError(
       indexPath,
-      'frontmatter "planning_state: published" usually requires "status: published"',
+      'frontmatter "planning_state: published" requires "status: published"',
     );
   }
 
@@ -2331,6 +2444,8 @@ function checkUnitFrontmatter(indexPath, unitDir, expectedGroup, data, program) 
       `frontmatter "sync_status" must be one of ${[...ALLOWED_SYNC_STATUSES].join(", ")}`,
     );
   }
+
+  requireCurrentSyncForFinalReadiness(indexPath, data, "unit index");
 
   if (data.source_type && !ALLOWED_SOURCE_TYPES.has(data.source_type)) {
     addError(
@@ -2801,6 +2916,11 @@ function checkExampleContentObjectData(filePath, data) {
   checkAllowedValue(filePath, data, "sync_status", ALLOWED_SYNC_STATUSES);
   checkAllowedValue(filePath, data, "source_type", ALLOWED_SOURCE_TYPES);
   checkBooleanField(filePath, data, "official");
+  requireCurrentSyncForFinalReadiness(
+    filePath,
+    data,
+    `example ${data.type} artifact`,
+  );
 
   const program = programForContentObjectData(filePath, data);
   checkExampleContentObjectId(filePath, data, program);
@@ -2824,6 +2944,7 @@ function checkExampleContentObjectData(filePath, data) {
     for (const field of ["requires_graph", "has_hints", "has_common_mistakes", "has_verification"]) {
       checkBooleanField(filePath, data, field);
     }
+    checkExerciseReviewReadiness(filePath, data);
   }
 
   if (data.type === "quiz") {
@@ -2835,6 +2956,7 @@ function checkExampleContentObjectData(filePath, data) {
     checkAllowedValue(filePath, data, "feedback_status", ALLOWED_QUIZ_REVIEW_STATUSES);
     checkAllowedValue(filePath, data, "remediation_status", ALLOWED_QUIZ_REVIEW_STATUSES);
     checkAllowedValue(filePath, data, "difficulty", ALLOWED_EXERCISE_DIFFICULTIES);
+    checkQuizReviewReadiness(filePath, data);
   }
 
   if (data.type === "exercise-set") {
@@ -2864,11 +2986,101 @@ function checkExampleContentObjectData(filePath, data) {
   }
 }
 
+function quizSectionByNormalizedHeading(body, normalizedNeedle) {
+  const heading = REQUIRED_QUIZ_H2.find((candidate) =>
+    normalizeForSearch(candidate).includes(normalizedNeedle),
+  );
+  return heading ? getSection(body, 2, heading) : "";
+}
+
+function quizRemediationLooksEmpty(remediationSection) {
+  return (
+    !remediationSection.trim() ||
+    !hasAnyNormalizedText(remediationSection, [
+      "si maitrise",
+      "si partiel",
+      "si echoue",
+      "par misconception",
+    ])
+  );
+}
+
+function checkExampleQuizReviewEvidence(filePath, data, body) {
+  const itemTypes = quizItemTypesFromData(data);
+  const cognitiveRoles = quizCognitiveRolesFromData(data);
+  const feedbackSection = quizSectionByNormalizedHeading(body, "corrige");
+  const remediationSection = quizSectionByNormalizedHeading(body, "remediation");
+  const remediationLooksEmpty = quizRemediationLooksEmpty(remediationSection);
+
+  if (
+    data.answer_key_status === "reviewed" &&
+    /Correct answer:\s*(?:\r?\n\s*-\s*)?TODO\b/i.test(feedbackSection)
+  ) {
+    addFinalReadinessDiagnostic(
+      filePath,
+      data,
+      'frontmatter "answer_key_status: reviewed" but "Correct answer" still has TODO',
+    );
+  }
+
+  if (data.feedback_status === "reviewed" && /\bTODO\b/.test(feedbackSection)) {
+    addFinalReadinessDiagnostic(
+      filePath,
+      data,
+      'frontmatter "feedback_status: reviewed" but feedback still has TODO',
+    );
+  }
+
+  if (
+    data.remediation_status === "reviewed" &&
+    (remediationLooksEmpty || /\bTODO\b/.test(remediationSection))
+  ) {
+    addFinalReadinessDiagnostic(
+      filePath,
+      data,
+      'frontmatter "remediation_status: reviewed" but remediation is empty or still has TODO',
+    );
+  }
+
+  if (
+    data.item_quality_status === "reviewed" &&
+    (itemTypes.length === 0 || cognitiveRoles.length === 0)
+  ) {
+    addFinalReadinessDiagnostic(
+      filePath,
+      data,
+      'frontmatter "item_quality_status: reviewed" but item_types or cognitive_roles is empty',
+    );
+  }
+}
+
+function checkExampleContentObjectBody(filePath, data, text) {
+  if (data.type === "exercise") {
+    checkExerciseRequiredSections(filePath, data, text);
+    if (data.status === "reviewed" && /\bTODO\b/.test(text)) {
+      addError(filePath, "reviewed exercise example contains unresolved TODO placeholders");
+    }
+  }
+
+  if (data.type === "quiz") {
+    checkQuizRequiredSections(filePath, data, text);
+    checkQuizQuestionCount(filePath, data, text);
+    checkQuizSourceItemCards(null, filePath, text, data);
+    checkFinalQuizItemContracts(filePath, data, text);
+    checkExampleQuizReviewEvidence(filePath, data, text);
+
+    if (data.status === "reviewed" && /\bTODO\b/.test(text)) {
+      addError(filePath, "reviewed quiz example contains unresolved TODO placeholders");
+    }
+  }
+}
+
 function checkGoldenExampleContracts() {
   for (const filePath of walkMarkdownFiles(EXAMPLES_DIR)) {
     const text = fs.readFileSync(filePath, "utf8");
     for (const data of parseYamlCodeBlocks(filePath, text)) {
       checkExampleContentObjectData(filePath, data);
+      checkExampleContentObjectBody(filePath, data, text);
     }
   }
 }
@@ -2916,10 +3128,10 @@ function checkContractFixtureBoundaries() {
     const basename = path.basename(filePath);
     if (basename === "README.md") continue;
 
-    if (!basename.startsWith("invalid-")) {
+    if (!/^(invalid|valid|warning-only)-/.test(basename)) {
       addError(
         filePath,
-        "contract fixture filenames must start with invalid- so intentional failures cannot be mistaken for production examples",
+        "contract fixture filenames must start with invalid-, valid-, or warning-only- so intentional fixture cases cannot be mistaken for production examples",
       );
     }
   }
@@ -3111,6 +3323,119 @@ function checkContractFixtures() {
   );
 
   expectInvalidContractFixture(
+    CONTRACT_FIXTURES.reviewedExerciseStaleSubstatus,
+    "reviewed exercise stale substatus blocks finalization",
+    () => {
+      const parsed = readFixtureFrontmatter(
+        CONTRACT_FIXTURES.reviewedExerciseStaleSubstatus,
+        "reviewed exercise stale substatus fixture",
+      );
+      checkExerciseReviewReadiness(
+        fullPathFromRepoPath(CONTRACT_FIXTURES.reviewedExerciseStaleSubstatus),
+        parsed.data,
+      );
+    },
+    [/statement_status is needs-review stale review evidence/],
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.reviewedQuizStaleSubstatus,
+    "reviewed quiz stale substatus blocks finalization",
+    () => {
+      const parsed = readFixtureFrontmatter(
+        CONTRACT_FIXTURES.reviewedQuizStaleSubstatus,
+        "reviewed quiz stale substatus fixture",
+      );
+      checkQuizReviewReadiness(
+        fullPathFromRepoPath(CONTRACT_FIXTURES.reviewedQuizStaleSubstatus),
+        parsed.data,
+      );
+    },
+    [/feedback_status is needs-review stale review evidence/],
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.reviewedUnitNeedsReviewDashboard,
+    "reviewed unit dashboard needs-review row blocks finalization",
+    () => {
+      const parsed = readFixtureFrontmatter(
+        CONTRACT_FIXTURES.reviewedUnitNeedsReviewDashboard,
+        "reviewed unit dashboard fixture",
+      );
+      checkCanonicalUnitBody(
+        fullPathFromRepoPath(CONTRACT_FIXTURES.reviewedUnitNeedsReviewDashboard),
+        parsed.body,
+        parsed.data,
+      );
+    },
+    [/dashboard row "Final verification" is "needs-review" while unit frontmatter claims reviewed\/published readiness/],
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.reviewedQuizZeroQuestionCount,
+    "reviewed quiz question_count must be positive",
+    () => {
+      const parsed = readFixtureFrontmatter(
+        CONTRACT_FIXTURES.reviewedQuizZeroQuestionCount,
+        "reviewed quiz zero question count fixture",
+      );
+      checkQuizQuestionCount(
+        fullPathFromRepoPath(CONTRACT_FIXTURES.reviewedQuizZeroQuestionCount),
+        parsed.data,
+        parsed.body,
+      );
+    },
+    [/frontmatter "question_count" must be a positive integer/],
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.reviewedExampleQuizBodyContract,
+    "reviewed quiz example body uses final item body contract",
+    () => {
+      const filePath = fullPathFromRepoPath(CONTRACT_FIXTURES.reviewedExampleQuizBodyContract);
+      const text = fs.readFileSync(filePath, "utf8");
+      for (const data of parseYamlCodeBlocks(filePath, text)) {
+        checkExampleContentObjectData(filePath, data);
+        checkExampleContentObjectBody(filePath, data, text);
+      }
+    },
+    [/Question 1 - Bad example item: multiple-choice item needs per-choice feedback/],
+  );
+
+  expectValidContractFixture(
+    CONTRACT_FIXTURES.quizQuestionCountAnswerHeading,
+    "quiz question count ignores duplicated answer-section question headings",
+    () => {
+      const parsed = readFixtureFrontmatter(
+        CONTRACT_FIXTURES.quizQuestionCountAnswerHeading,
+        "quiz question count answer heading fixture",
+      );
+      checkQuizQuestionCount(
+        fullPathFromRepoPath(CONTRACT_FIXTURES.quizQuestionCountAnswerHeading),
+        parsed.data,
+        parsed.body,
+      );
+    },
+  );
+
+  expectWarningOnlyContractFixture(
+    CONTRACT_FIXTURES.draftWarningOnlyQuiz,
+    "draft quiz question-count mismatch remains warning-only",
+    () => {
+      const parsed = readFixtureFrontmatter(
+        CONTRACT_FIXTURES.draftWarningOnlyQuiz,
+        "draft warning-only quiz fixture",
+      );
+      checkQuizQuestionCount(
+        fullPathFromRepoPath(CONTRACT_FIXTURES.draftWarningOnlyQuiz),
+        parsed.data,
+        parsed.body,
+      );
+    },
+    [/frontmatter "question_count" is 2 but found 1 student-facing/],
+  );
+
+  expectInvalidContractFixture(
     CONTRACT_FIXTURES.exerciseSetBadExerciseId,
     "exercise-set exercise_ids shape",
     () => {
@@ -3272,6 +3597,12 @@ function checkRequiredContentFields(filePath, data, unit) {
     );
   }
 
+  requireCurrentSyncForFinalReadiness(
+    filePath,
+    data,
+    data.type ? `${data.type} artifact` : "content artifact",
+  );
+
   if (data.source_type && !ALLOWED_SOURCE_TYPES.has(data.source_type)) {
     addError(filePath, `frontmatter "source_type" has invalid value "${data.source_type}"`);
   }
@@ -3317,6 +3648,47 @@ function checkMiniLessonQualitySignals(filePath, text) {
   if (hasMistakeSignal && !hasRecoverySignal) {
     addWarning(filePath, "has mistake/warning signals but no recovery guidance; add it when the trap is important");
   }
+}
+
+function checkExerciseRequiredSections(filePath, data, body) {
+  const h2Headings = new Set(getH2Headings(body));
+  for (const heading of REQUIRED_EXERCISE_H2) {
+    if (h2Headings.has(heading)) continue;
+    addFinalReadinessDiagnostic(
+      filePath,
+      data,
+      `missing exercise section "## ${heading}"`,
+    );
+  }
+}
+
+function checkExerciseReviewReadiness(filePath, data) {
+  const reviewStatuses = [
+    data.design_status,
+    data.statement_status,
+    data.solution_status,
+  ];
+  if (
+    !claimsFinalReadiness(data) ||
+    reviewStatuses.every((status) => status === "reviewed")
+  ) {
+    return;
+  }
+
+  const staleFields = [
+    ["design_status", data.design_status],
+    ["statement_status", data.statement_status],
+    ["solution_status", data.solution_status],
+  ]
+    .filter(([, status]) => status === "needs-review")
+    .map(([field]) => field);
+
+  addError(
+    filePath,
+    staleFields.length
+      ? `frontmatter "status" claims reviewed/published while ${staleFields.join(", ")} is needs-review stale review evidence`
+      : 'frontmatter "status" claims reviewed/published while design_status, statement_status, or solution_status is not reviewed',
+  );
 }
 
 function checkLessonFile(unit, filePath) {
@@ -3367,6 +3739,10 @@ function checkLessonFile(unit, filePath) {
         ...ALLOWED_LESSON_SHAPES,
       ].join(", ")}`,
     );
+  }
+
+  if (data.status === "reviewed" && /\bTODO\b/.test(text)) {
+    addError(filePath, "reviewed lesson contains unresolved TODO placeholders");
   }
 
   if (data.status === "published" && /\bTODO\b/.test(text)) {
@@ -3423,8 +3799,9 @@ function checkExerciseFile(unit, filePath) {
     } else {
       const exerciseCards = unit.planningObjects?.exerciseDesignCards ?? new Map();
       if (!exerciseCards.has(data.source_design_card)) {
-        addWarning(
+        addFinalReadinessDiagnostic(
           filePath,
+          data,
           `frontmatter "source_design_card" references missing exercise design card "${data.source_design_card}" in the unit _index.md`,
         );
       }
@@ -3442,12 +3819,7 @@ function checkExerciseFile(unit, filePath) {
     addError(filePath, 'frontmatter "estimated_time_min" must be a positive number');
   }
 
-  const h2Headings = new Set(getH2Headings(parsed.body));
-  for (const heading of REQUIRED_EXERCISE_H2) {
-    if (!h2Headings.has(heading)) {
-      addWarning(filePath, `missing exercise section "## ${heading}"`);
-    }
-  }
+  checkExerciseRequiredSections(filePath, data, parsed.body);
 
   if (isEmptyValue(data.skills)) {
     addWarning(filePath, 'frontmatter "skills" is empty');
@@ -3495,7 +3867,13 @@ function checkExerciseFile(unit, filePath) {
     data.statement_status === "reviewed" ||
     data.solution_status === "reviewed";
 
-  if (exerciseClaimsReviewed && /\bTODO\b/.test(text)) {
+  if (data.status === "reviewed" && /\bTODO\b/.test(text)) {
+    addError(filePath, "reviewed exercise contains unresolved TODO placeholders");
+  } else if (
+    data.status !== "published" &&
+    exerciseClaimsReviewed &&
+    /\bTODO\b/.test(text)
+  ) {
     addWarning(filePath, "reviewed exercise status is present but file still contains TODO");
   }
 
@@ -3528,34 +3906,12 @@ function checkExerciseFile(unit, filePath) {
     );
   }
 
-  const reviewStatuses = [
-    data.design_status,
-    data.statement_status,
-    data.solution_status,
-  ];
-  if (
-    (data.status === "reviewed" || data.status === "published") &&
-    reviewStatuses.some((status) => status !== "reviewed")
-  ) {
-    const staleFields = [
-      ["design_status", data.design_status],
-      ["statement_status", data.statement_status],
-      ["solution_status", data.solution_status],
-    ]
-      .filter(([, status]) => status === "needs-review")
-      .map(([field]) => field);
-
-    addWarning(
-      filePath,
-      staleFields.length
-        ? `frontmatter "status" claims reviewed/published while ${staleFields.join(", ")} is needs-review stale review evidence`
-        : 'frontmatter "status" claims reviewed/published while design_status, statement_status, or solution_status is not reviewed',
-    );
-  }
+  checkExerciseReviewReadiness(filePath, data);
 
   if (data.solution_status === "reviewed" && !hasResultCallout) {
-    addWarning(
+    addFinalReadinessDiagnostic(
       filePath,
+      data,
       'frontmatter "solution_status: reviewed" but no [!success] result callout exists',
     );
   }
@@ -3594,30 +3950,33 @@ function parseQuizQuestionSourceItemCards(body) {
   return questions;
 }
 
-function checkQuizSourceItemCards(unit, filePath, body) {
+function checkQuizSourceItemCards(unit, filePath, body, data = {}) {
   const questions = parseQuizQuestionSourceItemCards(body);
-  const itemCards = unit.planningObjects?.quizItemDesignCards ?? new Map();
+  const itemCards = unit?.planningObjects?.quizItemDesignCards ?? null;
 
   for (const question of questions) {
     if (!question.sourceItemCard) {
-      addWarning(
+      addFinalReadinessDiagnostic(
         filePath,
+        data,
         `"${question.heading}" is missing "Source item card" metadata`,
       );
       continue;
     }
 
     if (!isSlug(question.sourceItemCard)) {
-      addWarning(
+      addFinalReadinessDiagnostic(
         filePath,
+        data,
         `"${question.heading}" has invalid Source item card "${question.sourceItemCard}"; expected lowercase ASCII hyphenated item-card ID`,
       );
       continue;
     }
 
-    if (!itemCards.has(question.sourceItemCard)) {
-      addWarning(
+    if (itemCards && !itemCards.has(question.sourceItemCard)) {
+      addFinalReadinessDiagnostic(
         filePath,
+        data,
         `"${question.heading}" references missing quiz item design card "${question.sourceItemCard}" in the unit _index.md`,
       );
     }
@@ -3707,6 +4066,92 @@ function addQuizItemContractDiagnostic(filePath, data, question, message) {
 
 function addQuizItemContractError(filePath, question, message) {
   addError(filePath, `${question.heading}: ${message}`);
+}
+
+function quizItemTypesFromData(data) {
+  return Array.isArray(data.item_types)
+    ? data.item_types
+    : isEmptyValue(data.item_types)
+      ? []
+      : [data.item_types];
+}
+
+function quizCognitiveRolesFromData(data) {
+  return Array.isArray(data.cognitive_roles)
+    ? data.cognitive_roles
+    : isEmptyValue(data.cognitive_roles)
+      ? []
+      : [data.cognitive_roles];
+}
+
+function checkQuizRequiredSections(filePath, data, body) {
+  const h2Headings = new Set(getH2Headings(body));
+  for (const heading of REQUIRED_QUIZ_H2) {
+    if (h2Headings.has(heading)) continue;
+    addFinalReadinessDiagnostic(
+      filePath,
+      data,
+      `missing quiz section "## ${heading}"`,
+    );
+  }
+}
+
+function checkQuizQuestionCount(filePath, data, body) {
+  const questionHeadingCount = parseQuizQuestionBlocks(body).length;
+
+  if (
+    claimsFinalReadiness(data) &&
+    (!Number.isInteger(data.question_count) || data.question_count <= 0)
+  ) {
+    addError(
+      filePath,
+      'frontmatter "question_count" must be a positive integer for reviewed/published quizzes',
+    );
+  }
+
+  if (
+    Number.isFinite(data.question_count) &&
+    data.question_count !== questionHeadingCount
+  ) {
+    addFinalReadinessDiagnostic(
+      filePath,
+      data,
+      `frontmatter "question_count" is ${data.question_count} but found ${questionHeadingCount} student-facing "### Question" heading(s) under "## Questions"`,
+    );
+  }
+
+  return questionHeadingCount;
+}
+
+function checkQuizReviewReadiness(filePath, data) {
+  const quizReviewStatuses = [
+    data.item_quality_status,
+    data.answer_key_status,
+    data.feedback_status,
+    data.remediation_status,
+  ];
+  if (
+    !claimsFinalReadiness(data) ||
+    quizReviewStatuses.every((status) => status === "reviewed")
+  ) {
+    return;
+  }
+
+  const staleFields = [
+    ["item_quality_status", data.item_quality_status],
+    ["answer_key_status", data.answer_key_status],
+    ["feedback_status", data.feedback_status],
+    ["remediation_status", data.remediation_status],
+  ]
+    .filter(([, status]) => status === "needs-review")
+    .map(([field]) => field);
+
+  addError(
+    filePath,
+    staleFields.length
+      ? `frontmatter "status" claims reviewed/published while ${staleFields.join(", ")} is needs-review stale review evidence`
+      : 'frontmatter "status" claims reviewed/published while item_quality_status, answer_key_status, feedback_status, or remediation_status is not reviewed',
+  );
 }
 
 function quizChoiceLabels(text) {
@@ -4204,30 +4649,17 @@ function checkQuizFile(unit, filePath) {
     }
   }
 
-  const h2Headings = new Set(getH2Headings(parsed.body));
-  for (const heading of REQUIRED_QUIZ_H2) {
-    if (!h2Headings.has(heading)) {
-      addWarning(filePath, `missing quiz section "## ${heading}"`);
-    }
-  }
+  checkQuizRequiredSections(filePath, data, parsed.body);
 
-  const itemTypes = Array.isArray(data.item_types)
-    ? data.item_types
-    : isEmptyValue(data.item_types)
-      ? []
-      : [data.item_types];
-  const cognitiveRoles = Array.isArray(data.cognitive_roles)
-    ? data.cognitive_roles
-    : isEmptyValue(data.cognitive_roles)
-      ? []
-      : [data.cognitive_roles];
+  const itemTypes = quizItemTypesFromData(data);
+  const cognitiveRoles = quizCognitiveRolesFromData(data);
 
   if (itemTypes.length === 0) {
-    addWarning(filePath, 'frontmatter "item_types" is empty');
+    addFinalReadinessDiagnostic(filePath, data, 'frontmatter "item_types" is empty');
   }
 
   if (cognitiveRoles.length === 0) {
-    addWarning(filePath, 'frontmatter "cognitive_roles" is empty');
+    addFinalReadinessDiagnostic(filePath, data, 'frontmatter "cognitive_roles" is empty');
   }
 
   for (const itemType of itemTypes) {
@@ -4242,18 +4674,9 @@ function checkQuizFile(unit, filePath) {
     }
   }
 
-  const questionHeadingCount = countMatches(parsed.body, /^###\s+Question\b/gm);
-  if (
-    Number.isFinite(data.question_count) &&
-    data.question_count !== questionHeadingCount
-  ) {
-    addWarning(
-      filePath,
-      `frontmatter "question_count" is ${data.question_count} but found ${questionHeadingCount} "### Question" heading(s)`,
-    );
-  }
+  const questionHeadingCount = checkQuizQuestionCount(filePath, data, parsed.body);
 
-  checkQuizSourceItemCards(unit, filePath, parsed.body);
+  checkQuizSourceItemCards(unit, filePath, parsed.body, data);
   checkFinalQuizItemContracts(filePath, data, parsed.body);
 
   if (data.quiz_kind === "method-choice" && !cognitiveRoles.includes("method-choice")) {
@@ -4328,53 +4751,44 @@ function checkQuizFile(unit, filePath) {
     data.answer_key_status === "reviewed" &&
     /Correct answer:\s*(?:\r?\n\s*-\s*)?TODO\b/i.test(feedbackSection)
   ) {
-    addWarning(filePath, 'frontmatter "answer_key_status: reviewed" but "Correct answer" still has TODO');
+    addFinalReadinessDiagnostic(
+      filePath,
+      data,
+      'frontmatter "answer_key_status: reviewed" but "Correct answer" still has TODO',
+    );
   }
 
   if (data.feedback_status === "reviewed" && /\bTODO\b/.test(feedbackSection)) {
-    addWarning(filePath, 'frontmatter "feedback_status: reviewed" but feedback still has TODO');
+    addFinalReadinessDiagnostic(
+      filePath,
+      data,
+      'frontmatter "feedback_status: reviewed" but feedback still has TODO',
+    );
   }
 
   if (
     data.remediation_status === "reviewed" &&
     (remediationLooksEmpty || /\bTODO\b/.test(remediationSection))
   ) {
-    addWarning(filePath, 'frontmatter "remediation_status: reviewed" but remediation is empty or still has TODO');
+    addFinalReadinessDiagnostic(
+      filePath,
+      data,
+      'frontmatter "remediation_status: reviewed" but remediation is empty or still has TODO',
+    );
   }
 
   if (
     data.item_quality_status === "reviewed" &&
     (itemTypes.length === 0 || cognitiveRoles.length === 0)
   ) {
-    addWarning(filePath, 'frontmatter "item_quality_status: reviewed" but item_types or cognitive_roles is empty');
-  }
-
-  const quizReviewStatuses = [
-    data.item_quality_status,
-    data.answer_key_status,
-    data.feedback_status,
-    data.remediation_status,
-  ];
-  if (
-    (data.status === "reviewed" || data.status === "published") &&
-    quizReviewStatuses.some((status) => status !== "reviewed")
-  ) {
-    const staleFields = [
-      ["item_quality_status", data.item_quality_status],
-      ["answer_key_status", data.answer_key_status],
-      ["feedback_status", data.feedback_status],
-      ["remediation_status", data.remediation_status],
-    ]
-      .filter(([, status]) => status === "needs-review")
-      .map(([field]) => field);
-
-    addWarning(
+    addFinalReadinessDiagnostic(
       filePath,
-      staleFields.length
-        ? `frontmatter "status" claims reviewed/published while ${staleFields.join(", ")} is needs-review stale review evidence`
-        : 'frontmatter "status" claims reviewed/published while item_quality_status, answer_key_status, feedback_status, or remediation_status is not reviewed',
+      data,
+      'frontmatter "item_quality_status: reviewed" but item_types or cognitive_roles is empty',
     );
   }
+
+  checkQuizReviewReadiness(filePath, data);
 
   const notesAuteur = getSection(parsed.body, 2, "Notes auteur");
   const hasItemTypeRationale = hasAnyNormalizedText(notesAuteur, [
@@ -4421,6 +4835,10 @@ function checkQuizFile(unit, filePath) {
       filePath,
       "exam-readiness or high exam relevance quiz needs explicit source/exam claim safety notes",
     );
+  }
+
+  if (data.status === "reviewed" && /\bTODO\b/.test(text)) {
+    addError(filePath, "reviewed quiz contains unresolved TODO placeholders");
   }
 
   if (data.status === "published" && /\bTODO\b/.test(text)) {
