@@ -20,6 +20,8 @@ const INITIALIZED_UNIT_REFERENCE_FIXTURE_PATH =
   "content/_fixtures/initialized-unit/_index.md";
 const CONTRACT_FIXTURES_DIR_PATH = "content/_fixtures/contracts";
 const DELETED_IDS_REGISTRY_PATH = "content/_references/deleted-ids.md";
+const VERBOSE_FINDINGS =
+  process.argv.includes("--verbose") || process.argv.includes("-v");
 
 const REQUIRED_BASE_DIRS = [
   "content",
@@ -1132,6 +1134,7 @@ const LESSON_QUALITY_SIGNAL_CHECKS = [
 
 const errors = [];
 const warnings = [];
+const notices = [];
 const ids = new Map();
 const programs = [];
 const units = [];
@@ -1151,13 +1154,121 @@ function addError(filePath, message) {
   errors.push(filePath ? `${rel(filePath)}: ${message}` : message);
 }
 
-function addWarning(filePath, message) {
-  warnings.push(filePath ? `${rel(filePath)}: ${message}` : message);
+function inferFindingMetadata(_filePath, message) {
+  if (/final-artifact inventory/i.test(message)) {
+    return {
+      code: "NAV001",
+      category: "workflow",
+      action:
+        `Add the missing inventory link under "## ${FINAL_ARTIFACT_INVENTORY_HEADING}" or update the family Scope row.`,
+    };
+  }
+
+  if (/used-in-(?:exercise|quiz)/i.test(message)) {
+    return {
+      code: "TRACE001",
+      category: "workflow",
+      action:
+        "Restore the planning-card traceability link or return the planning card to the ready status.",
+    };
+  }
+
+  if (
+    /(?:source_type|source_ref|exam_relevance|exam-readiness|exam claim|source\/exam)/i.test(
+      message,
+    )
+  ) {
+    return {
+      code: "SRC001",
+      category: "content-quality",
+      action:
+        "Add source or exam-claim notes, or reduce the claim so it matches documented evidence.",
+    };
+  }
+
+  if (/\bTODO\b/i.test(message)) {
+    return {
+      code: "TODO001",
+      category: "todo",
+      action:
+        "Resolve the placeholder, replace it with real content, or move the artifact back to a less complete status.",
+    };
+  }
+
+  if (/reviewed|published|status/i.test(message)) {
+    return {
+      code: "STATUS001",
+      category: "status",
+      action:
+        "Bring the status and review evidence back into sync before treating this artifact as ready.",
+    };
+  }
+
+  if (/design card|planning card|question_count|item type|item_types|cognitive_roles|feedback|remediation|misconception|multiple-choice|MCQs/i.test(message)) {
+    return {
+      code: "WF001",
+      category: "workflow",
+      action:
+        "Open the referenced planning or artifact file and repair the contract field named in the message.",
+    };
+  }
+
+  if (/YYYY-MM-DD|placeholder.*frontmatter|frontmatter "lesson_shape"/i.test(message)) {
+    return {
+      code: "FM002",
+      category: "frontmatter",
+      action:
+        "Update the frontmatter value so it matches the active schema for this file type.",
+    };
+  }
+
+  return {
+    code: "CQ001",
+    category: "content-quality",
+    action:
+      "Review the file and either improve the flagged quality signal or document why the exception is intentional.",
+  };
+}
+
+function addFinding(level, filePath, message, metadata = {}) {
+  const inferred = inferFindingMetadata(filePath, message);
+  const finding = {
+    level,
+    code: metadata.code ?? inferred.code,
+    category: metadata.category ?? inferred.category,
+    path: filePath ? rel(filePath) : "",
+    message,
+    action: metadata.action ?? inferred.action,
+  };
+
+  if (level === "notice") notices.push(finding);
+  else warnings.push(finding);
+}
+
+function addWarning(filePath, message, metadata = {}) {
+  addFinding("warning", filePath, message, metadata);
+}
+
+function addNotice(filePath, message, metadata = {}) {
+  addFinding("notice", filePath, message, metadata);
+}
+
+function diagnosticText(diagnostic) {
+  if (typeof diagnostic === "string") return diagnostic;
+
+  const location = diagnostic.path ? `${diagnostic.path}: ` : "";
+  const action = diagnostic.action ? ` Action: ${diagnostic.action}` : "";
+  return `[${diagnostic.level.toUpperCase()} ${diagnostic.code} ${diagnostic.category}] ${location}${diagnostic.message}${action}`;
+}
+
+function diagnosticsText(diagnostics) {
+  return diagnostics.map(diagnosticText).join(" | ");
 }
 
 function runIsolatedDiagnostics(check) {
   const errorStart = errors.length;
   const warningStart = warnings.length;
+  const noticeStart = notices.length;
 
   try {
     check();
@@ -1167,18 +1278,25 @@ function runIsolatedDiagnostics(check) {
 
   const isolatedErrors = errors.slice(errorStart);
   const isolatedWarnings = warnings.slice(warningStart);
+  const isolatedNotices = notices.slice(noticeStart);
   errors.length = errorStart;
   warnings.length = warningStart;
+  notices.length = noticeStart;
 
-  return { errors: isolatedErrors, warnings: isolatedWarnings };
+  return {
+    errors: isolatedErrors,
+    warnings: isolatedWarnings,
+    notices: isolatedNotices,
+  };
 }
 
 function diagnosticMatches(diagnostic, expected) {
+  const text = diagnosticText(diagnostic);
   if (expected instanceof RegExp) {
-    return expected.test(diagnostic);
+    return expected.test(text);
   }
 
-  return diagnostic.includes(expected);
+  return text.includes(expected);
 }
 
 function expectInvalidContractFixture(repoPath, contractLabel, check, expectedDiagnostics) {
@@ -1207,7 +1325,7 @@ function expectInvalidContractFixture(repoPath, contractLabel, check, expectedDi
     if (!result.errors.some((error) => diagnosticMatches(error, expected))) {
       addError(
         fixturePath,
-        `contract fixture "${contractLabel}" did not produce expected diagnostic ${expected}; actual isolated errors: ${result.errors.join(" | ")}`,
+        `contract fixture "${contractLabel}" did not produce expected diagnostic ${expected}; actual isolated errors: ${diagnosticsText(result.errors)}`,
       );
     }
   }
@@ -1227,10 +1345,10 @@ function expectValidContractFixture(repoPath, contractLabel, check) {
   checkedContractFixtures += 1;
   const result = runIsolatedDiagnostics(check);
 
-  if (result.errors.length || result.warnings.length) {
+  if (result.errors.length || result.warnings.length || result.notices.length) {
     addError(
       fixturePath,
-      `contract fixture "${contractLabel}" unexpectedly produced diagnostics; isolated errors: ${result.errors.join(" | ")}; isolated warnings: ${result.warnings.join(" | ")}`,
+      `contract fixture "${contractLabel}" unexpectedly produced diagnostics; isolated errors: ${diagnosticsText(result.errors)}; isolated warnings: ${diagnosticsText(result.warnings)}; isolated notices: ${diagnosticsText(result.notices)}`,
     );
   }
 }
@@ -1252,7 +1370,7 @@ function expectWarningOnlyContractFixture(repoPath, contractLabel, check, expect
   if (result.errors.length > 0) {
     addError(
       fixturePath,
-      `contract fixture "${contractLabel}" produced blocking errors but should remain warning-only; isolated errors: ${result.errors.join(" | ")}`,
+      `contract fixture "${contractLabel}" produced blocking errors but should remain warning-only; isolated errors: ${diagnosticsText(result.errors)}`,
     );
     return;
   }
@@ -1269,7 +1387,7 @@ function expectWarningOnlyContractFixture(repoPath, contractLabel, check, expect
     if (!result.warnings.some((warning) => diagnosticMatches(warning, expected))) {
       addError(
         fixturePath,
-        `contract fixture "${contractLabel}" did not produce expected warning ${expected}; actual isolated warnings: ${result.warnings.join(" | ")}`,
+        `contract fixture "${contractLabel}" did not produce expected warning ${expected}; actual isolated warnings: ${diagnosticsText(result.warnings)}`,
       );
     }
   }
@@ -1541,12 +1659,94 @@ function parseCurriculumMap(filePath) {
   };
 }
 
-function isGuidePromptOrReference(filePath) {
-  return /^content\/_(guides|prompts|references)\//.test(rel(filePath));
+function allowsMissingFrontmatterNotice(filePath) {
+  return /^content\/_(guides|prompts|references|templates)\//.test(rel(filePath));
+}
+
+function isRepositorySupportMarkdown(filePath) {
+  const relative = rel(filePath);
+  return (
+    /^content\/_(guides|prompts|references|templates|examples|fixtures)\//.test(
+      relative,
+    ) ||
+    relative === "content/README.md" ||
+    relative === "content/AGENTS.md"
+  );
 }
 
 function isProductionProgramFile(filePath) {
   return rel(filePath).startsWith("content/programs/");
+}
+
+function isStudentFacingContentArtifact(filePath, parsed) {
+  return (
+    isProductionProgramFile(filePath) &&
+    ACTIVE_CONTENT_OBJECT_TYPES.has(parsed.data?.type)
+  );
+}
+
+function isAuthorWorkflowArtifact(filePath, parsed) {
+  return (
+    isProductionProgramFile(filePath) &&
+    parsed.data?.type === "unit-index"
+  );
+}
+
+function addTodoFinding(filePath, parsed, todoCount) {
+  const message = `contains ${todoCount} TODO placeholder(s)`;
+  const status = parsed.data?.status;
+
+  if (status === "published") {
+    addError(filePath, 'published file contains unresolved TODO placeholders');
+    return;
+  }
+
+  if (isStudentFacingContentArtifact(filePath, parsed)) {
+    addWarning(filePath, message, {
+      code: "TODO001",
+      category: "todo",
+      action:
+        "Resolve the learner-facing placeholder before review or publication.",
+    });
+    return;
+  }
+
+  if (isAuthorWorkflowArtifact(filePath, parsed)) {
+    addWarning(filePath, message, {
+      code: "TODO003",
+      category: "workflow",
+      action:
+        "Resolve the unit-planning TODO when this unit becomes the active authoring target.",
+    });
+    return;
+  }
+
+  if (isProductionProgramFile(filePath)) {
+    addNotice(filePath, message, {
+      code: "TODO002",
+      category: "repository-hygiene",
+      action:
+        "Treat as program-navigation or catalog housekeeping unless this file becomes a learner-facing artifact.",
+    });
+    return;
+  }
+
+  if (isRepositorySupportMarkdown(filePath)) {
+    addNotice(filePath, message, {
+      code: "TODO002",
+      category: "repository-hygiene",
+      action:
+        "Treat as backlog cleanup for system docs, prompts, templates, examples, or fixtures.",
+    });
+    return;
+  }
+
+  addWarning(filePath, message, {
+    code: "TODO001",
+    category: "todo",
+    action:
+      "Resolve the placeholder or decide whether this file belongs in a repository-support area.",
+  });
 }
 
 function allowsFrontmatterPlaceholderDates(filePath) {
@@ -8487,19 +8687,23 @@ function collectIdsAndWarnings() {
     const todoCount = countMatches(text, /\bTODO\b/g);
 
     if (todoCount > 0) {
-      const status = parsed.data?.status;
-      if (status === "published") {
-        addError(filePath, 'published file contains unresolved TODO placeholders');
-      } else {
-        addWarning(filePath, `contains ${todoCount} TODO placeholder(s)`);
-      }
+      addTodoFinding(filePath, parsed, todoCount);
     }
 
     checkFrontmatterPlaceholderDates(filePath, parsed);
 
     if (!parsed.hasFrontmatter) {
-      if (isGuidePromptOrReference(filePath)) {
-        addWarning(filePath, "has no frontmatter; allowed for guides, prompts, and references");
+      if (allowsMissingFrontmatterNotice(filePath)) {
+        addNotice(
+          filePath,
+          "has no frontmatter; allowed for repository guides, prompts, references, and templates",
+          {
+            code: "FM001",
+            category: "frontmatter",
+            action:
+              "No action needed unless this file becomes a schema-checked content artifact.",
+          },
+        );
       }
       continue;
     }
@@ -8599,11 +8803,100 @@ function checkDeletedIdRegistry() {
   }
 }
 
+function validationStatusLine() {
+  if (errors.length) {
+    return "BLOCKED: fix errors before continuing.";
+  }
+
+  if (warnings.length) {
+    return "PASS WITH ACTIONABLE WARNINGS: not blocked, but review the author queue.";
+  }
+
+  if (notices.length) {
+    return "PASS: non-blocking notices only.";
+  }
+
+  return "PASS: no findings.";
+}
+
+function categorySummaryRows() {
+  const rows = new Map();
+
+  for (const finding of [...warnings, ...notices]) {
+    const row = rows.get(finding.category) ?? { warnings: 0, notices: 0 };
+    if (finding.level === "warning") row.warnings += 1;
+    else row.notices += 1;
+    rows.set(finding.category, row);
+  }
+
+  return [...rows.entries()].sort(
+    ([leftCategory, left], [rightCategory, right]) =>
+      right.warnings - left.warnings ||
+      right.notices - left.notices ||
+      leftCategory.localeCompare(rightCategory),
+  );
+}
+
+function printCategorySummary() {
+  const rows = categorySummaryRows();
+  if (!rows.length) return;
+
+  console.log("\nFinding categories:");
+  for (const [category, counts] of rows) {
+    console.log(
+      `- ${category}: ${counts.warnings} warning(s), ${counts.notices} notice(s)`,
+    );
+  }
+}
+
+function sortedFindings(findings) {
+  return [...findings].sort(
+    (left, right) =>
+      left.category.localeCompare(right.category) ||
+      left.path.localeCompare(right.path) ||
+      left.code.localeCompare(right.code) ||
+      left.message.localeCompare(right.message),
+  );
+}
+
+function printFinding(finding) {
+  const location = finding.path ? `${finding.path}: ` : "";
+  console.log(
+    `- [${finding.level.toUpperCase()} ${finding.code} ${finding.category}] ${location}${finding.message}`,
+  );
+  if (finding.action) {
+    console.log(`  Action: ${finding.action}`);
+  }
+}
+
+function printFindings(title, findings, { emptyMessage = "None.", limit = Infinity } = {}) {
+  console.log(`\n${title}:`);
+
+  if (!findings.length) {
+    console.log(emptyMessage);
+    return;
+  }
+
+  const sorted = sortedFindings(findings);
+  const visible = sorted.slice(0, limit);
+  for (const finding of visible) {
+    printFinding(finding);
+  }
+
+  if (sorted.length > visible.length) {
+    console.log(
+      `... ${sorted.length - visible.length} more notice(s). Run \`npm run validate -- --verbose\` to list every notice.`,
+    );
+  }
+}
+
 function printResults() {
   console.log("Content validation");
   console.log("==================");
   console.log(`Errors: ${errors.length}`);
-  console.log(`Warnings: ${warnings.length}`);
+  console.log(`Actionable warnings: ${warnings.length}`);
+  console.log(`Notices: ${notices.length}`);
+  console.log(`Status: ${validationStatusLine()}`);
   console.log(`Checked programs: ${programs.length}`);
   console.log(`Checked official units: ${checkedOfficialUnits}`);
   console.log(`Checked unofficial units: ${checkedUnofficialUnits}`);
@@ -8611,18 +8904,25 @@ function printResults() {
   console.log(`Checked contract fixtures: ${checkedContractFixtures}`);
   console.log(`Checked IDs: ${ids.size}`);
 
-  if (warnings.length) {
-    console.log("\nWarnings:");
-    for (const warning of warnings) {
-      console.log(`- ${warning}`);
-    }
-  }
+  printCategorySummary();
 
   if (errors.length) {
     console.log("\nErrors:");
     for (const error of errors) {
       console.log(`- ${error}`);
     }
+  }
+
+  printFindings("Actionable warnings", warnings);
+
+  const noticeLimit = VERBOSE_FINDINGS ? Infinity : 10;
+  printFindings(
+    VERBOSE_FINDINGS ? "Notices" : `Notices (showing up to ${noticeLimit})`,
+    notices,
+    { emptyMessage: "None.", limit: noticeLimit },
+  );
+
+  if (errors.length) {
     process.exitCode = 1;
     return;
   }

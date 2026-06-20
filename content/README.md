@@ -111,3 +111,5 @@ Run from the repository root:
 ```bash
 npm run validate
 ```
+
+Validation output separates blocking `Errors`, author-queue `Actionable warnings`, and non-blocking `Notices`. See `content/_guides/core/content-validation.md` before treating notices as work items.

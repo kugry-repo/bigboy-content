@@ -20,6 +20,71 @@ or:
 node scripts/validate-content.mjs
 ```
 
+Use the verbose mode when you need the complete notice list:
+
+```bash
+npm run validate -- --verbose
+```
+
+## How to read results
+
+The validator prints four decision fields first:
+
+- `Errors`: blocking structural failures. Fix these before continuing the affected workflow.
+- `Actionable warnings`: non-blocking author-queue items. They usually point to real content, planning, traceability, status, or quality work.
+- `Notices`: permitted or low-priority conditions. They explain repository state without competing with the author queue.
+- `Status`: a plain-language decision such as blocked, pass with actionable warnings, or pass with notices only.
+
+Read the output in this order:
+
+1. Fix `Errors` first.
+2. Review `Actionable warnings` next; these are the first files to open.
+3. Treat `Notices` as context or housekeeping. They do not block authoring.
+4. Use the category summary to decide whether a finding is about content, workflow, frontmatter, status, source safety, or repository hygiene.
+
+Default output lists every actionable warning but only a small notice sample. This keeps `npm run validate` usable as an author queue. Use verbose mode only when doing repository housekeeping.
+
+## Finding model
+
+Every non-error finding has:
+
+- stable `code`, such as `FM001`, `TODO001`, or `TRACE001`;
+- `category`, such as `frontmatter`, `todo`, `workflow`, `status`, `content-quality`, or `repository-hygiene`;
+- `level`: `warning` or `notice`;
+- path;
+- short message;
+- action line when a useful next step exists.
+
+Typical codes:
+
+- `FM001` / `frontmatter` / `notice`: a guide, prompt, reference, or template has no YAML frontmatter and is allowed to stay that way.
+- `FM002` / `frontmatter` / `warning`: frontmatter has a schema or placeholder issue outside the allowed template/fixture context.
+- `TODO001` / `todo` / `warning`: a learner-facing artifact has TODO placeholders.
+- `TODO002` / `repository-hygiene` / `notice`: a guide, prompt, template, reference, example, fixture, program catalog, or navigation file has TODO placeholders.
+- `TODO003` / `workflow` / `warning`: a unit `_index.md` planning surface has TODO placeholders.
+- `TRACE001` / `workflow` / `warning`: a planning card claims it was used, but no final artifact traces back to it.
+- `NAV001` / `workflow` / `warning`: final-artifact inventory navigation is out of sync with existing final files.
+- `SRC001` / `content-quality` / `warning`: source or exam-claim evidence is missing or too weak for the claim.
+- `STATUS001` / `status` / `warning`: status or review evidence is inconsistent with the file's current state.
+- `WF001` / `workflow` / `warning`: planning, quiz, or artifact contract information is incomplete.
+- `CQ001` / `content-quality` / `warning`: a content-quality signal needs review.
+
+Example actionable finding:
+
+```text
+- [WARNING TODO001 todo] content/programs/.../lessons/lc-lesson-001.md: contains 2 TODO placeholder(s)
+  Action: Resolve the learner-facing placeholder before review or publication.
+```
+
+Example non-actionable notice:
+
+```text
+- [NOTICE FM001 frontmatter] content/_guides/core/style-guide.md: has no frontmatter; allowed for repository guides, prompts, references, and templates
+  Action: No action needed unless this file becomes a schema-checked content artifact.
+```
+
+If a warning seems like noise, do not silence it by weakening the content contract. First decide whether it is truly learner-facing or workflow-critical. If it is allowed repository housekeeping, reclassify it as a notice with a stable code and update this guide.
+
 ## What the validator enforces
 
 The validator checks:
@@ -40,7 +105,7 @@ The validator checks:
 - canonical unit-index frontmatter fields;
 - unit-index `planning_state` values: `stub`, `initialized`, and `published`;
 - stub unit indexes as lightweight registered units without dashboards;
-- `planning_state: published` as a structurally valid but manual/reserved lifecycle state, with warnings when it is not paired with `status: published`;
+- `planning_state: published` as a structurally valid but manual/reserved lifecycle state, with actionable findings when it is not paired with `status: published`;
 - placeholder dates as allowed only in templates and non-production fixtures, not production program files;
 - program indexes as durable navigation pages without static "next step" routing text;
 - permitted unit kinds and content scopes;
@@ -88,11 +153,17 @@ The validator checks:
 - unit review/finalize prompt contracts that require lesson, exercise, and quiz guide references plus targeted review routes for lesson verification, exercise quality, exercise solutions, quiz item quality, quiz answer keys, and quiz feedback/remediation;
 - routing guardrails that keep content-studio as bounded patching, change-existing-content as dependency-aware editing, and artifact review prompts as the owners of stale review-evidence refresh;
 
-## Scaffold warnings
+## Warnings and notices
 
-Draft and planned scaffolds may contain TODO placeholders. The validator reports these as warnings.
+Draft and planned learner-facing artifacts may contain TODO placeholders, but the validator reports them as actionable warnings because they are real author work before review or publication.
 
-TODO placeholders become blocking errors for files whose `status` claims learner publish readiness.
+Unit `_index.md` planning TODOs are workflow warnings. They may represent incomplete planned artifacts, stale planning notes, or deferred author decisions.
+
+Published files turn unresolved TODO placeholders into blocking errors.
+
+Guides, prompts, references, templates, examples, fixtures, program catalogs, and navigation files may contain TODO markers or omit YAML frontmatter by policy. These are repository-hygiene or frontmatter notices, not normal author-action warnings.
+
+Sparse units do not warn just because lessons, exercises, quizzes, or sets are absent. Missing artifact families matter only when the unit scope, dashboard, inventory, publish target, existing files, or workflow prerequisites make them required.
 
 ## What automation cannot catch
 
@@ -112,7 +183,9 @@ Use human review, source checks, and the relevant content guides for those.
 
 Serious structural problems are errors.
 
-Content-completeness gaps in planned/draft scaffolds are warnings.
+Actionable warnings are non-blocking but should normally be fixed before review, finalization, or publication of the affected artifact.
+
+Notices are informational. They keep intentional exceptions visible without hiding student-facing problems.
 
 The validator enforces one canonical multi-program content system. It accepts stub unit indexes only in the current lightweight lifecycle shape and accepts full dashboards only for initialized or published units. For initialized scaffolds, the source of truth is `content/_templates/unit-index.template.md`; validation reads that template to enforce current headings, planning subsections, final-artifact inventory, and dashboard rows.
 
@@ -149,13 +222,15 @@ strictly. Invalid fixtures must never be added to a production program tree.
 
 ## Template And Example Boundaries
 
-Templates may keep documented placeholders such as `YYYY-MM-DD`, todo markers,
+Templates may keep documented placeholders such as `YYYY-MM-DD`, TODO markers,
 and `{{unit_code}}`. Non-production fixtures may keep placeholders when they are
 part of the fixture contract. Production files under `content/programs/` must
 use real ISO dates in frontmatter, including stubs.
 
-Production TODO markers are warnings while content is planned, draft, or under
-review. Published files turn unresolved TODO markers into errors.
+Learner-facing production TODO markers are warnings while content is planned,
+draft, or under review. Unit planning TODOs are workflow warnings. Program
+catalog or navigation TODOs are repository-hygiene notices. Published files turn
+unresolved TODO markers into errors.
 
 Golden examples are reference material, not competing schemas. When an example
 contains a YAML block for `lesson`, `exercise`, `quiz`, or `exercise-set`, the
