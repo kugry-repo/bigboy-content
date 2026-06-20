@@ -63,6 +63,13 @@ Program-specific files own:
 
 Program `_index.md` catalog tables are derived navigation summaries. Do not edit them as independent official curriculum authority.
 
+Official unit mutation rules live in
+`content/_prompts/commands/manage-unit.md`. For official units, order is
+contiguous from `1`, curriculum-map row order matches `unit_order`, and
+`unit_folder` is derived from order plus slug. Program lifecycle operations
+must preserve that contract when they create, adapt, split, or delete program
+structures.
+
 ## Program Index Metadata
 
 Each program root must contain `_index.md` with:
@@ -208,7 +215,12 @@ Metadata changes may affect many files:
 - `curriculum_map`;
 - `status`.
 
-If `id_prefix` changes, update every ID inside the program and every reference to those IDs. If `program` changes, treat it as a rename.
+If `id_prefix` changes, check publication state first. Unpublished IDs may be
+rewritten destructively during system buildout. Published IDs must not be
+rewritten automatically; stop for an explicit publication migration decision.
+Retired IDs must be recorded in `content/_references/deleted-ids.md`.
+
+If `program` changes, treat it as a rename.
 
 ## Split A Program
 

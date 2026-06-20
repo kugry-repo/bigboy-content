@@ -34,6 +34,16 @@ Program `_index.md` files are overview/navigation dashboards. Unit `_index.md` f
 
 Unofficial topics do not belong in `_curriculum-map.md`. Their canonical registration is the topic unit `_index.md`; `topics/_index.md` and any program-index topic tables are derived navigation views.
 
+Official unit identity is map-first. Program `_index.md` must never become the
+authority for official order, code, folder, slug, title, or domain.
+
+Official unit order is strict:
+
+- `unit_order` values are contiguous positive integers starting at `1`;
+- the row order in `_curriculum-map.md` matches `unit_order`;
+- `unit_folder` is `<two-digit unit_order>-<unit_slug>`;
+- creating or moving into an occupied official order stops until an explicit reorder, split, or merge plan gives the final contiguous order.
+
 ## Program ID Prefix
 
 Every program index defines `id_prefix`. All stable IDs inside that program start with this prefix.
@@ -78,6 +88,15 @@ Nombres Complexes
 
 The numeric prefix is part of `unit_folder` only. IDs do not include the numeric prefix.
 
+For official units, the folder suffix must match `unit_slug`. The folder is
+derived, not independently chosen:
+
+```text
+unit_order: 2
+unit_slug: derivabilite-etude-fonctions
+unit_folder: 02-derivabilite-etude-fonctions
+```
+
 Good:
 
 ```text
@@ -118,6 +137,9 @@ Use:
 {id_prefix}-{unit_code}-{kind}-{number-or-slug}
 ```
 
+`unit_code` must be lowercase ASCII letters and digits, starting with a letter.
+Do not use hyphens in `unit_code`; hyphens separate the ID components.
+
 Examples for `ma-2bac-pc-svt`:
 
 ```text
@@ -134,7 +156,12 @@ ma-2bac-sma-lc-lesson-001
 ma-1bac-pcsvt-trig-lesson-001
 ```
 
-Do not reuse IDs after deletion. If a title changes, keep the ID. If an exercise is replaced by a different exercise, create a new ID.
+Do not reuse IDs after deletion. If a title changes, keep the ID. If an
+exercise is replaced by a different exercise, create a new ID.
+
+Deleted or retired IDs are recorded in
+`content/_references/deleted-ids.md`. The validator rejects active frontmatter
+IDs that appear in that registry.
 
 ## Artifact ID Patterns
 
@@ -200,4 +227,20 @@ Shared conceptual skills may use a concept prefix when they are intentionally re
 
 Do not rename IDs after publication.
 
-When a program, unit, or artifact is renamed during system buildout, update paths, frontmatter, derived catalogs, links, examples, prompts, guides, and validation rules in the same destructive change. Do not keep aliases, fallback paths, or duplicate old/new naming systems.
+For unit mutations, treat content as published when the affected unit index has
+`planning_state: published` or `status: published`, or when an affected lesson,
+exercise, quiz, or set has `status: published`.
+
+Before publication, destructive ID propagation is allowed when the requested
+unit-code or program-prefix mutation requires it. Initialized but unpublished
+content can still be renamed destructively.
+
+After publication, title, order, slug, and folder changes may be made only when
+stable public IDs remain unchanged and every path reference is updated. A
+mutation that would rewrite, delete, or retire a published ID must stop for an
+explicit publication migration decision.
+
+When a program, unit, or artifact is renamed during system buildout, update
+paths, frontmatter, derived catalogs, links, examples, prompts, guides, and
+validation rules in the same destructive change. Do not keep aliases, fallback
+paths, or duplicate old/new naming systems.

@@ -33,6 +33,16 @@ The unit `_index.md` owns unit-local planning and content state: `planning_state
 
 Unofficial topics are not part of the official curriculum map. Their canonical registration is the topic unit `_index.md`; `topics/_index.md` and any topic rows in the program index are derived navigation views.
 
+Official unit mutation operations are handled by
+`content/_prompts/commands/manage-unit.md`. That prompt owns the operational
+rules for create, rename, reorder, move, split, merge, delete, deleted-ID
+tombstones, and current-unit invalidation.
+
+Official unit order is contiguous from `1`; curriculum-map row order matches
+`unit_order`; and official folders are derived as
+`<two-digit unit_order>-<unit_slug>`. A program `_index.md` row cannot override
+that contract.
+
 ## Core rule
 
 The unit `_index.md` is the only unit-planning artifact, but it has a lifecycle.
@@ -134,6 +144,12 @@ Use five layers of state:
 5. File frontmatter tracks file-level status.
 
 `status` means content maturity. `sync_status` means alignment/freshness against current upstream plans, templates, and guides. `## Journal de production` is a historical log, not a current-state tracker.
+
+For mutation safety, published content means an affected unit index has
+`planning_state: published` or `status: published`, or an affected production
+artifact has `status: published`. Published public IDs are stable and must not
+be rewritten automatically. Initialized but unpublished content may still be
+destructively renamed through `content/_prompts/commands/manage-unit.md`.
 
 ## Canonical initialized unit index scaffold
 

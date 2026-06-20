@@ -17,6 +17,7 @@ const CANONICAL_INITIALIZED_UNIT_TEMPLATE_PATH =
   "content/_templates/unit-index.template.md";
 const INITIALIZED_UNIT_REFERENCE_FIXTURE_PATH =
   "content/_fixtures/initialized-unit/_index.md";
+const DELETED_IDS_REGISTRY_PATH = "content/_references/deleted-ids.md";
 
 const REQUIRED_BASE_DIRS = [
   "content",
@@ -959,12 +960,38 @@ function parseCurriculumMap(filePath) {
 
     if (!Number.isFinite(entry.order)) {
       addError(filePath, `${rowLabel} has invalid Order "${cells[columns.order] ?? ""}"`);
+    } else if (!isPositiveIntegerLike(entry.order)) {
+      addError(filePath, `${rowLabel} Order must be a positive integer`);
     }
 
     for (const field of ["folder", "slug", "title", "domain", "code"]) {
       if (!entry[field]) {
         addError(filePath, `${rowLabel} is missing ${field}`);
       }
+    }
+
+    if (entry.slug && !isSlug(entry.slug)) {
+      addError(filePath, `${rowLabel} Unit slug "${entry.slug}" must be a lowercase ASCII slug`);
+    }
+
+    if (entry.code && !isUnitCode(entry.code)) {
+      addError(filePath, `${rowLabel} Unit code "${entry.code}" must use lowercase ASCII letters/digits and start with a letter`);
+    }
+
+    if (entry.domain && !ALLOWED_DOMAINS.has(entry.domain)) {
+      addError(filePath, `${rowLabel} Domain "${entry.domain}" is not allowed`);
+    }
+
+    if (
+      Number.isFinite(entry.order) &&
+      entry.slug &&
+      entry.folder &&
+      entry.folder !== officialFolderFor(entry.order, entry.slug)
+    ) {
+      addError(
+        filePath,
+        `${rowLabel} Unit folder "${entry.folder}" must be "${officialFolderFor(entry.order, entry.slug)}"`,
+      );
     }
 
     if (entry.folder.startsWith("topics/")) {
@@ -993,6 +1020,17 @@ function parseCurriculumMap(filePath) {
       } else {
         seen.set(key, unit.folder);
       }
+    }
+  }
+
+  for (let index = 0; index < units.length; index += 1) {
+    const expectedOrder = index + 1;
+    const unit = units[index];
+    if (Number.isFinite(unit.order) && unit.order !== expectedOrder) {
+      addError(
+        filePath,
+        `curriculum-map row ${index + 1} has Order ${unit.order}; official unit_order values must be contiguous and row order must match unit_order ${expectedOrder}`,
+      );
     }
   }
 
@@ -1046,6 +1084,23 @@ function isEmptyValue(value) {
 
 function isPositiveInteger(value) {
   return Number.isInteger(value) && value > 0;
+}
+
+function isPositiveIntegerLike(value) {
+  const number = Number(value);
+  return Number.isInteger(number) && number > 0;
+}
+
+function isSlug(value) {
+  return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(String(value ?? ""));
+}
+
+function isUnitCode(value) {
+  return /^[a-z][a-z0-9]*$/.test(String(value ?? ""));
+}
+
+function officialFolderFor(order, slug) {
+  return `${String(Number(order)).padStart(2, "0")}-${slug}`;
 }
 
 function arraysEqual(left, right) {
@@ -1586,6 +1641,21 @@ function checkUnitFrontmatter(indexPath, unitDir, expectedGroup, data, program) 
     );
   }
 
+  if (Object.hasOwn(data, "unit_order") && !isPositiveIntegerLike(data.unit_order)) {
+    addError(indexPath, 'frontmatter "unit_order" must be a positive integer');
+  }
+
+  if (data.unit_slug && !isSlug(data.unit_slug)) {
+    addError(indexPath, `frontmatter "unit_slug" must be a lowercase ASCII slug`);
+  }
+
+  if (data.unit_code && !isUnitCode(data.unit_code)) {
+    addError(
+      indexPath,
+      'frontmatter "unit_code" must use lowercase ASCII letters/digits and start with a letter',
+    );
+  }
+
   if (data.unit_folder !== expectedUnitFolder) {
     addError(indexPath, `frontmatter "unit_folder" must be "${expectedUnitFolder}"`);
   }
@@ -1620,6 +1690,17 @@ function checkUnitFrontmatter(indexPath, unitDir, expectedGroup, data, program) 
         `official unit folder prefix ${prefixMatch[1]} must match frontmatter "unit_order" ${data.unit_order}`,
       );
     }
+
+    if (
+      isPositiveIntegerLike(data.unit_order) &&
+      data.unit_slug &&
+      data.unit_folder !== officialFolderFor(data.unit_order, data.unit_slug)
+    ) {
+      addError(
+        indexPath,
+        `official unit_folder must be "${officialFolderFor(data.unit_order, data.unit_slug)}"`,
+      );
+    }
   }
 
   if (expectedGroup === "topic") {
@@ -1633,6 +1714,10 @@ function checkUnitFrontmatter(indexPath, unitDir, expectedGroup, data, program) 
 
     if (data.content_scope === "official-curriculum") {
       addError(indexPath, 'unofficial topic cannot use "content_scope: official-curriculum"');
+    }
+
+    if (data.unit_slug && data.unit_folder !== `topics/${data.unit_slug}`) {
+      addError(indexPath, `topic unit_folder must be "topics/${data.unit_slug}"`);
     }
   }
 }
@@ -2628,10 +2713,25 @@ function checkSetFile(unit, filePath) {
     );
 
     for (const exerciseId of data.exercise_ids) {
-      if (!expectedExerciseIdPattern.test(exerciseId)) {
+      const exerciseIdMatch = exerciseId.match(expectedExerciseIdPattern);
+      if (!exerciseIdMatch) {
         addError(
           filePath,
           `frontmatter "exercise_ids" value "${exerciseId}" must match "${unit.program.idPrefix}-${unit.code}-ex-###"`,
+        );
+        continue;
+      }
+
+      const exerciseNumber = exerciseId.slice(-3);
+      const exercisePath = path.join(
+        unit.dir,
+        "exercises",
+        `${unit.code}-ex-${exerciseNumber}.md`,
+      );
+      if (!isFile(exercisePath)) {
+        addError(
+          filePath,
+          `frontmatter "exercise_ids" references missing exercise file "${unit.code}-ex-${exerciseNumber}.md"`,
         );
       }
     }
@@ -2701,6 +2801,7 @@ function checkUnitUniqueness() {
   const byFolder = new Map();
   const officialOrders = new Map();
   const topicOrders = new Map();
+  const unitsByProgramGroup = new Map();
 
   for (const unit of units) {
     if (unit.code) {
@@ -2731,6 +2832,27 @@ function checkUnitUniqueness() {
         addError(unit.indexPath, `duplicate ${unit.group} unit_order ${unit.order} also used in ${previous}`);
       } else {
         orderMap.set(orderKey, rel(unit.indexPath));
+      }
+
+      const groupKey = `${unit.program.id}:${unit.group}`;
+      const groupUnits = unitsByProgramGroup.get(groupKey) ?? [];
+      groupUnits.push(unit);
+      unitsByProgramGroup.set(groupKey, groupUnits);
+    }
+  }
+
+  for (const [groupKey, groupUnits] of unitsByProgramGroup) {
+    if (!groupKey.endsWith(":official")) continue;
+
+    const orderedUnits = [...groupUnits].sort((left, right) => left.order - right.order);
+    for (let index = 0; index < orderedUnits.length; index += 1) {
+      const expectedOrder = index + 1;
+      const unit = orderedUnits[index];
+      if (unit.order !== expectedOrder) {
+        addError(
+          unit.indexPath,
+          `official unit_order values must be contiguous from 1; expected ${expectedOrder} in this position`,
+        );
       }
     }
   }
@@ -3007,7 +3129,8 @@ function checkCatalogsForProgram(program) {
 
   if (programCatalog) {
     checkCatalogProgramMetadata(programIndexPath, programCatalog.parsed.data, program);
-    for (const row of parseCatalogRows(programCatalog.text)) {
+    const programRows = parseCatalogRows(programCatalog.text);
+    for (const row of programRows) {
       const isTopic = /\[\[topics\//.test(row.join("|"));
       checkCatalogRow(
         programIndexPath,
@@ -3017,6 +3140,18 @@ function checkCatalogsForProgram(program) {
         program.curriculumUnitsByFolder,
       );
     }
+
+    const officialCatalogFolders = programRows
+      .map((row) => row.join("|").match(/\[\[([^|\]]+)_index\|/))
+      .filter(Boolean)
+      .map((match) => match[1].replace(/\/$/, ""))
+      .filter((folder) => !folder.startsWith("topics/"));
+    compareLists(
+      programIndexPath,
+      "official catalog folders",
+      officialCatalogFolders,
+      program.curriculumUnits.map((unit) => unit.folder),
+    );
   }
 
   if (topicCatalog) {
@@ -3629,6 +3764,82 @@ function collectIdsAndWarnings() {
   }
 }
 
+function parseDeletedIdRegistry(filePath) {
+  if (!isFile(filePath)) {
+    addError(filePath, "missing deleted ID registry");
+    return [];
+  }
+
+  const text = fs.readFileSync(filePath, "utf8");
+  const parsed = parseFrontmatter(filePath, text);
+  if (!requireFrontmatter(filePath, parsed, "deleted ID registry")) {
+    return [];
+  }
+
+  const deletedIds = [];
+  const seen = new Set();
+  const lines = text.split(/\r?\n/);
+  let headerColumns = null;
+  let inDeletedIdTable = false;
+
+  for (const line of lines) {
+    if (!/^\|/.test(line)) {
+      if (inDeletedIdTable) break;
+      continue;
+    }
+
+    const cells = splitMarkdownTableRow(line);
+    if (isMarkdownSeparatorRow(cells)) continue;
+
+    if (!headerColumns) {
+      const headers = cells.map(normalizeTableHeader);
+      const deletedIdColumn = headers.indexOf("deleted-id");
+      if (deletedIdColumn >= 0) {
+        headerColumns = { deletedId: deletedIdColumn };
+        inDeletedIdTable = true;
+      }
+      continue;
+    }
+
+    const deletedId = cleanTableCell(cells[headerColumns.deletedId]);
+    if (!deletedId) continue;
+
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(deletedId)) {
+      addError(filePath, `deleted ID "${deletedId}" must be lowercase ASCII with hyphen separators`);
+      continue;
+    }
+
+    if (seen.has(deletedId)) {
+      addError(filePath, `duplicate deleted ID "${deletedId}"`);
+      continue;
+    }
+
+    seen.add(deletedId);
+    deletedIds.push(deletedId);
+  }
+
+  if (!headerColumns) {
+    addError(filePath, 'missing deleted ID table with column "Deleted ID"');
+  }
+
+  return deletedIds;
+}
+
+function checkDeletedIdRegistry() {
+  const registryPath = fullPathFromRepoPath(DELETED_IDS_REGISTRY_PATH);
+  const deletedIds = parseDeletedIdRegistry(registryPath);
+
+  for (const deletedId of deletedIds) {
+    const activeFile = ids.get(deletedId);
+    if (activeFile) {
+      addError(
+        registryPath,
+        `deleted ID "${deletedId}" is still active in ${activeFile}`,
+      );
+    }
+  }
+}
+
 function printResults() {
   console.log("Content validation");
   console.log("==================");
@@ -3685,6 +3896,7 @@ function main() {
   checkRemovedContentObjectContracts();
   checkLegacyGlobalProductionReferences();
   collectIdsAndWarnings();
+  checkDeletedIdRegistry();
   printResults();
 }
 

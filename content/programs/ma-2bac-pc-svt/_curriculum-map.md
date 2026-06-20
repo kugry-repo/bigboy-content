@@ -12,6 +12,11 @@ This file is the canonical official curriculum structure for this program. It ow
 
 Program `_index.md` catalog rows and official unit `_index.md` identity fields are derived from this map and must match it.
 
+Official `Order` values are contiguous from `1`, table row order matches
+`Order`, and `Unit folder` is derived as `<two-digit Order>-<Unit slug>`.
+Do not insert into an occupied order without an explicit reorder, split, or
+merge plan.
+
 ## Baseline Reference
 
 Baseline used for this scaffold:

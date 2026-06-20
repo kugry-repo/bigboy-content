@@ -28,6 +28,10 @@ The validator checks:
 - dynamic program discovery under `content/programs/*`;
 - each program's `_index.md`, `_curriculum-map.md`, metadata, `id_prefix`, and `topics/` folder;
 - `_curriculum-map.md` as the official-unit authority for official unit list, order, folder, slug, title, domain, and code;
+- official `unit_order` uniqueness and contiguity from `1`;
+- curriculum-map row order matching official `unit_order`;
+- official `unit_folder` derived as `<two-digit unit_order>-<unit_slug>`;
+- official `unit_code` and `unit_slug` naming shape;
 - official units directly under `content/programs/<program_id>/`;
 - unofficial topics under `content/programs/<program_id>/topics/`;
 - catalog indexes distinguished from content-unit indexes;
@@ -67,6 +71,7 @@ The validator checks:
 - required production dashboard sections, rows, and allowed dashboard status values;
 - official-unit frontmatter and program-index catalog rows against the owning curriculum map;
 - topic catalog references against topic unit frontmatter inside the owning program.
+- active frontmatter IDs against `content/_references/deleted-ids.md`;
 
 ## Scaffold warnings
 
@@ -84,6 +89,7 @@ The validator cannot reliably catch:
 - fake motivation;
 - exam misalignment;
 - copied third-party substance that has been paraphrased poorly.
+- arbitrary prose references to old unit titles, codes, folders, or planned design-card IDs after a mutation.
 
 Use human review, source checks, and the relevant content guides for those.
 

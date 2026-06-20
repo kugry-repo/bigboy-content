@@ -49,6 +49,14 @@ quizzes/
 sets/
 ```
 
+Official unit identity is map-first: `_curriculum-map.md` owns official order,
+codes, folders, slugs, titles, and domains. Official `unit_order` values are
+contiguous from `1`, row order in the map matches `unit_order`, and official
+folders are derived as `<two-digit unit_order>-<unit_slug>`.
+
+Deleted or retired frontmatter IDs are recorded in
+`_references/deleted-ids.md`; validation rejects active reuse.
+
 The unit `_index.md` is the only unit-planning artifact. Unstarted units stay lightweight with `planning_state: stub`; only initialized or published unit indexes contain the full planning dashboard.
 
 Use `content/_templates/unit-index.template.md` as the canonical initialized scaffold. Use `content/_prompts/commands/initialize-unit.md` to expand one stub before planning lessons, exercises, quizzes, sets, or dashboard work. Do not expand every unit index just because the dashboard shape changes.

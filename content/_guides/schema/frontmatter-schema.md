@@ -6,6 +6,13 @@ The schema is program-aware. Program metadata is defined once in `content/progra
 
 Official curriculum structure is defined once in `content/programs/<program_id>/_curriculum-map.md`. For official units, repeated fields such as `unit_order`, `unit_code`, `unit_folder`, `unit_slug`, `title`, and `domain` are derived copies and must match that curriculum map.
 
+Official unit identity is map-first. The program `_index.md` is derived
+navigation and must not become an authority for official unit identity.
+
+Official unit order is contiguous from `1`, curriculum-map row order matches
+`unit_order`, and official `unit_folder` is derived as
+`<two-digit unit_order>-<unit_slug>`.
+
 Guides, prompts, and references may be metadata-free. Validator output for metadata-free guide, prompt, or reference files should be warnings at most unless the project later decides to enforce frontmatter everywhere.
 
 ## Program Index
@@ -89,6 +96,10 @@ topics/etudier-une-fonction
 ```
 
 For official curriculum units, `unit_order`, `unit_code`, `unit_folder`, `unit_slug`, `title`, `official`, `content_scope`, and `domain` must match the owning program's `_curriculum-map.md` and official-unit rules. For unofficial topics, the topic unit `_index.md` is the canonical registration record.
+
+`unit_code` uses lowercase ASCII letters and digits only, starting with a
+letter. Hyphens are not allowed in `unit_code` because IDs use hyphens as
+component separators.
 
 `related_units` is an array of `unit_folder` values inside the same program, for example `01-limites-continuite` or `topics/etudier-une-fonction`. Use `[]` when there is no explicit relation.
 
@@ -495,6 +506,15 @@ ma-2bac-pcsvt-lc-lesson-001
 ma-2bac-sma-lc-lesson-001
 ma-1bac-pcsvt-trig-lesson-001
 ```
+
+Deleted or retired IDs must be added to
+`content/_references/deleted-ids.md`. Validation rejects active frontmatter IDs
+that appear in that registry.
+
+For unit-mutation safety, content is considered published when the affected
+unit index has `planning_state: published` or `status: published`, or when an
+affected lesson, exercise, quiz, or set has `status: published`. Published IDs
+must not be rewritten automatically.
 
 ## Dates
 

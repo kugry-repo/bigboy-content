@@ -84,6 +84,10 @@ Official curriculum units remain the canonical curriculum spine. Unofficial topi
 
 For official curriculum units, the owning program's `_curriculum-map.md` is the canonical source for unit list, order, code, folder, slug, title, and domain. Program `_index.md` files are navigation/dashboard views, and unit `_index.md` files own unit-local planning and content state.
 
+Official unit mutations are governed by `content/_prompts/commands/manage-unit.md`.
+Official `unit_order` values are contiguous, curriculum-map row order matches
+`unit_order`, and official `unit_folder` is derived from order plus slug.
+
 When doing unit-level work:
 
 1. Read `_guides/units/unit-workflow.md`.
@@ -202,7 +206,8 @@ New generated content should normally start as `draft`, not `published`.
 ## File editing rules
 
 - Preserve existing frontmatter fields unless there is a clear reason to change them.
-- Do not rename IDs after creation unless explicitly asked.
+- Do not rename IDs as a casual edit. For official-unit mutations, unpublished IDs may be destructively propagated through `content/_prompts/commands/manage-unit.md`; published IDs must not be rewritten automatically.
+- Add deleted or retired IDs to `content/_references/deleted-ids.md` before removing them.
 - Do not move content files without updating links.
 - Do not mix multiple unrelated exercises in one exercise file.
 - Each exercise lives in its own file, but exercise files are usually created in small batches of 3 to 5 unless explicitly requested otherwise.
