@@ -13,12 +13,12 @@ Use this prompt for:
 - improving one MCQ/MR distractor and its feedback;
 - improving one option's feedback or remediation;
 - adding one item to an existing quiz;
-- creating a short quiz, exit ticket, or remediation quiz with a small number of items;
+- creating a one-item standalone quiz, short quiz, exit ticket, or remediation quiz with a narrow objective;
 - creating one narrow exam-readiness item when the objective and remediation
   path are clear;
 - reviewing only the changed item or feedback slice after a small edit.
 
-Do not use it to create a full quiz bank, broad diagnostic, whole-unit quiz coverage, or a large remediation system.
+Do not use it to create a full quiz bank, broad diagnostic, whole-unit quiz coverage, high-stakes exam-readiness sequence, or a large remediation system.
 
 ## Target
 
@@ -100,11 +100,11 @@ Do not choose item types for variety. Choose the smallest item type that reveals
 
 ## Route Choice
 
-Use this shortcut when the request has a narrow objective and enough context to design the item or changed slice.
+Use this shortcut when the request has a narrow objective and enough context to design the item or changed slice. A one-item standalone quiz is intentionally valid for a lightweight diagnostic, exit ticket, misconception check, quick review item, or small targeted practice artifact.
 
 Create or update a compact item card only when traceability or missing design intent requires it. For one item or a short quiz, the compact card may be created directly under `### Design cards des items de quiz`; it must still satisfy the relevant item-type contract.
 
-If the request is broad, such as "make a diagnostic quiz for the unit", "build a quiz bank", "cover this topic", or "prepare exam-readiness quiz coverage", stop and recommend the full quiz workflow starting at the smallest missing step:
+If the request is broad, such as "make a diagnostic quiz for the unit", "build a quiz bank", "cover this topic", "design a full distractor strategy", or "prepare exam-readiness quiz coverage", stop and recommend the full quiz workflow starting at the smallest missing step:
 
 ```text
 content/_prompts/workflows/quizzes/01-plan-quiz-intent.md
@@ -153,7 +153,7 @@ Do not rewrite unrelated quiz items.
 
 ### Create a short quiz, exit ticket, or remediation quiz
 
-Create one quiz file under `quizzes/` with a small number of items, usually 2 to 5.
+Create one quiz file under `quizzes/` with one or more items. One item is valid for a lightweight diagnostic, exit ticket, misconception check, quick review item, or small targeted practice artifact. Multi-question quizzes are the normal shape for broader review, broader assessment, or systematic remediation.
 
 Use this only when the objective is narrow and clear. Set:
 
@@ -201,7 +201,9 @@ Do not force whole-quiz review unless the change affects the whole quiz purpose,
 Update only the useful unit-level state:
 
 - add a final quiz link to `## Inventaire des fichiers finaux` when creating a new quiz file;
-- update the quiz-family `Scope` row only when the new quiz makes quizzes in scope;
+- if a real quiz file is created and the quiz family is `not-in-scope`, `deferred`, missing, or otherwise not active, update the unit index/dashboard/inventory to the smallest schema-valid in-scope state, using `Scope: not-started` for the quiz family;
+- do not leave a real quiz file, quiz inventory link, or `used-in-quiz` item card in a unit whose quiz family remains `Scope: not-in-scope`;
+- if the quiz family is already in scope, do not churn dashboard rows unless the new file changes the next action;
 - add or update compact quiz intent or item cards only when needed for traceability;
 - update blocker/review-needs rows only when the next action changes.
 
@@ -215,7 +217,7 @@ Lightweight quiz creation does not certify quality. New items and short quizzes 
 - answer keys: `content/_prompts/workflows/quizzes/06-review-answer-keys.md`
 - feedback/remediation: `content/_prompts/workflows/quizzes/07-review-feedback-remediation.md`
 
-Creating one quiz item marks that item as needing item-quality, answer-key, and feedback/remediation review. Editing only a distractor invalidates item-quality for that item and feedback when the feedback depends on the changed distractor. Editing feedback only invalidates feedback/remediation evidence for that item or slice.
+Creating one quiz item or one short standalone quiz marks the affected file-level `item_quality_status`, `answer_key_status`, `feedback_status`, and `remediation_status` as `needs-review`. Editing a quiz item, answer key, distractor, feedback, scoring, misconception tag, or learner-facing wording invalidates only the affected quiz review evidence. Editing only a distractor invalidates item-quality for that item and feedback when the feedback depends on the changed distractor. Editing feedback only invalidates feedback/remediation evidence for that item or slice. Small copyedits that do not affect meaning, answer logic, feedback, remediation, or pedagogy do not require dashboard, journal, or unit-wide review churn.
 
 ## Quality Bar
 

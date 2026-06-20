@@ -107,6 +107,8 @@ Use these hyphenated values in dashboard rows and status reports. Do not write p
 
 When a family is `not-in-scope`, mark the family `Scope` row and its family-local dashboard rows `not-in-scope` for mechanical clarity. Do not keep design cards, final files, or active local dashboard rows in a family marked `not-in-scope`.
 
+Creating a real final artifact or a source card that is immediately used for a final artifact makes that artifact family active for the unit. If the family was `not-in-scope`, `deferred`, missing, or otherwise inactive, update the smallest required unit index, dashboard, and final-artifact inventory state to the schema-valid in-scope value, `Scope: not-started`. Do not leave a final exercise or quiz file in a unit whose matching family remains `Scope: not-in-scope`.
+
 Because final exercise sets organize exercise files, a unit with final set files
 must keep the exercise family in scope. If the useful work is only future set
 coverage from design cards, record that as author-only set planning rather than
@@ -398,7 +400,7 @@ Lesson draft creation requires adequate source/target notes, raw material, and c
 
 Exercise batch creation requires canonical exercise design cards for the selected exercises. Exercises may draw from the unit map, skill map, official curriculum notes, misconception map, exam patterns, raw seeds, design cards, or existing lessons when available.
 
-Full quiz file creation requires a quiz intent card and ready item design cards. Lightweight quiz work may create or update the smallest compact intent/card needed for one item, one distractor/feedback slice, one added item, or a short focused quiz. Quizzes may link to lessons or exercises for remediation, but those links are optional unless the quiz intent depends on them.
+Full quiz file creation requires a quiz intent card and ready item design cards. Lightweight quiz work may create or update the smallest compact intent/card needed for one item, one-item standalone quiz, one distractor/feedback slice, one added item, or a short focused quiz. Quizzes may link to lessons or exercises for remediation, but those links are optional unless the quiz intent depends on them.
 
 Final exercise set creation requires existing same-unit exercise files. Reviewed exercise design cards may plan future set coverage, identify useful groupings, or reveal missing exercises, but they are not enough to create a final learner-facing set under `sets/`. Sets link to exercise files instead of duplicating full exercise content.
 
@@ -481,7 +483,7 @@ For one focused exercise, a tiny routine group, a narrow exam-style practice ite
 
 ### Quizzes
 
-Standalone quizzes are first-class unit content and live under `quizzes/`.
+Standalone quizzes are first-class unit content and live under `quizzes/`. A standalone quiz file may contain one or more questions. One-item quizzes are valid for lightweight diagnostics, exit tickets, misconception checks, quick review items, and small targeted practice artifacts; multi-question quizzes remain the normal shape for broader quiz work.
 
 Use:
 

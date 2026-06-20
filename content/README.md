@@ -90,6 +90,8 @@ Artifact frontmatter is the source of truth for artifact-level status and review
 
 Initialized dashboards declare artifact-family scope with the `Scope` rows under `### Lessons`, `### Exercises`, `### Sets`, and `### Quizzes`: `not-started` is the in-scope/open declaration, `not-in-scope` means intentionally absent, and `deferred` means intentionally postponed. Family-local rows summarize blockers and next decisions; artifact status stays in frontmatter.
 
+A real final artifact makes its artifact family in scope. Do not leave a final exercise or quiz file, final-artifact inventory link, or used source card in a family whose dashboard `Scope` remains `not-in-scope`.
+
 Initialized and published unit indexes also contain `## Inventaire des fichiers finaux`. This is the canonical navigation inventory for final learner-facing or publishable lessons, exercises, exercise sets, and standalone quizzes. It mirrors the dashboard Scope rows, uses `none`, `not-in-scope`, or `deferred` when a family has no links, and lists real final files with unit-relative Obsidian links when they exist. Planning cards stay in the planning sections; they are not final-artifact inventory rows.
 
 `planning_state: published` is set only by explicit human instruction after review and cleanup. Review/finalize prompts can report readiness for declared scope, but they do not publish automatically.
@@ -108,7 +110,9 @@ Exercise design cards and quiz item design cards are contract-bearing planning a
 
 Standalone quiz item types are canonical and type-specific: `multiple-choice`, `multiple-response`, `true-false`, `fill-blank`, `match`, `sequence`, and `hotspot`. MCQ/MR items require distractor and per-choice feedback planning where diagnostic; non-choice items require their own accepted-answer, pairing, ordering, or hotspot-region contract without fake per-choice fields.
 
-Small authoring tasks have explicit shortcut routes. Use `content/_prompts/shortcuts/create-direct-exercise.md` for one focused exercise, a tiny routine practice group, or one exercise solution when the idea is clear. Use `content/_prompts/shortcuts/lightweight-quiz.md` for one quiz item, one distractor plus feedback, one feedback/remediation slice, one added item, or a short exit-ticket/remediation quiz. Use the full exercise and quiz workflows for broad coverage, balanced sets, full quiz banks, high-stakes diagnostics, and broad exam-prep production.
+Standalone quiz files may contain one or more questions. One-item standalone quizzes are valid for lightweight diagnostics, exit tickets, misconception checks, quick review items, and targeted practice; multi-question quizzes remain normal for broader review, assessment, remediation, and exam-readiness work.
+
+Small authoring tasks have explicit shortcut routes. Use `content/_prompts/shortcuts/create-direct-exercise.md` for one focused complete exercise, a tiny routine practice group, a targeted gap, or one exercise solution when the idea is clear. Use `content/_prompts/shortcuts/lightweight-quiz.md` for one quiz item, one-item standalone quiz, one distractor plus feedback, one feedback/remediation slice, one added item, or a short exit-ticket/remediation quiz. Use the full exercise and quiz workflows for broad coverage, balanced sets, full quiz banks, high-stakes diagnostics, and broad exam-prep production.
 
 Skill coverage is content-derived: unit indexes, artifact frontmatter `skills`, exercise and quiz design cards, and unit review notes are the current source of truth. A generated coverage report may be added later; no manually maintained global file is authoritative.
 

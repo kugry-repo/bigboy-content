@@ -49,7 +49,7 @@ Do not use old workflow names or keep parallel exercise review systems.
 
 Exercise work is local to the exercise family. For substantial production, raw seeds and exercise design cards are prerequisites for final exercise creation; local mini-lessons are optional support references, not a universal prerequisite. If the unit intentionally has exercises but no local lessons, set the lesson-family dashboard `Scope` row to `not-in-scope` and write `not-in-scope` in mini-lesson link fields instead of inventing lesson links. If lessons are planned later, use `deferred`.
 
-For small focused tasks, use `content/_prompts/shortcuts/create-direct-exercise.md`. This route is allowed for one clear exercise idea, a tiny routine group where coverage is obvious, a narrow exam-style practice exercise, or one solution draft/improvement. It still requires correct mathematics, worth-existing value, a source design card or compact direct card, a worked solution, and visible review needs. It must not produce a large batch or exercise universe.
+For small focused tasks, use `content/_prompts/shortcuts/create-direct-exercise.md`. This route is allowed for one clear complete exercise, a targeted gap, a tiny routine group where coverage is obvious, a narrow exam-style practice exercise, or one solution draft/improvement. It still requires correct mathematics, worth-existing value, a source design card or compact direct card, a worked solution, and visible review needs. Creating a real exercise file makes the exercise family in scope for the unit, so the unit index/dashboard/inventory must not leave the exercise family at `not-in-scope`. It must not produce a large batch or exercise universe.
 
 ## Raw Seed vs Design Card vs Final File
 

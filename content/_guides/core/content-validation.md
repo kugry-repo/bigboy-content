@@ -148,6 +148,7 @@ The validator checks:
 - absence of the old lesson-only review command;
 - absence of obsolete lesson workflow prompt filenames in live Markdown and script files;
 - required quiz frontmatter fields, allowed quiz values, required quiz headings, review-status conflicts, and quality-signal warnings;
+- quiz `question_count` as a positive integer matching student-facing question headings for reviewed/published quizzes, with `question_count: 1` valid when exactly one final question exists;
 - quiz review freshness conflicts, including reviewed/published quiz status while item-quality, answer-key, feedback, or remediation evidence is `needs-review`;
 - required production dashboard sections, rows, and allowed dashboard status values;
 - official-unit frontmatter and program-index catalog rows against the owning curriculum map;

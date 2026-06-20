@@ -138,7 +138,7 @@ Routing rules:
 - If the user wants a known bounded change to existing files, stale-file sync, or migration after a prompt/guide/template/schema/validator change, recommend `content/_prompts/commands/change-existing-content.md`.
 - If the user wants conversational critique, diagnosis, proposals, grilling, taste decisions, or a small targeted patch on a selected file/fragment, recommend `content/_prompts/commands/content-studio.md`.
 - If the user wants one focused exercise, a tiny routine exercise group, one narrow exam-style exercise, one exercise solution, or one solution improvement and the target unit is initialized, recommend `content/_prompts/shortcuts/create-direct-exercise.md`.
-- If the user wants one quiz item, one improved quiz item, one MCQ/MR distractor and feedback pair, one option feedback/remediation slice, one item added to an existing quiz, or a short exit-ticket/remediation quiz and the target unit is initialized, recommend `content/_prompts/shortcuts/lightweight-quiz.md`.
+- If the user wants one quiz item, one-item standalone quiz, one improved quiz item, one MCQ/MR distractor and feedback pair, one option feedback/remediation slice, one item added to an existing quiz, or a short exit-ticket/remediation quiz and the target unit is initialized, recommend `content/_prompts/shortcuts/lightweight-quiz.md`.
 - If the user wants a full exercise universe, broad topic coverage, a balanced exercise set, or broad exam-prep exercise production, recommend the full exercise workflow at the smallest missing prerequisite.
 - If the user wants a full quiz bank, high-stakes diagnostic quiz, broad unit quiz coverage, or broad exam-readiness quiz production, recommend the full quiz workflow at the smallest missing prerequisite.
 - If the user wants source/provenance review for official, exam-inspired, adapted, or copied material, recommend `content/_prompts/workflows/unit/03-finalize-unit.md` for unit-wide source-safety cleanup or `content/_prompts/commands/content-studio.md` for one bounded selected artifact/source note.
@@ -216,6 +216,8 @@ Use `content/_prompts/shortcuts/create-direct-exercise.md` when the author asks 
 
 The direct route may infer the unit from the active file path and may create the complete exercise file when the request is specific enough. It must mark new direct exercises as needing exercise-quality and solution review. Solution-only edits invalidate solution review only unless the statement/design also changed.
 
+If direct exercise creation produces a real final exercise file, the exercise family must be in scope. If the family is `not-in-scope`, `deferred`, missing, or otherwise inactive, the direct route updates the smallest required unit-index/dashboard/inventory state instead of leaving the family out of scope.
+
 Use the full exercise workflow when the author asks for a whole topic exercise universe, broad coverage, balanced set design, systematic unit exercise production, or broad exam-prep exercise coverage:
 
 1. If no exercise cluster map exists and the request is broad, recommend `content/_prompts/workflows/exercises/01-generate-raw-seeds.md`.
@@ -236,6 +238,7 @@ First classify the request by scope.
 Use `content/_prompts/shortcuts/lightweight-quiz.md` when the author asks for:
 
 - one quiz item for a known objective;
+- a one-item standalone quiz for a lightweight diagnostic, exit ticket, misconception check, quick review item, or targeted practice artifact;
 - one improved quiz item;
 - one MCQ/MR distractor and its feedback;
 - one option's feedback or remediation;
@@ -244,7 +247,7 @@ Use `content/_prompts/shortcuts/lightweight-quiz.md` when the author asks for:
 - a short remediation quiz;
 - review of only the changed item, option, feedback, or remediation slice.
 
-The lightweight route may infer the unit from the active file path and may patch related item/feedback sections even when they are not adjacent. It must treat MCQ/MR distractors as diagnostic objects: why tempting, why wrong, what misconception they reveal, and what feedback/remediation follows.
+The lightweight route may infer the unit from the active file path, may create a one-item standalone quiz when the request is narrow, and may patch related item/feedback sections even when they are not adjacent. It must treat MCQ/MR distractors as diagnostic objects: why tempting, why wrong, what misconception they reveal, and what feedback/remediation follows.
 
 Use the full quiz workflow when the author asks for a full quiz bank, high-stakes diagnostic quiz, broad unit quiz coverage, broad exam-readiness production, or systematic coverage across a quiz series. Exam-readiness quiz work is diagnostic practice, not full-paper simulation:
 

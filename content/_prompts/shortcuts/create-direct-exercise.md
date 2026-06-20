@@ -1,8 +1,8 @@
 # Prompt - Create Direct Exercise
 
-Use this shortcut for lightweight exercise work when the author wants a small, focused result without running the full exercise pipeline.
+Use this shortcut for lightweight exercise work when the author wants a small, focused result without running the full exercise pipeline. When the request is specific enough, this shortcut may create a complete final exercise file.
 
-This is not a replacement for the full exercise workflow. Use the full workflow for a whole topic exercise universe, broad unit coverage, balanced exercise sets, high-stakes exam-prep coverage, or any request that needs cluster-level planning.
+This is not a replacement for the full exercise workflow. Use the full workflow for a whole topic exercise universe, broad unit coverage, balanced exercise sets, systematic work across multiple skill bands, high-stakes exam-prep coverage, or any request that needs cluster-level planning.
 
 ## Allowed lightweight uses
 
@@ -10,6 +10,7 @@ Use this prompt for:
 
 - creating one focused exercise from a clear idea;
 - creating 2 or 3 routine exercises when the skill coverage is obvious and narrow;
+- filling one targeted exercise gap or converting one known need into a final exercise;
 - adding exam-style practice for one known skill without claiming official exam status;
 - adapting one checked official-exam item into a normal exercise, with
   `source_type: national-exam` and source/adaptation notes;
@@ -96,7 +97,7 @@ Create a complete exercise file when the request is specific enough to identify:
 
 Create or update a compact direct design card first when any of those are missing or when the author only supplied a rough idea. Do not invent broad coverage or a cluster map just to make the direct route look complete.
 
-If the request is broad, such as "make exercises for this topic", "cover the unit", "build an exercise set", or "prepare exam practice for the whole chapter", stop and recommend the full exercise workflow starting at the smallest missing step:
+If the request is broad, such as "make exercises for this topic", "cover the unit", "design practice across several skill bands", "build an exercise set", or "prepare exam practice for the whole chapter", stop and recommend the full exercise workflow starting at the smallest missing step:
 
 ```text
 content/_prompts/workflows/exercises/01-generate-raw-seeds.md
@@ -181,7 +182,9 @@ only when the card is complete enough to draft from immediately. Use `used-in-ex
 Update only the useful unit-level state:
 
 - add new final exercise links to `## Inventaire des fichiers finaux`;
-- set the exercise-family `Scope` row to `not-started` only if the family was previously untouched and the new exercise makes exercises in scope;
+- if a real exercise file is created and the exercise family is `not-in-scope`, `deferred`, missing, or otherwise not active, update the unit index/dashboard/inventory to the smallest schema-valid in-scope state, using `Scope: not-started` for the exercise family;
+- do not leave a real exercise file, exercise inventory link, or `used-in-exercise` card in a unit whose exercise family remains `Scope: not-in-scope`;
+- if the exercise family is already in scope, do not churn dashboard rows unless the new file changes the next action;
 - update the exercise-family blocker/review-needs row only when the new file or solution edit changes the next action;
 - add or update the source direct design card when needed for traceability.
 
@@ -194,7 +197,9 @@ Direct exercise creation does not certify quality. New direct exercises need:
 - `content/_prompts/workflows/exercises/05-review-exercise-quality.md`
 - `content/_prompts/workflows/exercises/06-review-solutions.md`
 
-Solution-only edits invalidate solution review only. Statement, hint, mistake, verification, or design edits invalidate exercise-quality review and may invalidate solution review when the solution depends on the changed part.
+New direct exercise files start as `draft` with `design_status`, `statement_status`, and `solution_status` set to `needs-review`.
+
+Solution-only edits invalidate solution review only. Exercise prompt, answer, difficulty, tags, learner-facing notes, statement, hint, mistake, verification, or design edits invalidate the relevant exercise-quality evidence and may invalidate solution review when the solution depends on the changed part. Small copyedits that do not affect meaning, math, answer logic, or pedagogy do not require dashboard, journal, or unit-wide review churn.
 
 ## Quality Bar
 

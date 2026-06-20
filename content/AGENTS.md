@@ -110,11 +110,11 @@ The learner/export boundary is defined in `content/_guides/core/learner-product-
 
 Exercises may be created from the unit map, skill map, official curriculum notes, misconception map, exam patterns, exercise cluster map, raw seeds, exercise design cards, or existing lessons when available. Existing lessons are useful references, not a universal prerequisite. Exercises are ability-building devices; batch-created exercises still need exercise quality review and solution review before reviewed status.
 
-Final exercise creation uses either canonical exercise design cards from the full workflow or the lightweight direct exercise shortcut when the request is narrow and specific. Do not draft final exercise files from vague seeds or incomplete cards; repair or create the smallest source planning object first. Final exercise files record the source card with `source_design_card`.
+Final exercise creation uses either canonical exercise design cards from the full workflow or the lightweight direct exercise shortcut when the request is narrow and specific. Direct exercise creation may produce a complete final exercise file. Do not draft final exercise files from vague seeds or incomplete cards; repair or create the smallest source planning object first. Final exercise files record the source card with `source_design_card`. If a real exercise is created, the exercise family is in scope for that unit; update any `not-in-scope`, `deferred`, missing, or otherwise inactive exercise-family scope/inventory state to the smallest schema-valid in-scope state instead of leaving a real exercise under `not-in-scope`.
 
 Quizzes may be created from quiz intent cards, skill targets, misconceptions, lessons, exercises, exam patterns, raw item pools, or curated item design cards. Lessons and exercises are optional remediation references unless the specific quiz intent depends on them.
 
-Final standalone quiz creation uses the full quiz pipeline for broad or high-stakes quiz work, and may use the lightweight quiz shortcut for one item, one distractor/feedback slice, one added item, or a short focused quiz. MCQ/MR cards and final items must include distractor rationale and per-choice feedback planning; non-choice cards and final items need the appropriate answer, feedback, and remediation contract for their item type. Final quiz questions record the source card with `Source item card`.
+Final standalone quiz creation uses the full quiz pipeline for broad or high-stakes quiz work, and may use the lightweight quiz shortcut for one item, one-item standalone diagnostic, one distractor/feedback slice, one added item, or a short focused quiz. MCQ/MR cards and final items must include distractor rationale and per-choice feedback planning; non-choice cards and final items need the appropriate answer, feedback, and remediation contract for their item type. Final quiz questions record the source card with `Source item card`.
 
 For unit planning or plan refresh, use `_prompts/workflows/unit/01-plan-unit.md`. For unit-wide consistency review, use `_prompts/workflows/unit/02-review-unit.md`. For metadata/link/todo/status/source-safety cleanup before publication consideration, use `_prompts/workflows/unit/03-finalize-unit.md`.
 
@@ -228,13 +228,13 @@ Review freshness follows `content/_guides/schema/frontmatter-schema.md`: a mater
 - Each exercise lives in its own file. Broad exercise production usually creates files in small batches of 3 to 5; small direct exercise tasks use `content/_prompts/shortcuts/create-direct-exercise.md`.
 - Do not generate a full 20 to 35 exercise unit library in one pass unless explicitly requested.
 - Standalone quizzes live under `quizzes/`.
-- Each standalone quiz is one Markdown file with multiple questions.
+- Each standalone quiz is one Markdown file with one or more questions. One-item standalone quizzes are valid for lightweight diagnostic, exit-ticket, misconception-check, quick-review, or targeted-practice use; multi-question quizzes remain normal for broader quiz work.
 - Do not confuse standalone quizzes with mini-lesson checkpoints.
 - Canonical standalone quiz item types are `multiple-choice`, `multiple-response`, `true-false`, `fill-blank`, `match`, `sequence`, and `hotspot`.
 - Every MCQ/MR option should have answer-specific feedback.
 - Wrong choices should map to real misconceptions and explain why they are tempting.
 - Non-choice quiz items need their type-specific accepted-answer, pairing, ordering, or hotspot-region contract. Do not invent MCQ choices, distractors, or per-choice feedback for non-choice items.
-- Generate broad or high-stakes quizzes through quiz intent cards, raw item pools, and curated item design cards before final quiz creation. Use `content/_prompts/shortcuts/lightweight-quiz.md` only for one item, one distractor plus feedback, one feedback/remediation slice, one added item, or a short focused quiz.
+- Generate broad or high-stakes quizzes through quiz intent cards, raw item pools, and curated item design cards before final quiz creation. Use `content/_prompts/shortcuts/lightweight-quiz.md` only for one item, one-item standalone quiz, one distractor plus feedback, one feedback/remediation slice, one added item, or a short focused quiz.
 - Create quizzes one file at a time by default.
 - Review item quality, answer keys, feedback, and remediation separately.
 - Sequence and hotspot are supported advanced quiz item types, but frontend implementation is out of scope.

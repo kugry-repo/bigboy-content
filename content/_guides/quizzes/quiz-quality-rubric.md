@@ -133,6 +133,6 @@ After a material edit, set only the affected quiz review substatus to `needs-rev
 
 ## Lightweight Route Review
 
-Items and short quizzes created through `content/_prompts/shortcuts/lightweight-quiz.md` must meet the same item-level rubric as full-pipeline quiz items.
+Items, one-item standalone quizzes, and short quizzes created through `content/_prompts/shortcuts/lightweight-quiz.md` must meet the same item-level rubric as full-pipeline quiz items.
 
 Creating one item makes item-quality, answer-key, feedback, and remediation review stale for that item. Because quiz substatus fields live in file frontmatter, set the affected file-level substatus to `needs-review` and identify the item scope in the report or author notes when useful. Editing only a distractor invalidates item-quality for that item and feedback when the feedback depends on the distractor. Editing only feedback or remediation invalidates only feedback/remediation evidence.

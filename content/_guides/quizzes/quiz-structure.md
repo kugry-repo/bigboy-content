@@ -8,6 +8,8 @@ A quiz is not a mini exercise sheet. A quiz is a diagnostic instrument.
 
 Standalone quizzes are not embedded lesson checks. They live as their own Markdown files under the target unit `quizzes/` folder and belong to a quiz series.
 
+A standalone quiz file can contain one or more questions. One-item standalone quizzes are valid for lightweight diagnostics, exit tickets, misconception checks, quick review items, and small targeted practice artifacts. Multi-question quizzes remain the normal shape for broader topic review, larger assessments, full distractor strategy, exam-readiness sequences, and systematic unit quiz design.
+
 Do not build frontend, app rendering, or interaction logic as part of quiz authoring. This guide defines the Markdown content system only.
 
 Final quiz files are learner-facing diagnostic artifacts. Their feedback,
@@ -238,6 +240,7 @@ Use `content/_prompts/shortcuts/lightweight-quiz.md` for small focused quiz task
 - one MCQ/MR distractor and its feedback;
 - one option's feedback or remediation;
 - one item added to an existing quiz;
+- one-item standalone quiz for a lightweight diagnostic, exit ticket, misconception check, quick review item, or targeted practice artifact;
 - a short exit ticket or remediation quiz with a narrow objective;
 - review of only the changed item or feedback slice.
 
@@ -315,6 +318,8 @@ Every final standalone quiz item needs a type-specific contract. The contract is
 Non-choice items must not be forced into MCQ-shaped fields. They still need explanation, feedback, remediation, and verification, but those pieces should match the interaction type.
 
 ## Normal Quiz Size
+
+One-item standalone quizzes are intentionally valid for lightweight diagnostics, exit tickets, misconception checks, quick review items, and targeted practice. For broader quiz work, use these normal size ranges:
 
 - Small skill quiz: 6 to 8 items.
 - Normal quiz: 8 to 12 items.
