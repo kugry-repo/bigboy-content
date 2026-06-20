@@ -28,6 +28,7 @@ unit_order: 1
 official: true
 content_scope: official-curriculum
 domain: analyse
+skills: [lc-forme-indeterminee, lc-factorisation, lc-quantite-conjuguee]
 difficulty_range: [application-directe, probleme-type]
 exercise_ids:
   - ma-2bac-pcsvt-lc-ex-011

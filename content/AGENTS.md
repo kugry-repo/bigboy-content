@@ -135,7 +135,7 @@ Do not create domain folders under `content/programs/<program_id>/`. Keep `domai
 
 ## Lesson voice rule
 
-Lesson files should follow `_guides/lessons/lesson-voice.md`. This voice guide applies mainly to lessons, not to exercises or corrections.
+Lesson files should follow `_guides/lessons/lesson-voice.md`. This voice guide applies mainly to lessons, not to exercises, quizzes, or sets.
 
 When creating or reviewing lessons, use `content/_examples/golden-lesson-slice-limites.md` as a voice calibration example. Do not copy it directly; follow its rhythm and clarity.
 
@@ -178,8 +178,7 @@ Skill coverage is tracked locally through unit indexes, artifact frontmatter `sk
 - Do not over-formalize. The tone should feel like a careful teacher explaining at the board.
 - Use LaTeX for mathematical expressions.
 - Use Obsidian-compatible Markdown and callouts.
-- Use stable IDs for lessons, exercises, standalone quizzes, sets, and corrections.
-- Use stable IDs for standalone quizzes.
+- Use stable IDs for lessons, exercises, standalone quizzes, and sets.
 
 ## Content status
 

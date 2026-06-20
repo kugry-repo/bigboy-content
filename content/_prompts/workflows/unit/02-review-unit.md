@@ -100,6 +100,7 @@ Synthesize skill coverage from the actual unit files, not from any global manual
 - lesson files;
 - exercise files;
 - quiz files;
+- exercise set files;
 - declared frontmatter `skills`;
 - exercise design cards;
 - quiz intent cards and item design cards;

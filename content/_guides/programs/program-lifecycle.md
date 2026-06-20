@@ -169,7 +169,7 @@ Rename behavior is destructive:
 
 1. Move `content/programs/<old_program_id>/` to `content/programs/<new_program_id>/`.
 2. Update program index frontmatter.
-3. Update `program` in all unit, topic, lesson, exercise, quiz, set, and correction frontmatter.
+3. Update `program` in all unit, topic, lesson, exercise, quiz, and set frontmatter.
 4. Update `id_prefix` and all IDs if the prefix changes.
 5. Update links, prompts, examples, derived catalogs, stale local workflow cache references, and docs that name the old program.
 6. Remove all old path references.
@@ -183,7 +183,7 @@ Use `content/_prompts/commands/manage-program.md` with `ACTION: delete`.
 
 Delete behavior:
 
-1. Inspect whether the program contains authored lessons, exercises, quizzes, sets, or corrections.
+1. Inspect whether the program contains authored lessons, exercises, quizzes, or sets.
 2. If it only contains stubs and placeholders, delete directly when requested.
 3. If it contains real authored content, delete only when the user explicitly confirms deletion of the program and its contents.
 4. Remove references from guides, prompts, derived catalogs, stale local workflow cache references, and examples.

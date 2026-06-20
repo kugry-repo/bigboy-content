@@ -70,11 +70,13 @@ Set logic must use:
 - exercise role;
 - difficulty;
 - estimated time;
+- set-level `skills` frontmatter that names the main skills practiced across the set;
 - skill ladder;
 - prerequisites;
 - revision value.
 
 Sets should link to exercises, not duplicate full statements, hints, or solutions.
+Use `exercise_ids` for the full IDs of exercises in the same unit, using `{id_prefix}-{unit_code}-ex-###`.
 
 Possible set types:
 
@@ -86,7 +88,7 @@ Possible set types:
 - synthesis path;
 - revision path.
 
-Use frontmatter values derived from `TARGET_UNIT_INDEX`, including the resolved unit code, program, unit folder, order, domain, tracks, and language.
+Use frontmatter values derived from `TARGET_UNIT_INDEX`, including the resolved unit code, program, unit folder, order, domain, tracks, language, and relevant skills.
 
 If no exercises exist and the design cards are not specific enough to build sets safely, stop and ask for clarification.
 

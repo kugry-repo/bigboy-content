@@ -14,6 +14,7 @@ unit_order: "{{unit_order}}"
 official: "{{official}}"
 content_scope: "{{content_scope}}"
 domain: "{{domain}}"
+skills: []
 difficulty_range: [decouverte, application-directe]
 exercise_ids: []
 status: draft

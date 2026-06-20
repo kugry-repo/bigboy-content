@@ -35,7 +35,7 @@ When using a national exam:
 - Record year, session, track, and source.
 - Avoid copying long statements into normal exercises unless rights are clear.
 - Prefer creating original exam-inspired exercises.
-- If a file is a direct correction of an official exam, mark `source_type: national-exam`.
+- If an active artifact is directly based on a national exam, mark `source_type: national-exam` and cite the source in `source_ref`.
 
 ## Third-party websites and books
 

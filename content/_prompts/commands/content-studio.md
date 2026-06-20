@@ -13,8 +13,8 @@ It works for:
 - lessons;
 - exercises;
 - quizzes;
+- exercise sets;
 - unit `_index.md` planning sections;
-- future content artifacts when the target can be inferred safely.
 
 ## Normal Usage
 
@@ -237,6 +237,14 @@ Use these critique questions for quiz selections:
 - Is this quiz checking ability or just producing a score?
 
 Do not mark `item_quality_status`, `answer_key_status`, `feedback_status`, or `remediation_status` as reviewed during a general patch unless the request explicitly includes the corresponding review criteria. Do not mark `status: published` unless explicitly requested and all four quiz review statuses are already `reviewed`.
+
+### Exercise Sets
+
+Use exercise guides and the frontmatter schema.
+
+Content studio supports targeted diagnosis, proposals, and patches for exercise set files under `sets/`.
+
+Focus on progression logic, same-unit `exercise_ids`, set-level `skills`, difficulty range, prerequisite fit, revision value, and whether the set links to exercises without duplicating their statements, hints, or solutions.
 
 ### Unit `_index.md`
 

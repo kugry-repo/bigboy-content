@@ -133,7 +133,7 @@ DELETE_CONTENT: yes | no
 
 Behavior:
 
-1. Inspect descendant lessons, exercises, quizzes, sets, and corrections.
+1. Inspect descendant lessons, exercises, quizzes, and sets.
 2. If authored content exists and `DELETE_CONTENT` is not `yes`, stop and report what would be deleted.
 3. Remove `content/programs/<TARGET_PROGRAM>/`.
 4. Remove references from guides, prompts, examples, derived catalogs, and stale local workflow cache. If `_workflow/current-unit.md` points inside the deleted program, clear it if visible and safe, or report that `content/_prompts/commands/set-current-unit.md` must be rerun.

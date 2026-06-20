@@ -44,6 +44,16 @@ const FORBIDDEN_DOMAIN_FOLDERS = new Set([
 
 const REQUIRED_UNIT_SUBFOLDERS = ["lessons", "exercises", "quizzes", "sets"];
 
+const CANONICAL_CONTENT_TEMPLATE_PATHS = {
+  lesson: "content/_templates/mini-lesson.template.md",
+  exercise: "content/_templates/exercise.template.md",
+  quiz: "content/_templates/quiz.template.md",
+  set: "content/_templates/exercise-set.template.md",
+};
+
+const REMOVED_CONTENT_OBJECT_TEMPLATE_PATH =
+  `content/_templates/${"correction"}.template.md`;
+
 const REQUIRED_PROGRAM_FIELDS = [
   "type",
   "id",
@@ -115,6 +125,13 @@ const COMMON_CONTENT_FIELDS = [
   "updated",
 ];
 
+const ACTIVE_CONTENT_OBJECT_TYPES = new Set([
+  "lesson",
+  "exercise",
+  "quiz",
+  "exercise-set",
+]);
+
 const ALLOWED_UNIT_KINDS = new Set([
   "official-curriculum-unit",
   "unofficial-topic",
@@ -167,6 +184,13 @@ const ALLOWED_SOURCE_TYPES = new Set([
   "unknown",
 ]);
 
+const ALLOWED_DOMAINS = new Set([
+  "analyse",
+  "algebre-geometrie",
+  "probabilites",
+  "transversal",
+]);
+
 const ALLOWED_LESSON_SHAPES = new Set([
   "intuition-first",
   "method-first",
@@ -184,6 +208,20 @@ const ALLOWED_EXERCISE_DIFFICULTIES = new Set([
   "probleme-type",
   "approfondissement",
 ]);
+
+const EXERCISE_DIFFICULTY_ORDER = [
+  "decouverte",
+  "application-directe",
+  "application-guidee",
+  "probleme-type",
+  "approfondissement",
+];
+
+const REQUIRED_LESSON_FIELDS = [
+  "lesson_kind",
+  "lesson_number",
+  "difficulty",
+];
 
 const ALLOWED_EXERCISE_TYPES = new Set([
   "calcul",
@@ -303,6 +341,11 @@ const REQUIRED_QUIZ_FIELDS = [
   "answer_key_status",
   "feedback_status",
   "remediation_status",
+];
+
+const REQUIRED_SET_FIELDS = [
+  "difficulty_range",
+  "exercise_ids",
 ];
 
 const REQUIRED_EXERCISE_H2 = [
@@ -1001,6 +1044,10 @@ function isEmptyValue(value) {
   );
 }
 
+function isPositiveInteger(value) {
+  return Number.isInteger(value) && value > 0;
+}
+
 function arraysEqual(left, right) {
   return (
     Array.isArray(left) &&
@@ -1018,6 +1065,26 @@ function checkAllowedValue(filePath, data, field, allowedValues) {
       filePath,
       `frontmatter "${field}" has invalid value "${data[field]}"; expected one of ${[...allowedValues].join(", ")}`,
     );
+  }
+}
+
+function checkRequiredArrayField(filePath, data, field) {
+  if (!Object.hasOwn(data, field)) return;
+
+  if (!Array.isArray(data[field])) {
+    addError(filePath, `frontmatter "${field}" must be an array`);
+  }
+}
+
+function checkRequiredStringArrayField(filePath, data, field) {
+  checkRequiredArrayField(filePath, data, field);
+  if (!Array.isArray(data[field])) return;
+
+  for (const value of data[field]) {
+    if (typeof value !== "string" || value.trim() === "") {
+      addError(filePath, `frontmatter "${field}" must contain only non-empty strings`);
+      return;
+    }
   }
 }
 
@@ -1450,6 +1517,37 @@ function checkUnitFrontmatter(indexPath, unitDir, expectedGroup, data, program) 
     );
   }
 
+  if (data.domain && !ALLOWED_DOMAINS.has(data.domain)) {
+    addError(
+      indexPath,
+      `frontmatter "domain" has invalid value "${data.domain}"; expected one of ${[...ALLOWED_DOMAINS].join(", ")}`,
+    );
+  }
+
+  checkRequiredStringArrayField(indexPath, data, "related_units");
+  if (Array.isArray(data.related_units)) {
+    for (const relatedUnit of data.related_units) {
+      if (relatedUnit === expectedUnitFolder) {
+        addError(indexPath, `frontmatter "related_units" must not include this unit's own folder "${relatedUnit}"`);
+        continue;
+      }
+
+      if (relatedUnit.includes("..") || path.isAbsolute(relatedUnit)) {
+        addError(indexPath, `frontmatter "related_units" contains invalid unit folder "${relatedUnit}"`);
+        continue;
+      }
+
+      const isOfficialRelatedUnit = program.curriculumUnitsByFolder.has(relatedUnit);
+      const isTopicRelatedUnit =
+        relatedUnit.startsWith("topics/") &&
+        isFile(path.join(program.dir, relatedUnit, "_index.md"));
+
+      if (!isOfficialRelatedUnit && !isTopicRelatedUnit) {
+        addError(indexPath, `frontmatter "related_units" references unknown unit folder "${relatedUnit}"`);
+      }
+    }
+  }
+
   if (data.status && !ALLOWED_STATUS_VALUES.has(data.status)) {
     addError(indexPath, `frontmatter "status" has invalid value "${data.status}"`);
   }
@@ -1757,6 +1855,65 @@ function checkInitializedUnitReferenceFixture() {
   }
 }
 
+function checkCanonicalContentTemplate(repoPath, expectedType, requiredTypeFields) {
+  const templatePath = fullPathFromRepoPath(repoPath);
+
+  if (!isFile(templatePath)) {
+    addError(templatePath, "missing canonical content template");
+    return;
+  }
+
+  const parsed = parseFrontmatter(
+    templatePath,
+    fs.readFileSync(templatePath, "utf8"),
+  );
+
+  if (!requireFrontmatter(templatePath, parsed, "content template")) return;
+
+  requireFields(templatePath, parsed.data, [
+    ...COMMON_CONTENT_FIELDS,
+    ...requiredTypeFields,
+  ]);
+
+  if (parsed.data.type !== expectedType) {
+    addError(templatePath, `frontmatter "type" must be "${expectedType}"`);
+  }
+
+  if (Object.hasOwn(parsed.data, "skills") && !Array.isArray(parsed.data.skills)) {
+    addError(templatePath, 'frontmatter "skills" must be an array');
+  }
+}
+
+function checkCanonicalContentTemplates() {
+  checkCanonicalContentTemplate(
+    CANONICAL_CONTENT_TEMPLATE_PATHS.lesson,
+    "lesson",
+    REQUIRED_LESSON_FIELDS,
+  );
+  checkCanonicalContentTemplate(
+    CANONICAL_CONTENT_TEMPLATE_PATHS.exercise,
+    "exercise",
+    REQUIRED_EXERCISE_FIELDS,
+  );
+  checkCanonicalContentTemplate(
+    CANONICAL_CONTENT_TEMPLATE_PATHS.quiz,
+    "quiz",
+    REQUIRED_QUIZ_FIELDS,
+  );
+  checkCanonicalContentTemplate(
+    CANONICAL_CONTENT_TEMPLATE_PATHS.set,
+    "exercise-set",
+    REQUIRED_SET_FIELDS,
+  );
+
+  const removedTemplatePath = fullPathFromRepoPath(
+    REMOVED_CONTENT_OBJECT_TEMPLATE_PATH,
+  );
+  if (isFile(removedTemplatePath)) {
+    addError(removedTemplatePath, "removed content-object template must not exist");
+  }
+}
+
 function checkUnitIndex(unitDir, expectedGroup, program) {
   const indexPath = path.join(unitDir, "_index.md");
 
@@ -1827,6 +1984,8 @@ function checkRequiredContentFields(filePath, data, unit) {
     addError(filePath, `frontmatter "unit_kind" must be "${unit.kind}"`);
   }
 
+  checkAllowedValue(filePath, data, "unit_kind", ALLOWED_UNIT_KINDS);
+
   if (isTrue(data.official) !== isTrue(unit.data.official)) {
     addError(filePath, `frontmatter "official" must be "${unit.data.official}"`);
   }
@@ -1835,9 +1994,14 @@ function checkRequiredContentFields(filePath, data, unit) {
     addError(filePath, `frontmatter "content_scope" must be "${unit.data.content_scope}"`);
   }
 
+  checkAllowedValue(filePath, data, "content_scope", ALLOWED_CONTENT_SCOPES);
+
   if (data.domain !== unit.data.domain) {
     addError(filePath, `frontmatter "domain" must be "${unit.data.domain}"`);
   }
+
+  checkAllowedValue(filePath, data, "domain", ALLOWED_DOMAINS);
+  checkRequiredStringArrayField(filePath, data, "skills");
 
   if (data.program !== unit.program.id) {
     addError(filePath, `frontmatter "program" must be "${unit.program.id}"`);
@@ -1941,10 +2105,22 @@ function checkLessonFile(unit, filePath) {
     addError(filePath, 'frontmatter "lesson_kind" must be "mini-lesson"');
   }
 
+  requireFields(filePath, data, REQUIRED_LESSON_FIELDS);
+  checkAllowedValue(filePath, data, "difficulty", ALLOWED_EXERCISE_DIFFICULTIES);
+
   if (nameMatch) {
     const expectedId = `${unit.program.idPrefix}-${unit.code}-lesson-${nameMatch[1]}`;
     if (data.id !== expectedId) {
       addError(filePath, `frontmatter "id" must be "${expectedId}"`);
+    }
+
+    const expectedLessonNumber = Number.parseInt(nameMatch[1], 10);
+    if (Object.hasOwn(data, "lesson_number")) {
+      if (!isPositiveInteger(data.lesson_number)) {
+        addError(filePath, 'frontmatter "lesson_number" must be a positive integer');
+      } else if (data.lesson_number !== expectedLessonNumber) {
+        addError(filePath, `frontmatter "lesson_number" must be ${expectedLessonNumber} to match filename`);
+      }
     }
   }
 
@@ -2147,6 +2323,15 @@ function checkQuizFile(unit, filePath) {
     if (data.id !== expectedId) {
       addError(filePath, `frontmatter "id" must be "${expectedId}"`);
     }
+
+    const expectedQuizNumber = Number.parseInt(nameMatch[1], 10);
+    if (Object.hasOwn(data, "quiz_number")) {
+      if (!isPositiveInteger(data.quiz_number)) {
+        addError(filePath, 'frontmatter "quiz_number" must be a positive integer');
+      } else if (data.quiz_number !== expectedQuizNumber) {
+        addError(filePath, `frontmatter "quiz_number" must be ${expectedQuizNumber} to match filename`);
+      }
+    }
   }
 
   requireFields(filePath, data, REQUIRED_QUIZ_FIELDS);
@@ -2161,7 +2346,7 @@ function checkQuizFile(unit, filePath) {
   checkAllowedValue(filePath, data, "difficulty", ALLOWED_EXERCISE_DIFFICULTIES);
   checkAllowedValue(filePath, data, "exam_relevance", ALLOWED_EXAM_RELEVANCE);
 
-  for (const field of ["quiz_number", "question_count", "mastery_threshold", "estimated_time_minutes"]) {
+  for (const field of ["question_count", "mastery_threshold", "estimated_time_minutes"]) {
     if (
       Object.hasOwn(data, field) &&
       (!Number.isFinite(data[field]) || data[field] < 0)
@@ -2402,10 +2587,58 @@ function checkSetFile(unit, filePath) {
     }
   }
 
-  for (const field of ["difficulty_range", "exercise_ids"]) {
-    if (!Object.hasOwn(data, field)) {
-      addError(filePath, `missing frontmatter field "${field}"`);
+  requireFields(filePath, data, REQUIRED_SET_FIELDS);
+  checkRequiredStringArrayField(filePath, data, "difficulty_range");
+  checkRequiredStringArrayField(filePath, data, "exercise_ids");
+
+  if (Array.isArray(data.difficulty_range)) {
+    if (data.difficulty_range.length === 0) {
+      addError(filePath, 'frontmatter "difficulty_range" must contain at least one difficulty');
     }
+
+    if (data.difficulty_range.length > 2) {
+      addError(filePath, 'frontmatter "difficulty_range" must contain one or two ordered difficulty values');
+    }
+
+    for (const difficulty of data.difficulty_range) {
+      if (!ALLOWED_EXERCISE_DIFFICULTIES.has(difficulty)) {
+        addError(
+          filePath,
+          `frontmatter "difficulty_range" has invalid value "${difficulty}"; expected one of ${[...ALLOWED_EXERCISE_DIFFICULTIES].join(", ")}`,
+        );
+      }
+    }
+
+    if (data.difficulty_range.length === 2) {
+      const startIndex = EXERCISE_DIFFICULTY_ORDER.indexOf(data.difficulty_range[0]);
+      const endIndex = EXERCISE_DIFFICULTY_ORDER.indexOf(data.difficulty_range[1]);
+      if (startIndex > endIndex) {
+        addError(filePath, 'frontmatter "difficulty_range" must be ordered from easier to harder');
+      }
+    }
+  }
+
+  if (Array.isArray(data.exercise_ids)) {
+    if (data.exercise_ids.length === 0) {
+      addError(filePath, 'frontmatter "exercise_ids" must contain at least one exercise ID');
+    }
+
+    const expectedExerciseIdPattern = new RegExp(
+      `^${escapeRegex(unit.program.idPrefix)}-${escapeRegex(unit.code)}-ex-\\d{3}$`,
+    );
+
+    for (const exerciseId of data.exercise_ids) {
+      if (!expectedExerciseIdPattern.test(exerciseId)) {
+        addError(
+          filePath,
+          `frontmatter "exercise_ids" value "${exerciseId}" must match "${unit.program.idPrefix}-${unit.code}-ex-###"`,
+        );
+      }
+    }
+  }
+
+  if (isEmptyValue(data.skills)) {
+    addWarning(filePath, 'frontmatter "skills" is empty');
   }
 }
 
@@ -3274,6 +3507,51 @@ function checkRemovedGuideText() {
   }
 }
 
+function contentObjectContractFilesForRemovedScan() {
+  const explicitFiles = [
+    "README.md",
+    "content/README.md",
+    "content/AGENTS.md",
+  ]
+    .map((repoPath) => fullPathFromRepoPath(repoPath))
+    .filter(isFile);
+
+  const contractDirs = [
+    path.join(CONTENT_DIR, "_guides"),
+    path.join(CONTENT_DIR, "_prompts"),
+    path.join(CONTENT_DIR, "_templates"),
+    path.join(CONTENT_DIR, "_examples"),
+  ];
+
+  return [
+    ...explicitFiles,
+    ...contractDirs.flatMap((dirPath) => walkMarkdownFiles(dirPath)),
+  ];
+}
+
+function checkRemovedContentObjectContracts() {
+  const removedType = `${"cor"}${"rection"}`;
+  const removedTemplateName = `${removedType}.template.md`;
+  const removedContractPatterns = [
+    new RegExp(`\\btype:\\s*${removedType}\\b`, "i"),
+    /\bcorr-[a-z0-9{]/i,
+    new RegExp(escapeRegex(removedTemplateName), "i"),
+  ];
+
+  for (const filePath of contentObjectContractFilesForRemovedScan()) {
+    const text = fs.readFileSync(filePath, "utf8");
+    for (const pattern of removedContractPatterns) {
+      if (pattern.test(text)) {
+        addError(
+          filePath,
+          "contains removed correction content-object contract text",
+        );
+        break;
+      }
+    }
+  }
+}
+
 function coreMarkdownFilesForProductionWordingScan() {
   const explicitFiles = [
     "README.md",
@@ -3387,6 +3665,7 @@ function main() {
   checkGuideTaxonomy();
   checkCanonicalInitializedUnitTemplate();
   checkInitializedUnitReferenceFixture();
+  checkCanonicalContentTemplates();
   discoverAndCheckPrograms();
   for (const program of programs) {
     checkProgramFolderShape(program);
@@ -3403,6 +3682,7 @@ function main() {
   checkObsoleteExercisePromptReferences();
   checkObsoleteQuizPromptReferences();
   checkRemovedGuideText();
+  checkRemovedContentObjectContracts();
   checkLegacyGlobalProductionReferences();
   collectIdsAndWarnings();
   printResults();

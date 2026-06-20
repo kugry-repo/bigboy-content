@@ -73,7 +73,7 @@ Remediation paths:
 - If mastered: continue to a method-choice quiz on transforming indeterminate forms.
 - If partial: review the mini-lesson on $0/0$, then practice targeted factorization items.
 - If failed: restart prerequisite review on evaluating expressions and factoring common factors.
-- By misconception: route `zero-sur-zero-valeur` to a short correction plus two guided exercises.
+- By misconception: route `zero-sur-zero-valeur` to a short remediation note plus two guided exercises.
 
 Source/exam claim policy:
 - original
@@ -87,4 +87,3 @@ Ready for raw item pool:
 
 Reason:
 - The diagnostic goal, student states, item types, and remediation paths are clear.
-

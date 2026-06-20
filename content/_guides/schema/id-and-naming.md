@@ -165,11 +165,12 @@ Exercise sets:
 {id_prefix}-{unit_code}-set-{set_slug}
 ```
 
-Corrections:
+Active production artifact types are limited to mini-lessons, exercises, standalone quizzes, and exercise sets. The exercise-set folder is `sets/`; the frontmatter type is `exercise-set`.
 
-```text
-{id_prefix}-{unit_code}-corr-{source_slug}
-```
+For numbered artifacts, the frontmatter number field must match the filename suffix:
+
+- `lessons/{unit_code}-lesson-001.md` uses `lesson_number: 1`;
+- `quizzes/{unit_code}-quiz-001.md` uses `quiz_number: 1`.
 
 ## Unit Code Tables
 

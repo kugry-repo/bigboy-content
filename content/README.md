@@ -5,7 +5,7 @@ This folder is the Markdown source for a shared authoring system across Moroccan
 ## Main Folders
 
 - `_guides/`: categorized authoring rules, workflow semantics, notation, structure, validation, and review. Start with `_guides/README.md`.
-- `_templates/`: reusable templates for program-aware units, mini-lessons, exercises, quizzes, sets, and corrections.
+- `_templates/`: reusable templates for program-aware units, mini-lessons, exercises, quizzes, and sets.
 - `_references/`: shared source references, exam patterns, misconception maps, notation decisions, and glossary material.
 - `_prompts/`: reusable Codex prompts.
 - `_examples/`: explicitly labeled examples. PC/SVT examples are examples, not defaults.

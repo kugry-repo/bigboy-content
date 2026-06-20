@@ -54,7 +54,7 @@ id_prefix: ma-2bac-pcsvt
 
 ## Common Unit Fields
 
-Use these fields on unit indexes and copy the relevant unit metadata into lesson, exercise, quiz, set, and correction files:
+Use these fields on unit indexes:
 
 ```yaml
 program: "{{program}}"
@@ -89,6 +89,8 @@ topics/etudier-une-fonction
 ```
 
 For official curriculum units, `unit_order`, `unit_code`, `unit_folder`, `unit_slug`, `title`, `official`, `content_scope`, and `domain` must match the owning program's `_curriculum-map.md` and official-unit rules. For unofficial topics, the topic unit `_index.md` is the canonical registration record.
+
+`related_units` is an array of `unit_folder` values inside the same program, for example `01-limites-continuite` or `topics/etudier-une-fonction`. Use `[]` when there is no explicit relation.
 
 ## Unit Index
 
@@ -193,10 +195,25 @@ Allowed values for `type`:
 - `exercise`
 - `quiz`
 - `exercise-set`
-- `correction`
 - `reference`
 - `guide`
 - `template`
+
+The active production content-object types are only:
+
+- `lesson`
+- `exercise`
+- `quiz`
+- `exercise-set`
+
+Their canonical folders are:
+
+```text
+lessons/
+exercises/
+quizzes/
+sets/
+```
 
 ## Content Status Values
 
@@ -212,9 +229,48 @@ Allowed values:
 
 On unit indexes, `status` and `planning_state` are separate. `status: published` claims learner-facing maturity; `planning_state: published` is the manual unit lifecycle state described above.
 
+## Common Content Object Fields
+
+Every active production content object (`lesson`, `exercise`, `quiz`, and `exercise-set`) uses these required fields:
+
+```yaml
+type: lesson | exercise | quiz | exercise-set
+id: "{{id_prefix}}-{{unit_code}}-{{kind}}-{{number_or_slug}}"
+title: "TITLE"
+program: "{{program}}"
+level: "{{level}}"
+tracks: "{{tracks}}"
+language: "{{language}}"
+unit_kind: "{{unit_kind}}"
+unit_code: "{{unit_code}}"
+unit_slug: "{{unit_slug}}"
+unit_folder: "{{unit_folder}}"
+unit_order: "{{unit_order}}"
+official: "{{official}}"
+content_scope: "{{content_scope}}"
+domain: "{{domain}}"
+skills: []
+status: draft
+sync_status: current
+sync_reason: null
+version: 0.1.0
+source_type: original
+source_ref: null
+created: YYYY-MM-DD
+updated: YYYY-MM-DD
+```
+
+These common fields must match the parent unit and program where applicable. `domain` must be one of `analyse`, `algebre-geometrie`, `probabilites`, or `transversal`. `skills` should contain the precise skill IDs taught, practiced, assessed, or sequenced by the object.
+
 ## Mini-Lesson
 
 Mini-lesson files live under the unit `lessons/` folder and use the unit code.
+
+Type-specific required fields:
+
+- `lesson_kind: mini-lesson`
+- `lesson_number`: positive integer matching the `lesson-###` filename suffix
+- `difficulty`: one of the allowed difficulty values
 
 ```yaml
 ---
@@ -251,6 +307,24 @@ updated: YYYY-MM-DD
 Optional `lesson_shape` may be added after the lesson exists as a diagnostic label only.
 
 ## Exercise
+
+Exercise files live under the unit `exercises/` folder.
+
+Type-specific required fields:
+
+- `difficulty`
+- `exercise_type`
+- `exercise_role`
+- `estimated_time_min`
+- `exam_relevance`
+- `calculator`
+- `requires_graph`
+- `has_hints`
+- `has_common_mistakes`
+- `has_verification`
+- `design_status`
+- `statement_status`
+- `solution_status`
 
 ```yaml
 ---
@@ -298,6 +372,22 @@ updated: YYYY-MM-DD
 
 Standalone quiz files use `type: quiz` and live under the unit `quizzes/` folder.
 
+Type-specific required fields:
+
+- `quiz_number`: positive integer matching the `quiz-###` filename suffix
+- `quiz_series`
+- `quiz_kind`
+- `difficulty`
+- `item_types`
+- `cognitive_roles`
+- `question_count`
+- `mastery_threshold`
+- `estimated_time_minutes`
+- `item_quality_status`
+- `answer_key_status`
+- `feedback_status`
+- `remediation_status`
+
 ```yaml
 ---
 type: quiz
@@ -342,6 +432,15 @@ updated: YYYY-MM-DD
 
 ## Exercise Set
 
+Exercise set files use `type: exercise-set` and live under the unit `sets/` folder. The folder is named `sets/`; the frontmatter type remains `exercise-set`.
+
+Exercise sets inherit all common content-object fields, including `skills`.
+
+Type-specific required fields:
+
+- `difficulty_range`: one or two ordered difficulty values
+- `exercise_ids`: exercise IDs in the same unit, using `{id_prefix}-{unit_code}-ex-###`
+
 ```yaml
 ---
 type: exercise-set
@@ -359,6 +458,7 @@ unit_order: "{{unit_order}}"
 official: "{{official}}"
 content_scope: "{{content_scope}}"
 domain: "{{domain}}"
+skills: []
 difficulty_range: [decouverte, application-directe]
 exercise_ids: []
 status: draft

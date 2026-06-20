@@ -52,8 +52,9 @@ The validator checks:
 - absence of old `chapter_*` and `topic_*` frontmatter fields;
 - absence of old domain-folder structures;
 - lesson, exercise, quiz, and set filename and program-aware ID consistency;
-- required canonical fields on generated content files, including `unit_code`;
+- required common fields on active content objects, including `skills`, `unit_code`, `domain`, and source/status metadata;
 - required exercise frontmatter fields, allowed exercise values, required exercise headings, and quality-signal warnings;
+- required exercise-set frontmatter fields, allowed difficulty ranges, same-unit exercise IDs, and set ID consistency;
 - unit identity consistency between frontmatter and containing folder;
 - prompt-folder layout so old flat prompt systems cannot return;
 - canonical seven-step lesson prompt family under `content/_prompts/workflows/lessons/`;
