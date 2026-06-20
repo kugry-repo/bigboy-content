@@ -150,11 +150,11 @@ The initialized body and production dashboard scaffold are authored in `content/
 
 Initialized and published unit dashboards use artifact-family `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes`. The sparse-family states are:
 
-- `not-started`: the family is intended, but work has not begun.
+- `not-started`: the family is intended for the current declared scope; family-local rows record whether work has begun, progressed, or completed.
 - `not-in-scope`: the family is intentionally absent and should not block review or finalization for the declared scope.
 - `deferred`: the family is intentionally postponed and should be reported as future work or an open planning decision.
 
-Other dashboard rows use the allowed dashboard statuses documented in `content/_guides/units/unit-workflow.md`. Use hyphenated machine-friendly values in rows; prose variants such as `not in scope` are not dashboard statuses.
+Only `not-started`, `not-in-scope`, and `deferred` are valid artifact-family `Scope` values. Other dashboard rows use the allowed dashboard statuses documented in `content/_guides/units/unit-workflow.md`. Use hyphenated machine-friendly values in rows; prose variants such as `not in scope` are not dashboard statuses.
 
 `content/_prompts/commands/initialize-unit.md` owns the transition from `stub` to `initialized`.
 

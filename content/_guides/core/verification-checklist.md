@@ -10,9 +10,10 @@ The checklist is scope-aware. Apply a family section only when that family is in
 - [ ] Stub units remain lightweight and are not judged as missing full planning sections.
 - [ ] Initialized or published units have the canonical `## Production dashboard`.
 - [ ] The dashboard has `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes`.
-- [ ] Each `Scope` row uses the canonical meaning: `not-started` means intended but not begun, `not-in-scope` means intentionally absent, and `deferred` means intentionally postponed.
-- [ ] Families marked `not-in-scope` have family-local rows marked `not-in-scope` where mechanical clarity is needed.
-- [ ] Families marked `deferred` are visible as future work or open planning decisions.
+- [ ] Each `Scope` row uses the canonical meaning: `not-started` is the in-scope/open declaration, `not-in-scope` means intentionally absent, and `deferred` means intentionally postponed.
+- [ ] The `Scope` row is not used as progress, review, or finalization evidence; family-local rows carry those statuses.
+- [ ] Families marked `not-in-scope` have family-local rows marked `not-in-scope` and no contradictory design cards or final files.
+- [ ] Families marked `deferred` are visible as future work or open planning decisions, with family-local rows marked `deferred` or `not-started`.
 - [ ] Sparse units are assessed against their declared scope, not against a complete golden-unit shape.
 - [ ] Unit review/finalization uses `content/_guides/units/unit-workflow.md`, not a generic lesson checklist.
 - [ ] Unit skill coverage is inferred from the unit index, artifact frontmatter, exercise design cards, quiz intent/item cards, and review notes for the in-scope families.

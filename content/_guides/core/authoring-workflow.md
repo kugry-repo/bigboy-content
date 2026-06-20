@@ -46,7 +46,7 @@ Unstarted units should remain lightweight stubs with `planning_state: stub`. Use
 
 Sparse units can be ready for their declared scope. Missing artifact families are blockers only when the unit plan, publish target, existing references, or local workflow prerequisites require them.
 
-Initialized dashboards use `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes` to make sparse units mechanical: `not-started` means intended but not begun, `not-in-scope` means intentionally absent, and `deferred` means intentionally postponed.
+Initialized dashboards use `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes` to make sparse units mechanical: `not-started` is the in-scope/open declaration, `not-in-scope` means intentionally absent, and `deferred` means intentionally postponed. Family-local rows record progress and review status.
 
 After initialization, use it for:
 

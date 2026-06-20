@@ -103,7 +103,7 @@ No exam-alignment notes recorded yet.
 
 ## Production dashboard
 
-Use the artifact-family `Scope` rows to record sparse-unit intent: `not-started` means the family is intended but not begun, `not-in-scope` means it is intentionally absent, and `deferred` means it is intentionally postponed.
+Use the artifact-family `Scope` rows to record sparse-unit intent: `not-started` is the in-scope/open declaration, `not-in-scope` means the family is intentionally absent, and `deferred` means it is intentionally postponed. Use family-local rows for progress and review status.
 
 Use `needs-review` on review rows when a material edit made previously reviewed evidence stale. Targeted re-review should refresh only the row/status it actually checked.
 

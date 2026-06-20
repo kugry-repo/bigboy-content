@@ -63,7 +63,7 @@ Use `content/_templates/unit-index.template.md` as the canonical initialized sca
 
 Artifact workstreams are independent. A unit may be intentionally sparse, and missing lessons, exercises, quizzes, or sets are blockers only when the declared scope, publish target, existing references, or local workflow prerequisites require them.
 
-Initialized dashboards declare artifact-family scope with the `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes`: `not-started` means intended but not begun, `not-in-scope` means intentionally absent, and `deferred` means intentionally postponed.
+Initialized dashboards declare artifact-family scope with the `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes`: `not-started` is the in-scope/open declaration, `not-in-scope` means intentionally absent, and `deferred` means intentionally postponed. Family-local rows record progress and review status.
 
 `planning_state: published` is set only by explicit human instruction after review and cleanup. Review/finalize prompts can report readiness for declared scope, but they do not publish automatically.
 

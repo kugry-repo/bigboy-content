@@ -53,7 +53,7 @@ The validator checks:
 - canonical exercise design-card IDs, duplicate IDs, allowed statuses, required field labels, ready-card completeness, and final exercise `source_design_card` references when enough local planning data exists;
 - canonical quiz item design-card IDs, duplicate IDs, allowed statuses, required field labels, MCQ/MR distractor and per-choice feedback planning fields, non-choice type-specific planning fields, ready-card completeness, and final quiz `Source item card` references when enough local planning data exists;
 - `## Production dashboard` rows from the canonical initialized scaffold as the authoritative initialized/published unit workstream tracker;
-- allowed dashboard statuses including the sparse-family states `not-started`, `not-in-scope`, and `deferred`;
+- artifact-family `Scope` rows limited to `not-started`, `not-in-scope`, and `deferred`, with ordinary dashboard progress/review statuses checked separately;
 - `## Journal de production` as the historical log;
 - the non-production initialized-unit reference fixture under `content/_fixtures/initialized-unit/`;
 - intentional invalid contract fixtures under `content/_fixtures/contracts/`, run in isolation as fault-injection checks;

@@ -89,11 +89,15 @@ Artifact-family scope is recorded mechanically in each initialized unit dashboar
 
 Canonical sparse-family states:
 
-- `not-started`: this artifact family is intended for the unit, but work has not begun.
+- `not-started`: this artifact family is intended for the current declared scope. In the `Scope` row, this is the in-scope/open value; family-local rows record whether work has actually started, progressed, or completed.
 - `not-in-scope`: this artifact family is intentionally absent from the unit and must not block review, cleanup, or finalization for the declared scope.
 - `deferred`: this artifact family is intentionally postponed. It is a visible open planning decision or future-work note, not an accidental omission.
 
-Use these hyphenated values in dashboard rows and status reports. Do not write prose variants such as `not in scope` as dashboard statuses. When a family is `not-in-scope`, mark the family `Scope` row and its family-local dashboard rows `not-in-scope` for mechanical clarity. When a family is `deferred`, mark the `Scope` row `deferred`; family-local rows that have not started may also be marked `deferred`, while any real completed or reviewed work should keep its honest progress status.
+Use these hyphenated values in dashboard rows and status reports. Do not write prose variants such as `not in scope` as dashboard statuses. The `Scope` row is not a progress, review, or readiness row; keep progress evidence in the family-local rows.
+
+When a family is `not-in-scope`, mark the family `Scope` row and its family-local dashboard rows `not-in-scope` for mechanical clarity. Do not keep design cards, final files, or active local dashboard rows in a family marked `not-in-scope`.
+
+When a family is `deferred`, mark the `Scope` row `deferred`; family-local rows must be `deferred` or `not-started`. Do not mix `Scope: deferred` with `ready`, `complete`, `needs-review`, `partial`, or `blocked` local rows. If real work is active enough to carry progress or review status, change the `Scope` row back to `not-started` and let the local rows report progress honestly.
 
 ## Unit index lifecycle
 
@@ -218,7 +222,7 @@ The production dashboard is a compact status view for independent but coordinate
 
 Allowed dashboard statuses:
 
-- `not-started`: the row or artifact family is intended, but no meaningful work exists yet.
+- `not-started`: the row is intended, but no meaningful work exists yet. In an artifact-family `Scope` row, this is also the canonical in-scope/open declaration.
 - `not-in-scope`: the artifact family or row is intentionally absent from this unit's declared scope.
 - `deferred`: the artifact family or row is intentionally postponed and should remain visible as future work or an open planning decision.
 - `partial`: some useful work exists, but the item is incomplete.
@@ -232,7 +236,9 @@ Use the smallest honest status. Do not mark a workstream complete just because a
 
 Use `needs-review` for dashboard rows whose current evidence is stale after a material edit. Once the relevant targeted review passes, update only the row that the review actually refreshed.
 
-The `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes` are the canonical way to distinguish "we plan this later" (`not-started`), "we intentionally do not want this family in the unit" (`not-in-scope`), and "we are postponing this family" (`deferred`). Review and finalize prompts must read those rows before treating absent files or planning sections as defects.
+Only `not-started`, `not-in-scope`, and `deferred` are valid in artifact-family `Scope` rows. Generic progress or review statuses such as `partial`, `ready`, `needs-review`, `complete`, `blocked`, and `not-run` belong only in family-local rows.
+
+The `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes` are the canonical way to distinguish "this family belongs to the current declared scope" (`not-started`), "we intentionally do not want this family in the unit" (`not-in-scope`), and "we are postponing this family" (`deferred`). Review and finalize prompts must read those rows before treating absent files or planning sections as defects, but must use the family-local rows to judge progress and review readiness.
 
 The canonical dashboard groups and rows are defined in `content/_templates/unit-index.template.md`. The current groups are Unit map, Lessons, Exercises, Quizzes, and Unit review.
 

@@ -103,7 +103,7 @@ If the user request is open-ended, choose based on:
 
 Do not force unrelated workstreams to run first.
 
-Sparse units are valid. For initialized or published units, read the dashboard `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes` before classifying missing work. Report absent artifact families as `not-in-scope`, `deferred`, or `not-started` unless the unit plan, requested publish target, existing artifact references, or local workflow prerequisites make the absence a blocker.
+Sparse units are valid. For initialized or published units, read the dashboard `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes` before classifying missing work. Use family-local rows, not the `Scope` row, to judge progress and review status. Report absent artifact families as `not-in-scope`, `deferred`, or `not-started` unless the unit plan, requested publish target, existing artifact references, or local workflow prerequisites make the absence a blocker.
 
 Routing rules:
 

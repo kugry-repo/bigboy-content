@@ -577,12 +577,23 @@ const ALLOWED_DASHBOARD_STATUSES = new Set([
   "not-run",
 ]);
 
+const ALLOWED_DASHBOARD_SCOPE_STATUSES = new Set([
+  "not-started",
+  "not-in-scope",
+  "deferred",
+]);
+
 const ARTIFACT_FAMILY_DASHBOARD_SECTIONS = new Set([
   "Lessons",
   "Exercises",
   "Quizzes",
 ]);
 const DASHBOARD_SCOPE_ROW = "Scope";
+
+const DEFERRED_FAMILY_LOCAL_DASHBOARD_STATUSES = new Set([
+  "not-started",
+  "deferred",
+]);
 
 const FINAL_CONTENT_STATUSES = new Set(["reviewed", "published"]);
 
@@ -936,6 +947,26 @@ const CONTRACT_FIXTURES = {
     "content/_fixtures/contracts/invalid-reviewed-quiz-zero-question-count.md",
   reviewedExampleQuizBodyContract:
     "content/_fixtures/contracts/invalid-example-reviewed-quiz-body-contract.md",
+  sparseLessonOnlyUnit:
+    "content/_fixtures/contracts/valid-sparse-lesson-only-unit.md",
+  sparseExerciseOnlyUnit:
+    "content/_fixtures/contracts/valid-sparse-exercise-only-unit.md",
+  sparseQuizOnlyUnit:
+    "content/_fixtures/contracts/valid-sparse-quiz-only-unit.md",
+  sparseLessonsQuizzesUnit:
+    "content/_fixtures/contracts/valid-sparse-lessons-quizzes-unit.md",
+  notInScopeActiveDashboardRow:
+    "content/_fixtures/contracts/invalid-not-in-scope-active-dashboard-row.md",
+  deferredSparseFinalization:
+    "content/_fixtures/contracts/valid-deferred-sparse-finalization.md",
+  deferredFinalDashboardRow:
+    "content/_fixtures/contracts/invalid-deferred-final-dashboard-row.md",
+  genericScopeValue:
+    "content/_fixtures/contracts/invalid-generic-scope-value.md",
+  notInScopePlanningObject:
+    "content/_fixtures/contracts/invalid-not-in-scope-planning-object.md",
+  notInScopeAuthoredFile:
+    "content/_fixtures/contracts/invalid-not-in-scope-authored-file.md",
   quizQuestionCountAnswerHeading:
     "content/_fixtures/contracts/valid-quiz-question-count-answer-heading.md",
   draftWarningOnlyQuiz:
@@ -1909,14 +1940,87 @@ function initializedTemplateHint() {
   return `; expected by ${CANONICAL_INITIALIZED_UNIT_TEMPLATE_PATH}`;
 }
 
+function unitDashboardLabel(data, filePath) {
+  return data.unit_folder || data.id || rel(filePath);
+}
+
+function expectedDashboardScopeValues() {
+  return [...ALLOWED_DASHBOARD_SCOPE_STATUSES].join(", ");
+}
+
+function expectedDashboardStatusValues() {
+  return [...ALLOWED_DASHBOARD_STATUSES].join(", ");
+}
+
+function parseDashboardRows(sectionText) {
+  const records = [...sectionText.matchAll(/^\s*-\s+([^:\n]+):\s*(.*?)\s*$/gmu)]
+    .map((match) => ({
+      row: match[1].trim(),
+      status: match[2].trim(),
+    }));
+
+  return {
+    records,
+    byRow: new Map(records.map((record) => [record.row, record.status])),
+  };
+}
+
+function validateDashboardRowStatus(filePath, data, group, row, status) {
+  const isArtifactFamilyScopeRow =
+    ARTIFACT_FAMILY_DASHBOARD_SECTIONS.has(group.section) &&
+    row === DASHBOARD_SCOPE_ROW;
+
+  if (isArtifactFamilyScopeRow) {
+    if (!ALLOWED_DASHBOARD_SCOPE_STATUSES.has(status)) {
+      addError(
+        filePath,
+        `unit "${unitDashboardLabel(data, filePath)}" family "${group.section}" dashboard Scope row has invalid scope value "${status}"; expected one of ${expectedDashboardScopeValues()}`,
+      );
+    }
+    return;
+  }
+
+  if (!ALLOWED_DASHBOARD_STATUSES.has(status)) {
+    addError(
+      filePath,
+      `unit "${unitDashboardLabel(data, filePath)}" dashboard section "### ${group.section}" row "${row}" has invalid status "${status}"; expected one of ${expectedDashboardStatusValues()}`,
+    );
+  }
+}
+
+function checkNotInScopeDashboardRows(filePath, data, group, rows) {
+  for (const [row, status] of rows.entries()) {
+    if (row === DASHBOARD_SCOPE_ROW || status === "not-in-scope") continue;
+
+    addError(
+      filePath,
+      `unit "${unitDashboardLabel(data, filePath)}" family "${group.section}" is marked "Scope: not-in-scope" but row "${row}" is "${status}"; family-local rows must also be "not-in-scope"`,
+    );
+  }
+}
+
+function checkDeferredDashboardRows(filePath, data, group, rows) {
+  for (const [row, status] of rows.entries()) {
+    if (row === DASHBOARD_SCOPE_ROW) continue;
+    if (DEFERRED_FAMILY_LOCAL_DASHBOARD_STATUSES.has(status)) continue;
+
+    addError(
+      filePath,
+      `unit "${unitDashboardLabel(data, filePath)}" family "${group.section}" is marked "Scope: deferred" but row "${row}" is "${status}"; deferred family-local rows must be one of ${[...DEFERRED_FAMILY_LOCAL_DASHBOARD_STATUSES].join(", ")}`,
+    );
+  }
+}
+
 function checkProductionDashboard(filePath, dashboardSection, data = {}) {
   if (!dashboardSection.trim()) {
     addError(
       filePath,
       `missing body content under "## ${DASHBOARD_HEADING}"${initializedTemplateHint()}`,
     );
-    return;
+    return new Map();
   }
+
+  const familyScopes = new Map();
 
   for (const group of REQUIRED_DASHBOARD) {
     if (!hasHeadingInSection(dashboardSection, 3, group.section)) {
@@ -1928,10 +2032,11 @@ function checkProductionDashboard(filePath, dashboardSection, data = {}) {
     }
 
     const sectionText = getSection(dashboardSection, 3, group.section);
-    const rows = new Map(
-      [...sectionText.matchAll(/^\s*-\s+([^:\n]+):\s*([a-z-]+)\s*$/gmu)]
-        .map((match) => [match[1].trim(), match[2].trim()]),
-    );
+    const { records, byRow: rows } = parseDashboardRows(sectionText);
+
+    for (const { row, status } of records) {
+      validateDashboardRowStatus(filePath, data, group, row, status);
+    }
 
     for (const row of group.rows) {
       if (!rows.has(row)) {
@@ -1941,56 +2046,62 @@ function checkProductionDashboard(filePath, dashboardSection, data = {}) {
         );
         continue;
       }
-
-      const status = rows.get(row);
-      if (!ALLOWED_DASHBOARD_STATUSES.has(status)) {
-        addError(
-          filePath,
-          `dashboard row "${row}" has invalid status "${status}"; expected one of ${[...ALLOWED_DASHBOARD_STATUSES].join(", ")}`,
-        );
-      }
     }
+
+    const isArtifactFamilySection =
+      ARTIFACT_FAMILY_DASHBOARD_SECTIONS.has(group.section);
+    const familyScope = rows.get(DASHBOARD_SCOPE_ROW);
 
     if (
-      ARTIFACT_FAMILY_DASHBOARD_SECTIONS.has(group.section) &&
-      rows.get(DASHBOARD_SCOPE_ROW) === "not-in-scope"
+      isArtifactFamilySection &&
+      ALLOWED_DASHBOARD_SCOPE_STATUSES.has(familyScope)
     ) {
-      for (const [row, status] of rows.entries()) {
-        if (row === DASHBOARD_SCOPE_ROW || status === "not-in-scope") continue;
+      familyScopes.set(group.section, familyScope);
 
-        addError(
-          filePath,
-          `dashboard section "### ${group.section}" is marked "Scope: not-in-scope" but row "${row}" is "${status}"; family-local rows must also be "not-in-scope"`,
-        );
+      if (familyScope === "not-in-scope") {
+        checkNotInScopeDashboardRows(filePath, data, group, rows);
+      } else if (familyScope === "deferred") {
+        checkDeferredDashboardRows(filePath, data, group, rows);
       }
     }
 
-    const familyScope = rows.get(DASHBOARD_SCOPE_ROW);
     const skipDeferredOrOutOfScopeFamily =
-      ARTIFACT_FAMILY_DASHBOARD_SECTIONS.has(group.section) &&
+      isArtifactFamilySection &&
       (familyScope === "not-in-scope" || familyScope === "deferred");
 
     if (claimsFinalReadiness(data) && !skipDeferredOrOutOfScopeFamily) {
       for (const [row, status] of rows.entries()) {
+        if (row === DASHBOARD_SCOPE_ROW) continue;
         if (!FINALIZATION_BLOCKING_DASHBOARD_STATUSES.has(status)) continue;
 
         addError(
           filePath,
-          `dashboard row "${row}" is "${status}" while unit frontmatter claims reviewed/published readiness`,
+          `unit "${unitDashboardLabel(data, filePath)}" dashboard section "### ${group.section}" row "${row}" is "${status}" while unit frontmatter claims reviewed/published readiness`,
         );
       }
     }
   }
 
-  for (const match of dashboardSection.matchAll(/^\s*-\s+([^:\n]+):\s*([^\s]+)\s*$/gmu)) {
-    const status = match[2].trim();
-    if (!ALLOWED_DASHBOARD_STATUSES.has(status)) {
-      addError(
+  const requiredSections = new Set(
+    REQUIRED_DASHBOARD.map((group) => group.section),
+  );
+  for (const heading of getHeadings(dashboardSection)) {
+    if (heading.level !== 3 || requiredSections.has(heading.text)) continue;
+
+    const sectionText = getSection(dashboardSection, 3, heading.text);
+    const { records } = parseDashboardRows(sectionText);
+    for (const { row, status } of records) {
+      validateDashboardRowStatus(
         filePath,
-        `dashboard row "${match[1].trim()}" has invalid status "${status}"; expected one of ${[...ALLOWED_DASHBOARD_STATUSES].join(", ")}`,
+        data,
+        { section: heading.text },
+        row,
+        status,
       );
     }
   }
+
+  return familyScopes;
 }
 
 function checkExerciseDesignCardContracts(filePath, body) {
@@ -2134,6 +2245,28 @@ function checkPlanningObjectContracts(filePath, body) {
     exerciseDesignCards: checkExerciseDesignCardContracts(filePath, body),
     quizItemDesignCards: checkQuizItemDesignCardContracts(filePath, body),
   };
+}
+
+function checkScopePlanningObjectContradictions(filePath, data, familyScopes, planningObjects) {
+  if (familyScopes.get("Exercises") === "not-in-scope") {
+    const count = planningObjects.exerciseDesignCards.size;
+    if (count > 0) {
+      addError(
+        filePath,
+        `unit "${unitDashboardLabel(data, filePath)}" family "Exercises" is marked "Scope: not-in-scope" but has ${count} exercise design card(s); remove the planning objects or change the Scope row to "not-started" or "deferred" (canonical Scope values: ${expectedDashboardScopeValues()})`,
+      );
+    }
+  }
+
+  if (familyScopes.get("Quizzes") === "not-in-scope") {
+    const count = planningObjects.quizItemDesignCards.size;
+    if (count > 0) {
+      addError(
+        filePath,
+        `unit "${unitDashboardLabel(data, filePath)}" family "Quizzes" is marked "Scope: not-in-scope" but has ${count} quiz item design card(s); remove the planning objects or change the Scope row to "not-started" or "deferred" (canonical Scope values: ${expectedDashboardScopeValues()})`,
+      );
+    }
+  }
 }
 
 function checkLegacyGlobalProductionText(filePath, text) {
@@ -2572,8 +2705,11 @@ function checkCanonicalUnitBody(indexPath, body, data) {
   if (data.planning_state === "stub") {
     checkStubUnitBody(indexPath, body);
     return {
-      exerciseDesignCards: new Map(),
-      quizItemDesignCards: new Map(),
+      planningObjects: {
+        exerciseDesignCards: new Map(),
+        quizItemDesignCards: new Map(),
+      },
+      familyScopes: new Map(),
     };
   }
 
@@ -2612,8 +2748,9 @@ function checkCanonicalUnitBody(indexPath, body, data) {
   }
 
   const dashboardSection = getSection(body, 2, DASHBOARD_HEADING);
-  checkProductionDashboard(indexPath, dashboardSection, data);
+  const familyScopes = checkProductionDashboard(indexPath, dashboardSection, data);
   const planningObjects = checkPlanningObjectContracts(indexPath, body);
+  checkScopePlanningObjectContradictions(indexPath, data, familyScopes, planningObjects);
   checkLegacyGlobalProductionText(indexPath, body);
 
   if (!getSection(body, 2, "Journal de production").trim()) {
@@ -2627,7 +2764,10 @@ function checkCanonicalUnitBody(indexPath, body, data) {
     addError(indexPath, 'published unit index contains unresolved TODO placeholders');
   }
 
-  return planningObjects;
+  return {
+    planningObjects,
+    familyScopes,
+  };
 }
 
 function checkCanonicalInitializedUnitTemplate() {
@@ -3093,6 +3233,19 @@ function readFixtureFrontmatter(repoPath, label) {
   return parsed;
 }
 
+function checkDashboardContractFixture(repoPath, data = {}) {
+  const filePath = fullPathFromRepoPath(repoPath);
+  const text = fs.readFileSync(filePath, "utf8");
+  checkProductionDashboard(
+    filePath,
+    getSection(text, 2, DASHBOARD_HEADING),
+    {
+      unit_folder: path.basename(repoPath, ".md"),
+      ...data,
+    },
+  );
+}
+
 function fixtureProgram() {
   return {
     id: "fixture-program",
@@ -3368,7 +3521,123 @@ function checkContractFixtures() {
         parsed.data,
       );
     },
-    [/dashboard row "Final verification" is "needs-review" while unit frontmatter claims reviewed\/published readiness/],
+    [/row "Final verification" is "needs-review" while unit frontmatter claims reviewed\/published readiness/],
+  );
+
+  expectValidContractFixture(
+    CONTRACT_FIXTURES.sparseLessonOnlyUnit,
+    "lesson-only sparse unit finalizes with exercises and quizzes out of scope",
+    () => checkDashboardContractFixture(
+      CONTRACT_FIXTURES.sparseLessonOnlyUnit,
+      { status: "reviewed" },
+    ),
+  );
+
+  expectValidContractFixture(
+    CONTRACT_FIXTURES.sparseExerciseOnlyUnit,
+    "exercise-only sparse unit finalizes with lessons and quizzes out of scope",
+    () => checkDashboardContractFixture(
+      CONTRACT_FIXTURES.sparseExerciseOnlyUnit,
+      { status: "reviewed" },
+    ),
+  );
+
+  expectValidContractFixture(
+    CONTRACT_FIXTURES.sparseQuizOnlyUnit,
+    "quiz-only sparse unit finalizes with lessons and exercises out of scope",
+    () => checkDashboardContractFixture(
+      CONTRACT_FIXTURES.sparseQuizOnlyUnit,
+      { status: "reviewed" },
+    ),
+  );
+
+  expectValidContractFixture(
+    CONTRACT_FIXTURES.sparseLessonsQuizzesUnit,
+    "lessons plus quizzes sparse unit finalizes with exercises out of scope",
+    () => checkDashboardContractFixture(
+      CONTRACT_FIXTURES.sparseLessonsQuizzesUnit,
+      { status: "reviewed" },
+    ),
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.notInScopeActiveDashboardRow,
+    "not-in-scope family rejects active dashboard rows",
+    () => checkDashboardContractFixture(
+      CONTRACT_FIXTURES.notInScopeActiveDashboardRow,
+      { status: "planned" },
+    ),
+    [/family "Exercises" is marked "Scope: not-in-scope" but row "Exercise files" is "ready"/],
+  );
+
+  expectValidContractFixture(
+    CONTRACT_FIXTURES.deferredSparseFinalization,
+    "deferred family does not block sparse finalization",
+    () => checkDashboardContractFixture(
+      CONTRACT_FIXTURES.deferredSparseFinalization,
+      { status: "reviewed" },
+    ),
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.deferredFinalDashboardRow,
+    "deferred family rejects final dashboard claims",
+    () => checkDashboardContractFixture(
+      CONTRACT_FIXTURES.deferredFinalDashboardRow,
+      { status: "reviewed" },
+    ),
+    [/family "Exercises" is marked "Scope: deferred" but row "Exercise files" is "complete"/],
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.genericScopeValue,
+    "artifact-family Scope row rejects generic dashboard progress values",
+    () => checkDashboardContractFixture(
+      CONTRACT_FIXTURES.genericScopeValue,
+      { status: "planned" },
+    ),
+    [/family "Lessons" dashboard Scope row has invalid scope value "complete"; expected one of not-started, not-in-scope, deferred/],
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.notInScopePlanningObject,
+    "not-in-scope family rejects contradictory planning objects",
+    () => {
+      const filePath = fullPathFromRepoPath(CONTRACT_FIXTURES.notInScopePlanningObject);
+      checkScopePlanningObjectContradictions(
+        filePath,
+        { unit_folder: "invalid-not-in-scope-planning-object" },
+        new Map([
+          ["Exercises", "not-in-scope"],
+          ["Quizzes", "not-in-scope"],
+        ]),
+        {
+          exerciseDesignCards: new Map([["fixture-ex-001", {}]]),
+          quizItemDesignCards: new Map([["fixture-quiz-item-001", {}]]),
+        },
+      );
+    },
+    [
+      /family "Exercises" is marked "Scope: not-in-scope" but has 1 exercise design card/,
+      /family "Quizzes" is marked "Scope: not-in-scope" but has 1 quiz item design card/,
+    ],
+  );
+
+  expectInvalidContractFixture(
+    CONTRACT_FIXTURES.notInScopeAuthoredFile,
+    "not-in-scope family rejects authored artifact files",
+    () => {
+      const filePath = fullPathFromRepoPath(CONTRACT_FIXTURES.notInScopeAuthoredFile);
+      checkNotInScopeArtifactFiles(
+        {
+          folder: "invalid-not-in-scope-authored-file",
+          familyScopes: new Map([["Lessons", "not-in-scope"]]),
+        },
+        "Lessons",
+        [filePath],
+      );
+    },
+    [/family "Lessons" is marked "Scope: not-in-scope".*authored artifact file/],
   );
 
   expectInvalidContractFixture(
@@ -3486,7 +3755,7 @@ function checkUnitIndex(unitDir, expectedGroup, program) {
   }
 
   checkUnitFrontmatter(indexPath, unitDir, expectedGroup, parsed.data, program);
-  const planningObjects = checkCanonicalUnitBody(
+  const unitBodyState = checkCanonicalUnitBody(
     indexPath,
     parsed.body,
     parsed.data,
@@ -3504,7 +3773,8 @@ function checkUnitIndex(unitDir, expectedGroup, program) {
     kind: parsed.data.unit_kind,
     planningState: parsed.data.planning_state,
     data: parsed.data,
-    planningObjects,
+    planningObjects: unitBodyState.planningObjects,
+    familyScopes: unitBodyState.familyScopes,
   };
 }
 
@@ -4953,6 +5223,17 @@ function checkSetFile(unit, filePath) {
   }
 }
 
+function checkNotInScopeArtifactFiles(unit, family, files) {
+  if (unit.familyScopes?.get(family) !== "not-in-scope") return;
+
+  for (const filePath of files) {
+    addError(
+      filePath,
+      `unit "${unit.folder}" family "${family}" is marked "Scope: not-in-scope" in the unit dashboard but authored artifact file "${rel(filePath)}" exists; remove the file from this unit or change the Scope row to "not-started" or "deferred" (canonical Scope values: ${expectedDashboardScopeValues()})`,
+    );
+  }
+}
+
 function checkUnitContentFiles(unit) {
   const artifactMarkdownFiles = REQUIRED_UNIT_SUBFOLDERS.flatMap((subdir) =>
     walkMarkdownFiles(path.join(unit.dir, subdir)),
@@ -4968,15 +5249,23 @@ function checkUnitContentFiles(unit) {
     return;
   }
 
-  for (const filePath of walkMarkdownFiles(path.join(unit.dir, "lessons"))) {
+  const lessonFiles = walkMarkdownFiles(path.join(unit.dir, "lessons"));
+  const exerciseFiles = walkMarkdownFiles(path.join(unit.dir, "exercises"));
+  const quizFiles = walkMarkdownFiles(path.join(unit.dir, "quizzes"));
+
+  checkNotInScopeArtifactFiles(unit, "Lessons", lessonFiles);
+  checkNotInScopeArtifactFiles(unit, "Exercises", exerciseFiles);
+  checkNotInScopeArtifactFiles(unit, "Quizzes", quizFiles);
+
+  for (const filePath of lessonFiles) {
     checkLessonFile(unit, filePath);
   }
 
-  for (const filePath of walkMarkdownFiles(path.join(unit.dir, "exercises"))) {
+  for (const filePath of exerciseFiles) {
     checkExerciseFile(unit, filePath);
   }
 
-  for (const filePath of walkMarkdownFiles(path.join(unit.dir, "quizzes"))) {
+  for (const filePath of quizFiles) {
     checkQuizFile(unit, filePath);
   }
 

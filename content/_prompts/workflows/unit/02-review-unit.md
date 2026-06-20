@@ -79,9 +79,9 @@ Lessons, exercises, and standalone quizzes are first-class artifact families. Re
 
 Do not judge exercises by lesson flow standards. Do not judge standalone quizzes as compressed lessons or in-lesson checks. Use lesson standards only for lesson artifacts, exercise standards only for exercise artifacts and exercise design cards, and quiz standards only for quiz artifacts and quiz planning cards.
 
-Before classifying missing work, read the dashboard `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes`. Interpret them canonically: `not-started` means intended but not begun, `not-in-scope` means intentionally absent, and `deferred` means intentionally postponed.
+Before classifying missing work, read the dashboard `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes`. Interpret them canonically: `not-started` is the in-scope/open declaration, `not-in-scope` means intentionally absent, and `deferred` means intentionally postponed. Use family-local rows, not the `Scope` row, to judge progress and review status.
 
-Do not require absent artifact families when their `Scope` row is `not-in-scope`. Report `deferred` families as deferred scope, not accidental missing work. If a family is `not-started`, decide whether it is an intended declared-scope gap or simply outside the current request/publish target.
+Do not require absent artifact families when their `Scope` row is `not-in-scope`. Report `deferred` families as deferred scope, not accidental missing work. If a family is `not-started`, use the family-local rows, unit plan, and request/publish target to decide whether missing work is a declared-scope gap.
 
 If Phase 2 freshness fields are present, surface stale or `needs-review` statuses as targeted review work. If Phase 3 planning objects are present, surface incomplete, stale, or not-ready design cards, blueprints, quiz intent cards, raw pools, or item design cards as planning-object blockers only for families in scope.
 

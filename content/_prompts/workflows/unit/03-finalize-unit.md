@@ -72,7 +72,7 @@ Perform cleanup and publish-readiness assessment for `TARGET_UNIT_PATH`.
 
 This is cleanup work only.
 
-First, read `TARGET_UNIT_INDEX`, inspect `## Production dashboard`, determine the unit's declared scope from the `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes`, and identify which existing artifacts can be cleaned safely. Interpret `not-started` as intended but not begun, `not-in-scope` as intentionally absent, and `deferred` as intentionally postponed. If major work is missing, report it as a declared-scope gap only when a local contract requires it. Otherwise report the absent artifact family using its canonical dashboard scope state.
+First, read `TARGET_UNIT_INDEX`, inspect `## Production dashboard`, determine the unit's declared scope from the `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes`, and identify which existing artifacts can be cleaned safely. Interpret `not-started` as the in-scope/open declaration, `not-in-scope` as intentionally absent, and `deferred` as intentionally postponed. Use family-local rows, not the `Scope` row, to judge progress and review status. If major work is missing, report it as a declared-scope gap only when a local contract requires it. Otherwise report the absent artifact family using its canonical dashboard scope state.
 
 Finalize only the artifact families that are in scope for the declared unit scope or requested publish target. Use each family-specific completion contract:
 
