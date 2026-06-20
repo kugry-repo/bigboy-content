@@ -114,6 +114,15 @@ Skill coverage is content-derived: unit indexes, artifact frontmatter `skills`, 
 
 ## Authoring Flow
 
+Fast day-to-day route:
+
+1. Start at `content/_prompts/START-HERE.md` when choosing a prompt.
+2. Run `content/_prompts/commands/next-action.md` for a target unit or active file when the next step is unclear.
+3. If the target unit is a `planning_state: stub`, initialize it with `content/_prompts/commands/initialize-unit.md` before artifact work.
+4. After initialization, use `content/_prompts/workflows/unit/01-plan-unit.md` as a light scope pass when the unit or topic may be sparse; set irrelevant artifact-family `Scope` rows to `not-in-scope` or `deferred`.
+5. Run the smallest focused command for the actual task, such as `content/_prompts/shortcuts/create-direct-exercise.md`, `content/_prompts/shortcuts/lightweight-quiz.md`, or `content/_prompts/commands/content-studio.md`.
+6. Update only useful unit state, then run `npm run validate`.
+
 Start with:
 
 - `content/_prompts/START-HERE.md` when choosing a prompt.

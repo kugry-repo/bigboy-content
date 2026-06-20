@@ -8,6 +8,18 @@ For an existing current or target unit, "what should I do next?" requests should
 
 `content/_prompts/commands/next-action.md`
 
+## Quick Choices
+
+| Situation | Run |
+|---|---|
+| I have an active file or unit and do not know the next step. | `content/_prompts/commands/next-action.md` |
+| The target unit or topic is still `planning_state: stub`. | `content/_prompts/commands/initialize-unit.md` |
+| The unit was just initialized and scope is still unclear or sparse. | `content/_prompts/workflows/unit/01-plan-unit.md` as a light scope pass. |
+| I need one focused exercise, a tiny routine group, or one exercise solution. | `content/_prompts/shortcuts/create-direct-exercise.md` |
+| I need one quiz item, one distractor/feedback slice, one added item, or a short focused quiz. | `content/_prompts/shortcuts/lightweight-quiz.md` |
+| I need bounded critique, polishing, diagnosis, proposals, or a local patch. | `content/_prompts/commands/content-studio.md` |
+| I know a bounded change may affect several files or workflow contracts. | `content/_prompts/commands/change-existing-content.md` |
+
 Use the command prompts when you need to decide, manage, or change direction:
 
 - `content/_prompts/commands/next-action.md` - diagnose current state and recommend the next exact action.

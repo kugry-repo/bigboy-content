@@ -95,7 +95,7 @@ No raw exercise seeds recorded yet.
 
 No exercise design cards recorded yet.
 
-When created, use H4 cards from `content/_guides/exercises/exercise-design-guide.md`; the H4 heading is the stable `source_design_card` ID for final exercise files.
+When created, use H4 cards from `content/_guides/exercises/exercise-design-guide.md`; the H4 heading is the stable `source_design_card` ID for final exercise files. Canonical card statuses are `draft`, `needs-review`, `ready-for-exercise-batch`, `used-in-exercise`, `deferred`, and `rejected`. Final exercises may reference only ready or used cards, including compact direct cards created by `content/_prompts/shortcuts/create-direct-exercise.md`.
 
 ## Planification des séries d'exercices
 
@@ -115,7 +115,7 @@ No raw quiz item pools recorded yet.
 
 No quiz item design cards recorded yet.
 
-When created, use H4 item cards from `content/_guides/quizzes/quiz-structure.md`; final quiz questions reference them with `Source item card`.
+When created, use H4 item cards from `content/_guides/quizzes/quiz-structure.md`; final quiz questions reference them with `Source item card`. Canonical item-card statuses are `draft`, `needs-review`, `ready-for-quiz-file`, `used-in-quiz`, `deferred`, and `rejected`. Final quiz questions may reference only ready or used cards, including compact cards created by `content/_prompts/shortcuts/lightweight-quiz.md`. MCQ/MR cards need distractor and per-choice feedback planning. Non-choice cards need their type-specific accepted-answer, pairing, ordering, or hotspot-region contract without fake per-choice fields.
 
 ## Diagrammes et interactions à prévoir
 
@@ -140,6 +140,8 @@ paper unless the system later supports full papers explicitly.
 ## Production dashboard
 
 Use this as a compact orientation tool. Artifact frontmatter is the source of truth for artifact status and review freshness; this dashboard records declared scope, blockers, and next decisions only when they help a human choose the next action.
+
+If this unit or topic is intentionally sparse, set unused family `Scope` rows to `not-in-scope` or `deferred` during the first planning pass. Do not leave scaffold-default `not-started` rows if they would falsely imply that every artifact family is in scope.
 
 ### Unit map
 - Scope and goals: not-started

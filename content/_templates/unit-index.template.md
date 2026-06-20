@@ -143,6 +143,8 @@ paper unless the system later supports full papers explicitly.
 
 Use this as a compact orientation tool. Artifact frontmatter is the source of truth for artifact status and review freshness; this dashboard records declared scope, blockers, and next decisions only when they help a human choose the next action.
 
+If this unit or topic is intentionally sparse, set unused family `Scope` rows to `not-in-scope` or `deferred` during the first planning pass. Do not leave scaffold-default `not-started` rows if they would falsely imply that every artifact family is in scope.
+
 ### Unit map
 - Scope and goals: not-started
 - Prerequisites and skills: not-started

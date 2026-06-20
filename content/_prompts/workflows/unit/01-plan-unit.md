@@ -64,6 +64,8 @@ This is unit-map work only.
 
 Planning records declared scope. It may plan one artifact family, several artifact families, all artifact families, or an intentionally sparse unit. Include the canonical planning sections, and use the dashboard `Scope` rows under `### Lessons`, `### Exercises`, `### Sets`, and `### Quizzes` to mark each family as `not-started`, `not-in-scope`, or `deferred`. Do not use the `Scope` row for progress or review status. Use family-local rows only for blockers, planning readiness, review needs, or next decisions that help the author choose what to do.
 
+For a freshly initialized unit, the first useful planning pass may be only a scope pass. This is especially normal for unofficial topics, revision paths, synthesis topics, and exercise-only or quiz-only work. Set the family `Scope` rows honestly, leave unused planning sections sparse, and do not invent lesson, exercise, set, or quiz plans just because the scaffold has headings for every family.
+
 Keep the learner/export boundary explicit. Learner-facing candidates are concise
 unit orientation/navigation plus final lessons, exercises, sets, quizzes,
 revision pages, and exam-style practice routes. Raw dumps, seeds, planning

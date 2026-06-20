@@ -91,7 +91,7 @@ explicitly learner-facing summary/navigation sections. Do not count raw dumps,
 seeds, planning cards, dashboards, journals, source-analysis notes, or author
 notes as learner-facing output.
 
-If `TARGET_PLANNING_STATE` is `stub`, do not expect a dashboard. Recommend `content/_prompts/commands/initialize-unit.md` as the next action unless the user's request is only to manage, rename, delete, or inspect the stub.
+If `TARGET_PLANNING_STATE` is `stub`, do not expect a dashboard. Recommend `content/_prompts/commands/initialize-unit.md` as the next action unless the user's request is only to manage, rename, delete, or inspect the stub. If the request names a lesson, exercise, quiz, set, or content-studio action, say that initialization is the immediate blocker and name the focused prompt to rerun after initialization, so the author does not have to infer the follow-up route.
 
 Identify the requested artifact/workstream when present:
 
@@ -122,6 +122,8 @@ If the user request is open-ended, choose based on:
 Do not force unrelated workstreams to run first.
 
 Sparse units are valid. For initialized or published units, read the dashboard `Scope` rows under `### Lessons`, `### Exercises`, `### Sets`, and `### Quizzes` before classifying missing work. Use artifact frontmatter and existing files, not dashboard copies, to judge artifact status and review freshness. Report absent artifact families as `not-in-scope`, `deferred`, or `not-started` unless the unit plan, requested publish target, existing artifact references, or local workflow prerequisites make the absence a blocker.
+
+If an initialized unit or topic still has the scaffold-default `not-started` Scope rows for every artifact family and the user's request suggests a sparse path, recommend `content/_prompts/workflows/unit/01-plan-unit.md` as a light scope-setting pass before review/finalization. Do not force that pass before a clearly narrow direct exercise or lightweight quiz task; instead report any unresolved scope cleanup as a follow-up.
 
 Routing rules:
 

@@ -60,6 +60,7 @@ Prompt-specific requirements:
 - Do not initialize every unit in the program. Initialize only the resolved target.
 - If the unit already has `planning_state: initialized` or `planning_state: published`, do not recreate the scaffold. Report that it is already initialized and offer the smallest targeted patch if the index is malformed.
 - If `_workflow/current-unit.md` points to the initialized unit, consider that cache stale after changing `planning_state`. Do not rewrite it from this command; delete or clear it only if visible and safe, otherwise tell the user to rerun `content/_prompts/commands/set-current-unit.md`.
+- After initialization, if the unit is likely sparse or the intended artifact families are unclear, recommend `content/_prompts/workflows/unit/01-plan-unit.md` as a light scope pass to set family `Scope` rows before broad planning or review.
 
 ## Initialized Body
 
@@ -92,4 +93,4 @@ Report:
 - files changed;
 - whether artifact files were created;
 - validation result;
-- next useful workflow prompt, usually `content/_prompts/workflows/unit/01-plan-unit.md`.
+- next useful workflow prompt, usually `content/_prompts/workflows/unit/01-plan-unit.md`; for sparse unofficial topics, call it a scope-setting pass before artifact work.
