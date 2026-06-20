@@ -12,7 +12,7 @@ For official curriculum units, the program `_curriculum-map.md` is the canonical
 
 The canonical unit lifecycle and dashboard guide is `content/_guides/units/unit-workflow.md`. Unit `_index.md` files are the only unit-planning artifacts. Unstarted units stay as `planning_state: stub`; initialize one unit with `content/_prompts/commands/initialize-unit.md` before building its full dashboard. The initialized scaffold is authored in `content/_templates/unit-index.template.md`, with a non-production reference fixture at `content/_fixtures/initialized-unit/_index.md`. `planning_state: published` is reserved for an explicit human publication decision; no current workflow prompt sets it automatically.
 
-Use `content/_prompts/commands/content-studio.md` for conversational polishing, critique, diagnosis, proposals, and targeted patches. Use `content/_prompts/commands/change-existing-content.md` for known bounded changes, stale-file sync, and workflow/template/schema migrations. Use workflow prompts for canonical artifact workstreams.
+Use `content/_prompts/commands/content-studio.md` for conversational polishing, critique, diagnosis, proposals, and targeted patches from selected text, active files, or explicit paths. Use `content/_prompts/commands/change-existing-content.md` for known bounded changes, stale-file sync, and workflow/template/schema migrations. Use workflow prompts for canonical artifact workstreams.
 
 Run validation from the repository root:
 

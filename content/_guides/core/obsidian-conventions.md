@@ -6,6 +6,32 @@ The content should be pleasant to preview and edit in Obsidian while remaining p
 
 Avoid plugin-specific syntax unless explicitly approved.
 
+## Editor Context
+
+When using Obsidian, VS Code, or Codex with editor context, prefer selecting the
+smallest relevant Markdown slice and asking `content-studio` to work only on
+that selection. If no text is selected, the active file path should be enough to
+infer the unit or topic.
+
+Practical prompts:
+
+```text
+Content studio: Improve only the selected paragraph.
+```
+
+```text
+Content studio: Use the active file and review the selected solution block.
+```
+
+```text
+Content studio: In this file, improve quiz item Q3 distractor B and its feedback.
+```
+
+If the editor does not pass selection metadata, paste the selected text manually
+and include the file path when you want a patch written to disk. The
+`_workflow/current-unit.md` cache is only a fallback and may not be visible when
+`content/` alone is opened as an Obsidian vault.
+
 ## Callouts
 
 Use Obsidian callouts for semantic blocks.

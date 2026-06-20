@@ -930,12 +930,12 @@ const GENERIC_TARGET_RESOLUTION_PATTERNS = [
 ];
 
 const TARGET_PRECEDENCE_DRIFT_PATTERNS = [
-  /Resolve the target in this order:/i,
-  /Infer the target in this order:/i,
-  /Resolve target identity in this order:/i,
-  /Use explicit `TARGET_UNIT` only as an override/i,
-  /selected text as the primary target/i,
-  /selected text.*wins over explicit `TARGET_/is,
+  /Resolve target identity in this order:\s*1\.\s*Explicit fields/is,
+  /Resolve the target in this order:\s*1\.\s*Explicit `TARGET_PROGRAM`/is,
+  /Infer the target in this order:\s*1\.\s*Explicit/is,
+  /Explicit `TARGET_?\*?`? fields?.{0,80}\balways win\b.{0,80}(?:selected|active|editor)/is,
+  /Explicit `TARGET_?\*?`? fields?.{0,80}\bwin\b.{0,80}(?:selected text|active file)/is,
+  /shared precedence:\s*explicit fields,\s*supported editor context,\s*`?_workflow\/current-unit\.md`/i,
   /active file path, active file frontmatter, selected path, explicit `TARGET_PROGRAM`/i,
   /If no explicit target is provided,\s*read `_workflow\/current-unit\.md`/i,
 ];
@@ -8136,16 +8136,18 @@ function checkObsoleteQuizPromptReferences() {
 
 function checkSharedPromptContract(filePath, text) {
   const requiredPrecedence = [
-    "1. Explicit fields",
-    "2. Selected text",
-    "3. `_workflow/current-unit.md`",
-    "4. A human question",
+    "1. Selected text or selected range",
+    "2. Active file path",
+    "3. Unit or topic inferred from the active file path",
+    "4. Explicit file path from the user",
+    "5. `_workflow/current-unit.md`",
+    "6. A human question",
   ];
 
   if (!textIncludesInOrder(text, requiredPrecedence)) {
     addError(
       filePath,
-      "shared prompt contract must define target precedence as explicit fields, supported editor context, _workflow/current-unit.md, then ask",
+      "shared prompt contract must define editor-first target precedence as selected range, active file path, inferred unit path, explicit file path, _workflow/current-unit.md, then ask",
     );
   }
 
@@ -8169,6 +8171,7 @@ function checkSharedPromptContract(filePath, text) {
     "rewriter of `_workflow/current-unit.md`",
     "must not synthesize a new",
     "Actual program and unit indexes win",
+    "Active file paths and explicit file paths beat `_workflow/current-unit.md`",
     "If cached `TARGET_UNIT_PATH` or `TARGET_UNIT_INDEX` no longer exists, ignore the cache",
   ];
 
@@ -8496,7 +8499,7 @@ function checkPromptFileContract(
         if (pattern.test(section.text)) {
           addError(
             filePath,
-            `prompt-specific ${section.heading} duplicates or contradicts target-resolution precedence from ${SHARED_PROMPT_CONTRACT_PATH}; local scope rules may only narrow artifact/file selection after TARGET_* identity wins`,
+            `prompt-specific ${section.heading} duplicates or contradicts target-resolution precedence from ${SHARED_PROMPT_CONTRACT_PATH}; local scope rules may add prompt-specific selectors after the shared editor-first target model`,
           );
           break;
         }

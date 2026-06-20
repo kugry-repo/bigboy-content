@@ -6,6 +6,12 @@ Do not refer users to removed flat prompt names, old single-program paths, compa
 
 ## Target Resolution
 
+Target resolution has two normal surfaces:
+
+- Editor-facing prompts resolve from the author's working context first.
+- Unit/workflow prompts may start from explicit unit fields when no file,
+  selection, or path context is available.
+
 Unit-level prompts accept explicit targets in this shape:
 
 ```text
@@ -17,23 +23,40 @@ Prompts may also accept canonical derived fields from the lists below, such as
 `TARGET_UNIT_PATH` or `TARGET_UNIT_INDEX`, when the user provides them
 explicitly.
 
-Resolve target identity in this order:
+Resolve target identity in this order when the prompt supports editor-context
+inference:
 
-1. Explicit fields in the user request.
-2. Selected text, active file path, or active file frontmatter when the prompt supports editor-context inference.
-3. `_workflow/current-unit.md`, using the canonical local cache schema below.
-4. A human question when the target is still missing or ambiguous.
+1. Selected text or selected range, including editor-provided file path or line range.
+2. Active file path.
+3. Unit or topic inferred from the active file path, then confirmed from frontmatter and the parent unit index.
+4. Explicit file path from the user, including `TARGET_FILE`, `TARGET_UNIT_PATH`, `TARGET_UNIT_INDEX`, or a repository-relative Markdown path in the request.
+5. `_workflow/current-unit.md`, using the canonical local cache schema below.
+6. A human question when the target is still missing or ambiguous.
+
+If no selected text, selected range, active file, or explicit file path exists,
+then explicit `TARGET_PROGRAM` and `TARGET_UNIT` fields may resolve the unit.
+Do not require `TARGET_UNIT` when a selected file, active file, or explicit file
+path already implies the unit or topic. `TARGET_MINI_LESSON_FILE` is a
+lesson-workflow selector only; do not require it for exercises, quizzes, sets,
+or unit-index edits.
 
 Never silently default to a program.
 
 Later sources may fill missing fields only. They must not override earlier
-sources. If supported editor context points to a different program, unit, or
-file from explicit fields, stop and ask unless the prompt says to ignore that
-editor context. If `_workflow/current-unit.md` conflicts with explicit fields or
-supported editor context, treat the cache as stale and do not use it to change
-the resolved target.
+sources. If selected text, active file context, or an explicit file path point
+to different files or units, stop and ask unless the user clearly said to ignore
+one of those sources. If `_workflow/current-unit.md` conflicts with selected
+text, active file context, explicit path, or explicit unit fields, treat the
+cache as stale and do not use it to change the resolved target.
+
+Active file paths and explicit file paths beat `_workflow/current-unit.md`.
 
 `TARGET_PROGRAM` is the program directory name under `content/programs/`, for example `ma-2bac-pc-svt`.
+
+A repository-relative file path under
+`content/programs/<TARGET_PROGRAM>/<unit-folder>/` resolves `TARGET_PROGRAM`,
+`TARGET_UNIT_FOLDER`, `TARGET_UNIT_PATH`, and `TARGET_UNIT_INDEX` from the path
+before consulting the current-unit cache.
 
 After resolving `TARGET_PROGRAM`, derive:
 

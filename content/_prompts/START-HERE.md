@@ -33,7 +33,23 @@ Use unit workflow prompts by intent. They are not a global ladder, and they do n
 
 For edits to existing reviewed content, use the revision freshness contract in `content/_guides/schema/frontmatter-schema.md`: material edits invalidate only affected review evidence with `needs-review`; non-material edits may preserve status only with an explicit reason.
 
-Use `content/_prompts/commands/content-studio.md` for bounded patching or critique. Use the owning review prompt when content already changed and the task is to refresh stale review evidence. Use `content/_prompts/commands/change-existing-content.md` when the edit may affect dependencies, planning objects, dashboard state, contracts, or multiple files.
+Use `content/_prompts/commands/content-studio.md` for bounded patching or critique while editing Markdown. Select a paragraph, solution block, quiz option, feedback block, set note, or unit-index planning card when possible; otherwise use the active file path. The current-unit cache is only fallback context.
+
+Simple content-studio examples:
+
+```text
+Improve the selected paragraph in the active file. Patch only that paragraph.
+```
+
+```text
+In this file, improve quiz item Q3 distractor B and its feedback.
+```
+
+```text
+Review only the selected text for clarity. Do not patch yet.
+```
+
+Use the owning review prompt when content already changed and the task is to refresh stale review evidence. Use `content/_prompts/commands/change-existing-content.md` when the edit may affect dependencies, planning objects, dashboard state, contracts, or multiple files.
 
 Route review by artifact ownership:
 

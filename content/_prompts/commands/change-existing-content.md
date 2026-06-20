@@ -37,8 +37,9 @@ Follow `content/_prompts/_shared/prompt-contract.md`.
 Prompt-specific requirements:
 
 - Use the shared target fields for unit-level scope. Do not create prompt-specific local-state fields.
-- If the request does not name a specific file, unit, or global workflow area, resolve unit identity through the shared precedence: explicit fields, supported editor context, `_workflow/current-unit.md`, then ask.
-- If `_workflow/current-unit.md` is stale or conflicts with explicit fields or editor context, ignore it when another target source is available; otherwise stop and ask the user to rerun `content/_prompts/commands/set-current-unit.md`.
+- If the request names a specific file or the editor supplies an active file, infer the unit from that path before using `_workflow/current-unit.md`.
+- If the request does not name a specific file, unit, or global workflow area, resolve unit identity through the shared precedence in `content/_prompts/_shared/prompt-contract.md`.
+- If `_workflow/current-unit.md` is stale or conflicts with selected text, active file, explicit path, or explicit unit fields, ignore it when another target source is available; otherwise stop and ask the user to rerun `content/_prompts/commands/set-current-unit.md`.
 
 ## Scope Resolution
 

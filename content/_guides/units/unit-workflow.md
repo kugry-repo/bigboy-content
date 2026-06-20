@@ -164,7 +164,11 @@ Do not create a root-level `lesson.md`.
 
 Prompt target resolution is defined by `content/_prompts/_shared/prompt-contract.md`.
 
-Workflow prompts use `TARGET_PROGRAM` and `TARGET_UNIT` as explicit targets. Studio-style commands may infer both from selected text, active file, path, and frontmatter when their prompt-specific section says so.
+Workflow prompts still accept `TARGET_PROGRAM` and `TARGET_UNIT` as explicit
+targets when no file or selection context is available. Studio-style commands
+should infer from selected text, active file path, explicit file path, and
+frontmatter before falling back to `_workflow/current-unit.md`. Do not require
+`TARGET_UNIT` when the file path already implies the unit or topic.
 
 Use the shared contract for:
 
@@ -480,6 +484,10 @@ Use this command when the user already knows the change they want, even if they 
 Use `content/_prompts/commands/content-studio.md` for conversational critique, diagnosis, proposals, grilling, and targeted patches across lessons, exercises, quizzes, and unit planning sections. It is not a generation pipeline and should infer the target from editor context when possible.
 
 Use this command when the user is still shaping the change through selected text, taste, voice, pedagogy, diagnosis, or local repair. If the request becomes a known bounded migration across files, switch to `content/_prompts/commands/change-existing-content.md`.
+
+For related but separated edits, such as a quiz distractor and its feedback or
+an exercise statement and matching solution terminology, patch only the smallest
+related pieces and report exactly which sections were touched.
 
 ## Production journal
 

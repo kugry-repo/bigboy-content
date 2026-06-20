@@ -3,6 +3,9 @@
 Use this prompt to set the local authoring current content unit.
 
 This helper is the canonical writer for the ephemeral local current-unit cache.
+It is a convenience for prompt runs that do not have selected text, an active
+file, or an explicit path. Authors should not need to update it constantly
+during normal file-focused editing.
 It may create or update only:
 
 ```text
@@ -13,7 +16,8 @@ It must not edit content files, unit files, lesson files, exercise files, quiz f
 
 ## Input
 
-Accept or infer:
+Accept or infer from active-file context, an explicit file path, or explicit
+unit fields:
 
 ```text
 TARGET_PROGRAM: <program_id>
@@ -38,7 +42,8 @@ Follow `content/_prompts/_shared/prompt-contract.md`.
 Prompt-specific requirements:
 
 - Read `AGENTS.md` before writing.
-- Use `_workflow/current-unit.md` only as fallback context after explicit fields and supported editor context.
+- Use `_workflow/current-unit.md` only as fallback context after selected/active-file context, explicit file paths, and explicit unit fields.
+- Do not require `TARGET_UNIT` when an active file or explicit file path already implies the unit or topic.
 - If fallback cache fields are stale or conflict with the actual indexes, use the actual indexes for the resolved target and overwrite the cache with freshly derived fields.
 - Resolve exactly one unit and read `TARGET_PROGRAM_INDEX` and `TARGET_UNIT_INDEX` before writing.
 - Derive `TARGET_PLANNING_STATE`, `TARGET_UNIT_KIND`, `TARGET_UNIT_CODE`, and `TARGET_UNIT_TITLE` from the actual unit index.

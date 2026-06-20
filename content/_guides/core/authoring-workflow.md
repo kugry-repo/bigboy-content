@@ -157,7 +157,27 @@ For conversational critique, diagnosis, proposals, grilling, or targeted patches
 content/_prompts/commands/content-studio.md
 ```
 
-The studio command is not a generation pipeline. It should infer the target from selected text, active file, path, and frontmatter when possible.
+The studio command is the daily editor-facing route for small Markdown edits. It
+is not a generation pipeline. Select the smallest useful fragment when possible,
+or rely on the active file path. The prompt should infer the unit from the file
+path before using `_workflow/current-unit.md`.
+
+Useful examples:
+
+```text
+Content studio: Improve the selected paragraph in the active file. Patch only that paragraph.
+```
+
+```text
+Content studio: In this file, improve quiz item Q3 distractor B and its feedback.
+```
+
+```text
+Content studio: Review only the selected solution block for clarity. Do not patch yet.
+```
+
+The local current-unit cache is only a fallback for prompts without selected
+text, an active file, or an explicit path.
 
 For unit-wide consistency review, use `content/_prompts/workflows/unit/02-review-unit.md`. It reviews what exists and what the unit plan claims.
 

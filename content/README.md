@@ -100,6 +100,11 @@ Start with:
 
 `START-HERE.md` orients prompt choice. `next-action.md` owns state-aware "what next?" routing.
 
+For day-to-day Markdown editing, select the smallest useful fragment in VS Code,
+Obsidian, or Codex and run `content/_prompts/commands/content-studio.md`.
+Selection and active-file path come before the current-unit cache. If the file
+path is known, the author should not need to provide `TARGET_UNIT`.
+
 Create final files only through the appropriate workflow prompts and in small batches. Do not create whole units, full exercise libraries, quiz libraries, or app/frontend work unless explicitly requested.
 
 Changed artifacts route to the smallest owning review: lesson verification for lesson substance, exercise quality review for exercise statement/design changes, solution review for exercise solution changes, quiz item-quality review for item/stem/MCQ-distractor/non-choice interaction changes, answer-key review for answer logic, accepted forms, pairings, order, or hotspot regions, and feedback/remediation review for next-step routing.

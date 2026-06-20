@@ -8,8 +8,9 @@ This command owns the transition from `planning_state: stub` to `planning_state:
 
 ## Input
 
-Normal use may infer the target from explicit fields, supported editor context,
-or `_workflow/current-unit.md` according to the shared prompt contract.
+Normal use may infer the target from selected/active-file context, an explicit
+file path, explicit unit fields, or `_workflow/current-unit.md` according to the
+shared prompt contract.
 
 Explicit target fields:
 
@@ -28,10 +29,9 @@ Follow `content/_prompts/_shared/prompt-contract.md`.
 
 Prompt-specific requirements:
 
-- Explicit `TARGET_*` fields always win over active editor context.
-- Active file, selected path, selected text, or frontmatter may fill missing fields only when they do not conflict with explicit fields.
-- `_workflow/current-unit.md` may fill missing fields only after explicit fields and supported editor context.
-- If supported editor context or cached current-unit fields conflict with explicit fields, stop and ask for clarification. Do not choose silently.
+- Use the shared editor-first target order. Do not require `TARGET_UNIT` when an active file or explicit file path already resolves the unit.
+- `_workflow/current-unit.md` may fill missing fields only after selected/active-file context, explicit file paths, and explicit unit fields.
+- If selected/active-file context, explicit path, explicit unit fields, or cached current-unit fields conflict, stop and ask for clarification. Do not choose silently.
 - Resolve exactly one unit and read the actual `TARGET_UNIT_INDEX` before deciding whether the unit is `stub`, `initialized`, or `published`.
 - If `_workflow/current-unit.md` says the unit is initialized but the actual unit index says `planning_state: stub`, the actual unit index wins.
 - If `_workflow/current-unit.md` says the unit is stub but the actual unit index says `planning_state: initialized` or `planning_state: published`, the actual unit index wins.

@@ -8,7 +8,14 @@ This command owns state-aware "what should I do next?" routing. `content/_prompt
 
 ## Target
 
-Input:
+Input can be any of:
+
+- selected text or active-file context from the editor;
+- a repository-relative file path inside a unit;
+- explicit unit fields;
+- the local current-unit cache as fallback.
+
+Explicit unit fields:
 
 ```text
 TARGET_PROGRAM: <program_id>
@@ -21,9 +28,7 @@ Optional natural-language request:
 REQUEST: <what the user wants next>
 ```
 
-If no explicit target is provided, follow `content/_prompts/_shared/prompt-contract.md`: use supported editor context first when available, then read `_workflow/current-unit.md` using the shared cache schema.
-
-If no explicit target, supported editor context, or local current-unit state exists, stop and ask the user to set a current unit by running:
+If no selected text, active file, explicit path, explicit unit target, or local current-unit state exists, stop and ask the user to set a current unit by running:
 
 ```text
 content/_prompts/commands/set-current-unit.md
@@ -36,6 +41,8 @@ Follow `content/_prompts/_shared/prompt-contract.md`.
 Prompt-specific requirements:
 
 - Resolve exactly one target unit before inspection.
+- Active file path and explicit file path beat `_workflow/current-unit.md`.
+- Do not require `TARGET_UNIT` when the active file or explicit path already implies the unit or topic.
 - Verify `_workflow/current-unit.md` against the actual `TARGET_UNIT_INDEX` before relying on mutable fields from the cache.
 - Derive and report `TARGET_PLANNING_STATE` from the actual unit index.
 - If current-unit cache is missing, stale, conflicting, or points to a missing `TARGET_UNIT_PATH` or `TARGET_UNIT_INDEX`, do not write a replacement. Ignore stale cache when another target source is available; otherwise stop and ask the user to rerun `content/_prompts/commands/set-current-unit.md`.
@@ -209,7 +216,7 @@ Report the current unit, resolved folder, index path, program, unit code, title,
 
 ## Target source
 
-Report whether the target came from explicit `TARGET_UNIT`, supported editor context, or `_workflow/current-unit.md`. If `_workflow/current-unit.md` was stale, conflicting, ignored, or needs refresh, say so and recommend `content/_prompts/commands/set-current-unit.md`.
+Report whether the target came from selected text, active file path, inferred unit path, explicit file path, explicit `TARGET_UNIT`, or `_workflow/current-unit.md`. If `_workflow/current-unit.md` was stale, conflicting, ignored, or needs refresh, say so and recommend `content/_prompts/commands/set-current-unit.md`.
 
 ## Request/workstream
 

@@ -148,7 +148,7 @@ The validator checks:
 - topic catalog references against topic unit frontmatter inside the owning program.
 - active frontmatter IDs against `content/_references/deleted-ids.md`;
 - golden example YAML blocks for active content-object fields, enum values, and obvious ID/number/reference shape drift;
-- target-resolution prompt sections against `content/_prompts/_shared/prompt-contract.md`;
+- editor-first target-resolution prompt sections against `content/_prompts/_shared/prompt-contract.md`;
 - current-unit producer/consumer/mutation boundaries: `set-current-unit` writes, `next-action` verifies read-only, and lifecycle/mutation prompts invalidate or request a rerun instead of synthesizing cache entries;
 - unit review/finalize prompt contracts that require lesson, exercise, and quiz guide references plus targeted review routes for lesson verification, exercise quality, exercise solutions, quiz item quality, quiz answer keys, and quiz feedback/remediation;
 - routing guardrails that keep content-studio as bounded patching, change-existing-content as dependency-aware editing, and artifact review prompts as the owners of stale review-evidence refresh;
@@ -200,7 +200,7 @@ content/_fixtures/contracts/
 ```
 
 These fixtures are intentionally invalid and must be named `invalid-*`. They
-prove validator behavior for target precedence, current-unit cache boundaries,
+prove validator behavior for editor-first target precedence, current-unit cache boundaries,
 content-object schema alignment, official-unit map/folder/index agreement,
 stub-vs-initialized scaffold boundaries, final-artifact inventory, routing
 ownership, exercise-set `exercise_ids`, and removed content-object types.
