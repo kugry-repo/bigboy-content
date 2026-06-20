@@ -103,6 +103,7 @@ Check:
 
 - frontmatter consistency across the unit;
 - status fields and `solution_status` fields;
+- stale review evidence: lesson `status: needs-review`, exercise `design_status`/`statement_status`/`solution_status: needs-review`, quiz review substatuses at `needs-review`, and dashboard review rows at `needs-review`;
 - Obsidian-friendly Markdown headings, callouts, links, and tables;
 - obvious broken internal links;
 - TODOs and author notes, making sure unresolved items are intentional;
@@ -122,6 +123,7 @@ Assess publish-readiness for the declared scope:
 - artifacts required by the declared scope exist, while excluded families are marked `not-in-scope` and postponed families are marked `deferred` according to the dashboard `Scope` rows;
 - existing references resolve or are marked as unresolved blockers;
 - unresolved TODOs, author notes, and verification needs are either cleared or explicitly classified;
+- in-scope stale or `needs-review` review evidence is resolved or reported as a blocker before any manual publication decision;
 - source-safety risks are marked and not hidden;
 - `not-in-scope` and `deferred` workstreams are not treated as accidental defects.
 
@@ -138,6 +140,8 @@ Allowed cleanup changes:
 
 Always report readiness, blockers, and the evidence checked. Do not change `planning_state` to `published`. If the result is `Ready for declared scope`, also report `Needs human publication decision` unless the user separately gave explicit publication instructions.
 
+Do not report `Ready for declared scope` while any in-scope artifact has stale or `needs-review` review evidence. Report the targeted review needed instead of restarting the full pipeline.
+
 Finish with:
 
 - files cleaned;
@@ -148,5 +152,6 @@ Finish with:
 - remaining TODOs or author notes;
 - source-safety items still needing human review;
 - blockers before any manual `planning_state: published` decision, split into structural blockers and declared-scope gaps;
+- stale or `needs-review` review evidence and the targeted review that should refresh it;
 - deferred future work that is not blocking the declared scope;
 - final cleanup summary.

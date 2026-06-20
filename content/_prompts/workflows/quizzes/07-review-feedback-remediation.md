@@ -61,6 +61,8 @@ Check:
 - links/placeholders to available or planned lessons, exercises, mini-reviews, or prerequisite paths, with `not-in-scope` or `deferred` accepted when local support families are intentionally absent or postponed;
 - usefulness of feedback for a real student.
 
+If this review follows a material edit to per-choice feedback, diagnostic signals, mastery criteria, or remediation, identify the changed scope and review only the relevant feedback/remediation evidence. A successful review refreshes `feedback_status` and/or `remediation_status` only when those components were actually checked.
+
 You may update:
 
 - feedback;
@@ -76,6 +78,8 @@ You must not mark `answer_key_status` reviewed unless answer-key review has pass
 Use `feedback_status: reviewed` only when answer-specific feedback is useful and specific.
 
 Use `remediation_status: reviewed` only when next-step routing is actionable by mastery level and misconception.
+
+Use `needs-review` when prior feedback or remediation evidence is stale after a material edit but the targeted review has not yet passed.
 
 Do not mark quizzes as `published` unless explicitly requested and all review statuses are already `reviewed`.
 

@@ -59,6 +59,8 @@ Check:
 - answer consistency with stem and feedback;
 - no unsupported official/exam claims.
 
+If this review follows a material edit to correct-answer logic, accepted alternatives, answer constraints, or mathematically relevant options, identify the changed answer-key scope and review it in context. A successful answer-key review refreshes `answer_key_status` only.
+
 You may update:
 
 - correct answer;
@@ -69,7 +71,7 @@ You may update:
 
 You must not mark `feedback_status` or `remediation_status` as reviewed unless explicitly routed through the next review.
 
-Use `answer_key_status: reviewed` only when the mathematics is safe. Use `needs-correction` for mathematical errors and `needs-review` for unresolved verification uncertainty.
+Use `answer_key_status: reviewed` only when the mathematics is safe. Use `needs-correction` for mathematical errors and `needs-review` for stale answer-key evidence after a material edit or unresolved verification uncertainty.
 
 Do not mark quizzes as `published` unless explicitly requested and all review statuses are already `reviewed`.
 

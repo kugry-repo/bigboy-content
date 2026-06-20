@@ -62,6 +62,7 @@ The validator checks:
 - lesson, exercise, quiz, and set filename and program-aware ID consistency;
 - required common fields on active content objects, including `skills`, `unit_code`, `domain`, and source/status metadata;
 - required exercise frontmatter fields, allowed exercise values, required exercise headings, and quality-signal warnings;
+- exercise review freshness values, including `needs-review` for stale design, statement, or solution evidence;
 - required exercise-set frontmatter fields, allowed difficulty ranges, same-unit exercise IDs, and set ID consistency;
 - unit identity consistency between frontmatter and containing folder;
 - prompt-folder layout so old flat prompt systems cannot return;
@@ -72,6 +73,7 @@ The validator checks:
 - absence of the old lesson-only review command;
 - absence of obsolete lesson workflow prompt filenames in live Markdown and script files;
 - required quiz frontmatter fields, allowed quiz values, required quiz headings, review-status conflicts, and quality-signal warnings;
+- quiz review freshness conflicts, including reviewed/published quiz status while item-quality, answer-key, feedback, or remediation evidence is `needs-review`;
 - required production dashboard sections, rows, and allowed dashboard status values;
 - official-unit frontmatter and program-index catalog rows against the owning curriculum map;
 - topic catalog references against topic unit frontmatter inside the owning program.
@@ -212,7 +214,7 @@ The canonical exercise workflow is:
 07-create-sets.md
 ```
 
-The validator checks exercise frontmatter, headings, result/hint/mistake callouts, reviewed TODOs, source safety, and status conflicts. It does not attempt deep symbolic mathematics.
+The validator checks exercise frontmatter, headings, result/hint/mistake callouts, reviewed TODOs, source safety, review freshness, and status conflicts. It does not attempt deep symbolic mathematics.
 
 ## Quiz prompt canonicalization
 
@@ -237,4 +239,4 @@ The canonical quiz workflow is:
 07-review-feedback-remediation.md
 ```
 
-The validator checks quiz frontmatter, required headings, item type and cognitive role signals, per-choice feedback signals, remediation structure, reviewed TODO conflicts, source safety, and status conflicts. It does not attempt deep symbolic mathematics.
+The validator checks quiz frontmatter, required headings, item type and cognitive role signals, per-choice feedback signals, remediation structure, reviewed TODO conflicts, source safety, review freshness, and status conflicts. It does not attempt deep symbolic mathematics.

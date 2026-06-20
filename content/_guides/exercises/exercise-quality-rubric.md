@@ -138,3 +138,5 @@ A reviewed exercise must have:
 - reviewed mathematics.
 
 Reviewed means the exercise is a reliable training device, not merely a correct calculation.
+
+After a material edit, the affected evidence is no longer reviewed. Use `needs-review` for stale `design_status`, `statement_status`, or `solution_status` until the relevant targeted review passes.

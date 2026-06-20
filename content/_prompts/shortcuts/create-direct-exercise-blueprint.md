@@ -109,7 +109,7 @@ Add rich exercise design cards using the canonical design-card format:
 ```md
 ### <planned-exercise-id> — <working title>
 
-Status: planned | ready-for-exercise-batch | needs-redesign | needs-verification | rejected
+Status: planned | ready-for-exercise-batch | needs-review | needs-redesign | needs-verification | rejected
 
 Cluster:
 - <cluster id/title>

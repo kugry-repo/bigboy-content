@@ -18,6 +18,7 @@ domain: "{{domain}}"
 lesson_number: 1
 skills: []
 difficulty: decouverte
+# Freshness: after a material edit to reviewed lesson substance, set status to needs-review until targeted lesson review passes.
 status: draft
 sync_status: current
 sync_reason: null

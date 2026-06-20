@@ -129,6 +129,38 @@ Supported modes:
 
 If the wording is vague and the change affects direction, pedagogy, structure, difficulty, voice, or assessment design, use `grill`.
 
+## Revision Freshness
+
+Before any patch, apply the revision freshness contract from `content/_guides/schema/frontmatter-schema.md`.
+
+For every requested edit:
+
+1. Identify the artifact family: lesson, exercise, quiz, exercise set, or unit planning section.
+2. Identify the smallest subcomponent when possible:
+   - lesson explanation, definition, example, prerequisite note, checkpoint, or author note;
+   - exercise design intent/card, statement, givens, target, constraints, hints, solution, final answer, verification, mistake block, or author note;
+   - quiz stem, item type, options, distractors, answer key, accepted alternatives, per-choice feedback, diagnostic map, mastery criteria, remediation, or author note.
+3. Classify the edit as material or non-material.
+4. Patch only the bounded scope.
+5. After a material edit, set only the affected review status fields to `needs-review`.
+6. Preserve reviewed, verified, or published statuses only for clearly non-material edits, and explain why meaning, math, answer logic, feedback, remediation, and pedagogy did not change.
+7. Report the targeted review prompt or review step that should refresh the stale evidence.
+
+Material edits change math, meaning, answer logic, feedback, remediation, prerequisite assumptions, skill target, difficulty, intended misconception, or pedagogy. Non-material edits are typo, formatting, punctuation, link-formatting, or wording-polish changes that do not alter those things.
+
+Freshness invalidation rules:
+
+- Lessons: material edits to lesson substance set `status: needs-review` when the lesson had been `reviewed` or `published`.
+- Exercise design cards or design intent: material edits set the card readiness/review state to `needs-review` when it had been ready, and flag derived exercise files whose design evidence depends on the changed card.
+- Exercise statements: material edits set `statement_status: needs-review`; also set `solution_status: needs-review` when the solution depends on the changed statement. Demote exercise `status` to `needs-review` when it had been `reviewed` or `published`.
+- Exercise solutions: material edits set `solution_status: needs-review` only, unless the edit reveals the statement or design is also wrong. Demote exercise `status` to `needs-review` when it had been `reviewed` or `published`.
+- Quiz stems, item types, options, or distractors: material edits set `item_quality_status: needs-review`.
+- Quiz correct-answer logic: set `answer_key_status: needs-review`.
+- Quiz option, diagnostic-signal, or misconception changes: set `feedback_status: needs-review` when feedback depends on those choices.
+- Quiz feedback edits: set `feedback_status: needs-review`.
+- Quiz remediation edits: set `remediation_status: needs-review`.
+- Quiz `status` becomes `needs-review` when it had been `reviewed` or `published` and any quiz review substatus is invalidated.
+
 ## Mode Behavior
 
 ### grill
@@ -180,7 +212,7 @@ Rules:
 - Patch the selected text if selection exists.
 - Otherwise patch the smallest relevant section.
 - Do not rewrite the whole file unless explicitly asked.
-- Preserve IDs, frontmatter, status fields, and unrelated content.
+- Preserve IDs, identity frontmatter, and unrelated content. Update review status fields when the revision freshness rules require it.
 - Keep math notation compatible with the project.
 - Keep voice aligned with the relevant guide.
 
@@ -204,6 +236,8 @@ Use lesson guides.
 
 Focus on clarity, flow, voice, motivation, intuition, formal precision, examples, exam usefulness, avoiding repetitive ceremony, and keeping only the amount of structure the concept needs.
 
+After a material lesson edit, mark the lesson `status: needs-review` unless it was already draft/planned/needs-review. The next targeted review is `content/_prompts/workflows/lessons/07-verify-finalize.md` when the changed area needs correctness/finality review; use studio or lesson review notes for narrower critique before that.
+
 ### Exercises
 
 Use exercise guides: exercise-quality-rubric, exercise-design-guide, exercise-structure, and solution-style.
@@ -215,6 +249,8 @@ Focus on target skill precision, worth-existing value, student decision point, e
 When the active file or selection is inside an exercise file, infer the target unit from the path when possible, then use frontmatter and the parent unit `_index.md` to confirm.
 
 Do not mark `solution_status: reviewed` during a general patch unless the request explicitly includes solution review criteria. Do not mark `design_status` or `statement_status` reviewed unless the patch-and-review pass checks the quality rubric.
+
+Use `needs-review` to invalidate affected exercise statuses after material edits. A statement change normally needs `content/_prompts/workflows/exercises/05-review-exercise-quality.md` and may also need `content/_prompts/workflows/exercises/06-review-solutions.md`; a solution-only change needs solution review only.
 
 ### Quizzes
 
@@ -237,6 +273,8 @@ Use these critique questions for quiz selections:
 - Is this quiz checking ability or just producing a score?
 
 Do not mark `item_quality_status`, `answer_key_status`, `feedback_status`, or `remediation_status` as reviewed during a general patch unless the request explicitly includes the corresponding review criteria. Do not mark `status: published` unless explicitly requested and all four quiz review statuses are already `reviewed`.
+
+Use `needs-review` to invalidate affected quiz statuses after material edits. Route item/stem/option/distractor review to `content/_prompts/workflows/quizzes/05-review-item-quality.md`, answer-key review to `content/_prompts/workflows/quizzes/06-review-answer-keys.md`, and feedback/remediation review to `content/_prompts/workflows/quizzes/07-review-feedback-remediation.md`.
 
 ### Exercise Sets
 
@@ -261,7 +299,8 @@ Do not:
 - require advanced override fields when inference works;
 - create lessons, exercises, quizzes, sets, or dashboards inside a stub unit;
 - rewrite whole files for local problems;
-- alter IDs, frontmatter identity fields, status fields, or unrelated sections unless the user asked for that;
+- alter IDs, frontmatter identity fields, or unrelated sections unless the user asked for that;
+- preserve reviewed, verified, or published status after a material edit;
 - mark content `published` unless explicitly requested;
 - set unit `planning_state: published`;
 - paste copyrighted third-party course material;
@@ -272,6 +311,8 @@ Do not:
 Report:
 
 - inferred target and mode;
+- material vs non-material classification;
+- statuses invalidated, or statuses preserved with the reason;
 - files changed, if any;
 - guide or unit alignment checked;
 - remaining issues, risks, or questions;

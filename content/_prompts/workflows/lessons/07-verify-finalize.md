@@ -74,6 +74,8 @@ If compression/taste/voice review is missing, stop and recommend `content/_promp
 
 Verify the selected mini-lesson and finalize it as far as the evidence allows.
 
+If this prompt is being run after a material edit, identify the changed area and review that area in context. A successful targeted review refreshes the lesson `status` only when the review actually covers the stale changed area and no other known lesson review blockers remain.
+
 Check:
 
 - mathematical correctness;
@@ -101,6 +103,7 @@ Rules:
 - Do not repeat full coherence or compression rewrites unless verification discovers a blocking defect.
 - If correctness or curriculum alignment is uncertain, keep `status: needs-review` and record the issue in `## Notes auteur`.
 - Use `reviewed` only when the file genuinely meets the rubric.
+- If only a narrow changed area was reviewed, do not imply unrelated stale review evidence was refreshed.
 - Do not mark as `published` unless the user explicitly asks.
 - Do not add unsupported official claims.
 - Do not force optional blocks during finalization.

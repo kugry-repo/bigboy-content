@@ -139,6 +139,8 @@ Use `blocker` only for an issue that prevents the requested operation or the dec
 
 Unit review diagnoses. Cleanup fixes small structural, metadata, link, status, todo, and source-safety issues when the prompt allows edits. Finalize performs cleanup plus a publish-readiness assessment for the declared scope. None of these prompts decides the whole project roadmap; state-aware routing belongs to `content/_prompts/commands/next-action.md`.
 
+Revision freshness is part of readiness. If an in-scope artifact has `needs-review` because reviewed evidence became stale after a material edit, unit review and finalization must surface it as unresolved targeted review. Do not treat stale reviewed evidence as clean, and do not restart unrelated artifact families when a local targeted review will refresh the affected status.
+
 ## Canonical artifact folders
 
 Every content unit has exactly these artifact folders:
@@ -227,6 +229,8 @@ Allowed dashboard statuses:
 - `not-run`: use only for validator or automation rows that have not been executed.
 
 Use the smallest honest status. Do not mark a workstream complete just because an unrelated workstream is complete.
+
+Use `needs-review` for dashboard rows whose current evidence is stale after a material edit. Once the relevant targeted review passes, update only the row that the review actually refreshed.
 
 The `Scope` rows under `### Lessons`, `### Exercises`, and `### Quizzes` are the canonical way to distinguish "we plan this later" (`not-started`), "we intentionally do not want this family in the unit" (`not-in-scope`), and "we are postponing this family" (`deferred`). Review and finalize prompts must read those rows before treating absent files or planning sections as defects.
 
@@ -369,6 +373,8 @@ Use `content/_prompts/workflows/unit/03-finalize-unit.md` for targeted cleanup o
 This prompt is a cleanup pass, consistency pass, publish-readiness assessment, and blocker report for the declared scope. It should report `not-in-scope` and `deferred` workstreams separately from blockers, and it should not force unrelated workstreams to be completed first.
 
 It must not automatically set unit `planning_state: published`; that state is reserved for an explicit human publication decision. It must not mark files `published` unless explicitly requested and the relevant review evidence already supports it.
+
+Finalize must block or report any in-scope lesson, exercise, quiz, or dashboard row whose review evidence is `needs-review`. Sparse families marked `not-in-scope` may still be absent, but stale review evidence inside declared scope is unresolved work.
 
 ### Targeted revision
 

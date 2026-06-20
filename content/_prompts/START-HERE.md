@@ -31,6 +31,8 @@ Use workflow prompts when you already know what you are producing:
 
 Use unit workflow prompts by intent. They are not a global ladder, and they do not force lesson -> exercise -> quiz order. A unit may be intentionally sparse, so route by declared scope and the user's requested workstream. Initialized dashboards express sparse scope with `Scope: not-started`, `Scope: not-in-scope`, or `Scope: deferred` under the relevant artifact family.
 
+For edits to existing reviewed content, use the revision freshness contract in `content/_guides/schema/frontmatter-schema.md`: material edits invalidate only affected review evidence with `needs-review`; non-material edits may preserve status only with an explicit reason.
+
 Use shortcuts only for special cases:
 
 - `content/_prompts/shortcuts/create-direct-exercise-blueprint.md`

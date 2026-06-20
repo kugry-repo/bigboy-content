@@ -13,6 +13,7 @@ Use this checklist before marking a file as `reviewed` or `published`.
 - [ ] `skills` are filled.
 - [ ] `status` is realistic.
 - [ ] `source_type` and `source_ref` are correct.
+- [ ] If existing reviewed content was edited, material edits changed only the affected review status fields to `needs-review`; non-material edits preserved status only with a recorded reason.
 
 ## Mathematical correctness
 
@@ -83,6 +84,7 @@ Use this checklist before marking a file as `reviewed` or `published`.
 - [ ] Remediation routes by mastery level and misconception.
 - [ ] Item quality, answer key, feedback, and remediation statuses are realistic.
 - [ ] `status: published` is used only when all four quiz review statuses are `reviewed`.
+- [ ] Quiz `status: reviewed` or `status: published` is not used while any item-quality, answer-key, feedback, or remediation review evidence is `needs-review`.
 
 ## Lesson voice checklist
 
@@ -148,6 +150,7 @@ For full lesson review, use `_guides/lessons/lesson-quality-rubric.md`.
 - [ ] Math and curriculum verification notes are recorded when needed.
 - [ ] Author notes are separated from student-facing content.
 - [ ] The mini-lesson can be reviewed using `_guides/lessons/lesson-quality-rubric.md`.
+- [ ] A materially edited reviewed mini-lesson is back at `status: needs-review` until the targeted lesson review covers the changed area.
 
 ## Unit coverage checklist
 
@@ -158,6 +161,7 @@ For full lesson review, use `_guides/lessons/lesson-quality-rubric.md`.
 - [ ] For lessons in scope, the unit `_index.md` has a mini-lesson plan and the unit does not rely on one huge root-level `lesson.md`.
 - [ ] For exercises in scope, the unit `_index.md` has an exercise cluster map, raw exercise seeds or a clear direct-design justification, curated exercise design cards, and balance notes or card statuses when several clusters exist.
 - [ ] For exercises in scope, exercise files are one exercise per file, created in small batches unless explicitly requested otherwise, and reviewed through exercise quality and solution review before reviewed status.
+- [ ] For exercises in scope, no exercise marked `reviewed` or `published` has `design_status`, `statement_status`, or `solution_status` still at `needs-review`.
 - [ ] For quizzes in scope, the unit `_index.md` has quiz intent cards, raw item pools, and item design cards before final standalone quiz files are created.
 - [ ] For quizzes in scope, quiz files are standalone files under `quizzes/`, usually created one at a time, and reviewed separately for item quality, answer keys, feedback, and remediation.
 - [ ] The unit `_index.md` has a misconception map for the declared scope.
@@ -187,6 +191,7 @@ For full lesson review, use `_guides/lessons/lesson-quality-rubric.md`.
 ## Before publishing
 
 - [ ] Status changed to `reviewed` or `published` only after review.
+- [ ] `needs-review` review evidence has been resolved for every in-scope artifact before publication readiness is claimed.
 - [ ] Unit `planning_state: published` is used only after an explicit human publication decision; `content/_prompts/workflows/unit/03-finalize-unit.md` prepares readiness but does not automatically publish the unit.
 - [ ] `updated` date is changed.
 - [ ] Notes marked TODO are resolved or intentionally left in author notes.

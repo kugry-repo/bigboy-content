@@ -118,6 +118,7 @@ Check:
 - difficulty progression is reasonable inside each existing stream and across streams that explicitly interact;
 - existing solutions are clear and correct at a review-signal level;
 - existing quiz item quality, answer keys, feedback, and remediation are clear, correct, useful, and misconception-based at a review-signal level;
+- no in-scope artifact claims readiness while lesson status, exercise substatuses, quiz substatuses, or dashboard review rows are `needs-review`;
 - notation is consistent;
 - diagrams/interactions are planned where declared useful;
 - internal links and status fields look consistent;
@@ -149,12 +150,15 @@ This is review output only. Do not create or maintain a repository-wide coverage
 
 Make only targeted edits to unit dashboard rows, statuses, links, and small consistency issues. For larger rewrites or missing declared-scope work, report blockers or recommendations instead of doing them. For metadata/link/todo/source-safety cleanup before publication consideration, recommend `content/_prompts/workflows/unit/03-finalize-unit.md`.
 
+Treat `needs-review` review evidence as unresolved targeted review, not as clean readiness. Report the exact targeted review that would refresh it; do not restart unrelated families when a local review is enough.
+
 Finish with:
 
 - unit quality summary;
 - files touched;
 - sparse-unit handling: artifact families present, `not-in-scope`, `deferred`, `not-started`, or absent because of a blocker;
 - blocker classification: structural blockers, declared-scope gaps, quality/readiness observations, optional future improvements;
+- stale or `needs-review` review evidence by artifact and next targeted review;
 - readiness label using the vocabulary above;
 - recommended next actions;
 - warnings or verification needs.

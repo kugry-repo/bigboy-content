@@ -174,7 +174,7 @@ At minimum, check:
 - visible LaTeX syntax where math was touched;
 - no generated frontend, app, or deployment work unless explicitly requested.
 
-For content edits, also check unit `_index.md` tracker consistency, lesson/exercise/quiz/set IDs, relevant links, status fields, sync notes, and source-safety notes for official or exam claims.
+For content edits, also check unit `_index.md` tracker consistency, lesson/exercise/quiz/set IDs, relevant links, status fields, revision freshness from `content/_guides/schema/frontmatter-schema.md`, sync notes, and source-safety notes for official or exam claims.
 
 For prompt-system edits, also check that operating prompts inherit this shared contract, prompt paths use repository-relative POSIX paths, and removed prompt layouts or old workflow names have not returned.
 

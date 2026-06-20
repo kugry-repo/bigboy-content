@@ -101,6 +101,8 @@ No exam-alignment notes recorded yet.
 
 Use the artifact-family `Scope` rows to record sparse-unit intent: `not-started` means the family is intended but not begun, `not-in-scope` means it is intentionally absent, and `deferred` means it is intentionally postponed.
 
+Use `needs-review` on review rows when a material edit made previously reviewed evidence stale. Targeted re-review should refresh only the row/status it actually checked.
+
 ### Unit map
 - Curriculum scope: not-started
 - Skill map: not-started

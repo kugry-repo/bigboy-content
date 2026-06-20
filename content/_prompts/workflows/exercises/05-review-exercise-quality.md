@@ -63,6 +63,8 @@ Review selected existing exercise files for exercise quality.
 
 If the user named specific exercise files, review only those. Otherwise, review the first existing exercise files whose `design_status`, `statement_status`, author notes, or production dashboard suggests quality review is needed. If target files are ambiguous, stop and ask.
 
+If this review follows a material edit, identify whether the stale evidence is design intent, statement, hints, mistakes, verification, or another quality component. Refresh only `design_status` and/or `statement_status` when those components were actually reviewed.
+
 Do not create:
 
 - new exercises;
@@ -131,6 +133,8 @@ or:
 ```yaml
 statement_status: needs-rewrite
 ```
+
+Use `needs-review` when prior design or statement review evidence is stale after a material edit but the targeted review has not yet passed. Do not use `needs-redesign` or `needs-rewrite` merely to mark staleness; those are failed-review outcomes.
 
 Record the reason in `## Notes auteur`.
 

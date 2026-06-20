@@ -118,3 +118,5 @@ Use separate status fields intentionally:
 - `answer_key_status`: mathematical correctness and accepted answers.
 - `feedback_status`: answer-specific teaching quality.
 - `remediation_status`: next-step routing.
+
+After a material edit, set only the affected quiz review substatus to `needs-review` until that targeted review passes. Do not treat a reviewed answer key as fresh evidence for changed feedback, or reviewed feedback as fresh evidence for changed distractors.

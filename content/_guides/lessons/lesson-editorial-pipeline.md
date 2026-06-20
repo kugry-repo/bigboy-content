@@ -155,6 +155,8 @@ Check:
 
 If verification is uncertain, keep the file as `needs-review` and record the uncertainty in `## Notes auteur`.
 
+After a material edit to reviewed lesson substance, set `status: needs-review` until targeted lesson review covers the changed area in context. Non-material typo, formatting, punctuation, or link-formatting edits may preserve status only with an explicit note that meaning, math, examples, prerequisites, and pedagogy did not change.
+
 ## Lesson Shape
 
 `lesson_shape` is optional diagnostic metadata.

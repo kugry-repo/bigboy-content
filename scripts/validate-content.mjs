@@ -260,18 +260,21 @@ const ALLOWED_CALCULATOR_VALUES = new Set([
 
 const ALLOWED_DESIGN_STATUSES = new Set([
   "draft",
+  "needs-review",
   "reviewed",
   "needs-redesign",
 ]);
 
 const ALLOWED_STATEMENT_STATUSES = new Set([
   "draft",
+  "needs-review",
   "reviewed",
   "needs-rewrite",
 ]);
 
 const ALLOWED_SOLUTION_STATUSES = new Set([
   "draft",
+  "needs-review",
   "reviewed",
   "needs-correction",
 ]);
@@ -1452,7 +1455,7 @@ function initializedTemplateHint() {
   return `; expected by ${CANONICAL_INITIALIZED_UNIT_TEMPLATE_PATH}`;
 }
 
-function checkProductionDashboard(filePath, dashboardSection) {
+function checkProductionDashboard(filePath, dashboardSection, data = {}) {
   if (!dashboardSection.trim()) {
     addError(
       filePath,
@@ -1515,6 +1518,18 @@ function checkProductionDashboard(filePath, dashboardSection) {
       addError(
         filePath,
         `dashboard row "${match[1].trim()}" has invalid status "${status}"; expected one of ${[...ALLOWED_DASHBOARD_STATUSES].join(", ")}`,
+      );
+    }
+
+    if (
+      status === "needs-review" &&
+      (data.status === "reviewed" ||
+        data.status === "published" ||
+        data.planning_state === "published")
+    ) {
+      addWarning(
+        filePath,
+        `dashboard row "${match[1].trim()}" is needs-review while unit frontmatter claims reviewed/published readiness`,
       );
     }
   }
@@ -1991,7 +2006,7 @@ function checkCanonicalUnitBody(indexPath, body, data) {
   }
 
   const dashboardSection = getSection(body, 2, DASHBOARD_HEADING);
-  checkProductionDashboard(indexPath, dashboardSection);
+  checkProductionDashboard(indexPath, dashboardSection, data);
   checkLegacyGlobalProductionText(indexPath, body);
 
   if (!getSection(body, 2, "Journal de production").trim()) {
@@ -2945,9 +2960,19 @@ function checkExerciseFile(unit, filePath) {
     (data.status === "reviewed" || data.status === "published") &&
     reviewStatuses.some((status) => status !== "reviewed")
   ) {
+    const staleFields = [
+      ["design_status", data.design_status],
+      ["statement_status", data.statement_status],
+      ["solution_status", data.solution_status],
+    ]
+      .filter(([, status]) => status === "needs-review")
+      .map(([field]) => field);
+
     addWarning(
       filePath,
-      'frontmatter "status" claims reviewed/published while design_status, statement_status, or solution_status is not reviewed',
+      staleFields.length
+        ? `frontmatter "status" claims reviewed/published while ${staleFields.join(", ")} is needs-review stale review evidence`
+        : 'frontmatter "status" claims reviewed/published while design_status, statement_status, or solution_status is not reviewed',
     );
   }
 
@@ -3164,12 +3189,23 @@ function checkQuizFile(unit, filePath) {
     data.remediation_status,
   ];
   if (
-    data.status === "published" &&
+    (data.status === "reviewed" || data.status === "published") &&
     quizReviewStatuses.some((status) => status !== "reviewed")
   ) {
+    const staleFields = [
+      ["item_quality_status", data.item_quality_status],
+      ["answer_key_status", data.answer_key_status],
+      ["feedback_status", data.feedback_status],
+      ["remediation_status", data.remediation_status],
+    ]
+      .filter(([, status]) => status === "needs-review")
+      .map(([field]) => field);
+
     addWarning(
       filePath,
-      'frontmatter "status: published" requires item_quality_status, answer_key_status, feedback_status, and remediation_status to be reviewed',
+      staleFields.length
+        ? `frontmatter "status" claims reviewed/published while ${staleFields.join(", ")} is needs-review stale review evidence`
+        : 'frontmatter "status" claims reviewed/published while item_quality_status, answer_key_status, feedback_status, or remediation_status is not reviewed',
     );
   }
 

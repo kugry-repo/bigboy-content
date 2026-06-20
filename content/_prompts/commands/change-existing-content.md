@@ -115,6 +115,29 @@ For global changes, inspect as relevant:
 - `content/_templates/`
 - `scripts/validate-content.mjs`
 
+## Revision Freshness
+
+Apply the revision freshness contract from `content/_guides/schema/frontmatter-schema.md` to every content patch.
+
+The user is not responsible for naming downstream review effects. Trace likely local impacts yourself from the changed artifact, frontmatter, unit dashboard, design cards, linked files, and review fields.
+
+Classify each content edit:
+
+- Material edit: changes meaning, math, answer logic, feedback, remediation, prerequisite assumptions, difficulty, skill target, intended misconception, or pedagogy.
+- Non-material edit: typo, formatting, punctuation, link-formatting, or wording polish that does not change meaning, math, answer logic, feedback, remediation, or pedagogy.
+
+After a material edit, invalidate only the affected review evidence with `needs-review`:
+
+- lessons: set `status: needs-review` when reviewed or published lesson substance changed;
+- exercise design cards/blueprints: set card readiness/review state to `needs-review` when prior readiness became stale, and flag derived exercise files whose design evidence depends on the changed card;
+- exercise statements: set `statement_status: needs-review`, and also `solution_status: needs-review` when the solution depends on the changed statement;
+- exercise solutions: set `solution_status: needs-review` only unless the statement or design also changed or is wrong;
+- quizzes: invalidate `item_quality_status`, `answer_key_status`, `feedback_status`, and/or `remediation_status` according to the changed stem/type/options/distractors, answer logic, feedback, or remediation.
+
+When any exercise or quiz review substatus becomes `needs-review`, demote top-level `status: reviewed` or `status: published` to `status: needs-review`. Do not restart the full pipeline unless the change truly invalidates the whole artifact or unit plan.
+
+After a non-material edit, status may be preserved only if the report states why the edit did not affect meaning, math, answer logic, feedback, remediation, or pedagogy.
+
 ## Change classification
 
 Classify every request into one of these categories.
@@ -196,10 +219,11 @@ describe change
 -> classify risk
 -> patch affected files or produce impact plan
 -> targeted review
+-> freshness impact summary
 -> update dashboard/status/journal notes
 ```
 
-When patching existing content, preserve YAML frontmatter unless a field needs a targeted update. If using freshness metadata, remember:
+When patching existing content, preserve YAML frontmatter unless a field needs a targeted update. Freshness invalidation is a targeted update. If using freshness metadata, remember:
 
 ```yaml
 status: draft
@@ -208,6 +232,14 @@ sync_reason: null
 ```
 
 `status` means production maturity. `sync_status` means alignment with current upstream plans, templates, and guides.
+
+Every applied change report must include:
+
+- artifacts touched;
+- statuses invalidated;
+- statuses intentionally preserved;
+- reason for preservation when relevant;
+- next review or finalization step.
 
 ## Output format
 
@@ -261,12 +293,20 @@ Report checks performed:
 - dashboard and journal consistency;
 - math/program/source uncertainty where relevant.
 
+Also report which targeted review evidence was refreshed, and which stale evidence remains. A solution review refreshes `solution_status` only; a quiz answer-key review refreshes `answer_key_status` only; feedback/remediation review refreshes those fields only.
+
 ## Dashboard/status updates
 
 Report updates to:
 - file frontmatter if any;
 - unit `## Production dashboard` if any;
 - `## Journal de production` if any.
+
+Include:
+- statuses invalidated;
+- statuses intentionally preserved;
+- reason for preservation if a reviewed, verified, or published status survived a change;
+- next review/finalization step.
 
 ## Remaining risks
 

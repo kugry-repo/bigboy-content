@@ -42,6 +42,8 @@ Do not confuse the planning artifacts.
 
 Raw item seeds are exploratory. Item design cards are the curated bridge. Final quiz files remain drafts until item quality, answer keys, feedback, and remediation have been reviewed separately.
 
+After a material edit to a quiz file, use `needs-review` on only the affected review substatus fields. Stem, item-type, option, or distractor edits invalidate item-quality review; correct-answer edits invalidate answer-key review; option or misconception edits may invalidate feedback review; feedback edits invalidate feedback review; remediation edits invalidate remediation review.
+
 ## Canonical Quiz Workflow
 
 Use this seven-step workflow:
@@ -99,6 +101,8 @@ This step may update `answer_key_status`. It must not mark feedback or remediati
 Review the teaching value of feedback and next-step routing: answer-specific feedback, diagnostic signals, why wrong answers are tempting, why they are wrong, what to remember, remediation after each choice, mastery criteria, remediation by mastery level, and remediation by misconception.
 
 This step may update `feedback_status` and `remediation_status`. It must not mark the answer key reviewed unless answer-key review has passed.
+
+Each review step refreshes only the status evidence it actually checks.
 
 ## Quiz Kinds
 

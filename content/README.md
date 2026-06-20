@@ -67,6 +67,8 @@ Initialized dashboards declare artifact-family scope with the `Scope` rows under
 
 `planning_state: published` is set only by explicit human instruction after review and cleanup. Review/finalize prompts can report readiness for declared scope, but they do not publish automatically.
 
+Review statuses are version evidence, not decorations. After a material edit to reviewed lesson, exercise, or quiz substance, set only the affected review status fields to `needs-review` and run the relevant targeted review again. Non-material typo, formatting, punctuation, or link-formatting edits may preserve reviewed/published status only when the report explains why the edit did not affect meaning, math, answer logic, feedback, remediation, or pedagogy. The full contract lives in `content/_guides/schema/frontmatter-schema.md`.
+
 Use `content/_fixtures/initialized-unit/_index.md` only as a checked-in structural reference for the initialized scaffold. It is not educational content.
 
 After initialization, lesson preparation, exercise clusters, raw exercise seeds, exercise design cards, quiz intent cards, raw item pools, quiz item design cards, set planning, production dashboard state, and production journal entries all live in the unit `_index.md`.

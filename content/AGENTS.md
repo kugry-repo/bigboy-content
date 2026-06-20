@@ -191,11 +191,13 @@ Use these status values in frontmatter:
 
 - `planned`: structure exists, content not written.
 - `draft`: first version written.
-- `needs-review`: content exists but needs mathematical or pedagogical review.
+- `needs-review`: content exists but needs mathematical or pedagogical review, or previously reviewed evidence is stale after a material edit.
 - `reviewed`: checked for correctness and clarity.
 - `published`: ready for learners.
 
 New generated content should normally start as `draft`, not `published`.
+
+Review freshness follows `content/_guides/schema/frontmatter-schema.md`: a material edit invalidates only the affected review status fields and uses `needs-review` as the canonical stale-review value. Non-material typo, formatting, punctuation, or link-formatting edits may preserve reviewed/published status only when the final report explains why meaning, math, answer logic, feedback, remediation, and pedagogy did not change.
 
 ## Source safety
 
@@ -206,7 +208,7 @@ New generated content should normally start as `draft`, not `published`.
 
 ## File editing rules
 
-- Preserve existing frontmatter fields unless there is a clear reason to change them.
+- Preserve existing frontmatter fields unless there is a clear reason to change them. Freshness invalidation after a material edit is a clear reason.
 - Do not rename IDs as a casual edit. For official-unit mutations, unpublished IDs may be destructively propagated through `content/_prompts/commands/manage-unit.md`; published IDs must not be rewritten automatically.
 - Add deleted or retired IDs to `content/_references/deleted-ids.md` before removing them.
 - Do not move content files without updating links.

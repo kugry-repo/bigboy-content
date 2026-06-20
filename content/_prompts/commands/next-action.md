@@ -113,6 +113,7 @@ Routing rules:
 - If the user asks whether a unit is ready to publish, recommend `content/_prompts/workflows/unit/03-finalize-unit.md` for readiness cleanup and report that no current prompt automatically sets `planning_state: published`.
 - If the user wants a known bounded change to existing files, stale-file sync, or migration after a prompt/guide/template/schema/validator change, recommend `content/_prompts/commands/change-existing-content.md`.
 - If the user wants conversational critique, diagnosis, proposals, grilling, taste decisions, or a small targeted patch on a selected file/fragment, recommend `content/_prompts/commands/content-studio.md`.
+- If existing content has `needs-review` review evidence after a material edit, recommend the smallest targeted review prompt that owns that status field.
 - If the user wants exercises only, route directly into the exercise workflow. Existing lessons are optional references unless the requested exercise depends on a specific lesson.
 - If the user wants quizzes only, route directly into the quiz workflow. Lessons and exercises are optional remediation links unless the quiz intent depends on them.
 - If the user wants lessons only, route into the lesson workflow for the selected or first useful mini-lesson.
@@ -156,7 +157,7 @@ Choose the next lesson action with this local order:
 4. If curation is ready but the lesson draft file is missing, recommend `content/_prompts/workflows/lessons/04-create-draft.md`.
 5. If the draft exists but coherence review is incomplete or stale, recommend `content/_prompts/workflows/lessons/05-coherence-pass.md`.
 6. If coherence is complete but compression/taste/voice review is incomplete or stale, recommend `content/_prompts/workflows/lessons/06-compression-pass.md`.
-7. If compression/taste/voice review is complete but verification/finalization is incomplete or stale, recommend `content/_prompts/workflows/lessons/07-verify-finalize.md`.
+7. If compression/taste/voice review is complete but verification/finalization is incomplete, stale, or lesson `status` is `needs-review` after a material edit, recommend `content/_prompts/workflows/lessons/07-verify-finalize.md`.
 
 For repair or critique of already authored lesson text, recommend `content/_prompts/commands/content-studio.md` when the issue is targeted quality, stale review, or repair rather than ordinary creation.
 
@@ -169,8 +170,8 @@ For exercise requests:
 3. If raw seeds exist but design cards are missing or incomplete, recommend `content/_prompts/workflows/exercises/02-curate-design-cards.md`.
 4. If multiple clusters/cards exist but balance is unclear, recommend `content/_prompts/workflows/exercises/03-check-unit-balance.md`.
 5. If ready design cards exist and requested files are missing, recommend `content/_prompts/workflows/exercises/04-create-batch.md`.
-6. If exercise files exist with draft design or statement statuses, recommend `content/_prompts/workflows/exercises/05-review-exercise-quality.md`.
-7. If exercise files exist with draft solutions, recommend `content/_prompts/workflows/exercises/06-review-solutions.md`.
+6. If exercise files exist with draft or `needs-review` design or statement statuses, recommend `content/_prompts/workflows/exercises/05-review-exercise-quality.md`.
+7. If exercise files exist with draft or `needs-review` solutions, recommend `content/_prompts/workflows/exercises/06-review-solutions.md`.
 8. If the request is about learner paths or grouped practice, recommend `content/_prompts/workflows/exercises/07-create-sets.md`.
 
 ## Quiz diagnosis
@@ -181,9 +182,9 @@ For quiz requests:
 2. If a quiz intent exists but raw item seeds are missing or thin, recommend `content/_prompts/workflows/quizzes/02-generate-raw-item-pool.md`.
 3. If raw item seeds exist but item design cards are missing or incomplete, recommend `content/_prompts/workflows/quizzes/03-curate-item-design-cards.md`.
 4. If ready item design cards exist and the quiz file is missing, recommend `content/_prompts/workflows/quizzes/04-create-quiz-file.md`.
-5. If quiz files exist with draft or weak item quality, recommend `content/_prompts/workflows/quizzes/05-review-item-quality.md`.
-6. If quiz files exist with draft answer keys, recommend `content/_prompts/workflows/quizzes/06-review-answer-keys.md`.
-7. If quiz files exist with draft feedback or remediation, recommend `content/_prompts/workflows/quizzes/07-review-feedback-remediation.md`.
+5. If quiz files exist with draft, `needs-review`, or weak item quality, recommend `content/_prompts/workflows/quizzes/05-review-item-quality.md`.
+6. If quiz files exist with draft or `needs-review` answer keys, recommend `content/_prompts/workflows/quizzes/06-review-answer-keys.md`.
+7. If quiz files exist with draft or `needs-review` feedback or remediation, recommend `content/_prompts/workflows/quizzes/07-review-feedback-remediation.md`.
 
 ## Report
 
@@ -217,7 +218,7 @@ List artifact families whose dashboard `Scope` row is `not-in-scope` or whose ab
 
 ## Partial or blocked work
 
-List partially completed mini-lessons, exercise seeds, exercise design cards, exercises, exercise quality reviews, solution reviews, quiz intent cards, raw item pools, quiz item design cards, quiz files, quiz reviews, sets, statuses, blockers, or journal entries.
+List partially completed mini-lessons, exercise seeds, exercise design cards, exercises, exercise quality reviews, solution reviews, quiz intent cards, raw item pools, quiz item design cards, quiz files, quiz reviews, sets, statuses, stale `needs-review` evidence, blockers, or journal entries.
 
 ## Missing or inconsistent files
 

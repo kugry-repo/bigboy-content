@@ -115,6 +115,7 @@ Then update:
 Use these design-card statuses:
 
 - `ready-for-exercise-batch`
+- `needs-review`
 - `needs-redesign`
 - `rejected`
 - `needs-verification`
@@ -124,7 +125,7 @@ If missing areas are substantial, recommend another `content/_prompts/workflows/
 Finish by summarizing:
 
 - clusters reviewed;
-- cards marked ready, needs-redesign, rejected, or needs-verification;
+- cards marked ready, needs-review, needs-redesign, rejected, or needs-verification;
 - coverage by skill and linked support; if local lessons are `not-in-scope`, report exercise-only coverage instead of treating lesson links as missing;
 - skill-ladder gaps;
 - difficulty, role, and type balance;

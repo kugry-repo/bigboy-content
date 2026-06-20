@@ -139,6 +139,8 @@ content/_prompts/commands/change-existing-content.md
 
 Structural changes must migrate affected existing source files to the new schema, heading names, filenames, folder rules, and prompt paths in the same change.
 
+For content edits, apply the revision freshness contract from `content/_guides/schema/frontmatter-schema.md`. A material edit invalidates only the affected review evidence by setting the relevant status field to `needs-review`; a non-material edit may preserve status only with an explicit reason. Targeted re-review is preferred over restarting unrelated workstreams.
+
 For conversational critique, diagnosis, proposals, grilling, or targeted patches while writing, use:
 
 ```text

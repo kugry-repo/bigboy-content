@@ -24,6 +24,7 @@ cognitive_roles: []
 question_count: 0
 mastery_threshold: 80
 estimated_time_minutes: 8
+# Freshness: material edits demote only affected quiz review substatuses to needs-review.
 item_quality_status: draft
 answer_key_status: draft
 feedback_status: draft

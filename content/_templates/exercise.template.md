@@ -25,6 +25,7 @@ requires_graph: false
 has_hints: true
 has_common_mistakes: true
 has_verification: true
+# Freshness: material edits demote only affected review substatuses to needs-review.
 design_status: draft
 statement_status: draft
 solution_status: draft

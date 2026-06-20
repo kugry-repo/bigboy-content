@@ -95,6 +95,8 @@ solution_status: draft
 
 They are not reviewed until both quality review and solution review have passed.
 
+After a material edit to an exercise, use `needs-review` on only the affected review substatus fields. Statement edits usually invalidate `statement_status` and may invalidate `solution_status`; solution-only edits invalidate `solution_status`; design-card edits invalidate card readiness and any derived exercise design evidence that depends on the changed card.
+
 ## Why One Exercise Per File?
 
 This makes it easier to:

@@ -49,6 +49,8 @@ Prompt-specific requirements:
 
 Review selected existing quiz files for item quality.
 
+If this review follows a material edit to stems, item types, options, distractors, diagnostic signals, misconceptions, or item order, identify the changed item components and review those components in context. A successful item-quality review refreshes `item_quality_status` only.
+
 Check:
 
 - quiz purpose;
@@ -79,7 +81,7 @@ You may update:
 
 You must not mark `answer_key_status`, `feedback_status`, or `remediation_status` as reviewed.
 
-Use `item_quality_status: reviewed` only when the item-quality rubric passes. Use `needs-correction` for serious item problems and `needs-review` for unresolved human/math/source uncertainty.
+Use `item_quality_status: reviewed` only when the item-quality rubric passes. Use `needs-correction` for serious item problems and `needs-review` for stale item-quality evidence after a material edit or unresolved human/math/source uncertainty.
 
 Do not mark quizzes as `published` unless explicitly requested and all review statuses are already `reviewed`.
 

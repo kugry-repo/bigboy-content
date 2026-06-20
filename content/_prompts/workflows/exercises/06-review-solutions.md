@@ -64,6 +64,8 @@ This is solution-review work only.
 
 If the user named specific exercise files, review only those. Otherwise, review the first existing exercise files whose `solution_status` or production dashboard suggests solution review is needed. If target files are ambiguous, stop and ask.
 
+If this review follows a material solution edit, refresh only `solution_status` when the solution review passes. Do not refresh `statement_status` or `design_status` unless the prompt is explicitly rerouted through exercise quality review.
+
 Do not create:
 
 - new exercises;
@@ -123,7 +125,9 @@ If a solution fails, use:
 solution_status: needs-correction
 ```
 
-and record the reason in `## Notes auteur`.
+Use `solution_status: needs-review` when prior solution review evidence is stale after a material edit but solution review has not yet passed. Do not use `needs-correction` merely to mark staleness; it is for a failed review.
+
+Record the reason in `## Notes auteur`.
 
 Do not create new exercises from missing design cards or table rows during solution review. If coverage gaps are discovered, record them as review notes or recommend returning to `content/_prompts/workflows/exercises/02-curate-design-cards.md`, `content/_prompts/workflows/exercises/03-check-unit-balance.md`, or `content/_prompts/workflows/exercises/04-create-batch.md`.
 

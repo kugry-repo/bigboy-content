@@ -185,7 +185,7 @@ Even compact exercises keep the canonical headings for consistent parsing and re
 ```md
 ### <planned-exercise-id> — <working title>
 
-Status: planned | ready-for-exercise-batch | needs-redesign | needs-verification | rejected
+Status: planned | ready-for-exercise-batch | needs-review | needs-redesign | needs-verification | rejected
 
 Cluster:
 - <cluster id/title>
@@ -261,7 +261,10 @@ Review notes:
 - Math risk:
 - Pedagogy risk:
 - Source/exam claim risk:
+- Freshness note:
 
 Keep/reject decision:
 - Keep because...
 ```
+
+Use `needs-review` when a material edit makes a previously ready design card's review/readiness evidence stale. Use `needs-redesign` when review found a design failure, and `needs-verification` when the card is blocked by math, source, or feasibility uncertainty.

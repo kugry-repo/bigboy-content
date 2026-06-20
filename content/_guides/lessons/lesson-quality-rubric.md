@@ -129,3 +129,5 @@ A reviewed lesson should have:
 - author-only notes separated in `## Notes auteur` when present.
 
 Optional blocks should improve the lesson, not pad it.
+
+After a material edit to reviewed lesson substance, the old review no longer proves the current version. Set `status: needs-review` until the changed area has been reviewed in context.

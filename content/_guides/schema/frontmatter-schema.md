@@ -250,6 +250,35 @@ Allowed values:
 
 On unit indexes, `status` and `planning_state` are separate. `status: published` claims learner-facing maturity; `planning_state: published` is the manual unit lifecycle state described above.
 
+## Revision Freshness Contract
+
+Review status is evidence about the current version of an artifact or sub-artifact. When reviewed content changes materially, the relevant evidence is stale and the affected status field must be changed to `needs-review`, unless a more specific failed-review value already applies after an actual review.
+
+A material edit changes meaning, math, answer logic, pedagogy, or review scope. This includes changes to mathematical statements, definitions, examples, exercise statements, givens, targets, constraints, solution logic, final answers, quiz stems, item types, options, distractors, answer keys, per-choice feedback, explanations, remediation, prerequisite assumptions, difficulty, skill target, or intended misconception when those details affect what the review meant.
+
+A non-material edit does not change meaning, math, answer logic, feedback, or pedagogy. Examples include typo fixes, formatting cleanup, minor punctuation, link formatting, and wording polish whose mathematical and pedagogical meaning is unchanged.
+
+The affected scope is the smallest artifact or sub-artifact whose reviewed evidence depended on the edited content. Invalidate only that scope and any directly dependent review evidence. Do not restart unrelated workstreams just because a local review status became stale.
+
+Use `needs-review` as the canonical stale-review value:
+
+- Lesson material edits set lesson `status: needs-review` when the lesson had been `reviewed` or `published`.
+- Exercise design-card or blueprint material edits set the card readiness/review state to `needs-review` when it had been ready, and they should flag any derived exercise files whose design evidence now depends on the changed card.
+- Exercise statement material edits set `statement_status: needs-review`; also set `solution_status: needs-review` when the solution depends on the changed statement. If the exercise `status` was `reviewed` or `published`, set it to `needs-review`.
+- Exercise solution material edits set `solution_status: needs-review` unless the edit reveals that the statement or design is also wrong. If the exercise `status` was `reviewed` or `published`, set it to `needs-review`.
+- Quiz stem, item type, option, or distractor material edits set `item_quality_status: needs-review`.
+- Quiz edits that affect the correct answer set `answer_key_status: needs-review`.
+- Quiz edits that affect options, diagnostic signals, or misconceptions set `feedback_status: needs-review` when feedback depends on those choices.
+- Quiz feedback material edits set `feedback_status: needs-review`.
+- Quiz remediation material edits set `remediation_status: needs-review`.
+- If a quiz `status` was `reviewed` or `published` and any quiz review substatus becomes `needs-review`, set quiz `status: needs-review`.
+
+Specific failure states are still used after review finds an actual problem: `needs-redesign`, `needs-rewrite`, or `needs-correction`. Use those for failed review outcomes, not merely to mark stale evidence after an edit.
+
+Status may be preserved after a non-material edit only when the final report explains why the edit did not change meaning, math, answer logic, feedback, remediation, or pedagogy. Preserving a reviewed, verified, or published status after a material edit is not allowed.
+
+Targeted re-review refreshes only the evidence it actually checked. A solution review can set `solution_status: reviewed` without touching `statement_status`; a quiz answer-key review can set `answer_key_status: reviewed` without touching `feedback_status`; a feedback/remediation review can refresh feedback and remediation without refreshing item quality.
+
 ## Common Content Object Fields
 
 Every active production content object (`lesson`, `exercise`, `quiz`, and `exercise-set`) uses these required fields:
@@ -347,6 +376,21 @@ Type-specific required fields:
 - `statement_status`
 - `solution_status`
 
+Allowed exercise review substatus values:
+
+- `draft`: not yet reviewed.
+- `needs-review`: reviewed evidence is missing or stale after a material edit.
+- `reviewed`: the relevant targeted review passed for the current version.
+- `needs-redesign`: design review found a design problem.
+- `needs-rewrite`: statement review found a statement problem.
+- `needs-correction`: solution review found a mathematical or solution-pedagogy problem.
+
+Use only the values that fit the field:
+
+- `design_status`: `draft`, `needs-review`, `reviewed`, `needs-redesign`.
+- `statement_status`: `draft`, `needs-review`, `reviewed`, `needs-rewrite`.
+- `solution_status`: `draft`, `needs-review`, `reviewed`, `needs-correction`.
+
 ```yaml
 ---
 type: exercise
@@ -408,6 +452,15 @@ Type-specific required fields:
 - `answer_key_status`
 - `feedback_status`
 - `remediation_status`
+
+Allowed quiz review substatus values:
+
+- `draft`: not yet reviewed.
+- `needs-review`: reviewed evidence is missing or stale after a material edit.
+- `reviewed`: the relevant targeted review passed for the current version.
+- `needs-correction`: review found a serious item, answer-key, feedback, or remediation problem.
+
+`status: published` requires all four quiz review substatuses to be `reviewed`.
 
 ```yaml
 ---
